@@ -1,0 +1,566 @@
+<div class="row">
+	<div class="col col-sm-6 col-xs-12">
+		<a href="#driver/index.html" class="btn btn-default" > &lt; <span langlanguage="back">返回</span></a>
+	</div>
+</div>
+<div class="row"><br /></div>
+<div class="well well-light no-padding">
+	<form action="" class="smart-form" id="driver_form">
+		<header langlanguage="basicInfo">基本信息</header>
+		<fieldset>
+            <div class="col col-6">
+                <div id="drivername_div">
+                    <div class="row">
+                        <label class="col col-4 text-align-right" id="drivername_lable" name="drivername_lable">司机姓名</label>
+                        <section class="col col-8">
+                            <label class="input" class="input  state-error">
+                                <input type="text" name="drivername" placeholder="" id="drivername" maxlength="30">
+                                <input type="hidden" name="driverid" id="driverid" value="0">
+                                <input type="hidden" name="isedit" id="isedit" value="1">
+                                <input type="hidden" name="truckid" id="truckid" value="">
+                            </label>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-6" id="driverimage_div">
+                <div class="row">
+                    <label class="col col-4 text-align-right" id="driverimage_label"  name="driverimage_label" langlanguage="driverimage">司机照片</label>
+                    <label class="col col-8"  id="driverimageattach_tip">
+                        <div class="col col-12">
+                            <img id="showdriverimage" class="img-thumbnail col col-4" style="padding: 0 1px;width:157px;height:185px;" src="../img/avatars/driver_avatar_defalut.png" alt=""/>
+                            <span class="col col-3">
+                                <b><span langlanguage="picRequ">图片要求：</span></b><br/>
+                                <span langlanguage="supportFormatJpgPng">格式为jpg或png，</span><br/><span langlanguage="max30K">大小不超过30K，</span><br/>
+                                <span langlanguage="pic140pxheight185px">图片长度为140px,高为185px.</span>
+                            </span>
+                        </div>
+                    </label>
+
+
+                    <label class="col col-4 text-align-right" id="" name="" ></label>
+                    <label class="col col-8"  id="">
+                        <section class="col col-4 text-align-center">
+                            <input type="hidden" id="driverimageurl" name="driverimage" placeholder="">
+                            <label class="input">
+                                <input type="text" id="driverimage" placeholder="">
+                            </label>
+                        </section>
+                    </label>
+                </div>
+            </div>
+
+			<div class="col col-6" id="orgcode_div">
+                <div class="row">
+                    <label class="col col-4 text-align-right" id="orgcode_lable" name="orgcode_lable">所属机构</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input id="orgname" type="text" name="orgname">
+                        </label>
+                        <input type="hidden" id="orgcodes" name="orgcode" value="">
+                    </section>
+                </div>
+            </div>
+
+			<div class="col col-6" id="phone_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="phone_lable" name="phone_lable">手机号</label>
+					<section class="col col-8">
+						<label class="input">
+							<!-- <i class="icon-append fa fa-user"></i> -->
+							<input type="text" name="phone" id="phone" placeholder="" maxlength="15">
+							<b class="tooltip tooltip-top-right" langlanguage="pleaseEnter3to5Number">请输入3到15位手机号码</b>
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6"  id="idcard_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="idcard_lable" name="idcard_lable">身份证号</label>
+					<section class="col col-8">
+						<label class="input">
+							<!-- <i class="icon-append fa fa-user"></i> -->
+							<input type="text" name="idcard" id="idcard" placeholder=""  maxlength="18">
+							<b class="tooltip tooltip-top-right" langlanguage="pleaseNumber">请输入18位身份证号码</b>
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6"  id="workno_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="workno_lable" name="workno_lable">工号</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="workno" id="workno" placeholder="" maxlength="30">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="age_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="age_lable" name="age_lable">年龄</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="age" id="age" placeholder="年龄">
+							<b class="tooltip tooltip-top-right" langlanguage="enterValue0To99">请输入0-99的数值</b>
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="fromdate_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="fromdate_lable" name="fromdate_lable">入职日期</label>
+					<section class="col col-8">
+						<label class="input">
+							<i class="icon-prepend fa fa-calendar"></i>
+							<input type="text" maxlength="10" id="fromdate_1" name="fromdate" value="">
+							
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="edu_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="edu_lable" name="edu_lable">学历</label>
+					<section class="col col-8">
+						<label class="select">
+						<select id="edu" name="edu">
+							
+						</select> <i></i> </label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="household_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="household_lable" name="household_lable">户口所在地</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="household" id="household" placeholder="">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="hometown_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="hometown_lable" name="hometown_lable">籍贯</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="hometown" id="hometown" placeholder="" maxlength="30">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="address_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="address_lable" name="address_lable">当前居住地</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="address" id="address" placeholder="">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="familytel_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="familytel_lable" name="familytel_lable">家庭联系电话</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="familytel" id="familytel" placeholder="" maxlength="30">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6" id="status_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="status_lable" name="status_lable">员工状态</label>
+					<section class="col col-8">
+						<label class="select">
+						<select id="status" name="status">
+							
+						</select> <i></i> </label>
+					</section>
+				</div>
+			</div>
+			
+			<div class="col col-6" id ="idcardattach_div">
+                <div class="row">
+                    <label class="col col-4 text-align-right " id="idcardattach_label" name="idcardattach_label" langlanguage="idcardattach">身份证附件</label>
+                    <section class="col col-2">
+                        <input type="hidden" id="idcardattachurl" name="idcardattach" placeholder="">
+                        <label class="input">
+                            <input type="text" id="idcardattach" placeholder="">
+                        </label>
+                    </section>
+                    <label class="col col-2" style="display:none" id="idcardattach_tip">
+                      	<a href="javascript:void(0);" class="extiat">查看</a>
+                    </label>
+                </div>
+            </div>
+
+
+		</fieldset>
+
+		<header langlanguage="licenseInformation">证照信息</header>
+		<fieldset>
+			<div class="col col-6" id="licenseno_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="licenseno_lable" name="licenseno_lable">驾驶证号</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="licenseno" id="licenseno" placeholder="" maxlength="30">
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="licenseauth_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="licenseauth_lable" name="licenseauth_lable">发证机关</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="licenseauth" id="licenseauth" placeholder="">
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="licenselibno_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="licenselibno_lable" name="licenselibno_lable">驾驶证档案号</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="licenselibno" id="licenselibno" placeholder="" maxlength="30">
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="licensedate_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="licensedate_lable" name="licensedate_lable">驾驶证有效期</label>
+					<section class="col col-8">
+						<label class="input">
+							<i class="icon-prepend fa fa-calendar"></i>
+							<input type="text" maxlength="10" id="licensedate" name="licensedate" value="">
+							
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="driveage_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="driveage_lable" name="driveage_lable">驾龄</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="driveage" id="driveage" placeholder="">
+							<b class="tooltip tooltip-top-right" langlanguage="enterValue0To99">请输入0-99的数值</b>
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="licensetype_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="licensetype_lable" name="licensetype_lable">准驾车型</label>
+					<section class="col col-8">
+						<label class="select">
+						<select id="licensetype" name="licensetype">
+							
+						</select> <i></i> </label>
+					</section>
+				</div>
+			</div>
+			
+			<div class="col col-6" id="driverlicense_div">
+                <div class="row">
+                    <label class="col col-4 text-align-right" id="driverlicense_label" name="driverlicense_label" langlanguage="driverlicense">驾驶证附件</label>
+                    <section class="col col-2">
+                        <input type="hidden" id="driverlicenseurl" name="driverlicense" placeholder="">
+                        <label class="input">
+                            <input type="text" id="driverlicense" placeholder="">
+                        </label>
+                    </section>
+                    <section class="col col-2">
+                    <label class="col col-2" style="display:none" id="driverlicense_tip">
+                      	<a href="javascript:void(0);" class="extdlt">查看</a>
+                    </label>
+                    </section>
+                </div>
+            </div>
+            
+			<div class="col col-6" id="examdate_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="examdate_lable" name="examdate_lable">体检日期</label>
+					<section class="col col-5">
+						<label class="input">
+							<i class="icon-prepend fa fa-calendar"></i>
+							<input type="text" maxlength="10" id="examdate" name="examdate" value="">
+							
+						</label>
+					</section>
+					<section class="col col-3">
+						<!--<label class="select" id="examaudit_lable" name="examaudit_lable">-->
+						<label class="select">
+						<select id="examaudit" name="examaudit">
+							
+						</select> <i></i> </label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="drivecert_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="drivecert_lable" name="drivecert_lable">从业资格证号</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="drivecert" id="drivecert" placeholder="" maxlength="30">
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="drivetype_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="drivetype_lable" name="drivetype_lable">从业类型</label>
+					<section class="col col-8">
+						<label class="select">
+						<select id="drivetype" name="drivetype">
+							
+						</select> <i></i> </label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="drivecertauth_div">
+				<div class="row">
+					<label class="col col-4 text-align-right"  id="drivecertauth_lable" name="drivecertauth_lable" langlanguage="issuingAuthority_cong">从业发证机关</label>
+					<section class="col col-8">
+						<label class="input">
+							<input type="text" name="drivecertauth" id="drivecertauth" placeholder="" maxlength="30">
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id="drivecertdate_div">
+				<div class="row">
+					<label class="col col-4 text-align-right" id="drivecertdate_lable" name="drivecertdate_lable">从业资格证有效期</label>
+					<section class="col col-5">
+						<label class="input">
+							<i class="icon-prepend fa fa-calendar"></i>
+							<input type="text" maxlength="10" id="drivecertdate" name="drivecertdate" value="">
+							
+						</label>
+					</section>
+					<section class="col col-3">
+						<!--<label class="select"  id="drivecertaudit_lable" name="drivecertaudit_lable">
+						-->
+						<label class="select">
+						<select id="drivecertaudit" name="drivecertaudit">
+						
+						</select> <i></i> </label>
+					</section>
+				</div>
+			</div>
+			
+            <div class="col col-6" id="workingcredential_div">
+                <div class="row">
+                    <label class="col col-4 text-align-right " id="workingcredential_label" neme="workingcredential_label" langlanguage="workingcredential">从业资格证附件</label>
+                    <section class="col col-2">
+                        <input type="hidden" id="workingcredentialurl" name="workingcredential" placeholder="">
+                        <label class="input">
+                            <input type="text" id="workingcredential" placeholder="">
+                        </label>
+                    </section>
+                     <section class="col col-2">
+                    <label class="col col-2" style="display:none" id="workingcredential_tip">
+                      	<a href="javascript:void(0);" class="extwct">查看</a>
+                    </label>
+                    </section>
+                </div>
+            </div>
+
+			<!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" id="_div">
+				<div class="row">
+					<label class="col col-4 text-align-right">驾驶证有效期</label>
+					<section class="col col-8">
+						<label class="input"> 
+							<i class="icon-append fa fa-calendar"></i>
+							<input type="text" name="request" placeholder="驾驶证有效期" class="datepicker" data-dateformat='dd/mm/yy'>
+						</label>
+					</section>
+				</div>
+			</div> -->
+
+			
+		</fieldset>
+		
+		<footer>
+					<a href="#driver/index.html" class="btn btn-default" langlanguage="cancel">取消</a>
+					<button type="button" class="btn btn-default" onclick="savedriver(2)" langlanguage="saveCreate">保存并新建</button>
+					<button type="button" class="btn btn-primary" onclick="savedriver(1)" id="driver_add" langlanguage="save_adas">
+						<i class="fa fa-save btn-sm"></i>
+						保存
+					</button>
+				
+		</footer>
+		
+	</form>
+</div>
+
+<!-- iccard attach -->
+<div class="modal fade" id="idcard_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" langlanguage="uploadFile">上传文件</h4>
+            </div>
+            <div class="modal-body">             
+            <form class="smart-form" role="form" id="upload" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <label class="col col-3 text-align-right" langlanguage="idcardattach">身份证附件</label>
+                        <section class="col col-8">
+                            <label for="file" class="input input-file ">
+                                <input type="file" id="idcardfile" name="file" />
+                            </label>
+                        </section>
+                    </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" data-dismiss="modal" langlanguage="cancel">
+                    取消
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm" id="saveidcard" langlanguage="confirm">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> 确认
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- iccard attach -->
+
+<!--driveriamge attach-->
+<div class="modal fade" id="driverimage_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" langlanguage="uploadFile">上传文件</h4>
+            </div>
+            <div class="modal-body">
+                <form class="smart-form" role="form" id="upload" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <label class="col col-3 text-align-right" langlanguage="driverimage">司机照片</label>
+                        <section class="col col-8">
+                            <label for="file" class="input input-file ">
+                                <input type="file" id="driverimagefile" name="file" />
+                            </label>
+                        </section>
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" data-dismiss="modal" langlanguage="cancel">
+                    取消
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm" id="savedriverimage" langlanguage="confirm">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> 确认
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--driverimage attach-->
+
+<!-- driver license -->
+<div class="modal fade" id="license" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" langlanguage="uploadFile">上传文件</h4>
+            </div>
+            <div class="modal-body">             
+            <form class="smart-form" role="form" id="upload" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <label class="col col-3 text-align-right" langlanguage="driverlicense">驾驶证附件</label>
+                        <section class="col col-8">
+                            <label for="file" class="input input-file ">
+                                <input type="file" id="driverlicensefile" name="file" />
+                            </label>
+                        </section>
+                    </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" data-dismiss="modal" langlanguage="cancel">
+                    取消
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm" id="savelicense" langlanguage="confirm">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> 确认
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- driver license -->
+
+<!-- working credential-->
+<div class="modal fade" id="working" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" langlanguage="uploadFile">上传文件</h4>
+            </div>
+            <div class="modal-body">             
+            <form class="smart-form" role="form" id="upload" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <label class="col col-3 text-align-right" langlanguage="workingcredential">从业资格证附件</label>
+                        <section class="col col-8">
+                            <label for="file" class="input input-file ">
+                                <input type="file" id="workingfile" name="file" />
+                            </label>
+                        </section>
+                    </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" data-dismiss="modal" langlanguage="cancel">
+                    取消
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm" id="saveworking" langlanguage="confirm">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> 确认
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- working credential -->
+
+<!-- daterangepicker JS -->
+<script src="js/langlanguage.js"></script>
+<script type="text/javascript">
+	// DO NOT REMOVE : GLOBAL FUNCTIONS!
+	pageSetUp();
+	$ips.startup();
+</script>
+
+
+

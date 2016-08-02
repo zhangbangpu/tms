@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+        <script src="js/child_head.js"></script>
+        <script type="text/javascript">
+        	checkLogin();
+        </script>
+		<meta charset="utf-8">
+		<title> 智能互联，成就卓越物流 </title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+	</head>
+	<body class="" style="background: #fff; min-height: 600px;">
+		<aside id="left-panel" style="display: none;">
+			<nav>
+				<ul>
+					<li class="">
+						<a href="ajax/dashboard.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">首页</span></a>
+					</li>
+				</ul>
+			</nav>
+			<span class="minifyme"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+		</aside>
+		<div id="main" role="main" style="margin-left: 0;">
+			<div id="content" style="margin: 0; padding: 0;">
+			</div>
+		</div>
+		<script type="text/javascript">
+
+		if (!!$.cookie('_TOKEN')) {
+			loadFile('/js/bootstrap.js');
+		}
+		</script>
+	</body>
+</html>

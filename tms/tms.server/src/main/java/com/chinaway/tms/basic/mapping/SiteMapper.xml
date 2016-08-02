@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.SiteMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Site" >
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="code" property="code"/>
+		<result column="area" property="area"/>
+		<result column="deptname" property="deptname"/>
+		<result column="types" property="types"/>
+		<result column="isprivate" property="isprivate"/>
+		<result column="updatetime" property="updatetime"/>
+		<result column="province" property="province"/>
+		<result column="city" property="city"/>
+		<result column="address" property="address"/>
+		<result column="createtime" property="createtime"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,name,code,area,deptname,types,isprivate,updatetime,province,city,address,createtime
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+		    and name = #{name}
+		</if>
+		<if test="code != null and code != '' ">
+		    and code = #{code}
+		</if>
+		<if test="area != null and area != '' ">
+		    and area = #{area}
+		</if>
+		<if test="deptname != null and deptname != '' ">
+		    and deptname = #{deptname}
+		</if>
+		<if test="types != null and types != '' ">
+		    and types = #{types}
+		</if>
+		<if test="isprivate != null and isprivate != '' ">
+		    and isprivate = #{isprivate}
+		</if>
+		<if test="updatetime != null and updatetime != '' ">
+		    and updatetime = #{updatetime}
+		</if>
+		<if test="province != null and province != '' ">
+		    and province = #{province}
+		</if>
+		<if test="city != null and city != '' ">
+		    and city = #{city}
+		</if>
+		<if test="address != null and address != '' ">
+		    and address = #{address}
+		</if>
+		<if test="createtime != null and createtime != '' ">
+		    and createtime = #{createtime}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from site where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from site
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Site" >
+	  insert into site(id,name,code,area,deptname,types,isprivate,updatetime,province,city,address,createtime)
+ values(#{id},#{name},#{code},#{area},#{deptname},#{types},#{isprivate},#{updatetime},#{province},#{city},#{address},#{createtime})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.Site" >
+	  update site set name=#{name},code=#{code},area=#{area},deptname=#{deptname},types=#{types},isprivate=#{isprivate},updatetime=now(),province=#{province},city=#{city},address=#{address}, where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Site" >
+		update site set 
+	<trim  suffixOverrides="," >
+	<if test="name != null  and name != '' ">
+		name=#{name},
+	</if>
+	<if test="code != null  and code != '' ">
+		code=#{code},
+	</if>
+	<if test="area != null  and area != '' ">
+		area=#{area},
+	</if>
+	<if test="deptname != null  and deptname != '' ">
+		deptname=#{deptname},
+	</if>
+	<if test="types != null  and types != '' ">
+		types=#{types},
+	</if>
+	<if test="isprivate != null  and isprivate != '' ">
+		isprivate=#{isprivate},
+	</if>
+	<if test="updatetime != null  ">
+		updatetime=#{updatetime},
+	</if>
+	<if test="province != null  and province != '' ">
+		province=#{province},
+	</if>
+	<if test="city != null  and city != '' ">
+		city=#{city},
+	</if>
+	<if test="address != null  and address != '' ">
+		address=#{address},
+	</if>
+	<if test="createtime != null  ">
+		createtime=#{createtime},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Site" >
+		delete 	 from site where id = #{id}
+	</delete>
+  	
+</mapper>

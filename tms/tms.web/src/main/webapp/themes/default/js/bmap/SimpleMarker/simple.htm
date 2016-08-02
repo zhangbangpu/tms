@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SimpleMarker简单示例</title>
+    <style type="text/css">
+    #mapContainer
+        {
+            width: 800px;
+            height: 400px;
+            border: 1px solid gray;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script type="text/javascript" src="SimpleMarker.js"></script>
+    <script src="../../../../../js/blackbirdjs/blackbird.js"></script>
+</head>
+<body>
+    <div style="width:1024px;height:700px;border:1px solid gray;" id="mapContainer"></div>
+    <input id="btnText"	type="button" value="改变Text" />
+    <input id="btnPoint" type="button" value="改变Position" />
+    <input id="btnImage" type="button" value="改变Image" />
+    <input id="btnToggle" type="button" value="显示/隐藏" />
+    <input id="btnCreate1" type="button" value="创建SimpleMarker" />
+    <input id="btnCreate2" type="button" value="创建Marker" />
+    <input id="btnCreate3" type="button" value="批量模式创建SimpleMarker" />
+    <input id="btnCreate4" type="button" value="去重" />
+</body>
+    <script type="text/javascript" >
+        var map = new BMap.Map("mapContainer");
+        map.enableScrollWheelZoom();
+        map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 13);
+
+        map.addEventListener("tilesloaded", function (e) {
+            log.debug(e);
+        });
+        map.addEventListener("movestart", function (e) {
+            log.profile("地图移动");
+            hidePanes();
+        });
+        map.addEventListener("moveend", function (e) {
+            showPanes();
+            log.profile("地图移动");
+        });
+        map.addEventListener("zoomstart", function (e) {
+            log.profile("地图缩放");
+            hidePanes();
+        });
+        map.addEventListener("zoomend", function (e) {
+            showPanes();
+            log.profile("地图缩放");
+        });
+
+        var rm = new BMapLib.SimpleMarker(point, {batch:false,url: 'http://api.map.baidu.com/images/marker_red_sprite.png'});
+
+        map.addOverlay(rm);
+        map.addOverlay(new BMapLib.SimpleMarker(new BMap.Point(116.404, 39.885), {size: new BMap.Size(26,29),batch:false,url: 'http://api.map.baidu.com/images/marker_red_sprite.png'}));
+        map.addOverlay(new BMapLib.SimpleMarker(new BMap.Point(116.354, 39.915), {size: new BMap.Size(26,29),batch:false,url: 'http://api.map.baidu.com/images/marker_red_sprite.png'}));
+        map.addOverlay(new BMapLib.SimpleMarker(new BMap.Point(116.454, 39.915), {size: new BMap.Size(26,29),batch:false,url: 'http://api.map.baidu.com/images/marker_red_sprite.png'}));
+        map.addOverlay(new BMapLib.SimpleMarker(new BMap.Point(116.404, 39.945), {size: new BMap.Size(26,29),batch:false,url: 'http://api.map.baidu.com/images/marker_red_sprite.png'}));
+
+        rm.addEventListener("click", function (e) {
+            // console.log(e);
+        });
+        rm.addEventListener("mouseover", function (e) {
+            // console.log(e);
+        });
+        rm.addEventListener("mouseout", function (e) {
+            // console.log(e);
+        });
+
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+
+        var btnText = document.getElementById('btnText');
+        btnText.onclick = function (event) {
+            var marker = new BMap.Marker(new BMap.Point(116.414, 39.925));
+            map.addOverlay(marker);
+            // rm.setText(35);
+       };
+
+        var newPt = new BMap.Point(116.404, 39.895);
+        var btnPoint = document.getElementById('btnPoint');
+        btnPoint.onclick = function () {
+            var container = map.getContainer()
+            , height = parseInt(container.offsetHeight,10) / 2
+            , width = parseInt(container.offsetWidth,10) / 2;
+
+            log.profile("计时器setPosition");
+            hidePanes();
+            var center = map.getCenter(), pixel = map.pointToPixel(center);
+            for (var i = 0; i < markers.length; i++) {
+                var w = width * Math.random(), h = height * Math.random();
+                var newPixel = { x : pixel.x + (Math.random() > 0.5 ? w : -w),
+                               y : pixel.y + (Math.random() > 0.5 ? h : -h)}
+                , newPoint = map.pixelToPoint(newPixel);
+
+                markers[i].setPosition(newPoint);
+            };
+            showPanes();
+            log.profile("计时器setPosition");
+        };
+
+        var btnImage = document.getElementById('btnImage');
+        btnImage.onclick = function (event) {
+            log.profile("计时器setImage");
+            for (var i = 0; i < markers.length; i++) {
+               markers[i].setImage("http://api.map.baidu.com/images/marker_red_sprite.png");
+            };
+            log.profile("计时器setImage");
+        };
+
+        var num = 500;
+        var btnCreate1 = document.getElementById('btnCreate1');
+        btnCreate1.onclick = function (event) {
+            var container = map.getContainer()
+            , height = parseInt(container.offsetHeight,10) / 2
+            , width = parseInt(container.offsetWidth,10) / 2;
+
+            log.profile("计时器SimpleMarker");
+
+            hidePanes();
+            var count = 0;
+            var center = map.getCenter(), pixel = map.pointToPixel(center);
+            //随机一个新的坐标，不超过地图范围
+            for(var i = num; i--;){
+                var w = width * Math.random(), h = height * Math.random();
+                var newPixel = { x : pixel.x + (Math.random() > 0.5 ? w : -w),
+                               y : pixel.y + (Math.random() > 0.5 ? h : -h)}
+                , newPoint = map.pixelToPoint(newPixel);
+
+                var marker = createMarker(newPoint,
+                    {url: 'http://api.map.baidu.com/images/marker_red_sprite.png'});//, {text: i});
+                if (marker != null) {
+                    map.addOverlay(marker);
+                    markers.push(marker);
+                    count ++;
+                }
+            }
+            showPanes();
+
+            log.profile("计时器SimpleMarker");
+            log.debug("创建个数：" + count + "/" + markers.length);
+        };
+
+        function createMarker(position, options) {
+            // 指定像素范围小于指定个数个才创建
+            var range = 3, maxCount = 1;
+            var count = 0;
+            var p = map.pointToOverlayPixel(position);
+            for (var i = 0; i < markers.length; i++) {
+                var marker = markers[i];
+                if (marker.getPixel) {
+                    var p2 = marker.getPixel();
+                    var dx = p.x - p2.x, dy = p.y - p2.y;
+                    if (Math.abs(dx) <= range && Math.abs(dy) <= range)
+                        count ++;
+                }
+            };
+            return (count >= maxCount) ? null : new BMapLib.SimpleMarker(position, options);
+        }
+
+        var btnCreate2 = document.getElementById('btnCreate2');
+        btnCreate2.onclick = function (event) {
+            var container = map.getContainer()
+            , height = parseInt(container.offsetHeight,10) / 2
+            , width = parseInt(container.offsetWidth,10) / 2;
+
+            log.profile("计时器Marker");
+
+            hidePanes();
+            var center = map.getCenter(), pixel = map.pointToPixel(center);
+            //随机一个新的坐标，不超过地图范围
+            for(var i = num; i--;){
+                var w = width * Math.random(), h = height * Math.random();
+                var newPixel = { x : pixel.x + (Math.random() > 0.5 ? w : -w),
+                               y : pixel.y + (Math.random() > 0.5 ? h : -h)}
+                , newPoint = map.pixelToPoint(newPixel);
+
+                var marker = new BMap.Marker(newPoint);
+                map.addOverlay(marker);
+            }
+            showPanes();
+
+            log.profile("计时器Marker");
+        };
+
+        var markerPane = map.getPanes().markerPane;
+        var markerShadow = map.getPanes().markerShadow;
+        var markerMouseTarget = map.getPanes().markerMouseTarget;
+        var markerVisible = true;
+        // 显示/隐藏速度非常快
+        function hidePanes() {
+            markerPane.style.display = "none";
+            markerShadow.style.display = "none";
+            markerMouseTarget.style.display = "none";  
+            markerVisible = false;          
+        }
+        function showPanes() {
+            markerPane.style.display = "";
+            markerShadow.style.display = "";
+            markerMouseTarget.style.display = "";
+            markerVisible = true;          
+        }
+
+        var btnToggle = document.getElementById('btnToggle');
+        btnToggle.onclick = function (event) {
+            markerVisible ? hidePanes() : showPanes();
+        }
+
+        var markers = [];
+        var btnCreate3 = document.getElementById('btnCreate3');
+        btnCreate3.onclick = function (event) {
+            var container = map.getContainer()
+            , height = parseInt(container.offsetHeight,10) / 2
+            , width = parseInt(container.offsetWidth,10) / 2;
+
+            hidePanes();
+            log.debug("SimpleMarker个数:" + markers.length);
+            log.profile("计时器HideOverlay");
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].hide();
+            };
+            markers = [];
+            log.profile("计时器HideOverlay");
+
+            log.profile("计时器removeOverlay");
+            for (var i = 0; i < markers.length; i++) {
+                map.removeOverlay(markers[i]);
+                markers[i] = null;
+            };
+            markers = [];
+            log.profile("计时器removeOverlay");
+
+            log.profile("计时器批量SimpleMarker");
+            var center = map.getCenter(), pixel = map.pointToPixel(center);
+            //随机一个新的坐标，不超过地图范围
+            for(var i = num; i--;){
+                var w = width * Math.random(), h = height * Math.random();
+                var newPixel = { x : pixel.x + (Math.random() > 0.5 ? w : -w),
+                               y : pixel.y + (Math.random() > 0.5 ? h : -h)}
+                , newPoint = map.pixelToPoint(newPixel);
+
+                var marker = new BMapLib.SimpleMarker(newPoint, {
+                    batchMode: true, 
+                    url: 'http://api.map.baidu.com/images/marker_red_sprite.png',
+                    text: i, 
+                    size:new BMap.Size(22,25)
+                });
+                map.addOverlay(marker);
+                markers.push(marker);
+            }
+            BMapLib.SimpleMarker.show(map);
+            showPanes();
+            log.profile("计时器批量SimpleMarker");
+        };
+
+        var btnCreate4 = document.getElementById('btnCreate4');
+        btnCreate4.onclick = function (event) {
+            log.profile("计时器4");
+            for (var i = 0; i < markers.length; i++) {
+                var marker = markers[i];
+            };
+            log.profile("计时器4");
+        }
+
+    </script>
+</html>

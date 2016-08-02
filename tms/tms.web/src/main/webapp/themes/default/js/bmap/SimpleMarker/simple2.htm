@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SimpleMarker简单示例</title>
+    <style type="text/css">
+    #mapContainer
+        {
+            width: 800px;
+            height: 400px;
+            border: 1px solid gray;
+        }
+    .small {
+        font-size: 12px;
+    }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script type="text/javascript" src="SimpleMarker.js"></script>
+    <script type="text/javascript" src="../../../../../../js/markerclusterer/bmap/sina_markerclusterer.js"></script>
+</head>
+<body>
+    <div style="width:1024px;height:768px;border:1px solid gray;" id="mapContainer"></div>
+    <input id="btnCreate100" type="button" value="创建车辆" />
+    <span class="small"><input type="text" id="btnCount" value="500" style="width:50px;" />个</span>
+    <input id="btnCreate101" type="button" value="更新车辆" />
+    <input id="btnCreate102" type="button" value="删除并重新创建车辆" />
+    <span class="small"><input type="text" id="clusterZoom" value="12" style="width:30px;" />级聚合</span>
+</body>
+    <script type="text/javascript" >
+        var map = new BMap.Map("mapContainer");
+        map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+        map.enableScrollWheelZoom();
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 13);
+
+        var trucks = new Array();
+
+        var iconurl = '/css/map_skin/course/',
+            angles = [0,30,60,90,120,150,180,210,240,270,300,330],
+            anglelen = angles.length,
+            colors = ['white','blue','green','yellow','red'],
+            colorlen = colors.length;
+
+        String.prototype.strpad = function(count,padstr) {
+            var newstr = '',
+                len = this.toString().length;
+            if(len < count) {
+                for(var i = count - len; i--; ) {
+                    newstr += padstr;
+                }
+            }
+            newstr += this;
+            return newstr;
+        };
+
+        // map.addEventListener("movestart", function (e) {
+        //     if (console.time)
+        //         console.time("地图移动");
+        //     hidePanes();
+        // });
+        // map.addEventListener("moveend", function (e) {
+        //     showPanes();
+        //     if (console.time)
+        //         console.timeEnd("地图移动");
+        // });
+        map.addEventListener("zoomstart", function (e) {
+            if (console.time)
+                console.time("地图缩放");
+            hidePanes();
+        });
+        map.addEventListener("zoomend", function (e) {
+            showPanes();
+            if (console.time)
+                console.timeEnd("地图缩放");
+            console.log('now zoom: ' + map.getZoom());
+        });
+
+        // 地图移动隐藏不可见车辆
+        var fn = function() {
+            var bounds = map.getBounds();
+            var sw = bounds.getSouthWest(),
+                ne = bounds.getNorthEast();
+            for(var i = 0, len = trucks.length; i < len; i++) {
+                if(!trucks[i]) continue;
+                var position = trucks[i].marker.getPosition(),
+                    lat = position.lat, lng = position.lng;
+                if((lat<sw.lat || lat>ne.lat || lng<sw.lng || lng>ne.lng)) {
+                    trucks[i].marker.hide();
+                    trucks[i].carnumMarker.hide();
+                } else {
+                    trucks[i].marker.show();
+                    trucks[i].carnumMarker.show();
+                }
+            }
+        };
+        var fn2 = function() {
+            for(var i = trucks.length; i--; ) {
+                trucks[i].pixel = map.pointToPixel(trucks[i].point);
+            }
+        };
+        map.addEventListener('moveend',function() {
+            fn();
+            fn2();
+        });
+        // map.addEventListener('zoomend',fn2);
+        var mcMarkers = new Array();
+        var mcObj = new MarkerClusterer(map, mcMarkers, {gridSize: 100, maxZoom: 12});
+
+        document.getElementById('btnCreate100').onclick = function(event) {
+            console.time("创建车辆");
+            var center = map.getCenter(), pixel = map.pointToPixel(center),
+                num = parseInt(document.getElementById('btnCount').value) || 500,
+                container = map.getContainer()
+                , height = parseInt(container.offsetHeight,10) / 2
+                , width = parseInt(container.offsetWidth,10) / 2;
+            //随机一个新的坐标，不超过地图范围
+            for(var i = num; i--;) {
+                var w = width * Math.random(), h = height * Math.random();
+                var newPixel = { x : pixel.x + (Math.random() > 0.5 ? w : -w),
+                               y : pixel.y + (Math.random() > 0.5 ? h : -h)}
+                , newPoint = map.pixelToPoint(newPixel);
+
+                //随机车辆图标
+                var angleindex = parseInt(Math.random() * anglelen),
+                    angle = angles[angleindex],
+                    colorindex = parseInt(Math.random() * colorlen),
+                    color = colors[colorindex],
+                    icon = iconurl + 't_' + color + '_' + angle + '.png';
+
+                var marker = new BMapLib.SimpleMarker(newPoint,{
+                    batchMode: true
+                    ,url: icon
+                    ,size: new BMap.Size(32,32)
+                });
+                marker.overlayId = 'marker_'+trucks.length;
+                marker.addEventListener('click',function() {
+                    //弹出车辆信息
+                    var id = parseInt(this.overlayId.replace('marker_','')),
+                        truck = trucks[id];
+                    map.openInfoWindow(new BMap.InfoWindow(truck.carnum),truck.point);
+                });
+                // map.addOverlay(marker);
+                mcMarkers.push(marker);
+
+
+                //车牌号
+                var carnum = '京A' + trucks.length.toString().strpad(5,'0');
+                var carnumMarker = new BMapLib.SimpleMarker(newPoint,{
+                    batchMode: true
+                    ,size: new BMap.Size(44,15)
+                    ,style: 'background-color:#ffcc00;border:1px solid #666;padding:0 2px;font-size:11px;width:60px;text-align:center;margin-top:-22px;margin-left:-4px;'
+                    ,text: carnum
+                });
+                carnumMarker.overlayId = 'carnumMarker_'+trucks.length;
+                map.addOverlay(carnumMarker);
+
+                trucks.push({
+                    pixel: newPixel,
+                    point: newPoint,
+                    marker: marker,
+                    carnum: carnum,
+                    carnumMarker: carnumMarker,
+                    angleindex: angleindex,
+                    colorindex: colorindex
+                });
+            }
+            BMapLib.SimpleMarker.show(map);
+            mcObj.addMarkers(mcMarkers);
+            BMapLib.SimpleMarker.show(map);
+            console.timeEnd("创建车辆");
+        };
+
+        var getNewPosition = function(truck) {
+            var rand = Math.random();
+            if(rand > 0.5) {
+                truck.angleindex = truck.angleindex + 1;
+                if(truck.angleindex >= anglelen) truck.angleindex = 0;
+            } else {
+                truck.angleindex = truck.angleindex - 1;
+                if(truck.angleindex < 0) truck.angleindex = anglelen - 1;
+            }
+            //朝箭头方向移动最多30个像素
+            var angle = angles[truck.angleindex],
+                _ag = angle % 90,
+                direction = angle;
+            if(_ag != 0) {
+                if(_ag > 45) {
+                    direction += 30;
+                    if(direction >= 360) direction = 0;
+                } else {
+                    direction -= 30;
+                    if(direction <= 0) direction = 360;
+                }
+            }
+            var movepixel = Math.floor(30 * rand);
+            switch(direction) {
+                case 0:
+                    truck.pixel.y = truck.pixel.y - movepixel;
+                    break;
+                case 90:
+                    truck.pixel.x = truck.pixel.x + movepixel;
+                    break;
+                case 180:
+                    truck.pixel.y = truck.pixel.y + movepixel;
+                    break;
+                case 270:
+                    truck.pixel.x = truck.pixel.x - movepixel;
+                    break;
+            }
+            truck.point = map.pixelToPoint(truck.pixel);
+            // console.log(truck.pixel);
+            return truck;
+        };
+
+        var markerPane = map.getPanes().markerPane;
+        var markerShadow = map.getPanes().markerShadow;
+        var markerMouseTarget = map.getPanes().markerMouseTarget;
+        function hidePanes() {
+            markerPane.style.display = "none";
+            markerShadow.style.display = "none";
+            markerMouseTarget.style.display = "none";            
+        }
+        function showPanes() {
+            markerPane.style.display = "";
+            markerShadow.style.display = "";
+            markerMouseTarget.style.display = "";
+        }
+
+        document.getElementById('btnCreate101').onclick = function(event) {
+            console.time("更新车辆");
+            hidePanes();
+            for(var i = trucks.length; i--; ) {
+                var truck = trucks[i];
+                if(truck) {
+                    truck = getNewPosition(trucks[i]);
+                    truck.marker.setPosition(truck.point);
+                    truck.carnumMarker.setPosition(truck.point);
+                    truck.marker.setImage(iconurl + 't_' + colors[truck.colorindex] + '_' + angles[truck.angleindex] + '.png');
+                }
+            }
+            showPanes();
+            console.timeEnd("更新车辆");
+        };
+
+        document.getElementById('btnCreate102').onclick = function(event) {
+            console.time("删除并重新创建车辆");
+            hidePanes();
+            console.time("删除车辆");
+            for(var i = trucks.length; i--; ) {
+                var truck = trucks[i];
+                if(truck) {
+                    map.removeOverlay(truck.marker);
+                    map.removeOverlay(truck.carnumMarker);
+                }
+            }
+            console.timeEnd("删除车辆");
+            console.time("创建车辆");
+            for(var i = trucks.length; i--; ) {
+                var truck = trucks[i];
+                if(truck) {
+                    truck = getNewPosition(trucks[i]);
+                    var marker = new BMapLib.SimpleMarker(truck.point,{
+                        batchMode: true
+                        ,url: iconurl + 't_' + colors[truck.colorindex] + '_' + angles[truck.angleindex] + '.png'
+                        ,size: new BMap.Size(32,32)
+                    });
+                    marker.overlayId = 'marker_'+i;
+                    marker.addEventListener('click',function() {
+                        //弹出车辆信息
+                        var id = parseInt(this.overlayId.replace('marker_','')),
+                            truck = trucks[id];
+                        map.openInfoWindow(new BMap.InfoWindow(truck.carnum),truck.point);
+                    });
+                    map.addOverlay(marker);
+
+                    //车牌号
+                    var carnum = '京A' + i.toString().strpad(5,'0');
+                    var carnumMarker = new BMapLib.SimpleMarker(truck.point,{
+                        batchMode: true
+                        ,size: new BMap.Size(44,15)
+                        ,style: 'background-color:#ffcc00;border:1px solid #666;padding:0 2px;font-size:11px;width:60px;text-align:center;margin-top:-22px;margin-left:-4px;'
+                        ,text: carnum
+                    });
+                    carnumMarker.overlayId = 'carnumMarker_'+i;
+                    map.addOverlay(carnumMarker);
+
+                    trucks[i].marker = marker;
+                    trucks[i].carnumMarker = carnumMarker;
+                }
+            }
+            console.timeEnd("创建车辆");
+            BMapLib.SimpleMarker.show(map);
+            showPanes();
+            console.timeEnd("删除并重新创建车辆");
+        };
+
+
+    </script>
+</html>

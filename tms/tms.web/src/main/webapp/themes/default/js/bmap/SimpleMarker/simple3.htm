@@ -1,0 +1,384 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SimpleMarker简单示例</title>
+    <style type="text/css">
+    #mapContainer
+        {
+            width: 800px;
+            height: 400px;
+            border: 1px solid gray;
+        }
+    .small {
+        font-size: 12px;
+    }
+    </style>
+    <link href="../../../../../js/blackbirdjs/blackbird.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script type="text/javascript" src="SimpleMarker.js"></script>
+    <script src="../../../../../js/blackbirdjs/blackbird.js"></script>
+</head>
+<body>
+    <div style="width:1024px;height:700px;border:1px solid gray;" id="mapContainer"></div>
+    <input id="btnCreate100" type="button" value="创建车辆" />
+    <span class="small"><input type="text" id="btnCount" value="500" style="width:50px;" />个</span>
+    <input id="btnCreate101" type="button" value="更新车辆" />
+    <input id="btnCreate102" type="button" value="删除并重新创建车辆" />
+    <input id="btnCreate103" type="button" value="去重" />
+    <input id="btnCreate104" type="button" value="坐标转换" />
+</body>
+    <script type="text/javascript" >
+        var map = new BMap.Map("mapContainer");
+        map.enableScrollWheelZoom();
+        map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 13);
+        map.addEventListener("movestart", function (e) {
+            if (log.profile)
+                log.profile("地图移动");
+            // hidePanes();
+        });
+        map.addEventListener("moveend", function (e) {
+            // showPanes();
+            if (log.profile)
+                log.profile("地图移动");
+        });
+        map.addEventListener("zoomstart", function (e) {
+            if (log.profile)
+                log.profile("地图缩放");
+            hidePanes();
+        });
+        map.addEventListener("zoomend", function (e) {
+            showPanes();
+            if (log.profile)
+                log.profile("地图缩放");
+        });
+
+        var markerPane = map.getPanes().markerPane;
+        var markerShadow = map.getPanes().markerShadow;
+        var markerMouseTarget = map.getPanes().markerMouseTarget;
+        var markerVisible = true;
+        // 显示/隐藏速度非常快
+        function hidePanes() {
+            markerPane.style.display = "none";
+            markerShadow.style.display = "none";
+            markerMouseTarget.style.display = "none";  
+            markerVisible = false;          
+        }
+        function showPanes() {
+            markerPane.style.display = "";
+            markerShadow.style.display = "";
+            markerMouseTarget.style.display = "";
+            markerVisible = true;          
+        }
+
+        var trucks = new Array();
+
+        var iconurl = '/css/map_skin/course/',
+            angles = [0,30,60,90,120,150,180,210,240,270,300,330],
+            anglelen = angles.length,
+            colors = ['white','blue','green','yellow','red'],
+            colorlen = colors.length;
+
+        String.prototype.strpad = function(count,padstr) {
+            var newstr = '',
+                len = this.toString().length;
+            if(len < count) {
+                for(var i = count - len; i--; ) {
+                    newstr += padstr;
+                }
+            }
+            newstr += this;
+            return newstr;
+        };
+
+        // 地图移动隐藏不可见车辆
+        var fn = function() {
+            var bounds = map.getBounds();
+            var sw = bounds.getSouthWest(),
+                ne = bounds.getNorthEast();
+            for(var i = 0, truck; truck=trucks[i]; i++) {
+                if(!truck) continue;
+                var position = truck.marker.getPosition(),
+                    lat = position.lat, lng = position.lng;
+                if((lat<sw.lat || lat>ne.lat || lng<sw.lng || lng>ne.lng)) {
+                    if (truck.added) {
+                        truck.added = false;
+                        map.removeOverlay(truck.marker);
+                        map.removeOverlay(truck.carnumMarker);
+                    }
+                } else {
+                    if (!truck.added) {
+                        truck.added = true;
+                        map.addOverlay(truck.marker);
+                        map.addOverlay(truck.carnumMarker);
+                    }
+                }
+            }
+            BMapLib.SimpleMarker.show(map);
+        };
+        var fn2 = function() {
+            for(var i = trucks.length; i--; ) {
+                trucks[i].pixel = map.pointToPixel(trucks[i].point);
+            }
+        };
+        var fn3 = function() {
+            // 指定像素范围小于指定个数个才创建
+            var range = 5, maxCount = 3;
+            var showtrucks = [];
+            console.time('计算getPixel()');
+            for(var i = 0, truck; truck=trucks[i]; i++) {
+                var p = truck.marker.getPixel();
+            }
+            console.timeEnd('计算getPixel()');
+            for(var i = 0, truck; truck=trucks[i]; i++) {
+                if (!truck.added) 
+                    continue;
+                var count = 0;
+                var p = truck.marker.getPixel();
+                for (var j =0, struck; struck=showtrucks[j]; j++) {
+                    var p2 = struck.marker.getPixel();
+                    var dx = p.x - p2.x, dy = p.y - p2.y;
+                    if (Math.abs(dx) <= range && Math.abs(dy) <= range)
+                        count ++;
+                    if (count >= maxCount)
+                        break;
+                }
+                if (count >= maxCount) {
+                    if (truck.added) {
+                        truck.added = false;
+                        map.removeOverlay(truck.marker);
+                        map.removeOverlay(truck.carnumMarker);
+                    }
+                } else {
+                    if (!truck.added) {
+                        truck.added = true;
+                        map.addOverlay(truck.marker);
+                        map.addOverlay(truck.carnumMarker);
+                    }
+                    showtrucks.push(truck);
+                }
+            }  
+            log.debug("显示车辆:" + showtrucks.length + "/" + trucks.length);
+            showtrucks = null;  
+        };
+        document.getElementById('btnCreate103').onclick = function() {
+            log.profile("去重");
+            hidePanes();
+            fn3();
+            showPanes();
+            log.profile("去重");
+        };
+        document.getElementById('btnCreate104').onclick = function() {
+            log.profile("坐标转换");
+            var point = map.getBounds().getSouthWest();
+            var pixel = map.pointToOverlayPixel(point);
+            log.debug(pixel);
+            point = map.getBounds().getNorthEast();
+            pixel = map.pointToPixel(point);
+            log.debug(pixel);
+            for (var i=0; i<1000; i++) {
+                pixel = map.pointToPixel(point);
+            }
+            log.profile("坐标转换");
+        };
+        map.addEventListener('moveend',function() {
+            log.profile("moveend");
+            hidePanes();
+            fn();
+            // fn2();
+            fn3();
+            showPanes();
+            log.profile("moveend");
+        });
+        // map.addEventListener('zoomend',fn2);
+
+        document.getElementById('btnCreate100').onclick = function(event) {
+            log.profile("创建车辆");
+            hidePanes();
+            var center = map.getCenter(), pixel = map.pointToPixel(center),
+                num = parseInt(document.getElementById('btnCount').value) || 500,
+                container = map.getContainer()
+                , height = parseInt(container.offsetHeight,10) / 2
+                , width = parseInt(container.offsetWidth,10) / 2;
+            //随机一个新的坐标，不超过地图范围
+            for(var i = num; i--;) {
+                var w = width * Math.random(), h = height * Math.random();
+                var newPixel = { x : pixel.x + (Math.random() > 0.5 ? w : -w),
+                               y : pixel.y + (Math.random() > 0.5 ? h : -h)}
+                , newPoint = map.pixelToPoint(newPixel);
+
+                //随机车辆图标
+                var angleindex = parseInt(Math.random() * anglelen),
+                    angle = angles[angleindex],
+                    colorindex = parseInt(Math.random() * colorlen),
+                    color = colors[colorindex],
+                    icon = iconurl + 't_' + color + '_' + angle + '.png';
+                // var angleindex = parseInt(Math.random() * anglelen),
+                //     colorindex = parseInt(Math.random() * colorlen),
+                //     icon = iconurl + 'trucks.png';
+
+                var marker = new BMapLib.SimpleMarker(newPoint,{
+                    batchMode: true
+                    ,url: icon
+                    ,size: new BMap.Size(32,32)
+                    // ,offset: new BMap.Size(-32 * angleindex, -32 * colorindex)
+                    ,anchor: new BMap.Size(16,20)
+                });
+                marker.overlayId = 'marker_'+trucks.length;
+                marker.addEventListener('click',function() {
+                    //弹出车辆信息
+                    var id = parseInt(this.overlayId.replace('marker_','')),
+                        truck = trucks[id];
+                    map.openInfoWindow(new BMap.InfoWindow(truck.carnum),truck.point);
+                });
+                map.addOverlay(marker);
+
+                //车牌号
+                //{backgroundColor:'#ffcc00',border:'1px solid #666',padding:'0 2px',fontSize:'11px',width:'54px',textAlign:'center'}
+                var carnum = '京A' + trucks.length.toString().strpad(5,'0');
+                var carnumMarker = new BMapLib.SimpleMarker(newPoint,{
+                    batchMode: true
+                    ,size: new BMap.Size(0,15)
+                    ,anchor: new BMap.Size(30,30)
+                    ,style: 'white-space:nowrap;font-weight:normal;background-color:#ffcc00;border:1px solid #666;padding:0 2px;font-size:11px;width:54px;text-align:center;'
+                    ,text: carnum
+                });
+                carnumMarker.overlayId = 'carnumMarker_'+trucks.length;
+                map.addOverlay(carnumMarker);
+
+                trucks.push({
+                    added: true,
+                    pixel: newPixel,
+                    point: newPoint,
+                    marker: marker,
+                    carnum: carnum,
+                    carnumMarker: carnumMarker,
+                    angleindex: angleindex,
+                    colorindex: colorindex
+                });
+            }
+            BMapLib.SimpleMarker.show(map);
+            fn3();
+            showPanes();
+            log.profile("创建车辆");
+        };
+
+        var getNewPosition = function(truck) {
+            var rand = Math.random();
+            if(rand > 0.5) {
+                truck.angleindex = truck.angleindex + 1;
+                if(truck.angleindex >= anglelen) truck.angleindex = 0;
+            } else {
+                truck.angleindex = truck.angleindex - 1;
+                if(truck.angleindex < 0) truck.angleindex = anglelen - 1;
+            }
+            //朝箭头方向移动最多30个像素
+            var angle = angles[truck.angleindex],
+                _ag = angle % 90,
+                direction = angle;
+            if(_ag != 0) {
+                if(_ag > 45) {
+                    direction += 30;
+                    if(direction >= 360) direction = 0;
+                } else {
+                    direction -= 30;
+                    if(direction <= 0) direction = 360;
+                }
+            }
+            var movepixel = Math.floor(30 * rand);
+            switch(direction) {
+                case 0:
+                    truck.pixel.y = truck.pixel.y - movepixel;
+                    break;
+                case 90:
+                    truck.pixel.x = truck.pixel.x + movepixel;
+                    break;
+                case 180:
+                    truck.pixel.y = truck.pixel.y + movepixel;
+                    break;
+                case 270:
+                    truck.pixel.x = truck.pixel.x - movepixel;
+                    break;
+            }
+            truck.point = map.pixelToPoint(truck.pixel);
+            // console.log(truck.pixel);
+            return truck;
+        };
+
+        document.getElementById('btnCreate101').onclick = function(event) {
+            log.profile("更新车辆");
+            hidePanes();
+            for(var i = trucks.length; i--; ) {
+                var truck = trucks[i];
+                if(truck) {
+                    truck = getNewPosition(trucks[i]);
+                    truck.marker.setPosition(truck.point);
+                    truck.carnumMarker.setPosition(truck.point);
+                    truck.marker.setImage(iconurl + 't_' + colors[truck.colorindex] + '_' + angles[truck.angleindex] + '.png');
+                }
+            }
+            showPanes();
+            log.profile("更新车辆");
+        };
+
+        document.getElementById('btnCreate102').onclick = function(event) {
+            log.profile("删除并重新创建车辆");
+            hidePanes();
+            log.profile("删除车辆");
+            for(var i = trucks.length; i--; ) {
+                var truck = trucks[i];
+                if(truck) {
+                    map.removeOverlay(truck.marker);
+                    map.removeOverlay(truck.carnumMarker);
+                }
+            }
+            log.profile("删除车辆");
+            log.profile("创建车辆");
+            for(var i = trucks.length; i--; ) {
+                var truck = trucks[i];
+                if(truck) {
+                    truck = getNewPosition(trucks[i]);
+                    var marker = trucks[i].marker;
+                    if (!marker)
+                        marker = new BMapLib.SimpleMarker(truck.point,{
+                            batchMode: true,
+                            url: iconurl + 't_' + colors[truck.colorindex] + '_' + angles[truck.angleindex] + '.png'
+                            ,size: new BMap.Size(32,32)
+                        });
+                    marker.overlayId = 'marker_'+i;
+                    marker.addEventListener('click',function() {
+                        //弹出车辆信息
+                        var id = parseInt(this.overlayId.replace('marker_','')),
+                            truck = trucks[id];
+                        map.openInfoWindow(new BMap.InfoWindow(truck.carnum),truck.point);
+                    });
+                    map.addOverlay(marker);
+
+                    //车牌号
+                    var carnum = '京A' + i.toString().strpad(5,'0');
+                    var carnumMarker = trucks[i].carnumMarker;
+                    if (!carnumMarker)
+                        carnumMarker = new BMapLib.SimpleMarker(truck.point,{
+                            batchMode: true,
+                            size: new BMap.Size(44,15)
+                            ,style: 'background-color:#ffcc00;border:1px solid #666;padding:0 2px;font-size:11px;width:60px;text-align:center;margin-top:-22px;margin-left:-4px;'
+                            ,text: carnum
+                        });
+                    carnumMarker.overlayId = 'carnumMarker_'+i;
+                    map.addOverlay(carnumMarker);
+
+                    trucks[i].marker = marker;
+                    trucks[i].carnumMarker = carnumMarker;
+                }
+            }
+            log.profile("创建车辆");
+            BMapLib.SimpleMarker.show(map);
+            showPanes();
+            log.profile("删除并重新创建车辆");
+        };
+
+
+    </script>
+</html>

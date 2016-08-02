@@ -1,0 +1,202 @@
+.smart-form.widget-body-toolbar, .widget-body-toolbar-bgfff {
+    background:#fff;
+    border-bottom: 1px solid #CCCCCC;
+    display: block;
+    min-height: 42px;
+    padding: 8px 10px;
+    height:70px;
+    overflow:hidden;
+}
+#jarviswidget-fullscreen-mode .jarviswidget>div{overflow-x:hidden;}
+/*复选框的样式补充*/
+label input.checkbox[type="checkbox"]:checked + span.someone:before {
+    content:"\f04d";
+    font-size: 11px;
+    line-height: 12px;
+}
+.no-paddingLR{padding-left: 0;padding-right:0;}
+/*黄丛添加：右上角各产品提醒*/
+.ribbon-button-alignment>span>em,.ribbon-button-alignment>span>em:hover{font-size:9px;display:block;padding:0 2px 1px;position:absolute;top:-5px;right:-7px;text-decoration:none;font-style:normal;background:#ED1C24;color:#fff;min-width:13px;border-radius:100%;max-height:13px;line-height:8px;font-weight:700;vertical-align:baseline;white-space:nowrap;text-align:center;border:1px solid rgba(255,255,255,.1)}
+.ribbon-button-alignment{}
+.btn.btn-alert{background:#9498A0;color:#fff;padding:1px 5px;height:26px;width:28px;line-height:22px;vertical-align:middle;display:block;border:0;position:relative;float:left;margin:-3px 0 0 8px;cursor:pointer}
+
+/*修正自动完成输入框的高度和宽度*/
+.select2-container .select2-choice{height:28px; line-height: 28px;}
+.select2-container .select2-choice > .select2-chosen{margin-right:60px!important;}
+#left-panel{padding-bottom: 40px !important;}
+.smart-style-2 #left-panel{padding: 10px 10px 40px 10px!important;}
+.popover{padding:1px!important; background: #fff!important;}/**解决表格内编辑弹出的样式冲突**/
+table label input[type=checkbox].checkbox+span,table label input[type=radio].radiobox+span{margin: 0!important;}
+table label input[type=checkbox].checkbox+span:before,table label input[type=radio].radiobox+span:before{margin: 0!important;}
+.dataTables_wrapper table.table tbody tr.active td,.dataTables_wrapper table.table tbody tr.active th{background-color:#E3ECF2!important;color:#666!important;}
+.dataTables_wrapper table.table tbody tr.active:hover td,.dataTables_wrapper table.table tbody tr.active:hover th{background-color:#C1D7E3!important}
+.dataTables_wrapper .table-striped tbody tr.active:nth-child(odd) td,.dataTables_wrapper .table-striped tbody tr.active:nth-child(odd) th{background-color:#D9E6EE!important;}
+
+@media Print  {.noPrint {display: none}}
+
+/*邓曲添加：宅配浮动状态修正*/
+#chat-container {
+    right: -141px;
+    top: 70px;
+    border-radius: 2px;
+    width: 140px;
+    background: #f7f7f7;
+    padding:2px;
+    border:1px solid #aaa;
+    height: auto!important;
+}
+#chat-container:hover, #chat-container:hover .chat-list-open-close {
+    border-color: #A7A7A7;
+}
+#chat-container.open {
+    right: -1px;
+    top: 70px;
+    z-index: 3;
+}
+#chat-container .chat-list-open-close {
+    left: -37px;
+    line-height: 23px;
+    top: 10px;
+    width: 30px;
+}
+#chat-container .chat-list-open-close  b {
+    position: absolute;
+    left: 0;
+    top:0;
+}
+/*控制浮动窗口的样式*/
+.insideRightFloat{padding-right:160px;position:relative}
+.floatTaskList{position:absolute;right:0;top:0;width:170px;display: none;}
+.insideRightFloat #taskListBox.floatTaskList{display: block;}
+#taskPanel{ position: relative;}
+#taskPanel .taskPanelCon{position:absolute; top:9px; right:4px; font-size:14px}
+
+/*表格中应用div最大宽度限制*/
+.onOverHide{max-width: 240px;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;}
+/*修正logodiv的样式*/
+#logo{margin-top:8px !important;}
+#logo img{ height: auto;width: auto;}
+/*用户名样式修正*/
+.login-info a,.login-info strong{text-decoration:none;max-width:103px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align: middle;}
+/*修正select2的删除按钮*/
+.select2-container .select2-choice abbr{font-size:16px; right:34px; top:6px; }
+.select2-search-choice-close:before{color: #666!important;}
+
+.global-search-box{margin-right:140px;position:relative;display:block; float:left;}
+.global-search-btn{position: absolute; top: 0px; right:-150px; width: 140px; }
+.global-search-box .pull-left{margin-right: 15px}
+.global-search-btn .btn{margin-top:17px; }
+.pull-width40{width:40px;}
+.pull-width80{width:80px;}
+.pull-width100{width:100px;}
+.pull-width120{width:120px;}
+.pull-width140{width:140px;}
+.pull-width160{width:160px;}
+.pull-width200{width:200px;}
+.pull-width240{width:240px;}
+.pull-width260{width:260px;}
+/**wizard 导航链接样式**/
+.wizard li a,.wizard li a:visited{ color:#666;} 
+.wizard li.active a,.wizard li.active a:visited{ color: #3276B1}
+
+/**修正进度条的背景颜色和文字溢出限制**/
+.progress{background: #aaa!important; border-color: #aaa!important; box-shadow:none!important;}
+.progress .progress-bar{overflow: visible!important;}
+
+/**车辆多选**/
+.multiselect-bg}{position: relative;}
+.multiselect-box{position:absolute;left:1px;bottom:1px;right:1px;z-index:1;line-height:30px;height:28px;background:#fff;padding-left:5px}
+.multiselect-box a.select2-search-choice-close{top:6px;}
+
+/*黄娟添加：宅配通手机app设置--预览*/
+.phone-setting{ font-size: 12px;background: url(../img/g7/phone_setting.jpg) no-repeat; width: 297px; height: 508px;}
+.phone-btn{width: 297px;}
+.phone-body{position: absolute; width: 228px; top: 70px; left:43px; background: #FFF;}
+.phone-header{height: 35px; background: #358DCD;}
+.phone-main{  height: 275px; overflow-y: auto;}
+.phone-footer{ height: 37px; margin: 0; padding:0;}
+
+.phone-footer button{ height:30px;}
+.phone-main label{ font-weight: bold;padding: 0!important;}
+.phone-main section{ margin-bottom: 10px;padding: 0!important;}
+
+/*黄娟添加：系统默认首页*/
+.personal-list div.inletBox{ display: block; position: relative; padding-left:120px;}
+.personal-list h6{ margin-top: 0;}
+.personal-list legend{ border-bottom: 1px solid #ccc;}
+.personal-list li img{ position: absolute;}
+.personal-list li div{ position: absolute; margin-left: 95px;}
+
+/*登录页面*/
+#login{ background: none!important;}
+.reg-block{background: #FFFFFF; border-top: 3px solid #1565BD; margin: 60px 10px; padding:20px;border-radius:5px;-webkit-box-shadow:0 50px 50px rgba(0,0,0,.15);box-shadow:0 50px 50px rgba(0,0,0,.15)}
+.btn-login{ font-family: "Microsoft YaHei",微软雅黑,Arial,Helvetica,Sans-Serif!important;}
+.checkboxlogin{ vertical-align: middle;color: #404040;}
+.checkboxlogin label{cursor: pointer;}
+.reg-block header{ background: none!important;}
+
+/*黄娟添加：班线发车计划的计划进度展示*/
+
+/*smartv1.3 timeline styel*/
+.smart-timeline{position:relative}.smart-timeline-list{list-style:none;margin:0;padding:0}.smart-timeline-list:after{content:" ";background-color:#eee;position:absolute;display:block;width:2px;top:0;left:95px;bottom:0;z-index:1}.smart-timeline-list li{position:relative;margin:0;padding:15px 0}.smart-timeline-list>li:hover{background-color:#f4f4f4}.smart-timeline-hover li:hover{background-color:#f9f9f9}.smart-timeline-icon{background:#3276b1;color:#fff;border-radius:50%;position:absolute;width:32px;height:32px;line-height:28px;font-size:14px;text-align:center;left:80px;top:10px;z-index:100;padding:2px}.smart-timeline-icon>img{height:32px;width:32px;border-radius:50%;margin-top:-2px;margin-left:-2px;border:2px solid #3276b1}.smart-timeline-time{float:left;width:70px;text-align:right}.smart-timeline-time>small{font-style:italic}.smart-timeline-content{margin-left:123px;font-size: 13px;}
+
+/*右边自适应，右边固定*/
+.inbox-preview{display: block; padding: 10px 14px 10px 0; position: absolute; width: 320px;top: 10px; right: 0;}
+.inbox-Right{ position:relative; margin-right: 320px; padding: 10px 14px 7px;}
+.affix{position:fixed;right:15px;top:20px;}
+
+/*黄娟添加：班线发车计划的计划进度展示*/
+.classLine .smart-timeline{ font-family: "Microsoft yahei";}
+.classLine .smart-timeline-time{ font-weight: bold; width:88px; line-height: 16px;}
+    .classLine .smart-timeline-time.banxian_city{position: absolute;top:56px;left:0;height: 38px; overflow: hidden; color: #444;}
+    .classLine .special .smart-timeline-time.banxian_city{top:2px!important;}
+    .classLine .special.s2 .smart-timeline-time.banxian_city{top:32px!important;}
+.classLine .smart-timeline-icon{ width: 18px; height: 18px; left: 89px; top: 57px; border: 1px solid #ccc; background:#fff;padding:3px;}
+.classLine .timeline-icon-green{width: 10px; height: 10px; background:#059665; border-radius:5px; }
+.classLine .smart-timeline-list li{ padding: 0;}
+.classLine .smart-timeline-list:after{ width: 6px; background: #ccc; margin: 15px 0;}
+.classLine .smart-timeline-list-green{ background:#059665;height: 105px;position: absolute;width: 6px; top: 65px; left: 95px;z-index: 2;}
+.classLine .smart-timeline-list li:nth-last-child(2) .smart-timeline-list-green{height:83px;}
+.classLine .smart-timeline-list>li:hover{ background: none;}
+.classLine .smart-timeline-content{ border: 1px solid #ccc; border-radius: 3px;  font-size: 13px;}
+    .classLine .smart-timeline-content p{ margin-bottom:3px;}
+    .classLine .smart-timeline-content p:last-child{ margin:0;}
+.classLine .smart-timeline-arrow{ width: 7px; height: 12px; background: url(../img/g7/smart-timeline-arrow.png); position: absolute; top: 60px; left: 117px; }
+.classLine .border-right-timeline{ border-right: 1px solid #ccc;  background: #f2f2f2;}
+.classLine .smart-timeline-list .special .smart-timeline-icon{top: 5px;}
+.classLine .smart-timeline-list .special .smart-timeline-arrow{top: 9px;}
+.classLine .smart-timeline-list .special .smart-timeline-time{ line-height: 16px;}
+.classLine .smart-timeline-list .special .smart-timeline-list-green{height: 83px;top: 14px;}
+.classLine .smart-timeline-list .special.s2 .smart-timeline-icon{top: 34px;}
+.classLine .smart-timeline-list .special.s2 .smart-timeline-arrow{top: 38px;}
+
+
+/*iframe 全屏*/
+.splashScreen{position:fixed; top:0; left:0; right:0; bottom:0; width:100%; height:100%!important; z-index: 9999;}
+
+/*黄娟添加：地图显示设置弹框*/
+.map-rank-title{ line-height: 24px; color: #333;}
+.open > .map-rank{ padding:10px 6px 13px 9px!important;min-width:25px!important;}
+.map-rank .slider.slider-vertical{ height: 110px;}
+.drop-down { height: 20px}
+.drop-down .ui-icon {height: 16px;width: 16px; padding: 5px 0 0 0;text-indent:0;}
+.drop-down .ui-dropdownchecklist-text{ font-family:"Microsoft YaHei";font-size: 12px;line-height: 1.3;padding:3px 0 0 0;}
+.drop-down .ui-dropdownchecklist-item{ border: none;}
+.drop-down .ui-state-default{ border-color: #BDBDBD;}
+.drop-down .ui-state-default:hover{ border-color: #5d98cc;}
+.drop-down .ui-dropdownchecklist-item{ padding: 0 5px;}
+.drop-down .active{ vertical-align: middle; margin: -2px 5px 0 0;}
+.drop-down .ui-widget-content{ padding: 5px 0;}
+.drop-down .ui-dropdownchecklist-selector{ padding: 0 0 0 5px;}
+.drop-down .ui-dropdownchecklist{ height: 27px;}
+/**地图显示设置弹窗和按钮**/
+#subscription-btn{position:absolute;bottom:40px;right:5px; display:none;}
+#showMapSetting{position:absolute; bottom:50px; right:5px; width:320px;z-index: 0}
+.mapSetting.widget-body-toolbar{min-height:24px; padding:5px 10px!important;}
+
+.update_select2 ul.select2-choices{
+    height:30px!important;
+    overflow-y:auto;
+}
+
+.update_select2 li.select2-search-choice {margin:3px 0 3px 5px}

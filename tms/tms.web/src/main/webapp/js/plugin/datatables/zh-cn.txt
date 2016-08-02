@@ -1,0 +1,13 @@
+{
+"sZeroRecords" : "<p><i class='fa fa-meh-o fa-fw'></i> 报告主人，没有找到任何数据</p><p><code>新建</code>一条或者<code>换个搜索条件</code>再试试</p>",
+	"sInfo" : "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+	"sInfoEmpty" : "无数据",
+	"sInfoFiltered" : "(从 _MAX_ 条数据中检索)",
+	"oPaginate" : {
+		"sFirst" : "首页",
+		"sPrevious" : "前一页",
+		"sNext" : "后一页",
+		"sLast" : "尾页"
+	},
+	"sProcessing" : "<i class='fa fa-coffee fa-fw'></i>喝口水吧，让数据飞一会..."
+}

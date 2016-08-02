@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${bussPackage}.dao.${className}Mapper" >
+	<#-- freemarker的语法宏命令，申明部分，使用部分在28行 -->
+	<#macro mapperEl value>${r"#{"}${value}}</#macro>
+  	<resultMap id="BaseResultMap" type="${bussPackage}.model.${className}" >
+	<#-- 注意格式：freemarker的语法会被翻译不会进行占格 -->
+<#list columnDatas as item >
+	<#if item.columnName = "id" >
+		<id column="id" property="id"/>
+	<#else>
+		<result column="${item.columnName}" property="${item.columnName}"/>
+	</#if>
+</#list>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 ${SQL.columnFields}
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+	<#list columnDatas as item >
+		<#-- 这里是生成if语句，不是freemarker的if语法 -->
+		<if test="${item.columnName} != null and ${item.columnName} != '' ">
+			<#-- freemarker的语法宏命令，使用部分-->
+		    and ${item.columnName} = <@mapperEl item.columnName/>
+		</if>
+	</#list>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		${SQL.selectById}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ${tableName}
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="${bussPackage}.model.${className}" >
+	  ${SQL.insert}
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="${bussPackage}.model.${className}" >
+	  ${SQL.update}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="${bussPackage}.model.${className}" >
+		${SQL.updateSelective}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="${bussPackage}.model.${className}" >
+		${SQL.delete}
+	</delete>
+  	
+</mapper>
