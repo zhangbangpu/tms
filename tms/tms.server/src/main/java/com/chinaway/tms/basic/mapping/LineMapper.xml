@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.LineMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Line" >
+		<id column="id" property="id"/>
+		<result column="pdeptname" property="pdeptname"/>
+		<result column="deptname" property="deptname"/>
+		<result column="code" property="code"/>
+		<result column="name" property="name"/>
+		<result column="startsite" property="startsite"/>
+		<result column="endsite" property="endsite"/>
+		<result column="halfwaysite" property="halfwaysite"/>
+		<result column="runtime" property="runtime"/>
+		<result column="mileage" property="mileage"/>
+		<result column="vehicleline" property="vehicleline"/>
+		<result column="updatetime" property="updatetime"/>
+		<result column="fromcode" property="fromcode"/>
+		<result column="linetype" property="linetype"/>
+		<result column="transtype" property="transtype"/>
+		<result column="transmoney" property="transmoney"/>
+		<result column="operates" property="operates"/>
+		<result column="roadtoll" property="roadtoll"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,pdeptname,deptname,code,name,startsite,endsite,halfwaysite,runtime,mileage,vehicleline,updatetime,fromcode,linetype,transtype,transmoney,operates,roadtoll
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="pdeptname != null and pdeptname != '' ">
+		    and pdeptname = #{pdeptname}
+		</if>
+		<if test="deptname != null and deptname != '' ">
+		    and deptname = #{deptname}
+		</if>
+		<if test="code != null and code != '' ">
+		    and code = #{code}
+		</if>
+		<if test="name != null and name != '' ">
+		    and name = #{name}
+		</if>
+		<if test="startsite != null and startsite != '' ">
+		    and startsite = #{startsite}
+		</if>
+		<if test="endsite != null and endsite != '' ">
+		    and endsite = #{endsite}
+		</if>
+		<if test="halfwaysite != null and halfwaysite != '' ">
+		    and halfwaysite = #{halfwaysite}
+		</if>
+		<if test="runtime != null and runtime != '' ">
+		    and runtime = #{runtime}
+		</if>
+		<if test="mileage != null and mileage != '' ">
+		    and mileage = #{mileage}
+		</if>
+		<if test="vehicleline != null and vehicleline != '' ">
+		    and vehicleline = #{vehicleline}
+		</if>
+		<if test="updatetime != null and updatetime != '' ">
+		    and updatetime = #{updatetime}
+		</if>
+		<if test="fromcode != null and fromcode != '' ">
+		    and fromcode = #{fromcode}
+		</if>
+		<if test="linetype != null and linetype != '' ">
+		    and linetype = #{linetype}
+		</if>
+		<if test="transtype != null and transtype != '' ">
+		    and transtype = #{transtype}
+		</if>
+		<if test="transmoney != null and transmoney != '' ">
+		    and transmoney = #{transmoney}
+		</if>
+		<if test="operates != null and operates != '' ">
+		    and operates = #{operates}
+		</if>
+		<if test="roadtoll != null and roadtoll != '' ">
+		    and roadtoll = #{roadtoll}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from line where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from line
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Line" >
+	  insert into line(id,pdeptname,deptname,code,name,startsite,endsite,halfwaysite,runtime,mileage,vehicleline,updatetime,fromcode,linetype,transtype,transmoney,operates,roadtoll)
+ values(#{id},#{pdeptname},#{deptname},#{code},#{name},#{startsite},#{endsite},#{halfwaysite},#{runtime},#{mileage},#{vehicleline},#{updatetime},#{fromcode},#{linetype},#{transtype},#{transmoney},#{operates},#{roadtoll})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.Line" >
+	  update line set pdeptname=#{pdeptname},deptname=#{deptname},code=#{code},name=#{name},startsite=#{startsite},endsite=#{endsite},halfwaysite=#{halfwaysite},runtime=#{runtime},mileage=#{mileage},vehicleline=#{vehicleline},updatetime=now(),fromcode=#{fromcode},linetype=#{linetype},transtype=#{transtype},transmoney=#{transmoney},operates=#{operates},roadtoll=#{roadtoll} where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Line" >
+		update line set 
+	<trim  suffixOverrides="," >
+	<if test="pdeptname != null  and pdeptname != '' ">
+		pdeptname=#{pdeptname},
+	</if>
+	<if test="deptname != null  and deptname != '' ">
+		deptname=#{deptname},
+	</if>
+	<if test="code != null  and code != '' ">
+		code=#{code},
+	</if>
+	<if test="name != null  and name != '' ">
+		name=#{name},
+	</if>
+	<if test="startsite != null  and startsite != '' ">
+		startsite=#{startsite},
+	</if>
+	<if test="endsite != null  and endsite != '' ">
+		endsite=#{endsite},
+	</if>
+	<if test="halfwaysite != null  and halfwaysite != '' ">
+		halfwaysite=#{halfwaysite},
+	</if>
+	<if test="runtime != null  and runtime != '' ">
+		runtime=#{runtime},
+	</if>
+	<if test="mileage != null  and mileage != '' ">
+		mileage=#{mileage},
+	</if>
+	<if test="vehicleline != null  and vehicleline != '' ">
+		vehicleline=#{vehicleline},
+	</if>
+	<if test="updatetime != null  ">
+		updatetime=#{updatetime},
+	</if>
+	<if test="fromcode != null  and fromcode != '' ">
+		fromcode=#{fromcode},
+	</if>
+	<if test="linetype != null  and linetype != '' ">
+		linetype=#{linetype},
+	</if>
+	<if test="transtype != null  and transtype != '' ">
+		transtype=#{transtype},
+	</if>
+	<if test="transmoney != null  ">
+		transmoney=#{transmoney},
+	</if>
+	<if test="operates != null  and operates != '' ">
+		operates=#{operates},
+	</if>
+	<if test="roadtoll != null  ">
+		roadtoll=#{roadtoll},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Line" >
+		delete 	 from line where id = #{id}
+	</delete>
+  	
+</mapper>
