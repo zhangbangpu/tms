@@ -34,7 +34,7 @@ public class ${className}ServiceImpl extends AbstractService<${className}, Integ
 		//注意map要先设置pageBean,拦截器里面要获取其值
 		map.put("pageBean", pageBean);
 		map.put("needPage", true);//是否分页，默认是false不分页
-		pageBean.setRows(${lowerName}Mapper.selectAll4Page(map));
+		pageBean.setResult(${lowerName}Mapper.selectAll4Page(map));
 		return pageBean;
 	}
 	

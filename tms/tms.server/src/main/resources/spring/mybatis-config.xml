@@ -53,11 +53,11 @@
     </settings>
 
     <!-- <typeAliases>
-        <package name="com.shupro.oa.*.model"/>
+        <package name="com.chinaway.tms.*.model"/>
     </typeAliases> -->
 
     <plugins>
-        <plugin interceptor="com.shupro.oa.utils.page.MyBatisPagePlugin">
+        <plugin interceptor="com.chinaway.tms.utils.page.MyBatisPagePlugin">
 			<!-- 暂时屏蔽了
 			<property name="dialect" value="mysql"/>
 			<property name="pageMatch" value=".*Page$"/> -->
