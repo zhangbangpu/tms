@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	   xmlns:tx="http://www.springframework.org/schema/tx" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd 
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true"/> -->
+	<aop:aspectj-autoproxy />
+	<!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
+	<context:component-scan base-package="com.chinaway.warehouse.*.controller" />
+	<!-- 其他注解类
+	<context:component-scan base-package="com.chinaway.warehouse.aop" /> -->
+	
+    <!-- 配置哪些是静态资源，缺省Servlet 直接返回 -->
+<!--     <mvc:resources location="/static/" mapping="/static/**"/> -->
+    <!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理  -->
+	<mvc:default-servlet-handler/>
+	
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">   
+        <property name="converters">   
+            <list>   
+                <bean class="com.chinaway.warehouse.util.DateConverter" />
+            </list>   
+        </property>   
+    </bean>
+    
+    <mvc:annotation-driven conversion-service="conversionService">
+    	<!-- @ResponseBody返回值中文乱码问题 -->
+		<mvc:message-converters register-defaults="true">
+			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+				<!-- 配置了application/json之后将响应内容再次解析了，controller里面返回必须是个对象 -->
+				<!-- <property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property> -->
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 
+	在有<mvc:annotation-driven存在的情况下，配置的AnnotationMethodHandlerAdapter 怎么都不起作用
+	 避免IE执行AJAX时,返回JSON出现下载文件
+	spring3.x是org.springframework.http.converter.json.MappingJacksonHttpMessageConverter
+	spring4.x是org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+	<mvc:annotation-driven>
+	    <mvc:message-converters register-defaults="true">
+	    	 @ResponseBody返回值中文乱码问题
+		    <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+		    	<property name="supportedMediaTypes" value = "text/html;charset=UTF-8" />
+		    </bean>
+		    
+		    <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes" value="text/html;charset=UTF-8" />
+			</bean>
+		</mvc:message-converters>
+    </mvc:annotation-driven>
+     -->
+
+	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+        <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
+        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="suffix" value=".jsp"></property>  
+    </bean>
+
+	<!-- 上传下载 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
+		</property>
+		<property name="maxUploadSize">
+			<value>32505856</value><!-- 上传文件大小限制为31M，31*1024*1024 -->
+		</property>
+		<property name="maxInMemorySize">
+			<value>4096</value>
+		</property>
+	</bean>
+
+</beans>
