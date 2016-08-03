@@ -1,4 +1,4 @@
-package com.chinaway.tms.base.controller;
+package com.chinaway.tms.basic.controller;
 
 import java.util.HashMap;
 import java.util.Map;
