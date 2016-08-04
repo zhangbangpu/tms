@@ -20,7 +20,7 @@ public class LineController {
 	private LineService lineService;
 	
 	/**
-	 * 根据账号和密码查询信息,即判断用户是否存在<br>
+	 * 添加班线信息<br>
 	 * 返回用户的json串
 	 * @param username
 	 * @param password
