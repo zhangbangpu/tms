@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.SysLogMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.SysLog" >
+		<id column="id" property="id"/>
+		<result column="loginname" property="loginname"/>
+		<result column="rolename" property="rolename"/>
+		<result column="content" property="content"/>
+		<result column="clientip" property="clientip"/>
+		<result column="createtime" property="createtime"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,loginname,rolename,content,clientip,createtime
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="loginname != null and loginname != '' ">
+		    and loginname = #{loginname}
+		</if>
+		<if test="rolename != null and rolename != '' ">
+		    and rolename = #{rolename}
+		</if>
+		<if test="content != null and content != '' ">
+		    and content = #{content}
+		</if>
+		<if test="clientip != null and clientip != '' ">
+		    and clientip = #{clientip}
+		</if>
+		<if test="createtime != null and createtime != '' ">
+		    and createtime = #{createtime}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from sys_log where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_log
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.SysLog" >
+	  insert into sys_log(id,loginname,rolename,content,clientip,createtime)
+ values(#{id},#{loginname},#{rolename},#{content},#{clientip},#{createtime})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.SysLog" >
+	  update sys_log set loginname=#{loginname},rolename=#{rolename},content=#{content},clientip=#{clientip}, where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.SysLog" >
+		update sys_log set 
+	<trim  suffixOverrides="," >
+	<if test="loginname != null  and loginname != '' ">
+		loginname=#{loginname},
+	</if>
+	<if test="rolename != null  and rolename != '' ">
+		rolename=#{rolename},
+	</if>
+	<if test="content != null  and content != '' ">
+		content=#{content},
+	</if>
+	<if test="clientip != null  and clientip != '' ">
+		clientip=#{clientip},
+	</if>
+	<if test="createtime != null  ">
+		createtime=#{createtime},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.SysLog" >
+		delete 	 from sys_log where id = #{id}
+	</delete>
+  	
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.SysMenuMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.SysMenu" >
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="pid" property="pid"/>
+		<result column="levels" property="levels"/>
+		<result column="createtime" property="createtime"/>
+		<result column="requesturl" property="requesturl"/>
+		<result column="menutype" property="menutype"/>
+		<result column="sotid" property="sotid"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,name,pid,levels,createtime,requesturl,menutype,sotid
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+		    and name = #{name}
+		</if>
+		<if test="pid != null and pid != '' ">
+		    and pid = #{pid}
+		</if>
+		<if test="levels != null and levels != '' ">
+		    and levels = #{levels}
+		</if>
+		<if test="createtime != null and createtime != '' ">
+		    and createtime = #{createtime}
+		</if>
+		<if test="requesturl != null and requesturl != '' ">
+		    and requesturl = #{requesturl}
+		</if>
+		<if test="menutype != null and menutype != '' ">
+		    and menutype = #{menutype}
+		</if>
+		<if test="sotid != null and sotid != '' ">
+		    and sotid = #{sotid}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from sys_menu where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_menu
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.SysMenu" >
+	  insert into sys_menu(id,name,pid,levels,createtime,requesturl,menutype,sotid)
+ values(#{id},#{name},#{pid},#{levels},#{createtime},#{requesturl},#{menutype},#{sotid})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.SysMenu" >
+	  update sys_menu set name=#{name},pid=#{pid},levels=#{levels},requesturl=#{requesturl},menutype=#{menutype},sotid=#{sotid} where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.SysMenu" >
+		update sys_menu set 
+	<trim  suffixOverrides="," >
+	<if test="name != null  and name != '' ">
+		name=#{name},
+	</if>
+	<if test="pid != null  ">
+		pid=#{pid},
+	</if>
+	<if test="levels != null  and levels != '' ">
+		levels=#{levels},
+	</if>
+	<if test="createtime != null  ">
+		createtime=#{createtime},
+	</if>
+	<if test="requesturl != null  and requesturl != '' ">
+		requesturl=#{requesturl},
+	</if>
+	<if test="menutype != null  and menutype != '' ">
+		menutype=#{menutype},
+	</if>
+	<if test="sotid != null  ">
+		sotid=#{sotid},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.SysMenu" >
+		delete 	 from sys_menu where id = #{id}
+	</delete>
+  	
+</mapper>

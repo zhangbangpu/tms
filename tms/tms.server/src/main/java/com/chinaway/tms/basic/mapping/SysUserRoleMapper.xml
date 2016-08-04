@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.SysUserRoleMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.SysUserRole" >
+		<result column="userid" property="userid"/>
+		<result column="roleid" property="roleid"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 userid,roleid
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="userid != null and userid != '' ">
+		    and userid = #{userid}
+		</if>
+		<if test="roleid != null and roleid != '' ">
+		    and roleid = #{roleid}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from sys_user_role where userid = #{userid}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user_role
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.SysUserRole" >
+	  insert into sys_user_role(userid,roleid)
+ values(#{userid},#{roleid})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.SysUserRole" >
+	  update sys_user_role set roleid=#{roleid} where userid=#{userid}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.SysUserRole" >
+		update sys_user_role set 
+	<trim  suffixOverrides="," >
+	<if test="roleid != null  ">
+		roleid=#{roleid},
+	</if>
+	</trim> where userid=#{userid}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.SysUserRole" >
+		delete 	 from sys_user_role where userid = #{userid}
+	</delete>
+  	
+</mapper>
