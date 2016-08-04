@@ -29,7 +29,7 @@ public class SysRoleMenuController {
 	@RequestMapping(value = "/ws/addRoleMenu")
 	@ResponseBody
 	// http://localhost/tms/ws/addRoleMenu?roleMenuInfo=
-	public String addRole(@RequestParam("roleMenuInfo") String roleMenuInfo) {
+	public String addRoleMenu(@RequestParam("roleMenuInfo") String roleMenuInfo) {
 		SysRoleMenu sysRoleMenu = JsonUtil.jsonStr2Obj(roleMenuInfo, SysRoleMenu.class);
 		Map<String, String> argsMap = new HashMap<String, String>();
 		try {

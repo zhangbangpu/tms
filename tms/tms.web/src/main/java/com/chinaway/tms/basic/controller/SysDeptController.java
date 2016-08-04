@@ -29,7 +29,7 @@ public class SysDeptController {
 	@RequestMapping(value = "/ws/addDept")
 	@ResponseBody
 	// http://localhost/tms/ws/addDept?userInfo=
-	public String addLine(@RequestParam("userInfo") String userInfo) {
+	public String addDept(@RequestParam("userInfo") String userInfo) {
 		SysDept sysDept = JsonUtil.jsonStr2Obj(userInfo, SysDept.class);
 		Map<String, String> argsMap = new HashMap<String, String>();
 		try {

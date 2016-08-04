@@ -27,7 +27,7 @@ public class SysMenuController {
 	@RequestMapping(value = "/ws/addMenu")
 	@ResponseBody
 	// http://localhost/tms/ws/addMenu?menuInfo=
-	public String addLine(@RequestParam("menuInfo") String menuInfo) {
+	public String addMenu(@RequestParam("menuInfo") String menuInfo) {
 		SysMenu sysMenu = JsonUtil.jsonStr2Obj(menuInfo, SysMenu.class);
 		Map<String, String> argsMap = new HashMap<String, String>();
 		try {

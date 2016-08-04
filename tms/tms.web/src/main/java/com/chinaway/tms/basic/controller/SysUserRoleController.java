@@ -9,37 +9,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.chinaway.tms.basic.model.SysUser;
-import com.chinaway.tms.basic.service.SysUserService;
+import com.chinaway.tms.basic.model.SysUserRole;
+import com.chinaway.tms.basic.service.SysUserRoleService;
 import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
 public class SysUserRoleController {
 
 	@Autowired
-	private SysUserService sysUserService;
+	private SysUserRoleService sysUserRoleService;
 
 	/**
-	 * 添加物流公司用户信息<br>
+	 * 添加用户角色信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param companyuserInfo
+	 * @param userRoleInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/ws/addCompanyuser")
+	@RequestMapping(value = "/ws/addUserRole")
 	@ResponseBody
-	// http://localhost/tms/ws/addCompanyuser?userInfo=
-	public String addLine(@RequestParam("userInfo") String userInfo) {
-		SysUser sysUser = JsonUtil.jsonStr2Obj(userInfo, SysUser.class);
+	// http://localhost/tms/ws/addUserRole?userInfo=
+	public String addUserRole(@RequestParam("userInfo") String userInfo) {
+		SysUserRole sysUserRole = JsonUtil.jsonStr2Obj(userInfo, SysUserRole.class);
 		Map<String, String> argsMap = new HashMap<String, String>();
 		try {
-			sysUserService.insert(sysUser);
+			sysUserRoleService.insert(sysUserRole);
 			argsMap.put("status", "true");
-			argsMap.put("msg", "add Line success!");
+			argsMap.put("msg", "add User Role success!");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			argsMap.put("status", "false");
-			argsMap.put("msg", "add Line failed!");
+			argsMap.put("msg", "add User Role failed!");
 		}
 
 		return JsonUtil.obj2JsonStr(argsMap);
