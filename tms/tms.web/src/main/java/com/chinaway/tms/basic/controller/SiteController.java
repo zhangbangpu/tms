@@ -18,7 +18,7 @@ public class SiteController {
 	private SiteService siteService;
 	
 	/**
-	 * 根据账号和密码查询信息,即判断用户是否存在<br>
+	 * 添加站点信息<br>
 	 * 返回用户的json串
 	 * @param username
 	 * @param password
@@ -31,7 +31,6 @@ public class SiteController {
     	Map<String, String> argsMap = new HashMap<String, String>();
     	try {
     		siteService.insert(site);
-//			ret = siteService.addSite(site);
     		argsMap.put("status", "true");
 			argsMap.put("msg", "add Site success!");
 		} catch (Exception e) {
