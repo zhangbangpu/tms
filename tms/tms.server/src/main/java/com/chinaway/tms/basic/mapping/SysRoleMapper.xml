@@ -11,6 +11,10 @@
 	<sql id="Base_Column_List" >
 		 id,name,description,type
 	</sql>
+	
+	<sql id="Base_Column_Menu_List" >
+		 c.id,c.name,c.pid,c.levels,c.createtime,c.requesturl,c.menutype,c.sotid 
+	</sql>
    
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -77,5 +81,15 @@
 	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.SysRole" >
 		delete 	 from sys_role where id = #{id}
 	</delete>
+	
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="queryMenueByRoleId" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_Menu_List" />
+		from sys_role a,sys_role_menu b,sys_menu c
+		where a.id = b.roleid
+		and b.menuid = c.id
+		and b.roleid = #{roleId}
+	</select>
   	
 </mapper>

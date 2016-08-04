@@ -14,10 +14,11 @@
 		<result column="phone" property="phone"/>
 		<result column="state" property="state"/>
 		<result column="createtime" property="createtime"/>
+		<result column="codeid" property="codeid"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
-		 id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime
+		 id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid
 	</sql>
    
 	<!-- 动态查询条件 -->
@@ -60,6 +61,9 @@
 		<if test="createtime != null and createtime != '' ">
 		    and createtime = #{createtime}
 		</if>
+		<if test="codeid != null and codeid != '' ">
+		    and codeid = #{codeid}
+		</if>
 	
 	</trim>
 	</sql>
@@ -80,13 +84,13 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.SysUser" >
-	  insert into sys_user(id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime)
- values(#{id},#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime})
+	  insert into sys_user(id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid)
+ values(#{id},#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
 	 <update id="update" parameterType="com.chinaway.tms.basic.model.SysUser" >
-	  update sys_user set loginname=#{loginname},password=#{password},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state}, where id=#{id}
+	  update sys_user set loginname=#{loginname},password=#{password},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state},codeid=#{codeid} where id=#{id}
 	 </update>
  
 	 <!-- 动态修改记录，只修改只不为空的字段 -->
@@ -125,6 +129,9 @@
 	</if>
 	<if test="createtime != null  ">
 		createtime=#{createtime},
+	</if>
+	<if test="codeid != null  ">
+		codeid=#{codeid},
 	</if>
 	</trim> where id=#{id}
 	</update>
