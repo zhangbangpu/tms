@@ -32,11 +32,11 @@ public class LineController {
 	 */
     @RequestMapping(value = "/ws/addLine")
 	@ResponseBody
-	//http://localhost/tms/ws/addLine?lineInfo=
 	public String addLine(@RequestParam("lineInfo") String lineInfo){
-    	LOGGER.info("传入的参数(lineInfo):" + lineInfo);
-    	
     	Line line = JsonUtil.jsonStr2Obj(lineInfo, Line.class);
+    	
+    	LOGGER.info("传入的参数(line):" + line);
+    	
     	Map<String, String> argsMap = new HashMap<String, String>();
     	try {
     		lineService.insert(line);
