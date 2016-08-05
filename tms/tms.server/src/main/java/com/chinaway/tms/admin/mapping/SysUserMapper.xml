@@ -1,144 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.chinaway.tms.basic.dao.SysUserMapper" >
-  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.SysUser" >
-		<id column="id" property="id"/>
-		<result column="loginname" property="loginname"/>
-		<result column="password" property="password"/>
-		<result column="type" property="type"/>
-		<result column="name" property="name"/>
-		<result column="intro" property="intro"/>
-		<result column="certificate" property="certificate"/>
-		<result column="corporation" property="corporation"/>
-		<result column="corporationim" property="corporationim"/>
-		<result column="phone" property="phone"/>
-		<result column="state" property="state"/>
-		<result column="createtime" property="createtime"/>
-		<result column="codeid" property="codeid"/>
+<mapper namespace="com.chinaway.tms.admin.dao.SysUserMapper">
+	<resultMap id="BaseResultMap" type="com.chinaway.tms.admin.model.SysUser">
+		<id column="id" property="id" />
+		<result column="loginname" property="loginname" />
+		<result column="password" property="password" />
+		<result column="type" property="type" />
+		<result column="name" property="name" />
+		<result column="intro" property="intro" />
+		<result column="certificate" property="certificate" />
+		<result column="corporation" property="corporation" />
+		<result column="corporationim" property="corporationim" />
+		<result column="phone" property="phone" />
+		<result column="state" property="state" />
+		<result column="createtime" property="createtime" />
+		<result column="codeid" property="codeid" />
 	</resultMap>
-       
-	<sql id="Base_Column_List" >
-		 id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid
+
+	<sql id="Base_Column_List">
+		id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid
 	</sql>
-   
+
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
-	where 1=1
-	<trim suffixOverrides="," >
-		<if test="id != null and id != '' ">
-		    and id = #{id}
-		</if>
-		<if test="loginname != null and loginname != '' ">
-		    and loginname = #{loginname}
-		</if>
-		<if test="password != null and password != '' ">
-		    and password = #{password}
-		</if>
-		<if test="type != null and type != '' ">
-		    and type = #{type}
-		</if>
-		<if test="name != null and name != '' ">
-		    and name = #{name}
-		</if>
-		<if test="intro != null and intro != '' ">
-		    and intro = #{intro}
-		</if>
-		<if test="certificate != null and certificate != '' ">
-		    and certificate = #{certificate}
-		</if>
-		<if test="corporation != null and corporation != '' ">
-		    and corporation = #{corporation}
-		</if>
-		<if test="corporationim != null and corporationim != '' ">
-		    and corporationim = #{corporationim}
-		</if>
-		<if test="phone != null and phone != '' ">
-		    and phone = #{phone}
-		</if>
-		<if test="state != null and state != '' ">
-		    and state = #{state}
-		</if>
-		<if test="createtime != null and createtime != '' ">
-		    and createtime = #{createtime}
-		</if>
-		<if test="codeid != null and codeid != '' ">
-		    and codeid = #{codeid}
-		</if>
-	
-	</trim>
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null and id != '' ">
+				and id = #{id}
+			</if>
+			<if test="loginname != null and loginname != '' ">
+				and loginname = #{loginname}
+			</if>
+			<if test="password != null and password != '' ">
+				and password = #{password}
+			</if>
+			<if test="type != null and type != '' ">
+				and type = #{type}
+			</if>
+			<if test="name != null and name != '' ">
+				and name = #{name}
+			</if>
+			<if test="intro != null and intro != '' ">
+				and intro = #{intro}
+			</if>
+			<if test="certificate != null and certificate != '' ">
+				and certificate = #{certificate}
+			</if>
+			<if test="corporation != null and corporation != '' ">
+				and corporation = #{corporation}
+			</if>
+			<if test="corporationim != null and corporationim != '' ">
+				and corporationim = #{corporationim}
+			</if>
+			<if test="phone != null and phone != '' ">
+				and phone = #{phone}
+			</if>
+			<if test="state != null and state != '' ">
+				and state = #{state}
+			</if>
+			<if test="createtime != null and createtime != '' ">
+				and createtime = #{createtime}
+			</if>
+			<if test="codeid != null and codeid != '' ">
+				and codeid = #{codeid}
+			</if>
+		</trim>
 	</sql>
- 
-	<!-- 根据id查询  -->
-	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select <include refid="Base_Column_List" /> 
-	 from sys_user where id = #{id}
+
+	<!-- 根据id查询 -->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user where id = #{id}
 	</select>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectAll4Page" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user
-		<include refid="Example_Where_Clause"/>
+		<include refid="Example_Where_Clause" />
 	</select>
-   
+
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="com.chinaway.tms.basic.model.SysUser" >
-	  insert into sys_user(id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid)
- values(#{id},#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid})
+	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysUser">
+		insert into
+		sys_user(id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid)
+		values(#{id},#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid})
 	</insert>
 
-	<!-- 根据id，修改记录-->  
-	 <update id="update" parameterType="com.chinaway.tms.basic.model.SysUser" >
-	  update sys_user set loginname=#{loginname},password=#{password},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state},codeid=#{codeid} where id=#{id}
-	 </update>
- 
-	 <!-- 动态修改记录，只修改只不为空的字段 -->
-	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.SysUser" >
-		update sys_user set 
-	<trim  suffixOverrides="," >
-	<if test="loginname != null  and loginname != '' ">
-		loginname=#{loginname},
-	</if>
-	<if test="password != null  and password != '' ">
-		password=#{password},
-	</if>
-	<if test="type != null  and type != '' ">
-		type=#{type},
-	</if>
-	<if test="name != null  and name != '' ">
-		name=#{name},
-	</if>
-	<if test="intro != null  and intro != '' ">
-		intro=#{intro},
-	</if>
-	<if test="certificate != null  and certificate != '' ">
-		certificate=#{certificate},
-	</if>
-	<if test="corporation != null  and corporation != '' ">
-		corporation=#{corporation},
-	</if>
-	<if test="corporationim != null  and corporationim != '' ">
-		corporationim=#{corporationim},
-	</if>
-	<if test="phone != null  and phone != '' ">
-		phone=#{phone},
-	</if>
-	<if test="state != null  and state != '' ">
-		state=#{state},
-	</if>
-	<if test="createtime != null  ">
-		createtime=#{createtime},
-	</if>
-	<if test="codeid != null  ">
-		codeid=#{codeid},
-	</if>
-	</trim> where id=#{id}
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="com.chinaway.tms.admin.model.SysUser">
+		update sys_user set
+		loginname=#{loginname},password=#{password},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state},codeid=#{codeid}
+		where id=#{id}
+	</update>
+
+	<!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.admin.model.SysUser">
+		update sys_user set
+		<trim suffixOverrides=",">
+			<if test="loginname != null  and loginname != '' ">
+				loginname=#{loginname},
+			</if>
+			<if test="password != null  and password != '' ">
+				password=#{password},
+			</if>
+			<if test="type != null  and type != '' ">
+				type=#{type},
+			</if>
+			<if test="name != null  and name != '' ">
+				name=#{name},
+			</if>
+			<if test="intro != null  and intro != '' ">
+				intro=#{intro},
+			</if>
+			<if test="certificate != null  and certificate != '' ">
+				certificate=#{certificate},
+			</if>
+			<if test="corporation != null  and corporation != '' ">
+				corporation=#{corporation},
+			</if>
+			<if test="corporationim != null  and corporationim != '' ">
+				corporationim=#{corporationim},
+			</if>
+			<if test="phone != null  and phone != '' ">
+				phone=#{phone},
+			</if>
+			<if test="state != null  and state != '' ">
+				state=#{state},
+			</if>
+			<if test="createtime != null  ">
+				createtime=#{createtime},
+			</if>
+			<if test="codeid != null  ">
+				codeid=#{codeid},
+			</if>
+		</trim>
+		where id=#{id}
 	</update>
 
 	<!-- 删除记录 -->
-	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.SysUser" >
-		delete 	 from sys_user where id = #{id}
+	<delete id="deleteById" parameterType="com.chinaway.tms.admin.model.SysUser">
+		delete from sys_user where id = #{id}
 	</delete>
-  	
+
 </mapper>
