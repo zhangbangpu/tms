@@ -14,6 +14,7 @@ import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
 @Controller
+@RequestMapping(value = "/sysLog")
 public class SysLogController {
 
 	@Autowired
@@ -26,7 +27,7 @@ public class SysLogController {
 	 * @param logInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/ws/addLog")
+	@RequestMapping(value = "/addLog")
 	@ResponseBody
 	public String addLog(SysLog sysLog) {
 		Map<String, Object> resultMap = new HashMap<>();

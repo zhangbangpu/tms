@@ -14,6 +14,7 @@ import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
 @Controller
+@RequestMapping(value = "/sysRoleMenu")
 public class SysRoleMenuController {
 
 	@Autowired
@@ -26,7 +27,7 @@ public class SysRoleMenuController {
 	 * @param roleInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/ws/addRoleMenu")
+	@RequestMapping(value = "/addRoleMenu")
 	@ResponseBody
 	public String addRoleMenu(SysRoleMenu sysRoleMenu) {
 		Map<String, Object> resultMap = new HashMap<>();

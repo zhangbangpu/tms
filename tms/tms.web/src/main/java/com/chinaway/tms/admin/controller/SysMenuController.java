@@ -14,6 +14,7 @@ import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
 @Controller
+@RequestMapping(value = "/sysMenu")
 public class SysMenuController {
 
 	@Autowired
@@ -26,7 +27,7 @@ public class SysMenuController {
 	 * @param menuInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/ws/addMenu")
+	@RequestMapping(value = "/addMenu")
 	@ResponseBody
 	public String addMenu(SysMenu sysMenu) {
 		Map<String, Object> resultMap = new HashMap<>();

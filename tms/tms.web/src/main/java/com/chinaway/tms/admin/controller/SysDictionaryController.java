@@ -14,6 +14,7 @@ import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
 @Controller
+@RequestMapping(value = "/sysDictionary")
 public class SysDictionaryController {
 
 	@Autowired
@@ -26,7 +27,7 @@ public class SysDictionaryController {
 	 * @param dictionaryInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/ws/addDictionary")
+	@RequestMapping(value = "/addDictionary")
 	@ResponseBody
 	public String addDictionary(SysDictionary sysDictionary) {
 		Map<String, Object> resultMap = new HashMap<>();

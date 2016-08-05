@@ -22,7 +22,7 @@ import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
-@RequestMapping(value = "/sysUser")
+@RequestMapping(value = "/login")
 public class LoginController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
@@ -43,7 +43,7 @@ public class LoginController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/ws/login")
+	@RequestMapping(value = "/login")
 	@ResponseBody
 	public String login(@RequestParam("username") String username, @RequestParam("password") String password) {
 

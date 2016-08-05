@@ -14,6 +14,7 @@ import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
 @Controller
+@RequestMapping(value = "/sysUser")
 public class SysDeptController {
 
 	@Autowired
@@ -26,7 +27,7 @@ public class SysDeptController {
 	 * @param deptInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/ws/addDept")
+	@RequestMapping(value = "/addDept")
 	@ResponseBody
 	public String addDept(SysDept sysDept) {
 		Map<String, Object> resultMap = new HashMap<>();
