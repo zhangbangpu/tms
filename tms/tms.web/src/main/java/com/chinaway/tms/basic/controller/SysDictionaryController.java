@@ -2,6 +2,9 @@ package com.chinaway.tms.basic.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +16,9 @@ import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
 public class SysDictionaryController {
-
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SysDictionaryController.class);
+	
 	@Autowired
 	private SysDictionaryService sysDictionaryService;
 
@@ -28,6 +33,8 @@ public class SysDictionaryController {
 	@ResponseBody
 	// http://localhost/tms/ws/addDictionary?dictionaryInfo=
 	public String addDictionary(@RequestParam("dictionaryInfo") String dictionaryInfo) {
+		LOGGER.info("传入的参数(dictionaryInfo):" + dictionaryInfo);
+		
 		SysDictionary sysDictionary = JsonUtil.jsonStr2Obj(dictionaryInfo, SysDictionary.class);
 		Map<String, String> argsMap = new HashMap<String, String>();
 		try {
@@ -40,7 +47,11 @@ public class SysDictionaryController {
 			argsMap.put("msg", "add dictionary failed!");
 		}
 
-		return JsonUtil.obj2JsonStr(argsMap);
+		String ret = JsonUtil.obj2JsonStr(argsMap);
+		
+		LOGGER.info("addUser传出的参数:" + ret);
+
+		return ret;
 	}
 
 }

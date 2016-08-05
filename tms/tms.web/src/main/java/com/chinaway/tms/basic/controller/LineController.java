@@ -3,6 +3,8 @@ package com.chinaway.tms.basic.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,8 @@ import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
 public class LineController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(LineController.class);
 	
 	@Autowired
 	private LineService lineService;
@@ -30,6 +34,8 @@ public class LineController {
 	@ResponseBody
 	//http://localhost/tms/ws/addLine?lineInfo=
 	public String addLine(@RequestParam("lineInfo") String lineInfo){
+    	LOGGER.info("传入的参数(lineInfo):" + lineInfo);
+    	
     	Line line = JsonUtil.jsonStr2Obj(lineInfo, Line.class);
     	Map<String, String> argsMap = new HashMap<String, String>();
     	try {
@@ -42,7 +48,11 @@ public class LineController {
 			argsMap.put("msg", "add Line failed!");
 		}
     	
-    	return JsonUtil.obj2JsonStr(argsMap);
+		String ret = JsonUtil.obj2JsonStr(argsMap);
+		
+		LOGGER.info("addUser传出的参数:" + ret);
+
+		return ret;
 	}
     
 }

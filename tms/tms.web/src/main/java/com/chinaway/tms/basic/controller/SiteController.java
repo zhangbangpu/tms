@@ -2,6 +2,9 @@ package com.chinaway.tms.basic.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,8 @@ import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
 public class SiteController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SiteController.class);
 	
 	@Autowired
 	private SiteService siteService;
@@ -27,6 +32,9 @@ public class SiteController {
     @RequestMapping(value = "/ws/addSite")
 	@ResponseBody
 	public String addSite(@RequestParam("siteInfo") String siteInfo){
+    	
+    	LOGGER.info("传入的参数(siteInfo):" + siteInfo);
+    	
     	Site site = JsonUtil.jsonStr2Obj(siteInfo, Site.class);
     	Map<String, String> argsMap = new HashMap<String, String>();
     	try {
@@ -38,7 +46,11 @@ public class SiteController {
 			argsMap.put("msg", "add Site failed!");
 		}
     	
-    	return JsonUtil.obj2JsonStr(argsMap);
+		String ret = JsonUtil.obj2JsonStr(argsMap);
+		
+		LOGGER.info("addUser传出的参数:" + ret);
+
+		return ret;
 	}
     
 }
