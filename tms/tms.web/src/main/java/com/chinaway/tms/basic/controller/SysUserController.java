@@ -11,11 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.chinaway.tms.basic.model.SysMenu;
-import com.chinaway.tms.basic.model.SysRole;
-import com.chinaway.tms.basic.model.SysUser;
-import com.chinaway.tms.basic.service.SysRoleService;
-import com.chinaway.tms.basic.service.SysUserService;
+
+import com.chinaway.tms.admin.model.SysMenu;
+import com.chinaway.tms.admin.model.SysRole;
+import com.chinaway.tms.admin.model.SysUser;
+import com.chinaway.tms.admin.service.SysRoleService;
+import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller

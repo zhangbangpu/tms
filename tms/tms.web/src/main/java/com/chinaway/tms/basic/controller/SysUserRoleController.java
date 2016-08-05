@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.chinaway.tms.basic.model.SysUserRole;
-import com.chinaway.tms.basic.service.SysUserRoleService;
+import com.chinaway.tms.admin.model.SysUserRole;
+import com.chinaway.tms.admin.service.SysUserRoleService;
 import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
