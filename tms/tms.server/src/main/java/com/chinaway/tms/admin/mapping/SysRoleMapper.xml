@@ -11,9 +11,9 @@
 	<sql id="Base_Column_List">
 		id,name,description,type
 	</sql>
-
-	<sql id="Base_Column_Menu_List">
-		c.id,c.name,c.pid,c.levels,c.createtime,c.requesturl,c.menutype,c.sotid
+	
+	<sql id="Base_Column_role_List">
+		c.id
 	</sql>
 
 	<!-- 动态查询条件 -->
@@ -32,7 +32,17 @@
 			<if test="type != null and type != '' ">
 				and type = #{type}
 			</if>
-
+		</trim>
+	</sql>
+	
+	<!-- 动态查询条件 -->
+	<sql id="userid_Where_Clause">
+	    where b.roleid = c.id
+		and a.id = b.userid
+		<trim suffixOverrides=",">
+			<if test="userId != null and userId != '' ">
+				and a.id = #{userId}
+			</if>
 		</trim>
 	</sql>
 
@@ -87,15 +97,11 @@
 	</delete>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queryMenueByRoleId" resultMap="BaseResultMap"
-		parameterType="java.util.Map">
+	<select id="queryRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
-		<include refid="Base_Column_Menu_List" />
-		from sys_role a,sys_role_menu b,sys_menu c
-		where a.id = b.roleid
-		and
-		b.menuid = c.id
-		and b.roleid = #{roleId}
+		<include refid="Base_Column_role_List" />
+		from sys_user a, sys_user_role b, sys_role c
+		<include refid="userid_Where_Clause" />
 	</select>
 
 </mapper>

@@ -9,7 +9,7 @@
 	<sql id="Base_Column_List">
 		userid,roleid
 	</sql>
-
+	
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
@@ -65,5 +65,5 @@
 	<delete id="deleteById" parameterType="com.chinaway.tms.admin.model.SysUserRole">
 		delete from sys_user_role where userid = #{userid}
 	</delete>
-
+	
 </mapper>

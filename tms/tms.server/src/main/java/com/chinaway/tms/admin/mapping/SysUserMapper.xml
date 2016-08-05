@@ -20,6 +20,10 @@
 	<sql id="Base_Column_List">
 		id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid
 	</sql>
+	
+	<sql id="Base_Column_Menu_List">
+		c.id
+	</sql>
 
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -146,4 +150,12 @@
 		delete from sys_user where id = #{id}
 	</delete>
 
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="queryUserByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<include refid="Example_Where_Clause" />
+	</select>
+	
 </mapper>

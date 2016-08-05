@@ -1,10 +1,10 @@
 package com.chinaway.tms.admin.service.impl;
 
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.chinaway.tms.admin.dao.SysUserMapper;
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.service.SysUserService;
@@ -13,12 +13,12 @@ import com.chinaway.tms.core.BaseMapper;
 import com.chinaway.tms.utils.page.PageBean;
 
 @Service
-public class SysUserServiceImpl extends AbstractService<SysUser, Integer> implements SysUserService {
-	
+public class SysUserServiceImpl extends AbstractService<SysUser, Integer>implements SysUserService {
+
 	@Autowired
 	private SysUserMapper sysUserMapper;
-	
-	/**具体子类service的实现需要使用的mapper*/
+
+	/** 具体子类service的实现需要使用的mapper */
 	@Override
 	@Autowired
 	public void setBaseMapper(BaseMapper<SysUser, Integer> baseMapper) {
@@ -30,13 +30,13 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer> implem
 		PageBean<SysUser> pageBean = new PageBean<>();
 		pageBean.setPageNo(Integer.parseInt(map.get("pageNo").toString()));
 		pageBean.setPageSize(Integer.parseInt(map.get("pageSize").toString()));
-		//注意map要先设置pageBean,拦截器里面要获取其值
+		// 注意map要先设置pageBean,拦截器里面要获取其值
 		map.put("pageBean", pageBean);
-		map.put("needPage", true);//是否分页，默认是false不分页
+		map.put("needPage", true);// 是否分页，默认是false不分页
 		pageBean.setResult(sysUserMapper.selectAll4Page(map));
 		return pageBean;
 	}
-	
+
 	@Override
 	@Transactional
 	public int deleteById(String ids) {
@@ -50,4 +50,10 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer> implem
 			return 0;
 		}
 	}
+
+	@Override
+	public List<SysUser> queryUserByCondition(Map<String, Object> argsMap) {
+		return sysUserMapper.queryUserByCondition(argsMap);
+	}
+
 }

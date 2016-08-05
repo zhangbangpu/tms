@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,10 @@ public class SysMenuServiceImpl extends AbstractService<SysMenu, Integer> implem
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public List<SysMenu> queryMenuByRoleId(int roleId) {
+		return sysMenuMapper.queryMenuByRoleId(roleId);
 	}
 }

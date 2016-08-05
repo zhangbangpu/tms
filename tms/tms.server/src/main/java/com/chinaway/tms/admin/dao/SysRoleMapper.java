@@ -1,13 +1,17 @@
 package com.chinaway.tms.admin.dao;
 
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
-import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.core.BaseMapper;
 
 public interface SysRoleMapper extends BaseMapper<SysRole, Integer> {
 
-	List<SysMenu> queryMenuByRoleId(String roleId);
+	/**
+	 * 查询角色根据用户id
+	 * @param userId
+	 * @return
+	 */
+	SysRole queryRoleByUserId(@Param(value="userId")Integer userId);
 	
 }
