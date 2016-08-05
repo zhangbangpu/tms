@@ -1,4 +1,4 @@
-package com.chinaway.tms.basic.model;
+package com.chinaway.tms.admin.model;
 
 import java.io.Serializable;
 

@@ -1,12 +1,13 @@
-package com.chinaway.tms.basic.service.impl;
+package com.chinaway.tms.admin.service.impl;
 
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.chinaway.tms.basic.dao.SysUserMapper;
-import com.chinaway.tms.basic.model.SysUser;
-import com.chinaway.tms.basic.service.SysUserService;
+
+import com.chinaway.tms.admin.dao.SysUserMapper;
+import com.chinaway.tms.admin.model.SysUser;
+import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.core.AbstractService;
 import com.chinaway.tms.core.BaseMapper;
 import com.chinaway.tms.utils.page.PageBean;
