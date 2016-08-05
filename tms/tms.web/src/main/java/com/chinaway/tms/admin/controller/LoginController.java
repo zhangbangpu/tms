@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.model.SysUser;
+import com.chinaway.tms.admin.service.SysMenuService;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.utils.json.JsonUtil;
@@ -32,6 +33,9 @@ public class LoginController {
 
 	@Autowired
 	private SysRoleService sysRoleService;
+	
+	@Autowired
+	private SysMenuService sysMenuService;
 
 	@Autowired
 	private HttpServletRequest request;
@@ -53,23 +57,21 @@ public class LoginController {
 		try {
 			argsMap.put("loginname", username);
 			argsMap.put("password", password);
-			List<SysUser> sysUserList = sysUserService.selectAll4Page(argsMap);
+			List<SysUser> sysUserList = sysUserService.queryUserByCondition(argsMap);
 			if (null != sysUserList && sysUserList.size() > 0) {
+				System.out.println("userId=" + sysUserList.get(0).getId());
+				SysRole sysRole = sysRoleService.queryRoleByUserId(sysUserList.get(0).getId());
+
+				System.out.println("sysRole=" + sysRole == null ? "" : sysRole.getId());
+				
+				List<SysMenu> sysMenuList = sysMenuService.queryMenuByRoleId(sysRole.getId());
+
+				System.out.println("sysMenuList=" + sysMenuList == null ? "" : sysMenuList.size());
+				
+				request.getSession().setAttribute("sysRole", sysRole);
+				request.getSession().setAttribute("sysMenuList", sysMenuList);
 				argsMap.put("status", "true");
 				argsMap.put("msg", "login success!");
-				List<SysRole> roleList = sysRoleService.selectAll4Page(argsMap);
-
-				System.out.println("roleList=" + roleList.size());
-
-				if (null != roleList && roleList.size() > 0) {
-					String roleId = String.valueOf(roleList.get(0).getId());
-					List<SysMenu> sysMenuList = sysRoleService.queryMenuByRoleId(roleId);
-
-					System.out.println("sysMenuList=" + sysMenuList.size());
-
-					request.getSession().setAttribute("role", roleList.get(0));
-					request.getSession().setAttribute("sysMenuList", sysMenuList);
-				}
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -78,9 +80,7 @@ public class LoginController {
 		}
 
 		String ret = JsonUtil.obj2JsonStr(argsMap);
-
 		LOGGER.info("addUser传出的参数:" + ret);
-
 		return ret;
 	}
 
