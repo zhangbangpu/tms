@@ -28,7 +28,6 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/ws/addMenu")
 	@ResponseBody
-	// http://localhost/tms/ws/addMenu?menuInfo=
 	public String addMenu(SysMenu sysMenu) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

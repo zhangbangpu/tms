@@ -28,7 +28,6 @@ public class SysUserRoleController {
 	 */
 	@RequestMapping(value = "/ws/addUserRole")
 	@ResponseBody
-	// http://localhost/tms/ws/addUserRole?userInfo=
 	public String addUserRole(SysUserRole sysUserRole) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

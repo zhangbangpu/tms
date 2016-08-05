@@ -28,7 +28,6 @@ public class SysLogController {
 	 */
 	@RequestMapping(value = "/ws/addLog")
 	@ResponseBody
-	// http://localhost/tms/ws/addLog?logInfo=
 	public String addLog(SysLog sysLog) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

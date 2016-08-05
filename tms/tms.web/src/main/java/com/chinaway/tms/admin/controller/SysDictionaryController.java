@@ -28,7 +28,6 @@ public class SysDictionaryController {
 	 */
 	@RequestMapping(value = "/ws/addDictionary")
 	@ResponseBody
-	// http://localhost/tms/ws/addDictionary?dictionaryInfo=
 	public String addDictionary(SysDictionary sysDictionary) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysDept;
@@ -29,8 +28,7 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/ws/addDept")
 	@ResponseBody
-	// http://localhost/tms/ws/addDept?userInfo=
-	public String addDept(@RequestParam("sysDept") SysDept sysDept) {
+	public String addDept(SysDept sysDept) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "添加操作失败!";
