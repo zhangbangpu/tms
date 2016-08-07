@@ -28,6 +28,7 @@
 		<jxl.version>2.6.12</jxl.version>
 		<redisson.version>2.2.13</redisson.version>
 		<freemarker.version>2.3.23</freemarker.version>
+		<httpclient.version>4.5.2</httpclient.version>
 		<junit.version>4.11</junit.version>
 	</properties>
 	
@@ -50,6 +51,11 @@
 				<version>${tms.version}</version>
 			</dependency>
 			
+			<dependency>
+	            <groupId>org.apache.httpcomponents</groupId>
+	            <artifactId>httpclient</artifactId>
+	            <version>${httpclient.version}</version>
+	        </dependency>
 			<dependency>
 			    <groupId>org.freemarker</groupId>
 			    <artifactId>freemarker</artifactId>
