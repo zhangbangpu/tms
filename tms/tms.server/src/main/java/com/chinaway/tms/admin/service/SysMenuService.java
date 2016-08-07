@@ -13,5 +13,12 @@ public interface SysMenuService extends BaseService<SysMenu, Integer> {
 	 * @return
 	 */
 	public List<SysMenu> queryMenuByRoleId(int roleId);
+
+	/**
+	 * 批量删除菜单信息
+	 * @param idsArray
+	 * @return
+	 */
+	public int deleteByIds(String[] idsArray);
 	
 }

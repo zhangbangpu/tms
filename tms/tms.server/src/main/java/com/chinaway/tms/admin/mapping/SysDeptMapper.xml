@@ -120,10 +120,26 @@
 		</trim>
 		where id=#{id}
 	</update>
+	
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="queDtByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_dept
+		<include refid="Example_Where_Clause" />
+	</select>
 
 	<!-- 删除记录 -->
 	<delete id="deleteById" parameterType="com.chinaway.tms.admin.model.SysDept">
 		delete from sys_dept where id = #{id}
+	</delete>
+	
+	<!-- 批量删除记录 -->
+	<delete id="deleteByIds" parameterType="java.lang.String">
+		delete from sys_dept where id in
+		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
 	</delete>
 
 </mapper>

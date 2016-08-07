@@ -56,4 +56,14 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer>impleme
 		return sysUserMapper.queryUserByCondition(argsMap);
 	}
 
+	@Override
+	public PageBean<SysUser> queUsrByCtnPgBn(Map<String, Object> argsMap) {
+		return sysUserMapper.queUsrByCtnPgBn(argsMap);
+	}
+
+	@Override
+	public int deleteByIds(String[] idArry) {
+		return sysUserMapper.deleteById(idArry);
+	}
+
 }

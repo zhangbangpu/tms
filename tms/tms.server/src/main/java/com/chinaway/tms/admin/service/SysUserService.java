@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.core.BaseService;
+import com.chinaway.tms.utils.page.PageBean;
 
 public interface SysUserService extends BaseService<SysUser, Integer> {
 
@@ -14,6 +15,22 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
 	 * @return
 	 */
 	List<SysUser> queryUserByCondition(Map<String, Object> argsMap);
+
+	
+	/**
+	 * 根据条件查询角色分页信息
+	 * @param argsMap
+	 * @return
+	 */
+	PageBean<SysUser> queUsrByCtnPgBn(Map<String, Object> argsMap);
+
+
+	/**
+	 * 删除用户根据ids
+	 * @param idArry
+	 * @return
+	 */
+	int deleteByIds(String[] idArry);
 
 
 	

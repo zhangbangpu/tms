@@ -95,6 +95,14 @@
 	<delete id="deleteById" parameterType="com.chinaway.tms.admin.model.SysRole">
 		delete from sys_role where id = #{id}
 	</delete>
+	
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="queRolByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Example_Where_Clause" />
+	</select>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="queryRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -104,4 +112,11 @@
 		<include refid="userid_Where_Clause" />
 	</select>
 
+	<!-- 批量删除记录 -->
+	<delete id="deleteByIds" parameterType="java.lang.String">
+		delete from sys_role where id in
+		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</delete>
 </mapper>

@@ -57,4 +57,10 @@ public class SysMenuServiceImpl extends AbstractService<SysMenu, Integer> implem
 	public List<SysMenu> queryMenuByRoleId(int roleId) {
 		return sysMenuMapper.queryMenuByRoleId(roleId);
 	}
+
+	@Override
+	public int deleteByIds(String[] idsArray) {
+		// TODO Auto-generated method stub
+		return sysMenuMapper.deleteByIds(idsArray);
+	}
 }

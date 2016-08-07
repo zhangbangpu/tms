@@ -57,4 +57,14 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 		return sysRoleMapper.queryRoleByUserId(userId);
 	}
 
+	@Override
+	public PageBean<SysRole> queRolByCtnPgBn(Map<String, Object> argsMap) {
+		return sysRoleMapper.queRolByCtnPgBn(argsMap);
+	}
+
+	@Override
+	public int deleteByIds(String[] idsArray) {
+		return sysRoleMapper.deleteByIds(idsArray);
+	}
+
 }

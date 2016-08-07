@@ -139,5 +139,13 @@
 		</if>
 		<!-- <include refid="roleId_Where_Clause" /> -->
 	</select>
+	
+	<!-- 批量删除记录 -->
+	<delete id="deleteByIds" parameterType="java.lang.String">
+		delete from sys_menu where id in
+		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</delete>
 
 </mapper>

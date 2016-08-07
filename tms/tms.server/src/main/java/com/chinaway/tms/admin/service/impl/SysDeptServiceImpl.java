@@ -51,4 +51,14 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 			return 0;
 		}
 	}
+
+	@Override
+	public PageBean<SysDept> queDtByCtnPgBn(Map<String, Object> argsMap) {
+		return sysDeptMapper.queDtByCtnPgBn(argsMap);
+	}
+
+	@Override
+	public int deleteByIds(String[] idsArray) {
+		return sysDeptMapper.deleteByIds(idsArray);
+	}
 }
