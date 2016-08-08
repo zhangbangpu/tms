@@ -70,7 +70,7 @@ public class MyBeanUtil{
     }
 	
 	/**
-	 * 
+	 * Bean转成Map<br>
 	 * @param obj
 	 * @return
 	 */

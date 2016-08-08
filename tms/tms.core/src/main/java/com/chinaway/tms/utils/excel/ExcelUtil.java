@@ -30,7 +30,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author shuheng
  */
 public class ExcelUtil {
-//http://blog.csdn.net/huazhangena/article/details/7587731 详情页面
+
 	/**
 	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
 	 * 
@@ -51,6 +51,26 @@ public class ExcelUtil {
 			return null;
 		}
 	}
+	
+	/**
+	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
+	 * 
+	 * @param filePath
+	 *            需要读取的文件名
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<String[]> read(String fileNameOrPath, InputStream inStream) throws IOException {
+		// 前缀prefix，后缀suffix
+		String suffix = fileNameOrPath.substring(fileNameOrPath.lastIndexOf(".") + 1);
+		if ("xls".equals(suffix)) {
+			return readXls03(inStream);
+		} else if ("xlsx".equals(suffix)) {
+			return readXlsx07(inStream);
+		}else {
+			return null;
+		}
+	}
 
 	/**
 	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
@@ -61,10 +81,23 @@ public class ExcelUtil {
 	 * @throws IOException
 	 */
 	public static List<String[]> readXls03(File file) throws IOException {
-		// 创建一个list 用来存储读取的内容
-		List<String[]> list = new ArrayList<String[]>();
 		// 创建输入流
 		InputStream inStream = new FileInputStream(file);
+
+		return readXls03(inStream);
+	}
+
+	/**
+	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
+	 * 
+	 * @param filePath
+	 *            需要读取的文件名
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<String[]> readXls03(InputStream inStream) throws IOException {
+		// 创建一个list 用来存储读取的内容
+		List<String[]> list = new ArrayList<String[]>();
 		HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inStream);
 
 		// 默认读取第一个sheet
@@ -97,16 +130,18 @@ public class ExcelUtil {
 	/**
 	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
 	 * 
-	 * @param filePath
-	 *            需要读取的文件名
+	 * @param file
+	 *            需要读取的文件
 	 * @return
 	 * @throws IOException
 	 */
-	public static List<String[]> readXls03(String filePath) throws IOException {
-		File file = new File(filePath);
-		return readXls03(file);
+	public static List<String[]> readXlsx07(File file) throws IOException {
+		// 创建输入流
+		InputStream inStream = new FileInputStream(file);
+		
+		return readXlsx07(inStream);
 	}
-
+	
 	/**
 	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
 	 * 
@@ -115,13 +150,11 @@ public class ExcelUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	public static List<String[]> readXlsx07(File file) throws IOException {
+	public static List<String[]> readXlsx07(InputStream inStream) throws IOException {
 		// 创建一个list 用来存储读取的内容
 		List<String[]> list = new ArrayList<String[]>();
-		// 创建输入流
-		InputStream inStream = new FileInputStream(file);
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(inStream);
-
+		
 		// 默认读取第一个sheet
 		XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
 		// int sheetTotal = xssfWorkbook.getNumberOfSheets();
@@ -145,22 +178,22 @@ public class ExcelUtil {
 				list.add(str);
 			}
 		}
-
+		
 		return list;
 	}
 
-	/**
-	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
-	 * 
-	 * @param filePath
-	 *            需要读取的文件名
-	 * @return
-	 * @throws IOException
-	 */
-	public static List<String[]> readXlsx07(String filePath) throws IOException {
-		File file = new File(filePath);
-		return readXlsx07(file);
-	}
+//	/**
+//	 * 读取excel 原理：一行一行读取内容，保存到List<String[]>中
+//	 * 
+//	 * @param filePath
+//	 *            需要读取的文件名
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	public static List<String[]> readXlsx07(String filePath) throws IOException {
+//		File file = new File(filePath);
+//		return readXlsx07(file);
+//	}
 
 	/**
 	 * 获取单元格内容（xls03）
@@ -284,9 +317,6 @@ public class ExcelUtil {
 		HSSFSheet sheet = wb.createSheet(excelInfo.getSheetName());
 		// 设置缺省列宽8.5,行高为设置的20
 		sheet.setDefaultRowHeightInPoints(20);
-//		//设置指定列的列宽，256 * 50这种写法是因为width参数单位是单个字符的256分之一
-//		sheet.setColumnWidth(0, 256 * 15);// 设置第一列的宽度为15
-//		sheet.setColumnWidth(1, 256 * 10);// 设置第二列的宽度为10
 
 		// 在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
 		HSSFRow header = sheet.createRow(0);
@@ -303,21 +333,17 @@ public class ExcelUtil {
 		if(list != null){
 			int size = list.size();
 			for (int i = 0; i < size; i++) {
+				//sheet.autoSizeColumn(i,true);//中文还是不能实现宽度自适应
 				HSSFRow row = sheet.createRow(i+1);
 				row.setHeightInPoints(20);
 				for (int j = 0, max = fields.length; j < max; j++) {
-					row.createCell(j).setCellValue(String.valueOf(list.get(i).get(fields[j])));
+					String value = String.valueOf(list.get(i).get(fields[j]));
+					int cellLength = value.getBytes().length;
+					sheet.setColumnWidth(j,cellLength*(256+52));//手动设置列宽
+					row.createCell(j).setCellValue(value);
 				}
 			}
 		}
-
-		// 输出Excel文件
-		// OutputStream output=response.getOutputStream();
-		// response.reset();
-		// response.setHeader("Content-disposition",
-		// "attachment; filename=details.xls");
-		// response.setContentType("application/msexcel");
-//		OutputStream outStream = new FileOutputStream(filePath);
 		wb.write(outStream);
 		outStream.close();
 
@@ -335,9 +361,6 @@ public class ExcelUtil {
 		XSSFSheet sheet = wb.createSheet(excelInfo.getSheetName());
 		// 设置缺省列宽8.5,行高为设置的30
 		sheet.setDefaultRowHeightInPoints(20);
-		// 设置指定列的列宽，256 * 50这种写法是因为width参数单位是单个字符的256分之一
-//		sheet.setColumnWidth(0, 256 * 15);// 设置第一列的宽度为15
-//		sheet.setColumnWidth(1, 256 * 10);// 设置第一列的宽度为10
 		// 合并单元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
 //		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
 
@@ -356,10 +379,14 @@ public class ExcelUtil {
 		if(list != null){
 			int size = list.size();
 			for (int i = 0; i < size; i++) {
+				//sheet.autoSizeColumn(i,true);//中文还是不能实现宽度自适应
 				XSSFRow row = sheet.createRow(i+1);
 				row.setHeightInPoints(20);
 				for (int j = 0, max = fields.length; j < max; j++) {
-					row.createCell(j).setCellValue(String.valueOf(list.get(i).get(fields[j])));
+					String value = String.valueOf(list.get(i).get(fields[j]));
+					int cellLength = value.getBytes().length;
+					sheet.setColumnWidth(j,cellLength*(256+52));//手动设置列宽
+					row.createCell(j).setCellValue(value);
 				}
 			}
 		}

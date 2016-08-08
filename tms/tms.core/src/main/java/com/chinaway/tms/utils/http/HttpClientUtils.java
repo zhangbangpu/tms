@@ -126,10 +126,10 @@ public class HttpClientUtils {
     public static void main(String args[]) throws Exception {
         //post请求的参数
     	Map<String, String> map = new HashMap<String, String>();
-    	String pa ="{\"address\":\"顶顶顶顶大啊啊啊啊\",\"city\":\"武汉市\",\"companyName\":\"按时大大\",\"contactEmail\":\"971322430@qq.com\",\"contactName\":\"assa\",\"contactPhone\":\"027-86422343\",\"district\":\"江汉区\",\"id\":\"0d100f5f-6cc0-426b-9031-daf67c8f1355\",\"phoneNum\":\"13986019774\",\"plainPassword\":\"123456,\",\"propertyManagement\":\"物业管理企业资质\",\"province\":\"湖北省\",\"roleIds\":\"\",\"state\":\"2\",\"userId\":\"a455718a-40c7-4d67-b490-716b8512137f\"}";
-        map.put("companyInfo", pa);
+    	String param ="{\"address\":\"四川省成都市双流区天府四街软件园\",\"area\":\"0\",\"city\":\"成都\",\"code\":\"028\",\"createtime\":\"2016-08-02 17:28:21\",\"deptname\":\"1919酒类直供\",\"id\":0,\"isprivate\":\"私有\",\"name\":\"天府四街仓库\",\"province\":\"四川省\",\"types\":\"标点\",\"updatetime\":\"2016-08-02 17:28:21\"}";
+        map.put("siteInfo", param);
 
-        HttpResponse response = HttpClientUtils.getHttpResponse(map, "http://10.0.13.82:80/payms","/cxfws/addCompany", "post");
+        HttpResponse response = HttpClientUtils.getHttpResponse(map, "http://172.22.120.28:80/tms/","/ws/addSite", "post");
 //        String ip = "10.0.13.190";
 //        HttpClient client = getConnection(ip,80);
 //        String urlPath = "http://10.0.13.190:80/payms/cxfws/addCompany";

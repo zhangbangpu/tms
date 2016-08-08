@@ -16,6 +16,8 @@ public class ExcelInfo {
 	private String[] fields;
 	private List<Map<String, Object>> list;
 
+	public ExcelInfo(){}
+	
 	public ExcelInfo(String fileName, String sheetName, String[] titles, String[] fields, List<Map<String, Object>> list) {
 		this.fileName = fileName;
 		this.sheetName = sheetName;
