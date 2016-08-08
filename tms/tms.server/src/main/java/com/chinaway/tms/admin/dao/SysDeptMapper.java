@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
@@ -23,5 +24,12 @@ public interface SysDeptMapper extends BaseMapper<SysDept, Integer> {
 	 * @return
 	 */
 	int deleteByIds(@Param(value="idItem")String[] idItem);
+
+	/**
+	 * 根据条件查询所有部门信息
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysDept> queAllDeptByCtn(Map<String, Object> argsMap);
 	
 }

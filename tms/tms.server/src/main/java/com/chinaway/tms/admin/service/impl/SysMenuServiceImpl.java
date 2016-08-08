@@ -2,11 +2,9 @@ package com.chinaway.tms.admin.service.impl;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.chinaway.tms.admin.dao.SysMenuMapper;
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.service.SysMenuService;
@@ -60,7 +58,11 @@ public class SysMenuServiceImpl extends AbstractService<SysMenu, Integer> implem
 
 	@Override
 	public int deleteByIds(String[] idsArray) {
-		// TODO Auto-generated method stub
 		return sysMenuMapper.deleteByIds(idsArray);
+	}
+
+	@Override
+	public List<SysMenu> queAllMenuByCtn(Map<String, Object> argsMap) {
+		return sysMenuMapper.queAllMenuByCtn(argsMap);
 	}
 }

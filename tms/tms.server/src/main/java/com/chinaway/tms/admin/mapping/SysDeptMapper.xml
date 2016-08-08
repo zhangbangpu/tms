@@ -52,7 +52,6 @@
 			<if test="isenable != null and isenable != '' ">
 				and isenable = #{isenable}
 			</if>
-
 		</trim>
 	</sql>
 
@@ -66,6 +65,22 @@
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_dept
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 条件查询所有(连表查询角色,用户) -->
+	<select id="queDtByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_dept
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 根据条件查询所有部门 -->
+	<select id="queAllDeptByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_dept
@@ -121,14 +136,6 @@
 		where id=#{id}
 	</update>
 	
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queDtByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from sys_dept
-		<include refid="Example_Where_Clause" />
-	</select>
-
 	<!-- 删除记录 -->
 	<delete id="deleteById" parameterType="com.chinaway.tms.admin.model.SysDept">
 		delete from sys_dept where id = #{id}
@@ -141,5 +148,4 @@
 			#{idItem}
 		</foreach>
 	</delete>
-
 </mapper>

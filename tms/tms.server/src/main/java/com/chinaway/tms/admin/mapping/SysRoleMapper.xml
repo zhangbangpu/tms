@@ -40,7 +40,7 @@
 	    where b.roleid = c.id
 		and a.id = b.userid
 		<trim suffixOverrides=",">
-			<if test="userId != null and userId != '' ">
+			<if test="userId != null and userId != ''">
 				and a.id = #{userId}
 			</if>
 		</trim>
@@ -60,6 +60,30 @@
 		<include refid="Base_Column_List" />
 		from sys_role
 		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 根据条件查询所有角色(连表查询用于列表页按角色名,部门查询) -->
+	<select id="queAllRoleByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+    <!-- 根据条件分页查询角色 -->
+	<select id="queRolByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 根据用户id查询角色(连表查询用于登录) -->
+	<select id="queryRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_role_List" />
+		from sys_user a, sys_user_role b, sys_role c
+		<include refid="userid_Where_Clause" />
 	</select>
 
 	<!-- 插入记录 -->
@@ -96,22 +120,6 @@
 		delete from sys_role where id = #{id}
 	</delete>
 	
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queRolByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from sys_role
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queryRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select
-		<include refid="Base_Column_role_List" />
-		from sys_user a, sys_user_role b, sys_role c
-		<include refid="userid_Where_Clause" />
-	</select>
-
 	<!-- 批量删除记录 -->
 	<delete id="deleteByIds" parameterType="java.lang.String">
 		delete from sys_role where id in

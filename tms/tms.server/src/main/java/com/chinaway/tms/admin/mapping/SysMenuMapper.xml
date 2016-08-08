@@ -78,6 +78,27 @@
 		from sys_menu
 		<include refid="Example_Where_Clause" />
 	</select>
+	
+	<!-- 条件查询所有菜单 -->
+	<select id="queAllMenuByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_menu
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 根据角色id查询菜单信息(连表查询用于登录) -->
+	<select id="queryMenuByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_Menu_List" />
+		from sys_role a,sys_role_menu b,sys_menu c
+		where c.id = b.menuid 
+		and  b.roleid = a.id
+		<if test="id != null and id != '' ">
+		    and a.id = #{id}
+		</if>
+		<!-- <include refid="roleId_Where_Clause" /> -->
+	</select>
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysMenu">
@@ -127,19 +148,6 @@
 		delete from sys_menu where id = #{id}
 	</delete>
 	
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queryMenuByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select
-		<include refid="Base_Column_Menu_List" />
-		from sys_role a,sys_role_menu b,sys_menu c
-		where c.id = b.menuid 
-		and  b.roleid = a.id
-		<if test="id != null and id != '' ">
-		    and a.id = #{id}
-		</if>
-		<!-- <include refid="roleId_Where_Clause" /> -->
-	</select>
-	
 	<!-- 批量删除记录 -->
 	<delete id="deleteByIds" parameterType="java.lang.String">
 		delete from sys_menu where id in
@@ -147,5 +155,4 @@
 			#{idItem}
 		</foreach>
 	</delete>
-
 </mapper>

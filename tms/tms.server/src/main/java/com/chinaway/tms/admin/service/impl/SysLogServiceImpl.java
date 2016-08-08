@@ -1,11 +1,9 @@
 package com.chinaway.tms.admin.service.impl;
 
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.chinaway.tms.admin.dao.SysLogMapper;
 import com.chinaway.tms.admin.model.SysLog;
 import com.chinaway.tms.admin.service.SysLogService;

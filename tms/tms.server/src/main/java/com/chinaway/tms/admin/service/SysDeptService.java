@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.chinaway.tms.admin.model.SysDept;
@@ -21,5 +22,12 @@ public interface SysDeptService extends BaseService<SysDept, Integer> {
 	 * @return
 	 */
 	int deleteByIds(String[] idsArray);
+
+	/**
+	 * 查询说有部门信息
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysDept> queAllDeptByCtn(Map<String, Object> argsMap);
 	
 }

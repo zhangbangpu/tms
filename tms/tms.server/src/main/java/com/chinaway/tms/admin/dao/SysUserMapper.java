@@ -31,5 +31,13 @@ public interface SysUserMapper extends BaseMapper<SysUser, Integer> {
 	 * @return
 	 */
 	int deleteById(@Param(value="idItem")String[] idArry);
+
+	
+	/**
+	 * 查询所有用户根据条件
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysUser> queAllUsrByCtn(Map<String, Object> argsMap);
 	
 }

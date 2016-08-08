@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,15 @@ public class SiteServiceImpl extends AbstractService<Site, Integer> implements S
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public List<Site> queAllSiteByCtn(Map<String, Object> argsMap) {
+		return siteMapper.queAllSiteByCtn(argsMap);
+	}
+
+	@Override
+	public PageBean<Site> queSiteByCtnPgBn(Map<String, Object> argsMap) {
+		return siteMapper.queSiteByCtnPgBn(argsMap);
 	}
 }

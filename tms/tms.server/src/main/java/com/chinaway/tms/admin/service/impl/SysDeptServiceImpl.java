@@ -1,11 +1,10 @@
 package com.chinaway.tms.admin.service.impl;
 
+import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.chinaway.tms.admin.dao.SysDeptMapper;
 import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.service.SysDeptService;
@@ -60,5 +59,10 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 	@Override
 	public int deleteByIds(String[] idsArray) {
 		return sysDeptMapper.deleteByIds(idsArray);
+	}
+
+	@Override
+	public List<SysDept> queAllDeptByCtn(Map<String, Object> argsMap) {
+		return sysDeptMapper.queAllDeptByCtn(argsMap);
 	}
 }

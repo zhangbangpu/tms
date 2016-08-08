@@ -1,7 +1,9 @@
 package com.chinaway.tms.admin.service;
 
+import java.util.List;
 import java.util.Map;
 import com.chinaway.tms.admin.model.SysRole;
+import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.core.BaseService;
 import com.chinaway.tms.utils.page.PageBean;
 
@@ -27,5 +29,12 @@ public interface SysRoleService extends BaseService<SysRole, Integer> {
 	 * @return
 	 */
 	int deleteByIds(String[] idsArray);
+
+	/**
+	 * 根据条件查询所有角色
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysUser> queAllRoleByCtn(Map<String, Object> argsMap);
 
 }

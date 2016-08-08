@@ -33,5 +33,13 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
 	int deleteByIds(String[] idArry);
 
 
+	/**
+	 * 根据条件查询所有用户信息
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysUser> queAllUsrByCtn(Map<String, Object> argsMap);
+
+
 	
 }

@@ -86,6 +86,30 @@
 		from sys_user
 		<include refid="Example_Where_Clause" />
 	</select>
+	
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="queAllUserByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="queUsrByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 条件查询所有(连表查询部门,角色信息) -->
+	<select id="queryUserByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<include refid="Example_Where_Clause" />
+	</select>
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysUser">
@@ -150,22 +174,6 @@
 		delete from sys_user where id = #{id}
 	</delete>
 	
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queUsrByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from sys_user
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queryUserByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from sys_user
-		<include refid="Example_Where_Clause" />
-	</select>
-	
 	<!-- 批量删除记录 -->
 	<delete id="deleteByIds" parameterType="java.lang.String">
 		delete from sys_user where id in
@@ -173,5 +181,4 @@
 			#{idItem}
 		</foreach>
 	</delete>
-	
 </mapper>
