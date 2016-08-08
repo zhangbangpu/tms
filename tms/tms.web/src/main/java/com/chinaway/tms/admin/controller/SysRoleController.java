@@ -1,6 +1,7 @@
 package com.chinaway.tms.admin.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysRole;
+import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.page.PageBean;
@@ -182,6 +184,43 @@ public class SysRoleController {
 			if (ret > 0) {
 				code = 0;
 				msg = "按条件查询操作成功!";
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据所以角色信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryAllRole")
+	@ResponseBody
+	public String queryAllRole() {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有角色操作失败!";
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		int ret = 0;
+		try {
+			List<SysUser> sysUserList = sysRoleService.queAllRoleByCtn(argsMap);
+			if(null != sysUserList){
+				ret = sysUserList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有角色操作成功!";
 			}
 
 		} catch (Exception e) {

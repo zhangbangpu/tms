@@ -1,13 +1,12 @@
 package com.chinaway.tms.admin.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.service.SysMenuService;
 import com.chinaway.tms.utils.json.JsonUtil;
@@ -173,6 +172,43 @@ public class SysMenuController {
 			if (null != sysMenu) {
 				code = 0;
 				msg = "根据id查询菜单操作成功!";
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据所有菜单信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryAllMenu")
+	@ResponseBody
+	public String queryAllMenu() {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有菜单操作失败!";
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		int ret = 0;
+		try {
+			List<SysMenu> sysMenuList = sysMenuService.queAllMenuByCtn(argsMap);
+			if(null != sysMenuList){
+				ret = sysMenuList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有菜单操作成功!";
 			}
 
 		} catch (Exception e) {
