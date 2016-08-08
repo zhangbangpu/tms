@@ -1,6 +1,6 @@
 //添加站点
 http://localhost/tms/ws/addSite?siteInfo={"address":"四川省成都市双流区天府四街软件园","area":"0","city":"成都","code":"028","createtime":"2016-08-02 17:28:21","deptname":"1919酒类直供","id":0,"isprivate":"私有","name":"天府四街仓库","province":"四川省","types":"标点","updatetime":"2016-08-02 17:28:21"}
 //添加班线
-http://localhost/tms/ws/addLine?lineInfo={"code":"01","deptname":"分拨站","endsite":"08","fromcode":"03","halfwaysite":"02","id":0,"linetype":"1","mileage":"20km","name":"旅游班线","operates":"修改线路成功","pdeptname":"物流中心","roadtoll":1,"runtime":"30","startsite":"01","transmoney":1,"transtype":"2","updatetime":"2016-08-03 10:34:20","vehicleline":"最近线路"}
+//http://localhost/tms/ws/addLine?lineInfo={"code":"01","deptname":"分拨站","endsite":"08","fromcode":"03","halfwaysite":"02","id":0,"linetype":"1","mileage":"20km","name":"旅游班线","operates":"修改线路成功","pdeptname":"物流中心","roadtoll":1,"runtime":"30","startsite":"01","transmoney":1,"transtype":"2","updatetime":"2016-08-03 10:34:20","vehicleline":"最近线路"}
 //登录
 http://localhost/tms/ws/login?username=huitongwuliu&password=123
