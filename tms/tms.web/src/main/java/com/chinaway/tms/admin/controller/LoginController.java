@@ -76,7 +76,7 @@ public class LoginController {
 		}
 
 		String ret = JsonUtil.obj2JsonStr(argsMap);
-		LOGGER.info("addUser传出的参数:" + ret);
+		LOGGER.info("login传出的参数:" + ret);
 		return ret;
 	}
 	
@@ -110,7 +110,7 @@ public class LoginController {
 		}
 
 		String ret = JsonUtil.obj2JsonStr(argsMap);
-		LOGGER.info("addUser传出的参数:" + ret);
+		LOGGER.info("logout传出的参数:" + ret);
 		return ret;
 	}
 
