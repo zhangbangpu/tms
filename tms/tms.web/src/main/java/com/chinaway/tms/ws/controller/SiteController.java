@@ -48,7 +48,7 @@ public class SiteController {
     	
 		String ret = JsonUtil.obj2JsonStr(argsMap);
 		
-		LOGGER.info("addUser传出的参数:" + ret);
+		LOGGER.info("addSite传出的参数:" + ret);
 
 		return ret;
 	}
