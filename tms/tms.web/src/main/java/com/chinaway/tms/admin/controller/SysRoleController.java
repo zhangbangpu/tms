@@ -130,7 +130,7 @@ public class SysRoleController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/delRole")
+	@RequestMapping(value = "/updateRole")
 	@ResponseBody
 	public String updateRole(SysRole sysRole) {
 		Map<String, Object> resultMap = new HashMap<>();

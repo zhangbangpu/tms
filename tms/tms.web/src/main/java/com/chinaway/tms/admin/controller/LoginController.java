@@ -80,5 +80,49 @@ public class LoginController {
 		LOGGER.info("addUser传出的参数:" + ret);
 		return ret;
 	}
+	
+	/**
+	 * 用户登出<br>
+	 * 返回用户的json串
+	 * 
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/logout")
+	@ResponseBody
+	public String logout(@RequestParam("username") String username, @RequestParam("password") String password) {
+
+		LOGGER.info("username=" + username + "password=" + password);
+
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		try {
+			argsMap.put("loginname", username);
+			argsMap.put("password", password);
+			List<SysUser> sysUserList = sysUserService.queryUserByCondition(argsMap);
+			if (null != sysUserList && sysUserList.size() > 0) {
+				System.out.println("userId=" + sysUserList.get(0).getId());
+				SysRole sysRole = sysRoleService.queryRoleByUserId(sysUserList.get(0).getId());
+
+				System.out.println("sysRole=" + sysRole == null ? "" : sysRole.getId());
+				
+				List<SysMenu> sysMenuList = sysMenuService.queryMenuByRoleId(sysRole.getId());
+
+				System.out.println("sysMenuList=" + sysMenuList == null ? "" : sysMenuList.size());
+				
+				request.getSession().setAttribute("sysRole", sysRole);
+				request.getSession().setAttribute("sysMenuList", sysMenuList);
+				argsMap.put("status", "true");
+				argsMap.put("msg", "login success!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			argsMap.put("status", "false");
+			argsMap.put("msg", "login failed!");
+		}
+
+		String ret = JsonUtil.obj2JsonStr(argsMap);
+		LOGGER.info("addUser传出的参数:" + ret);
+		return ret;
+	}
 
 }

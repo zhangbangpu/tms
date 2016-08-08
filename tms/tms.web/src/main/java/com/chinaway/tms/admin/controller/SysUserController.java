@@ -127,7 +127,7 @@ public class SysUserController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/delUser")
+	@RequestMapping(value = "/updateUser")
 	@ResponseBody
 	public String updateUser(SysUser sysUser) {
 		Map<String, Object> resultMap = new HashMap<>();

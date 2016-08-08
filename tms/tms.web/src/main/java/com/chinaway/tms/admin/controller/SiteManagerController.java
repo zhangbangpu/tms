@@ -18,7 +18,7 @@ import com.chinaway.tms.vo.Result;
 
 @Controller
 @RequestMapping(value = "/site")
-public class SiteController {
+public class SiteManagerController {
 	
 	@Autowired
 	private SiteService siteService;

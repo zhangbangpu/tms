@@ -16,7 +16,7 @@ import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 
 @Controller
-@RequestMapping(value = "/sysUser")
+@RequestMapping(value = "/sysDept")
 public class SysDeptController {
 
 	@Autowired
@@ -129,7 +129,7 @@ public class SysDeptController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/delDept")
+	@RequestMapping(value = "/updateDept")
 	@ResponseBody
 	public String updateDept(SysDept sysDept) {
 		Map<String, Object> resultMap = new HashMap<>();

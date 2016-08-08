@@ -126,7 +126,7 @@ public class SysMenuController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/delMenu")
+	@RequestMapping(value = "/updateMenu")
 	@ResponseBody
 	public String updateMenu(SysMenu sysMenu) {
 		Map<String, Object> resultMap = new HashMap<>();
