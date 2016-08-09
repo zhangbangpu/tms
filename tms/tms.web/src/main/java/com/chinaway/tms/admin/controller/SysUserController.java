@@ -21,6 +21,118 @@ public class SysUserController {
 	private SysUserService sysUserService;
 
 	/**
+	 * 根据条件分页查询用户信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queUserByCtnPgBn")
+	@ResponseBody
+	public String queUserByCtnPgBn(SysUser sysUser) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据条件分页查询用户操作失败!";
+
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("loginname", sysUser.getLoginname());
+		argsMap.put("name", sysUser.getName());
+		argsMap.put("phone", sysUser.getPhone());
+//		argsMap.put(key, sysUser.getState());
+		int ret = 0;
+		try {
+			PageBean<SysUser> sysUserPgBn = sysUserService.selectUser2PageBean(argsMap);
+			if(null != sysUserPgBn){
+				ret = sysUserPgBn.getResult().size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "根据条件分页查询用户操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据条件查询所有用户信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queAllUsrByCtn")
+	@ResponseBody
+	public String queAllUsrByCtn() {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有用户操作失败!";
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		int ret = 0;
+		try {
+			List<SysUser> sysUserList = sysUserService.queAllUserByCtn(argsMap);
+			if(null != sysUserList){
+				ret = sysUserList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有用户操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据条件查询单个用戶信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryUserById")
+	@ResponseBody
+	public String queryUserById(String id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据id查询用戶操作失败!";
+
+		try {
+			SysUser sysUser = sysUserService.selectById(id == "" ? 0 : Integer.parseInt(id));
+
+			if (null != sysUser) {
+				code = 0;
+				msg = "根据id查询用戶操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
 	 * 添加用户信息<br>
 	 * 返回用户的json串
 	 * 
@@ -43,7 +155,7 @@ public class SysUserController {
 				msg = "添加操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -77,7 +189,7 @@ public class SysUserController {
 				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -110,7 +222,7 @@ public class SysUserController {
 				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -143,7 +255,7 @@ public class SysUserController {
 				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -153,115 +265,4 @@ public class SysUserController {
 		return JsonUtil.obj2JsonStr(result);
 	}
 
-	/**
-	 * 根据条件查询用户信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryUserByCondition")
-	@ResponseBody
-	public String queryUserByCondition(SysUser sysUser) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据条件查询用户操作失败!";
-
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("loginname", sysUser.getLoginname());
-		argsMap.put("name", sysUser.getName());
-		argsMap.put("phone", sysUser.getPhone());
-//		argsMap.put(key, sysUser.getState());
-		int ret = 0;
-		try {
-			PageBean<SysUser> sysUserPgBn = sysUserService.queUsrByCtnPgBn(argsMap);
-			if(null != sysUserPgBn){
-				ret = sysUserPgBn.getResult().size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "根据条件查询用户操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据所以用户信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryAllUser")
-	@ResponseBody
-	public String queryAllUser() {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "查询所有用户操作失败!";
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		int ret = 0;
-		try {
-			List<SysUser> sysUserList = sysUserService.queAllUsrByCtn(argsMap);
-			if(null != sysUserList){
-				ret = sysUserList.size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "查询所有用户操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据条件查询单个用戶信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryOneById")
-	@ResponseBody
-	public String queryOneById(String id) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据id查询用戶操作失败!";
-
-		try {
-			SysUser sysUser = sysUserService.selectById(id == "" ? 0 : Integer.parseInt(id));
-
-			if (null != sysUser) {
-				code = 0;
-				msg = "根据id查询用戶操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
 }

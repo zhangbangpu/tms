@@ -24,6 +24,118 @@ public class SiteManagerController {
 	private SiteService siteService;
 	
 	/**
+	 * 根据条件查询所有站点信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/selectAllSiteByCtn")
+	@ResponseBody
+	public String selectAllSiteByCtn() {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有站点操作失败!";
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		int ret = 0;
+		try {
+			List<Site> sitetList = siteService.selectAllSiteByCtn(argsMap);
+			if(null != sitetList){
+				ret = sitetList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有站点操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据条件查询站点信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/selectSite2PageBean")
+	@ResponseBody
+	public String selectSite2PageBean(Site site) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据条件查询站点操作失败!";
+
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("name", site.getName());
+//		argsMap.put(key, sysDept.);
+//		argsMap.put(key, value);
+//		argsMap.put(key, value);
+		int ret = 0;
+		try {
+			PageBean<Site> sitePgBn = siteService.selectSite2PageBean(argsMap);
+			if (null != sitePgBn) {
+				ret = sitePgBn.getResult().size();
+			}
+
+			if (ret > 0) {
+				code = 0;
+				msg = "根据条件查询站点操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据条件查询单个站点信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryOneById")
+	@ResponseBody
+	public String queryOneById(String id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据id查询部门操作失败!";
+
+		try {
+			Site site = siteService.selectById(id == "" ? 0 : Integer.parseInt(id));
+
+			if (null != site) {
+				code = 0;
+				msg = "根据id查询站点操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
 	 * 添加站点信息<br>
 	 * 返回站点的json串
 	 * @param username
@@ -45,7 +157,7 @@ public class SiteManagerController {
 				msg = "添加站点成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -79,7 +191,7 @@ public class SiteManagerController {
 				msg = "批量删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -112,7 +224,7 @@ public class SiteManagerController {
 				msg = "修改站点成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -122,116 +234,4 @@ public class SiteManagerController {
 		return JsonUtil.obj2JsonStr(result);
 	}
 	
-	/**
-	 * 根据条件查询站点信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/querySiteByCondition")
-	@ResponseBody
-	public String querySiteByCondition(Site site) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据条件查询站点操作失败!";
-
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("name", site.getName());
-//		argsMap.put(key, sysDept.);
-//		argsMap.put(key, value);
-//		argsMap.put(key, value);
-		int ret = 0;
-		try {
-			PageBean<Site> sitePgBn = siteService.queSiteByCtnPgBn(argsMap);
-			if (null != sitePgBn) {
-				ret = sitePgBn.getResult().size();
-			}
-
-			if (ret > 0) {
-				code = 0;
-				msg = "根据条件查询站点操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据条件查询单个站点信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryOneById")
-	@ResponseBody
-	public String queryOneById(String id) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据id查询部门操作失败!";
-
-		try {
-			Site site = siteService.selectById(id == "" ? 0 : Integer.parseInt(id));
-
-			if (null != site) {
-				code = 0;
-				msg = "根据id查询站点操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据条件查询所有站点信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryAllSite")
-	@ResponseBody
-	public String queryAllSite() {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "查询所有站点操作失败!";
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		int ret = 0;
-		try {
-			List<Site> sitetList = siteService.queAllSiteByCtn(argsMap);
-			if(null != sitetList){
-				ret = sitetList.size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "查询所有站点操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-    
 }

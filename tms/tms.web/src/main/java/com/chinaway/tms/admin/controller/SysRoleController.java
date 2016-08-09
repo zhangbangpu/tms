@@ -24,6 +24,117 @@ public class SysRoleController {
 	private SysRoleService sysRoleService;
 
 	/**
+	 * 根据条件查询角色信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param roleInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queRoleByCtnPgBn")
+	@ResponseBody
+	public String queRoleByCtnPgBn(SysRole sysRole) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "按条件查询操作失败!";
+
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("name", sysRole.getName());
+//		argsMap.put(key, value);
+//		argsMap.put(key, value);
+		int ret = 0;
+		try {
+			PageBean<SysRole> sysRolePgBn = sysRoleService.selectRole2PageBean(argsMap);
+			if (null != sysRolePgBn) {
+				ret = sysRolePgBn.getResult().size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "按条件查询操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据条件查询所有角色信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryAllRole")
+	@ResponseBody
+	public String queryAllRole() {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有角色操作失败!";
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		int ret = 0;
+		try {
+			List<SysUser> sysUserList = sysRoleService.queAllRoleByCtn(argsMap);
+			if(null != sysUserList){
+				ret = sysUserList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有角色操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据条件查询单个角色信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryOneById")
+	@ResponseBody
+	public String queryOneById(String id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据id查询角色操作失败!";
+
+		try {
+			SysRole sysRole = sysRoleService.selectById(id == "" ? 0 : Integer.parseInt(id));
+
+			if (null != sysRole) {
+				code = 0;
+				msg = "根据id查询部门操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+
+	/**
 	 * 添加角色信息<br>
 	 * 返回用户的json串
 	 * 
@@ -46,7 +157,7 @@ public class SysRoleController {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -80,7 +191,7 @@ public class SysRoleController {
 				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -113,7 +224,7 @@ public class SysRoleController {
 				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -146,7 +257,7 @@ public class SysRoleController {
 				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -156,115 +267,4 @@ public class SysRoleController {
 		return JsonUtil.obj2JsonStr(result);
 	}
 	
-	/**
-	 * 根据条件查询角色信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param roleInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryRoleByCondition")
-	@ResponseBody
-	public String queryRoleByCondition(SysRole sysRole) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "按条件查询操作失败!";
-
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("name", sysRole.getName());
-//		argsMap.put(key, value);
-//		argsMap.put(key, value);
-		int ret = 0;
-		try {
-			PageBean<SysRole> sysRolePgBn = sysRoleService.queRolByCtnPgBn(argsMap);
-			if (null != sysRolePgBn) {
-				ret = sysRolePgBn.getResult().size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "按条件查询操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据所以角色信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryAllRole")
-	@ResponseBody
-	public String queryAllRole() {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "查询所有角色操作失败!";
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		int ret = 0;
-		try {
-			List<SysUser> sysUserList = sysRoleService.queAllRoleByCtn(argsMap);
-			if(null != sysUserList){
-				ret = sysUserList.size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "查询所有角色操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据条件查询单个角色信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryOneById")
-	@ResponseBody
-	public String queryOneById(String id) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据id查询角色操作失败!";
-
-		try {
-			SysRole sysRole = sysRoleService.selectById(id == "" ? 0 : Integer.parseInt(id));
-
-			if (null != sysRole) {
-				code = 0;
-				msg = "根据id查询部门操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-
 }

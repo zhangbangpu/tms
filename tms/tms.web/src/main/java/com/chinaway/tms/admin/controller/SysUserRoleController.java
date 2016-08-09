@@ -43,7 +43,7 @@ public class SysUserRoleController {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -52,5 +52,37 @@ public class SysUserRoleController {
 
 		return JsonUtil.obj2JsonStr(result);
 	}
+	
+	/**
+	 * 删除用户信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/delUserRole")
+	@ResponseBody
+	public String delUserRole(String id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "删除操作失败!";
 
+		int ret = 0;
+		try {
+			ret = sysUserRoleService.deleteById(id);
+
+			if (ret > 0) {
+				code = 0;
+				msg = "删除操作成功!";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
 }

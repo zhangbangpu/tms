@@ -3,12 +3,10 @@ package com.chinaway.tms.admin.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.utils.json.JsonUtil;
@@ -22,6 +20,118 @@ public class SysDeptController {
 	@Autowired
 	private SysDeptService sysDeptService;
 
+	/**
+	 * 根据条件查询部门信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryDeptByCondition")
+	@ResponseBody
+	public String queryDeptByCondition(SysDept sysDept) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据条件查询部门操作失败!";
+
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("name", sysDept.getName());
+//		argsMap.put(key, sysDept.);
+//		argsMap.put(key, value);
+//		argsMap.put(key, value);
+		int ret = 0;
+		try {
+			PageBean<SysDept> sysDtMenuPgBn = sysDeptService.selectDept2PageBean(argsMap);
+			if (null != sysDtMenuPgBn) {
+				ret = sysDtMenuPgBn.getResult().size();
+			}
+
+			if (ret > 0) {
+				code = 0;
+				msg = "根据条件查询部门操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据说有部门信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryAllDept")
+	@ResponseBody
+	public String queryAllDept() {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有部门操作失败!";
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		int ret = 0;
+		try {
+			List<SysDept> sysDeptList = sysDeptService.selectDeptByCtn(argsMap);
+			if(null != sysDeptList){
+				ret = sysDeptList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有部门操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
+	/**
+	 * 根据条件查询单个部门信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryOneById")
+	@ResponseBody
+	public String queryOneById(String id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据id查询部门操作失败!";
+
+		try {
+			SysDept sysDt = sysDeptService.selectById(id == "" ? 0 : Integer.parseInt(id));
+
+			if (null != sysDt) {
+				code = 0;
+				msg = "根据id查询部门操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return JsonUtil.obj2JsonStr(result);
+	}
+	
 	/**
 	 * 添加部门信息<br>
 	 * 返回用户的json串
@@ -45,7 +155,7 @@ public class SysDeptController {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -79,7 +189,7 @@ public class SysDeptController {
 				msg = "批量删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -112,7 +222,7 @@ public class SysDeptController {
 				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -145,7 +255,7 @@ public class SysDeptController {
 				msg = "修改操作成功!";
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 		}
 
 		resultMap.put("code", code);
@@ -155,116 +265,4 @@ public class SysDeptController {
 		return JsonUtil.obj2JsonStr(result);
 	}
 	
-	/**
-	 * 根据条件查询部门信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryDeptByCondition")
-	@ResponseBody
-	public String queryDeptByCondition(SysDept sysDept) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据条件查询部门操作失败!";
-
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("name", sysDept.getName());
-//		argsMap.put(key, sysDept.);
-//		argsMap.put(key, value);
-//		argsMap.put(key, value);
-		int ret = 0;
-		try {
-			PageBean<SysDept> sysDtMenuPgBn = sysDeptService.queDtByCtnPgBn(argsMap);
-			if (null != sysDtMenuPgBn) {
-				ret = sysDtMenuPgBn.getResult().size();
-			}
-
-			if (ret > 0) {
-				code = 0;
-				msg = "根据条件查询部门操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据条件查询单个部门信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryOneById")
-	@ResponseBody
-	public String queryOneById(String id) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据id查询部门操作失败!";
-
-		try {
-			SysDept sysDt = sysDeptService.selectById(id == "" ? 0 : Integer.parseInt(id));
-
-			if (null != sysDt) {
-				code = 0;
-				msg = "根据id查询部门操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-	
-	/**
-	 * 根据说有部门信息<br>
-	 * 返回用户的json串
-	 * 
-	 * @param deptInfo
-	 * @return
-	 */
-	@RequestMapping(value = "/queryAllDept")
-	@ResponseBody
-	public String queryAllDept() {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "查询所有部门操作失败!";
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		int ret = 0;
-		try {
-			List<SysDept> sysDeptList = sysDeptService.queAllDeptByCtn(argsMap);
-			if(null != sysDeptList){
-				ret = sysDeptList.size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "查询所有部门操作成功!";
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
-	}
-
 }

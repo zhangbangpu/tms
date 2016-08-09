@@ -53,24 +53,19 @@ public class LoginController {
 		try {
 			argsMap.put("loginname", username);
 			argsMap.put("password", password);
-			List<SysUser> sysUserList = sysUserService.queryUserByCondition(argsMap);
+			
+			List<SysUser> sysUserList = sysUserService.queryUserByCtn(argsMap);
 			if (null != sysUserList && sysUserList.size() > 0) {
-				System.out.println("userId=" + sysUserList.get(0).getId());
+				//连表查询角色信息
 				SysRole sysRole = sysRoleService.queryRoleByUserId(sysUserList.get(0).getId());
-
-				System.out.println("sysRole=" + sysRole == null ? "" : sysRole.getId());
-				
 				List<SysMenu> sysMenuList = sysMenuService.queryMenuByRoleId(sysRole.getId());
-
-				System.out.println("sysMenuList=" + sysMenuList == null ? "" : sysMenuList.size());
-				
 				request.getSession().setAttribute("sysRole", sysRole);
 				request.getSession().setAttribute("sysMenuList", sysMenuList);
 				argsMap.put("status", "true");
 				argsMap.put("msg", "login success!");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.getStackTrace();
 			argsMap.put("status", "false");
 			argsMap.put("msg", "login failed!");
 		}
@@ -96,7 +91,7 @@ public class LoginController {
 		try {
 			argsMap.put("loginname", username);
 			argsMap.put("password", password);
-			List<SysUser> sysUserList = sysUserService.queryUserByCondition(argsMap);
+			List<SysUser> sysUserList = sysUserService.queryUserByCtn(argsMap);
 			if (null != sysUserList && sysUserList.size() > 0) {
 				request.getSession().removeAttribute("sysRole");
 				request.getSession().removeAttribute("sysMenuList");
