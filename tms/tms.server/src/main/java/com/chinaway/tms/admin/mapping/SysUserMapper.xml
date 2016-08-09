@@ -15,10 +15,11 @@
 		<result column="state" property="state" />
 		<result column="createtime" property="createtime" />
 		<result column="codeid" property="codeid" />
+		<result column="deptid" property="deptid"/>
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid
+		id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid,deptid
 	</sql>
 	
 	<sql id="Base_Column_Menu_List">
@@ -88,6 +89,24 @@
 	</select>
 	
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAllUser4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 条件查询所有(连表查询部门,角色信息 不分页) 
+	--todo 做连表关联
+	-->
+	<select id="queryUserByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 查询所有用户根据条件(不连表不分页) -->
 	<select id="queAllUserByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
@@ -95,22 +114,6 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="queUsrByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from sys_user
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<!-- 条件查询所有(连表查询部门,角色信息) -->
-	<select id="queryUserByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from sys_user
-		<include refid="Example_Where_Clause" />
-	</select>
-
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysUser">
 		insert into
@@ -174,7 +177,7 @@
 		delete from sys_user where id = #{id}
 	</delete>
 	
-	<!-- 批量删除记录 -->
+	<!-- 批量删除记录  (可能暂时不使用)-->
 	<delete id="deleteByIds" parameterType="java.lang.String">
 		delete from sys_user where id in
 		<foreach item="idItem" collection="array" open="(" separator="," close=")">

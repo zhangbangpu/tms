@@ -38,6 +38,22 @@ public class SysMenuServiceImpl extends AbstractService<SysMenu, Integer> implem
 	}
 	
 	@Override
+	public PageBean<SysMenu> selectMenu2PageBean(Map<String, Object> map) {
+		PageBean<SysMenu> pageBean = new PageBean<>();
+		pageBean.setPageNo(Integer.parseInt(map.get("pageNo").toString()));
+		pageBean.setPageSize(Integer.parseInt(map.get("pageSize").toString()));
+		//注意map要先设置pageBean,拦截器里面要获取其值
+		map.put("pageBean", pageBean);
+		map.put("needPage", true);//是否分页，默认是false不分页
+		return sysMenuMapper.selectAllMenu4Page(map);
+	}
+	
+	@Override
+	public List<SysMenu> queryMenuByRoleId(int roleId) {
+		return sysMenuMapper.queryMenuByRoleId(roleId);
+	}
+	
+	@Override
 	@Transactional
 	public int deleteById(String ids) {
 		String[] idsStr = ids.split(",");
@@ -52,17 +68,8 @@ public class SysMenuServiceImpl extends AbstractService<SysMenu, Integer> implem
 	}
 
 	@Override
-	public List<SysMenu> queryMenuByRoleId(int roleId) {
-		return sysMenuMapper.queryMenuByRoleId(roleId);
-	}
-
-	@Override
 	public int deleteByIds(String[] idsArray) {
 		return sysMenuMapper.deleteByIds(idsArray);
 	}
 
-	@Override
-	public List<SysMenu> queAllMenuByCtn(Map<String, Object> argsMap) {
-		return sysMenuMapper.queAllMenuByCtn(argsMap);
-	}
 }

@@ -5,8 +5,15 @@ import java.util.Map;
 
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.core.BaseService;
+import com.chinaway.tms.utils.page.PageBean;
 
 public interface SysMenuService extends BaseService<SysMenu, Integer> {
+	/**
+	 * 根据条件查询所有菜单带分页
+	 * @param argsMap
+	 * @return
+	 */
+	public PageBean<SysMenu> selectMenu2PageBean(Map<String, Object> argsMap);
 	
 	/**
 	 * 查询菜单根据角色id
@@ -23,11 +30,4 @@ public interface SysMenuService extends BaseService<SysMenu, Integer> {
 	 */
 	public int deleteByIds(String[] idsArray);
 
-	/**
-	 * 根据条件查询所有菜单
-	 * @param argsMap
-	 * @return
-	 */
-	public List<SysMenu> queAllMenuByCtn(Map<String, Object> argsMap);
-	
 }

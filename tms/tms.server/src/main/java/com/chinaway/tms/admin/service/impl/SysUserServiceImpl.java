@@ -36,6 +36,32 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer>impleme
 		pageBean.setResult(sysUserMapper.selectAll4Page(map));
 		return pageBean;
 	}
+	
+	@Override
+	public PageBean<SysUser> selectUser2PageBean(Map<String, Object> map) {
+		PageBean<SysUser> pageBean = new PageBean<>();
+		pageBean.setPageNo(Integer.parseInt(map.get("pageNo").toString()));
+		pageBean.setPageSize(Integer.parseInt(map.get("pageSize").toString()));
+		// 注意map要先设置pageBean,拦截器里面要获取其值
+		map.put("pageBean", pageBean);
+		map.put("needPage", true);// 是否分页，默认是false不分页
+		return sysUserMapper.selectAllUser4Page(map);
+	}
+	
+	@Override
+	public List<SysUser> queryUserByCtn(Map<String, Object> argsMap) {
+		return sysUserMapper.queryUserByCtn(argsMap);
+	}
+	
+	@Override
+	public List<SysUser> queAllUserByCtn(Map<String, Object> argsMap) {
+		return sysUserMapper.queAllUserByCtn(argsMap);
+	}
+
+	@Override
+	public int deleteByIds(String[] idArry) {
+		return sysUserMapper.deleteById(idArry);
+	}
 
 	@Override
 	@Transactional
@@ -50,25 +76,4 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer>impleme
 			return 0;
 		}
 	}
-
-	@Override
-	public List<SysUser> queryUserByCondition(Map<String, Object> argsMap) {
-		return sysUserMapper.queryUserByCondition(argsMap);
-	}
-
-	@Override
-	public PageBean<SysUser> queUsrByCtnPgBn(Map<String, Object> argsMap) {
-		return sysUserMapper.queUsrByCtnPgBn(argsMap);
-	}
-
-	@Override
-	public int deleteByIds(String[] idArry) {
-		return sysUserMapper.deleteById(idArry);
-	}
-
-	@Override
-	public List<SysUser> queAllUsrByCtn(Map<String, Object> argsMap) {
-		return sysUserMapper.queAllUsrByCtn(argsMap);
-	}
-
 }

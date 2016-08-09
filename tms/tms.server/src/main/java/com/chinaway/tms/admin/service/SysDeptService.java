@@ -10,24 +10,23 @@ import com.chinaway.tms.utils.page.PageBean;
 public interface SysDeptService extends BaseService<SysDept, Integer> {
 
 	/**
-	 * 根据条件查询
+	 * 根据条件查询部门带分页
 	 * @param argsMap
 	 * @return
 	 */
-	PageBean<SysDept> queDtByCtnPgBn(Map<String, Object> argsMap);
-
-	/**
-	 * 根据id数组批量删除部门
-	 * @param idsArray
-	 * @return
-	 */
-	int deleteByIds(String[] idsArray);
+	PageBean<SysDept> selectDept2PageBean(Map<String, Object> argsMap);
 
 	/**
 	 * 查询说有部门信息
 	 * @param argsMap
 	 * @return
 	 */
-	List<SysDept> queAllDeptByCtn(Map<String, Object> argsMap);
+	List<SysDept> selectDeptByCtn(Map<String, Object> argsMap);
 	
+	/**
+	 * 根据id数组批量删除部门
+	 * @param idsArray
+	 * @return
+	 */
+	int deleteByIds(String[] idsArray);
 }

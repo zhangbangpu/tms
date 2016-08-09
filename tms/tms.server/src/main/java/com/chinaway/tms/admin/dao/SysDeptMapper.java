@@ -16,7 +16,14 @@ public interface SysDeptMapper extends BaseMapper<SysDept, Integer> {
 	 * @param argsMap
 	 * @return
 	 */
-	PageBean<SysDept> queDtByCtnPgBn(Map<String, Object> argsMap);
+	PageBean<SysDept> selectDept4Page(Map<String, Object> argsMap);
+	
+	/**
+	 * 根据条件查询所有部门信息
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysDept> selectDeptByCtn(Map<String, Object> argsMap);
 
 	/**
 	 * 批量删除部门
@@ -25,11 +32,4 @@ public interface SysDeptMapper extends BaseMapper<SysDept, Integer> {
 	 */
 	int deleteByIds(@Param(value="idItem")String[] idItem);
 
-	/**
-	 * 根据条件查询所有部门信息
-	 * @param argsMap
-	 * @return
-	 */
-	List<SysDept> queAllDeptByCtn(Map<String, Object> argsMap);
-	
 }

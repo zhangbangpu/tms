@@ -8,22 +8,26 @@ import com.chinaway.tms.core.BaseService;
 import com.chinaway.tms.utils.page.PageBean;
 
 public interface SysUserService extends BaseService<SysUser, Integer> {
-
 	/**
-	 * 根据条件查询用户
+	 * 根据条件查询角色分页信息不连表
 	 * @param argsMap
 	 * @return
 	 */
-	List<SysUser> queryUserByCondition(Map<String, Object> argsMap);
-
+	PageBean<SysUser> selectUser2PageBean(Map<String, Object> argsMap);
 	
 	/**
-	 * 根据条件查询角色分页信息
+	 * 根据条件查询用户连表不分页
 	 * @param argsMap
 	 * @return
 	 */
-	PageBean<SysUser> queUsrByCtnPgBn(Map<String, Object> argsMap);
+	List<SysUser> queryUserByCtn(Map<String, Object> argsMap);
 
+	/**
+	 * 根据条件查询所有用户信息不连表不分页
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysUser> queAllUserByCtn(Map<String, Object> argsMap);
 
 	/**
 	 * 删除用户根据ids
@@ -31,15 +35,4 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
 	 * @return
 	 */
 	int deleteByIds(String[] idArry);
-
-
-	/**
-	 * 根据条件查询所有用户信息
-	 * @param argsMap
-	 * @return
-	 */
-	List<SysUser> queAllUsrByCtn(Map<String, Object> argsMap);
-
-
-	
 }

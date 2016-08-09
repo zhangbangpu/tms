@@ -39,6 +39,22 @@ public class SiteServiceImpl extends AbstractService<Site, Integer> implements S
 		return pageBean;
 	}
 	
+	@Override 
+	public PageBean<Site> selectSite2PageBean(Map<String, Object> map) {
+		PageBean<Site> pageBean = new PageBean<>();
+		pageBean.setPageNo(Integer.parseInt(map.get("pageNo").toString()));
+		pageBean.setPageSize(Integer.parseInt(map.get("pageSize").toString()));
+		//注意map要先设置pageBean,拦截器里面要获取其值
+		map.put("pageBean", pageBean);
+		map.put("needPage", true);//是否分页，默认是false不分页
+		return siteMapper.selectSite2PageBean(map);
+	}
+	
+	@Override
+	public List<Site> selectAllSiteByCtn(Map<String, Object> argsMap) {
+		return siteMapper.selectAllSiteByCtn(argsMap);
+	}
+	
 	@Override
 	@Transactional
 	public int deleteById(String ids) {
@@ -51,15 +67,5 @@ public class SiteServiceImpl extends AbstractService<Site, Integer> implements S
 		} else {
 			return 0;
 		}
-	}
-
-	@Override
-	public List<Site> queAllSiteByCtn(Map<String, Object> argsMap) {
-		return siteMapper.queAllSiteByCtn(argsMap);
-	}
-
-	@Override
-	public PageBean<Site> queSiteByCtnPgBn(Map<String, Object> argsMap) {
-		return siteMapper.queSiteByCtnPgBn(argsMap);
 	}
 }

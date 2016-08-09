@@ -39,6 +39,21 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 	}
 	
 	@Override
+	public PageBean<SysRole> selectRole2PageBean(Map<String, Object> argsMap) {
+		return sysRoleMapper.selectAllRole4Page(argsMap);
+	}
+	
+	@Override
+	public List<SysUser> queAllRoleByCtn(Map<String, Object> argsMap) {
+		return sysRoleMapper.queAllRoleByCtn(argsMap);
+	}
+	
+	@Override
+	public SysRole queryRoleByUserId(int userId) {
+		return sysRoleMapper.queryRoleByUserId(userId);
+	}
+	
+	@Override
 	@Transactional
 	public int deleteById(String ids) {
 		String[] idsStr = ids.split(",");
@@ -53,23 +68,7 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 	}
 
 	@Override
-	public SysRole queryRoleByUserId(int userId) {
-		return sysRoleMapper.queryRoleByUserId(userId);
-	}
-
-	@Override
-	public PageBean<SysRole> queRolByCtnPgBn(Map<String, Object> argsMap) {
-		return sysRoleMapper.queRolByCtnPgBn(argsMap);
-	}
-
-	@Override
 	public int deleteByIds(String[] idsArray) {
 		return sysRoleMapper.deleteByIds(idsArray);
 	}
-
-	@Override
-	public List<SysUser> queAllRoleByCtn(Map<String, Object> argsMap) {
-		return sysRoleMapper.queAllRoleByCtn(argsMap);
-	}
-
 }

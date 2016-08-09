@@ -38,6 +38,22 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 	}
 	
 	@Override
+	public PageBean<SysDept> selectDept2PageBean(Map<String, Object> map) {
+		PageBean<SysDept> pageBean = new PageBean<>();
+		pageBean.setPageNo(Integer.parseInt(map.get("pageNo").toString()));
+		pageBean.setPageSize(Integer.parseInt(map.get("pageSize").toString()));
+		//注意map要先设置pageBean,拦截器里面要获取其值
+		map.put("pageBean", pageBean);
+		map.put("needPage", true);//是否分页，默认是false不分页
+		return sysDeptMapper.selectDept4Page(map);
+	}
+	
+	@Override
+	public List<SysDept> selectDeptByCtn(Map<String, Object> argsMap) {
+		return sysDeptMapper.selectDeptByCtn(argsMap);
+	}
+	
+	@Override
 	@Transactional
 	public int deleteById(String ids) {
 		String[] idsStr = ids.split(",");
@@ -52,17 +68,8 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 	}
 
 	@Override
-	public PageBean<SysDept> queDtByCtnPgBn(Map<String, Object> argsMap) {
-		return sysDeptMapper.queDtByCtnPgBn(argsMap);
-	}
-
-	@Override
 	public int deleteByIds(String[] idsArray) {
 		return sysDeptMapper.deleteByIds(idsArray);
 	}
 
-	@Override
-	public List<SysDept> queAllDeptByCtn(Map<String, Object> argsMap) {
-		return sysDeptMapper.queAllDeptByCtn(argsMap);
-	}
 }

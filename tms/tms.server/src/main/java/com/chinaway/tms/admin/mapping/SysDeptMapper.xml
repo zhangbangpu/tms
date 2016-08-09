@@ -72,7 +72,7 @@
 	</select>
 	
 	<!-- 条件查询所有(连表查询角色,用户) -->
-	<select id="queDtByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectDept4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_dept
@@ -80,7 +80,7 @@
 	</select>
 	
 	<!-- 根据条件查询所有部门 -->
-	<select id="queAllDeptByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectDeptByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_dept
