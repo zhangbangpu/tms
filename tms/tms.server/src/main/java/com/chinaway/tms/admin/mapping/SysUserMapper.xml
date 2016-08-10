@@ -16,10 +16,15 @@
 		<result column="createtime" property="createtime" />
 		<result column="codeid" property="codeid" />
 		<result column="deptid" property="deptid"/>
+		<result column="roleName" property="roleName"/>
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid,deptid
+	</sql>
+	
+	<sql id="Base_Column_lb_List">
+		a.id,a.loginname,a.password,a.type,a.name,a.intro,a.certificate,a.corporation,a.corporationim,a.phone,a.state,a.createtime,a.codeid,a.deptid,c.name as roleName
 	</sql>
 	
 	<sql id="Base_Column_Menu_List">
@@ -28,7 +33,56 @@
 
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
+		<trim suffixOverrides=",">
+			<if test="id != null and id != '' ">
+				and id = #{id}
+			</if>
+			<if test="loginname != null and loginname != '' ">
+				and loginname = #{loginname}
+			</if>
+			<if test="password != null and password != '' ">
+				and password = #{password}
+			</if>
+			<if test="type != null and type != '' ">
+				and type = #{type}
+			</if>
+			<if test="name != null and name != '' ">
+				and name = #{name}
+			</if>
+			<if test="intro != null and intro != '' ">
+				and intro = #{intro}
+			</if>
+			<if test="certificate != null and certificate != '' ">
+				and certificate = #{certificate}
+			</if>
+			<if test="corporation != null and corporation != '' ">
+				and corporation = #{corporation}
+			</if>
+			<if test="corporationim != null and corporationim != '' ">
+				and corporationim = #{corporationim}
+			</if>
+			<if test="phone != null and phone != '' ">
+				and phone = #{phone}
+			</if>
+			<if test="state != null and state != '' ">
+				and state = #{state}
+			</if>
+			<if test="createtime != null and createtime != '' ">
+				and createtime = #{createtime}
+			</if>
+			<if test="codeid != null and codeid != '' ">
+				and codeid = #{codeid}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 动态查询条件 连role表 -->
+	<sql id="lb_Where_Clause">
 		where 1=1
+		and 
+		    a.id = b.userid
+		and 
+		    b.roleid = c.id
 		<trim suffixOverrides=",">
 			<if test="id != null and id != '' ">
 				and id = #{id}
@@ -91,14 +145,12 @@
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAllUser4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />
-		from sys_user
-		<include refid="Example_Where_Clause" />
+		<include refid="Base_Column_lb_List" />
+		from sys_user a,sys_user_role b, sys_role c
+		<include refid="lb_Where_Clause" />
 	</select>
 	
-	<!-- 条件查询所有(连表查询部门,角色信息 不分页) 
-	--todo 做连表关联
-	-->
+	<!-- 条件查询所有(连表查询部门,角色信息 不分页)  todo 做连表关联 -->
 	<select id="queryUserByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />

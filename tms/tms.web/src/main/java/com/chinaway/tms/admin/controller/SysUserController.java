@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.service.SysUserService;
@@ -29,37 +30,19 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/queUserByCtnPgBn")
 	@ResponseBody
-	public String queUserByCtnPgBn(SysUser sysUser) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据条件分页查询用户操作失败!";
-
+	public String queUserByCtnPgBn(@RequestParam(value="page", defaultValue="1") int pageNo, 
+			@RequestParam(value="rows", defaultValue="10") int pageSize , SysUser sysUser) {
 		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("pageNo", pageNo);
+		argsMap.put("pageSize", pageSize);
 		argsMap.put("loginname", sysUser.getLoginname());
 		argsMap.put("name", sysUser.getName());
 		argsMap.put("phone", sysUser.getPhone());
 //		argsMap.put(key, sysUser.getState());
-		int ret = 0;
-		try {
-			PageBean<SysUser> sysUserPgBn = sysUserService.selectUser2PageBean(argsMap);
-			if(null != sysUserPgBn){
-				ret = sysUserPgBn.getResult().size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "根据条件分页查询用户操作成功!";
-			}
+		
+		PageBean<SysUser> sysUserPgBn = sysUserService.selectUser2PageBean(argsMap);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
+		return JsonUtil.obj2JsonStr(sysUserPgBn);
 	}
 	
 	/**
@@ -69,9 +52,9 @@ public class SysUserController {
 	 * @param deptInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/queAllUsrByCtn")
+	@RequestMapping(value = "/queAllUserByCtn")
 	@ResponseBody
-	public String queAllUsrByCtn() {
+	public String queAllUserByCtn() {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "查询所有用户操作失败!";
@@ -87,7 +70,8 @@ public class SysUserController {
 				code = 0;
 				msg = "查询所有用户操作成功!";
 			}
-
+			
+			resultMap.put("sysUserList", sysUserList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -121,6 +105,8 @@ public class SysUserController {
 				msg = "根据id查询用戶操作成功!";
 			}
 
+			//用户对象放入map
+			resultMap.put("sysUser", sysUser);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

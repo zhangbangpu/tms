@@ -65,10 +65,11 @@ public class JdbcUtil {
 	
 	public static void main(String[] args) {
 		String driver = "com.mysql.jdbc.Driver";
-//		String url = "jdbc:mysql://localhost:3306/tms?useUnicode=true&characterEncoding=utf-8";
-		String url = "jdbc:mysql://172.22.120.235:3306/tms?useUnicode=true&characterEncoding=utf-8";
+		String url = "jdbc:mysql://localhost:3306/tms?useUnicode=true&characterEncoding=utf-8";
+//		String url = "jdbc:mysql://172.22.120.235:3306/tms?useUnicode=true&characterEncoding=utf-8";
 		String username = "root";
-		String password = "root";
+//		String password = "root";
+		String password = "123sa";
 		JdbcUtil.getConn(driver, url, username, password);
 	}
 

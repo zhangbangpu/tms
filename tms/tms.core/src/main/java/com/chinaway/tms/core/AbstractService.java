@@ -50,4 +50,5 @@ public abstract class AbstractService<T, ID extends Serializable> implements Bas
 	public int insert(T record) {
 		return baseMapper.insert(record);
 	}
+
 }
