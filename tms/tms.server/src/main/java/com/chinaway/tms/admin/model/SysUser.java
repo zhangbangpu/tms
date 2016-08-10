@@ -27,4 +27,5 @@ public class SysUser implements Serializable {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+	
 }
