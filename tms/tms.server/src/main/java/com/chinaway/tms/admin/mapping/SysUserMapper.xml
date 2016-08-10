@@ -33,6 +33,7 @@
 
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
+	    where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null and id != '' ">
 				and id = #{id}
