@@ -89,29 +89,29 @@ $('#form_button').click(function() {
                 if (systems.length == 0) {
                     return;
                 }
-                var s = systems.pop();
-                var setTokenUrl = s.baseurl +
-                    '/inside.php?t=json&m=index&f=setUserToken&_TOKEN=' +
-                    $.cookie('_TOKEN');
-
-                window.onerror = function(info) {
-                    if (info == 'Script error.') {
-                        done++;
-                        write3rdToken(systems);
-                    }
-
-                    return true;
-                };
-                try {
-                    $.getScript(setTokenUrl, function() {
-                        done++;
-                        write3rdToken(systems);
-                    }).fail(function(res) {
-                        done++;
-                        write3rdToken(systems);
-                    });
-                } catch (err) {
-                }
+//                var s = systems.pop();
+//                var setTokenUrl = s.baseurl +
+//                    '/inside.php?t=json&m=index&f=setUserToken&_TOKEN=' +
+//                    $.cookie('_TOKEN');
+//
+//                window.onerror = function(info) {
+//                    if (info == 'Script error.') {
+//                        done++;
+//                        write3rdToken(systems);
+//                    }
+//
+//                    return true;
+//                };
+//                try {
+//                    $.getScript(setTokenUrl, function() {
+//                        done++;
+//                        write3rdToken(systems);
+//                    }).fail(function(res) {
+//                        done++;
+//                        write3rdToken(systems);
+//                    });
+//                } catch (err) {
+//                }
 
             }
 

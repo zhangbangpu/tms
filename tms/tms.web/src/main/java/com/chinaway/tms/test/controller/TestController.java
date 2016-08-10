@@ -23,22 +23,22 @@ public class TestController {
 	@Autowired
 	SysUserService sysUserService;
 	
-	@RequestMapping("/export")
-	public void export(HttpServletResponse response) {
-		try {
-			String fileName = "aa.xls";
-			String sheetName = "用户";
-			String[] titles = {"登录名"," 公司名称","联系方式"};
-			String[] fields = {"loginname","name","phone"};
-			Map<String, Object> argsMap = new HashMap<>();
-			List<Map<String, Object>> list = sysUserService.selectAll2Excel(argsMap);
-			ExcelInfo excelInfo =new ExcelInfo(fileName, sheetName, titles, fields, list);
-			
-			ExcelUtil.export2Http(excelInfo, response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@RequestMapping("/export")
+//	public void export(HttpServletResponse response) {
+//		try {
+//			String fileName = "aa.xls";
+//			String sheetName = "用户";
+//			String[] titles = {"登录名"," 公司名称","联系方式"};
+//			String[] fields = {"loginname","name","phone"};
+//			Map<String, Object> argsMap = new HashMap<>();
+//			List<Map<String, Object>> list = sysUserService.selectAll2Excel(argsMap);
+//			ExcelInfo excelInfo =new ExcelInfo(fileName, sheetName, titles, fields, list);
+//			
+//			ExcelUtil.export2Http(excelInfo, response);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@RequestMapping("/import2")
 	public void import2(@RequestParam(value = "file") MultipartFile file, HttpServletResponse response) {

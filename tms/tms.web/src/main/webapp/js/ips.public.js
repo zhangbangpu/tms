@@ -95,15 +95,19 @@ function Ips() {
             }
         }
 
-        var purl = this.appPath + 'data/' + module + '/' + method + '.dat';
-        if (remote) {
-            purl = this.options.apiurl;
-            if (purl.indexOf('?') > -1)
-                purl += '&';
-            else
-                purl += '?';
-            purl += 't=json&m=' + module + '&f=' + method;
+        var purl = this.appPath + module;
+        if(method){
+        	purl += '/' + method;
         }
+//        var purl = this.appPath + 'data/' + module + '/' + method + '.dat';
+//        if (remote) {
+//            purl = this.options.apiurl;
+//            if (purl.indexOf('?') > -1)
+//                purl += '&';
+//            else
+//                purl += '?';
+//            purl += 't=json&m=' + module + '&f=' + method;
+//        }
         $.ajax({
             async: callback ? true : false,
             timeout: 150000,
@@ -112,11 +116,11 @@ function Ips() {
             data: params,
             processData: true,
             datatype: 'json',
-            beforeSend: function(XMLHttpRequest) {
-                XMLHttpRequest.setRequestHeader('x-csrf-token',$.cookie('_TOKEN'));
-                if (beforesend)
-                    beforesend();
-            },
+//            beforeSend: function(XMLHttpRequest) {
+//                XMLHttpRequest.setRequestHeader('x-csrf-token',$.cookie('_TOKEN'));
+//                if (beforesend)
+//                    beforesend();
+//            },
             success: function(json) {
                 if (typeof json === 'string') {
                     if (json.length < 1) {

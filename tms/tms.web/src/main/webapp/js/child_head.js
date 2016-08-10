@@ -6,10 +6,11 @@ if (!window.location.origin)
      */
    window.location.origin = window.location.protocol + 
    '//' + window.location.host;
-RESOURCEURL = getBaseUrl('resourceurl', 
-    'inside.php?t=json&m=index&f=getResourceUrl');
-UCENTERURL = getBaseUrl('ucenterurl', 
-    'inside.php?t=json&m=index&f=getUcenterUrl');
+//RESOURCEURL = getBaseUrl('resourceurl', 
+//    'inside.php?t=json&m=index&f=getResourceUrl');
+//UCENTERURL = getBaseUrl('ucenterurl', 
+//    'inside.php?t=json&m=index&f=getUcenterUrl');
+RESOURCEURL = getResourceUrl();
 var resourceFiles = [
     '/js/libs/jquery-2.1.3.min.js',
     '/js/libs/jquery-ui-1.10.3.min.js',
