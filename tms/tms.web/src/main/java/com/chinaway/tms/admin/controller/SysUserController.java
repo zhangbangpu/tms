@@ -3,11 +3,13 @@ package com.chinaway.tms.admin.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.utils.json.JsonUtil;
@@ -30,7 +32,7 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/queUserByCtnPgBn")
 	@ResponseBody
-	public String queUserByCtnPgBn(@RequestParam(value="page", defaultValue="1") int pageNo, 
+	public PageBean<SysUser> queUserByCtnPgBn(@RequestParam(value="page", defaultValue="1") int pageNo, 
 			@RequestParam(value="rows", defaultValue="10") int pageSize , SysUser sysUser) {
 		Map<String, Object> argsMap = new HashMap<String, Object>();
 		argsMap.put("pageNo", pageNo);
@@ -42,7 +44,8 @@ public class SysUserController {
 		
 		PageBean<SysUser> sysUserPgBn = sysUserService.selectUser2PageBean(argsMap);
 
-		return JsonUtil.obj2JsonStr(sysUserPgBn);
+//		JsonUtil.obj2JsonStr(result);
+		return sysUserPgBn;
 	}
 	
 	/**
@@ -54,7 +57,7 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/queAllUserByCtn")
 	@ResponseBody
-	public String queAllUserByCtn() {
+	public Result queAllUserByCtn() {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "查询所有用户操作失败!";
@@ -80,7 +83,8 @@ public class SysUserController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+//		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -92,7 +96,7 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/queryUserById")
 	@ResponseBody
-	public String queryUserById(String id) {
+	public Result queryUserById(@RequestParam(value="id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据id查询用戶操作失败!";
@@ -115,7 +119,8 @@ public class SysUserController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+//		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -127,14 +132,16 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/addUser")
 	@ResponseBody
-	public String addUser(SysUser sysUser) {
+	public Result addUser(@RequestParam(value="sysUser") String sysUser) {
+		SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "添加操作失败!";
 
 		int ret = 0;
 		try {
-			ret = sysUserService.insert(sysUser);
+			ret = sysUserService.insert(user);
 
 			if (ret > 0) {
 				code = 0;
@@ -147,8 +154,8 @@ public class SysUserController {
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
+//		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -160,7 +167,7 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/bathDelUser")
 	@ResponseBody
-	public String bathDelUser(String ids) {
+	public Result bathDelUser(String ids) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -181,8 +188,8 @@ public class SysUserController {
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
+//		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -194,7 +201,7 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/delUser")
 	@ResponseBody
-	public String delUser(String id) {
+	public Result delUser(String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -215,7 +222,8 @@ public class SysUserController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+//		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -227,18 +235,19 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/updateUser")
 	@ResponseBody
-	public String updateUser(SysUser sysUser) {
+	public Result updateUser(@RequestParam(value="sysUser") String sysUser) {
+		SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = "修改操作失败!";
 
 		int ret = 0;
 		try {
-			ret = sysUserService.update(sysUser);
+			ret = sysUserService.update(user);
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = "修改操作成功!";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -248,7 +257,7 @@ public class SysUserController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 
 }

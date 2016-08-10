@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.admin.model.SysMenu;
@@ -18,6 +19,7 @@ import com.chinaway.tms.admin.service.SysMenuService;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.utils.json.JsonUtil;
+import com.chinaway.tms.vo.Result;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -44,12 +46,15 @@ public class LoginController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/login")
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/html; charset=utf-8")
 	@ResponseBody
-	public String login(@RequestParam("username") String username, @RequestParam("password") String password) {
+	public Result login(@RequestParam("username") String username, @RequestParam("password") String password) {
 		LOGGER.info("username=" + username + "password=" + password);
 
 		Map<String, Object> argsMap = new HashMap<String, Object>();
+		int code = 1;
+		String msg = "登录异常!";
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			argsMap.put("loginname", username);
 			argsMap.put("password", password);
@@ -61,18 +66,20 @@ public class LoginController {
 				List<SysMenu> sysMenuList = sysMenuService.queryMenuByRoleId(sysRole.getId());
 				request.getSession().setAttribute("sysRole", sysRole);
 				request.getSession().setAttribute("sysMenuList", sysMenuList);
-				argsMap.put("status", "true");
-				argsMap.put("msg", "login success!");
+				code = 0;
+				msg = "登录成功!";
+			}else{
+				code = 1;
+				msg = "用户名或密码不正确!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
-			argsMap.put("status", "false");
-			argsMap.put("msg", "login failed!");
 		}
 
-		String ret = JsonUtil.obj2JsonStr(argsMap);
-		LOGGER.info("login传出的参数:" + ret);
-		return ret;
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+		return result;
 	}
 	
 	/**

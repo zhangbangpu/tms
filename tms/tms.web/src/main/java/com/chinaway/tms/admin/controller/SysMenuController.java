@@ -1,7 +1,10 @@
 package com.chinaway.tms.admin.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,25 @@ public class SysMenuController {
 	@Autowired
 	private SysMenuService sysMenuService;
 
+	
+	/**
+	 * 用户登录<br>
+	 * 返回用户的json串
+	 * 
+	 * @param userInfo
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/ajaxLoginGetMenuList")
+	@ResponseBody
+	public String AjaxLoginGetMenuList(HttpServletRequest request) {
+		//连表查询角色信息
+		List<SysMenu> sysMenuList = (List<SysMenu>)request.getSession().getAttribute("sysMenuList");
+
+		String ret = JsonUtil.obj2JsonStr(sysMenuList);
+		return ret;
+	}
+	
 	/**
 	 * 根据所有菜单信息<br>
 	 * 返回用户的json串
