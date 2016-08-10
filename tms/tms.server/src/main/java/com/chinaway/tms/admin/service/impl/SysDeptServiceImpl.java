@@ -2,9 +2,11 @@ package com.chinaway.tms.admin.service.impl;
 
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.chinaway.tms.admin.dao.SysDeptMapper;
 import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.service.SysDeptService;
@@ -45,7 +47,8 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 		//注意map要先设置pageBean,拦截器里面要获取其值
 		map.put("pageBean", pageBean);
 		map.put("needPage", true);//是否分页，默认是false不分页
-		return sysDeptMapper.selectDept4Page(map);
+		pageBean.setResult(sysDeptMapper.selectAll4Page(map));
+		return pageBean;
 	}
 	
 	@Override
