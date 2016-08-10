@@ -4,3 +4,15 @@ http://localhost/tms/ws/addSite?siteInfo={"address":"四川省成都市双流区
 //http://localhost/tms/ws/addLine?lineInfo={"code":"01","deptname":"分拨站","endsite":"08","fromcode":"03","halfwaysite":"02","id":0,"linetype":"1","mileage":"20km","name":"旅游班线","operates":"修改线路成功","pdeptname":"物流中心","roadtoll":1,"runtime":"30","startsite":"01","transmoney":1,"transtype":"2","updatetime":"2016-08-03 10:34:20","vehicleline":"最近线路"}
 //登录
 http://localhost/tms/ws/login?username=huitongwuliu&password=123
+//分页查询用户信息带分页 连表
+http://localhost/sysUser/queUserByCtnPgBn
+{"pageLast":10,"pageNo":1,"pageSize":10,"result":[{"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","roleName":"品牌公司角色","state":"3","type":"1"}],"start":0,"totalCount":1}
+http://localhost/sysUser/queAllUserByCtn
+{"code":0,"data":{"code":0,"msg":"查询所有用户操作成功!","sysUserList":[{"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","state":"3","type":"1"}]},"message":"查询所有用户操作成功!"}
+http://localhost/sysUser/queryUserById?id=1
+{"code":0,"data":{"sysUser":{"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","state":"3","type":"1"},"code":0,"msg":"根据id查询用戶操作成功!"},"message":"根据id查询用戶操作成功!"}
+http://localhost/sysUser/addUser?sysUser={"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","state":"3","type":"1"}
+{"code":0,"data":{"code":0,"msg":"添加操作成功!"},"message":"添加操作成功!"}
+http://localhost/sysUser/delUser?id=3
+{"code":0,"data":{"code":0,"msg":"删除操作成功!"},"message":"删除操作成功!"}
+http://localhost/sysUser/updateUser?sysUser={"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"1","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","state":"2","type":"2"}
