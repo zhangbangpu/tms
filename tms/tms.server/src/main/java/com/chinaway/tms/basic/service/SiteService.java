@@ -9,13 +9,6 @@ import com.chinaway.tms.utils.page.PageBean;
 public interface SiteService extends BaseService<Site, Integer> {
 
 	/**
-	 * 根据条件分页查询说有站点
-	 * @param argsMap
-	 * @return
-	 */
-	PageBean<Site> selectSite2PageBean(Map<String, Object> argsMap);
-	
-	/**
 	 * 根据条件查询所有站点
 	 * @param argsMap
 	 * @return

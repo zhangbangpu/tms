@@ -31,8 +31,8 @@ public class MyBeanUtil{
 	 * @param request
 	 * @return
 	 */
-	public static Map<String, String> getParameterMap(HttpServletRequest request){
-		Map<String, String> map =new HashMap<>();
+	public static Map<String, Object> getParameterMap(HttpServletRequest request){
+		Map<String, Object> map =new HashMap<>();
 		Enumeration<String> paraNames = request.getParameterNames();
 		while (paraNames.hasMoreElements()) {
 			String key = paraNames.nextElement();

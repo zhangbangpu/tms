@@ -358,7 +358,7 @@
 				    <artifactId>tomcat-maven-plugin</artifactId>
 				    <version>1.1</version>
 				    <configuration>
-				        <path>/tms</path><!-- 项目名 -->
+				        <path>/</path><!-- 项目名 -->
 				        <port>80</port>
 				        <uriEncoding>UTF-8</uriEncoding>
 				        <url>http://localhost:80/manager/html</url>

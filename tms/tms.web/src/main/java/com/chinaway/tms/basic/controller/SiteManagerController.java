@@ -1,8 +1,10 @@
-package com.chinaway.tms.admin.controller;
+package com.chinaway.tms.basic.controller;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.basic.model.Site;
 import com.chinaway.tms.basic.service.SiteService;
+import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
@@ -67,39 +70,15 @@ public class SiteManagerController {
 	 * @param deptInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/selectSite2PageBean")
+	@RequestMapping(value = "/page")
 	@ResponseBody
-	public String selectSite2PageBean(Site site) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据条件查询站点操作失败!";
-
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("name", site.getName());
-//		argsMap.put(key, sysDept.);
-//		argsMap.put(key, value);
-//		argsMap.put(key, value);
-		int ret = 0;
-		try {
-			PageBean<Site> sitePgBn = siteService.selectSite2PageBean(argsMap);
-			if (null != sitePgBn) {
-				ret = sitePgBn.getResult().size();
-			}
-
-			if (ret > 0) {
-				code = 0;
-				msg = "根据条件查询站点操作成功!";
-			}
-
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return JsonUtil.obj2JsonStr(result);
+	public Result selectSite2PageBean(HttpServletRequest request) {
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		PageBean<Site> pageBean = siteService.select2PageBean(argsMap);
+		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
+		//return JsonUtil.obj2JsonStr(resultJson);
+		return new Result(0, pageBean);
 	}
 	
 	/**
@@ -111,7 +90,7 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
-	public String queryOneById(String id) {
+	public Result queryOneById(String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据id查询部门操作失败!";
@@ -132,7 +111,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -144,7 +123,7 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/addSite")
 	@ResponseBody
-	public String addSite(Site site) {
+	public Result addSite(Site site) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "添加站点失败!";
@@ -164,7 +143,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	
@@ -177,7 +156,7 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/deleteById")
 	@ResponseBody
-	public String deleteById(@RequestParam("ids") String ids) {
+	public Result deleteById(@RequestParam("ids") String ids) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -198,7 +177,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -210,7 +189,7 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/delDept")
 	@ResponseBody
-	public String updateDept(Site site) {
+	public Result updateDept(Site site) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "修改站点失败!";
@@ -231,7 +210,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 }

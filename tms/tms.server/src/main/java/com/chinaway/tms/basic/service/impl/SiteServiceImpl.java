@@ -38,17 +38,7 @@ public class SiteServiceImpl extends AbstractService<Site, Integer> implements S
 		pageBean.setResult(siteMapper.selectAll4Page(map));
 		return pageBean;
 	}
-	
-	@Override 
-	public PageBean<Site> selectSite2PageBean(Map<String, Object> map) {
-		PageBean<Site> pageBean = new PageBean<>();
-		pageBean.setPageNo(Integer.parseInt(map.get("pageNo").toString()));
-		pageBean.setPageSize(Integer.parseInt(map.get("pageSize").toString()));
-		//注意map要先设置pageBean,拦截器里面要获取其值
-		map.put("pageBean", pageBean);
-		map.put("needPage", true);//是否分页，默认是false不分页
-		return siteMapper.selectSite2PageBean(map);
-	}
+
 	
 	@Override
 	public List<Site> selectAllSiteByCtn(Map<String, Object> argsMap) {
