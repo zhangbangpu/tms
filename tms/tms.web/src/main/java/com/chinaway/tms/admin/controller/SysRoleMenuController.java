@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysRoleMenu;
@@ -29,17 +30,18 @@ public class SysRoleMenuController {
 	 */
 	@RequestMapping(value = "/addRoleMenu")
 	@ResponseBody
-	public String addRoleMenu(SysRoleMenu sysRoleMenu) {
+	public Result addRoleMenu(@RequestParam(value="sysRoleMenu") String sysRoleMenu) {
+		SysRoleMenu roleMenu = (SysRoleMenu)JsonUtil.jsonStr2Obj(sysRoleMenu, SysRoleMenu.class);
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加操作失败!";
+		String msg = "添加角色菜单操作失败!";
 
 		int ret = 0;
 		try {
-			sysRoleMenuService.insert(sysRoleMenu);
+			ret = sysRoleMenuService.insert(roleMenu);
 			if (ret > 0) {
 				code = 0;
-				msg = "添加操作成功!";
+				msg = "添加角色菜单操作成功!";
 			}
 
 		} catch (Exception e) {
@@ -50,7 +52,7 @@ public class SysRoleMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 
 	/**
@@ -60,12 +62,12 @@ public class SysRoleMenuController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/delUserRole")
+	@RequestMapping(value = "/delRoleMenu")
 	@ResponseBody
-	public String delUserRole(String id) {
+	public Result delRoleMenu(@RequestParam(value="id")String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = "删除角色菜单操作失败!";
 
 		int ret = 0;
 		try {
@@ -73,7 +75,7 @@ public class SysRoleMenuController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = "删除角色菜单操作成功!";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,6 +85,6 @@ public class SysRoleMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 }

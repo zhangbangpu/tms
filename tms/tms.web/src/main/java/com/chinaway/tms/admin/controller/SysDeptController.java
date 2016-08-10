@@ -3,10 +3,13 @@ package com.chinaway.tms.admin.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.utils.json.JsonUtil;
@@ -29,26 +32,35 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/queryDeptByCondition")
 	@ResponseBody
-	public String queryDeptByCondition(SysDept sysDept) {
+	public Result queryDeptByCondition(@RequestParam(value="page", defaultValue="1") int pageNo, 
+			@RequestParam(value="rows", defaultValue="10") int pageSize , @RequestParam(value="sysDept") String sysDept) {
+		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
+		
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("pageNo", pageNo);
+		argsMap.put("pageSize", pageSize);
+		if(null != dept){
+			argsMap.put("name", dept.getName());
+//			argsMap.put(key, sysDept.);
+//			argsMap.put(key, value);
+//			argsMap.put(key, value);
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据条件查询部门操作失败!";
-
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("name", sysDept.getName());
-//		argsMap.put(key, sysDept.);
-//		argsMap.put(key, value);
-//		argsMap.put(key, value);
+		
 		int ret = 0;
 		try {
-			PageBean<SysDept> sysDtMenuPgBn = sysDeptService.selectDept2PageBean(argsMap);
-			if (null != sysDtMenuPgBn) {
-				ret = sysDtMenuPgBn.getResult().size();
+			PageBean<SysDept> sysDeptPgBn = sysDeptService.selectDept2PageBean(argsMap);
+			if (null != sysDeptPgBn) {
+				ret = sysDeptPgBn.getResult().size();
 			}
 
 			if (ret > 0) {
 				code = 0;
 				msg = "根据条件查询部门操作成功!";
+				resultMap.put("sysDeptList", sysDeptPgBn.getResult());
 			}
 
 		} catch (Exception e) {
@@ -59,7 +71,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -71,7 +83,7 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/queryAllDept")
 	@ResponseBody
-	public String queryAllDept() {
+	public Result queryAllDept() {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "查询所有部门操作失败!";
@@ -86,6 +98,7 @@ public class SysDeptController {
 			if (ret > 0) {
 				code = 0;
 				msg = "查询所有部门操作成功!";
+				resultMap.put("sysDeptList", sysDeptList);
 			}
 
 		} catch (Exception e) {
@@ -96,7 +109,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -108,17 +121,19 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
-	public String queryOneById(String id) {
+	public Result queryOneById(@RequestParam(value="id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据id查询部门操作失败!";
 
 		try {
-			SysDept sysDt = sysDeptService.selectById(id == "" ? 0 : Integer.parseInt(id));
+			SysDept sysDept = sysDeptService.selectById(id == "" ? 0 : Integer.parseInt(id));
 
-			if (null != sysDt) {
+			if (null != sysDept) {
 				code = 0;
 				msg = "根据id查询部门操作成功!";
+				//用户对象放入map
+				resultMap.put("sysDept", sysDept);
 			}
 
 		} catch (Exception e) {
@@ -129,7 +144,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -141,14 +156,16 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/addDept")
 	@ResponseBody
-	public String addDept(SysDept sysDept) {
+	public Result addDept(@RequestParam(value="sysDept") String  sysDept) {
+		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "添加操作失败!";
 
 		int ret = 0;
 		try {
-			sysDeptService.insert(sysDept);
+			ret = sysDeptService.insert(dept);
 			if (ret > 0) {
 				code = 0;
 				msg = "添加操作成功!";
@@ -162,7 +179,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -174,7 +191,7 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/bathDelDept")
 	@ResponseBody
-	public String bathDelDept(String ids) {
+	public Result bathDelDept(@RequestParam(value="ids") String ids) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -196,7 +213,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -208,10 +225,10 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/delDept")
 	@ResponseBody
-	public String delDept(String id) {
+	public Result delDept(@RequestParam(value="id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = "删除部门操作失败!";
 
 		int ret = 0;
 		try {
@@ -219,7 +236,7 @@ public class SysDeptController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = "删除部门操作成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -229,7 +246,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -241,18 +258,20 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/updateDept")
 	@ResponseBody
-	public String updateDept(SysDept sysDept) {
+	public Result updateDept(@RequestParam(value="sysDept") String sysDept) {
+		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改操作失败!";
+		String msg = "修改部门操作失败!";
 
 		int ret = 0;
 		try {
-			ret = sysDeptService.update(sysDept);
+			ret = sysDeptService.update(dept);
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改操作成功!";
+				msg = "修改部门操作成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -262,7 +281,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 }

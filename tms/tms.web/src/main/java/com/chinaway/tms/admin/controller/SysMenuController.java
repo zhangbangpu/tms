@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysMenu;
@@ -52,11 +53,25 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/queryAllMenu")
 	@ResponseBody
-	public String queryAllMenu() {
+	public Result queryAllMenu(@RequestParam(value="page", defaultValue="1") int pageNo, 
+			@RequestParam(value="rows", defaultValue="10") int pageSize , @RequestParam(value="sysMenu") String sysMenu) {
+		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+		
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("pageNo", pageNo);
+		argsMap.put("pageSize", pageSize);
+		if(null != menu){
+			argsMap.put("name", menu.getName());
+			argsMap.put("levels", menu.getLevels());
+			argsMap.put("menutype", menu.getMenutype());
+			argsMap.put("pid", menu.getPid());
+			argsMap.put("requesturl", menu.getRequesturl());
+			argsMap.put("sotid", menu.getSotid());
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "查询所有菜单操作失败!";
-		Map<String, Object> argsMap = new HashMap<String, Object>();
 		int ret = 0;
 		try {
 			PageBean<SysMenu> sysMenuPgBn = sysMenuService.selectMenu2PageBean(argsMap);
@@ -67,6 +82,7 @@ public class SysMenuController {
 			if (ret > 0) {
 				code = 0;
 				msg = "查询所有菜单操作成功!";
+				resultMap.put("sysMenuList", sysMenuPgBn.getResult());
 			}
 
 		} catch (Exception e) {
@@ -77,7 +93,7 @@ public class SysMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -89,7 +105,7 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
-	public String queryOneById(String id) {
+	public Result queryOneById(@RequestParam(value="id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据id查询菜单操作失败!";
@@ -100,6 +116,7 @@ public class SysMenuController {
 			if (null != sysMenu) {
 				code = 0;
 				msg = "根据id查询菜单操作成功!";
+				resultMap.put("sysMenu", sysMenu);
 			}
 
 		} catch (Exception e) {
@@ -110,7 +127,7 @@ public class SysMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -122,17 +139,19 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/addMenu")
 	@ResponseBody
-	public String addMenu(SysMenu sysMenu) {
+	public Result addMenu(@RequestParam(value="sysMenu") String sysMenu) {
+		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加操作失败!";
+		String msg = "添加菜单操作失败!";
 
 		int ret = 0;
 		try {
-			sysMenuService.insert(sysMenu);
+			ret = sysMenuService.insert(menu);
 			if (ret > 0) {
 				code = 0;
-				msg = "添加操作成功!";
+				msg = "添加菜单操作成功!";
 			}
 
 		} catch (Exception e) {
@@ -143,7 +162,7 @@ public class SysMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -155,7 +174,7 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/bathDelMenu")
 	@ResponseBody
-	public String bathDelMenu(String ids) {
+	public Result bathDelMenu(@RequestParam(value="ids") String ids) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -177,7 +196,7 @@ public class SysMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -189,7 +208,7 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/delMenu")
 	@ResponseBody
-	public String delMenu(String id) {
+	public Result delMenu(@RequestParam(value="id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -210,7 +229,7 @@ public class SysMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -222,18 +241,20 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/updateMenu")
 	@ResponseBody
-	public String updateMenu(SysMenu sysMenu) {
+	public Result updateMenu(@RequestParam(value="sysMenu") String sysMenu) {
+		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改操作失败!";
+		String msg = "修改菜单操作失败!";
 
 		int ret = 0;
 		try {
-			ret = sysMenuService.update(sysMenu);
+			ret = sysMenuService.update(menu);
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改操作成功!";
+				msg = "修改菜单操作成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -243,7 +264,7 @@ public class SysMenuController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 }

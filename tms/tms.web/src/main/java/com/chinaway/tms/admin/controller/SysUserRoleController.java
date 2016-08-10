@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysUserRole;
@@ -29,17 +30,18 @@ public class SysUserRoleController {
 	 */
 	@RequestMapping(value = "/addUserRole")
 	@ResponseBody
-	public String addUserRole(SysUserRole sysUserRole) {
+	public Result addUserRole(@RequestParam(value="sysUserRole") String sysUserRole) {
+		SysUserRole userRole = (SysUserRole)JsonUtil.jsonStr2Obj(sysUserRole, SysUserRole.class);
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加操作失败!";
+		String msg = "添加用户角色操作失败!";
 
 		int ret = 0;
 		try {
-			sysUserRoleService.insert(sysUserRole);
+			ret = sysUserRoleService.insert(userRole);
 			if (ret > 0) {
 				code = 0;
-				msg = "添加操作成功!";
+				msg = "添加用户角色操作成功!";
 			}
 
 		} catch (Exception e) {
@@ -50,7 +52,7 @@ public class SysUserRoleController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 	
 	/**
@@ -62,10 +64,10 @@ public class SysUserRoleController {
 	 */
 	@RequestMapping(value = "/delUserRole")
 	@ResponseBody
-	public String delUserRole(String id) {
+	public Result delUserRole(@RequestParam(value="id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = "删除用户角色操作失败!";
 
 		int ret = 0;
 		try {
@@ -73,7 +75,7 @@ public class SysUserRoleController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = "删除用户角色操作成功!";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,6 +85,6 @@ public class SysUserRoleController {
 		resultMap.put("msg", msg);
 		Result result = new Result(code, resultMap, msg);
 
-		return JsonUtil.obj2JsonStr(result);
+		return result;
 	}
 }
