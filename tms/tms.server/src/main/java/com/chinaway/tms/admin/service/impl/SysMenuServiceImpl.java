@@ -45,7 +45,8 @@ public class SysMenuServiceImpl extends AbstractService<SysMenu, Integer> implem
 		//注意map要先设置pageBean,拦截器里面要获取其值
 		map.put("pageBean", pageBean);
 		map.put("needPage", true);//是否分页，默认是false不分页
-		return sysMenuMapper.selectAllMenu4Page(map);
+		pageBean.setResult(sysMenuMapper.selectAll4Page(map));
+		return pageBean;
 	}
 	
 	@Override

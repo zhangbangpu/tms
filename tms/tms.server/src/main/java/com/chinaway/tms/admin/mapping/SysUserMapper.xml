@@ -86,43 +86,43 @@
 		    b.roleid = c.id
 		<trim suffixOverrides=",">
 			<if test="id != null and id != '' ">
-				and id = #{id}
+				and a.id = #{id}
 			</if>
 			<if test="loginname != null and loginname != '' ">
-				and loginname = #{loginname}
+				and a.loginname = #{loginname}
 			</if>
 			<if test="password != null and password != '' ">
-				and password = #{password}
+				and a.password = #{password}
 			</if>
 			<if test="type != null and type != '' ">
-				and type = #{type}
+				and a.type = #{type}
 			</if>
 			<if test="name != null and name != '' ">
-				and name = #{name}
+				and a.name = #{name}
 			</if>
 			<if test="intro != null and intro != '' ">
-				and intro = #{intro}
+				and a.intro = #{intro}
 			</if>
 			<if test="certificate != null and certificate != '' ">
 				and certificate = #{certificate}
 			</if>
 			<if test="corporation != null and corporation != '' ">
-				and corporation = #{corporation}
+				and a.corporation = #{corporation}
 			</if>
 			<if test="corporationim != null and corporationim != '' ">
-				and corporationim = #{corporationim}
+				and a.corporationim = #{corporationim}
 			</if>
 			<if test="phone != null and phone != '' ">
-				and phone = #{phone}
+				and a.phone = #{phone}
 			</if>
 			<if test="state != null and state != '' ">
-				and state = #{state}
+				and a.state = #{state}
 			</if>
 			<if test="createtime != null and createtime != '' ">
-				and createtime = #{createtime}
+				and a.createtime = #{createtime}
 			</if>
 			<if test="codeid != null and codeid != '' ">
-				and codeid = #{codeid}
+				and a.codeid = #{codeid}
 			</if>
 		</trim>
 	</sql>

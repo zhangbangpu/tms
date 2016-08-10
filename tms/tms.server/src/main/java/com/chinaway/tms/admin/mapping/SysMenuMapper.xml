@@ -79,8 +79,8 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
-	<!-- 条件查询所有菜单 -->
-	<select id="queAllMenuByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<!-- 条件查询所有菜单 -->  
+	<select id="selectAllMenu4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_menu

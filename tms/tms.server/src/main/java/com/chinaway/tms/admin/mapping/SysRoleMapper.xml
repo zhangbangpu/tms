@@ -46,23 +46,23 @@
 		</trim>
 	</sql>
 
-	<!-- 根据id查询 -->
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select
-		<include refid="Base_Column_List" />
-		from sys_role where id = #{id}
-	</select>
-
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
-	<select id="selectAll4Page" resultMap="BaseResultMap"
-		parameterType="java.util.Map">
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_role
 		<include refid="Example_Where_Clause" />
 	</select>
 	
-	<!-- 根据条件查询所有角色(连表查询用于列表页按角色名,部门查询) -->
+    <!-- 根据条件分页查询角色 (连表查询用于列表页按角色名,部门查询)-->
+	<select id="selectAllRole4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 根据条件查询所有角色(不分页) -->
 	<select id="queAllRoleByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
@@ -70,14 +70,6 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
-    <!-- 根据条件分页查询角色 -->
-	<select id="queRolByCtnPgBn" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from sys_role
-		<include refid="Example_Where_Clause" />
-	</select>
-
 	<!-- 根据用户id查询角色(连表查询用于登录) -->
 	<select id="queryRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
@@ -86,6 +78,13 @@
 		<include refid="userid_Where_Clause" />
 	</select>
 
+	<!-- 根据id查询 -->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role where id = #{id}
+	</select>
+	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysRole">
 		insert into sys_role(id,name,description,type)

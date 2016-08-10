@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.chinaway.tms.admin.model.SysRole;
-import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.core.BaseMapper;
 import com.chinaway.tms.utils.page.PageBean;
 
@@ -23,7 +22,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole, Integer> {
 	 * @param argsMap
 	 * @return
 	 */
-	List<SysUser> queAllRoleByCtn(Map<String, Object> argsMap);
+	List<SysRole> queAllRoleByCtn(Map<String, Object> argsMap);
 
 	/**
 	 * 查询角色根据用户id
