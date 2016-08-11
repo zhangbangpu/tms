@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +167,7 @@ public class SysUserController {
 
 		int ret = 0;
 		try {
+			user.setCreatetime(new Date());
 			ret = sysUserService.insert(user);
 
 			if (ret > 0) {
