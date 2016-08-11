@@ -1,13 +1,13 @@
 //判断用户是否登陆
-$ips.load('login', 'isLogin', null, function(result) {
-    if (result.success)
-    {
-        if (getPar('referer') != false) {
-            window.location.href = getPar('referer');
-        }
-        redirectToGateway();
-    }
-});
+//$ips.load('login', 'isLogin', null, function(result) {
+//    if (result.success)
+//    {
+//        if (getPar('referer') != false) {
+//            window.location.href = getPar('referer');
+//        }
+//        redirectToGateway();
+//    }
+//});
 function getPar(par) {
     //获取当前URL
     var local_url = document.location.href;
@@ -25,13 +25,13 @@ function getPar(par) {
     }
     return get_par;
 }
-$.backstretch([
-  'img/g7/bg2.jpg',
-  'img/g7/bg1.jpg'
-  ], {
-    fade: 1000,
-    duration: 7000
-});
+//$.backstretch([
+//  'img/g7/bg2.jpg',
+//  'img/g7/bg1.jpg'
+//  ], {
+//    fade: 1000,
+//    duration: 7000
+//});
 $('#login-form').validate({
     rules: {
         user_name: {
@@ -68,62 +68,19 @@ $('#form_button').click(function() {
         return false;
     }
     var pararm = $('#login-form').serialize();
-    $ips.load('login', 'userLogin', pararm, function(result) {
-        if (result.success == true) {
-            $ips.succeed(result.message);
-            var parms = $ips.getUrlParams();
-            var ref = unescape(parms.referer);
-
-            var sum = result.systems.length;
-            var done = 0;
-
-            function write3rdToken(systems) {
-                if (done == sum) {
-                    if (!!parms.referer) {
-                        window.location.href = ref;
-                    } else {
-                        redirectToGateway();
-                    }
-                    return;
-                }
-                if (systems.length == 0) {
-                    return;
-                }
-//                var s = systems.pop();
-//                var setTokenUrl = s.baseurl +
-//                    '/inside.php?t=json&m=index&f=setUserToken&_TOKEN=' +
-//                    $.cookie('_TOKEN');
-//
-//                window.onerror = function(info) {
-//                    if (info == 'Script error.') {
-//                        done++;
-//                        write3rdToken(systems);
-//                    }
-//
-//                    return true;
-//                };
-//                try {
-//                    $.getScript(setTokenUrl, function() {
-//                        done++;
-//                        write3rdToken(systems);
-//                    }).fail(function(res) {
-//                        done++;
-//                        write3rdToken(systems);
-//                    });
-//                } catch (err) {
-//                }
-
-            }
-
-            write3rdToken(result.systems);
-        } else {
-            $('.padding-top-10:first').animate({right: '10px'},80);
-            $('.padding-top-10:first').animate({right: ''},80);
-            $('.padding-top-10:first').animate({left: '10px'},80);
-            $('.padding-top-10:first').animate({left: ''},80);
-            $('.padding-top-10:first').removeAttr('style');
-            $ips.error(result.message);
-        }
+    $ips.load('login', 'login', pararm, function(result) {
+    	console.log(result);
+    	console.log(typeof result);
+    	window.location.href="index.html";
+//        if (result.success == true) {
+//        } else {
+//            $('.padding-top-10:first').animate({right: '10px'},80);
+//            $('.padding-top-10:first').animate({right: ''},80);
+//            $('.padding-top-10:first').animate({left: '10px'},80);
+//            $('.padding-top-10:first').animate({left: ''},80);
+//            $('.padding-top-10:first').removeAttr('style');
+//            $ips.error(result.message);
+//        }
     });
     return false;
 });
