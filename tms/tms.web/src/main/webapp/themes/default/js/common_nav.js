@@ -1,46 +1,45 @@
 $(function() {
-	 var data = eval("[{'id':1,'parentId':0,'name':'Dashboard','resUrl':'index.html','clazz':'menu-item-parent','type':0,'title':'Dashboard','img':'fa fa-lg fa-fw fa-home'}," +
-	 "{'id':2,'parentId':0,'name':'Inbox','resUrl':'inbox.html','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-inbox'}," +
-	 "{'id':3,'parentId':0,'name':'Graphs','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-bar-chart-o'}," +
-	 "{'id':4,'parentId':0,'name':'Tables','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
-	 "{'id':6,'parentId':3, 'name':'Flot Chart','resUrl':'flot.html','clazz':'','type':1,'title':'','img':''}," +
-	 "{'id':7,'parentId':3, 'name':'Morris Charts','resUrl':'morris.html','clazz':'','type':1,'title':'','img':''}," +
-	 "{'id':8,'parentId':6, 'name':'Inline Charts','resUrl':'inline-charts.html','clazz':'','type':1,'title':'','img':''},"	 +
-	 "{'id':9,'parentId':4, 'name':'Normal Tables','resUrl':'table.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
-	 "{'id':10,'parentId':4, 'name':'Data Tables','resUrl':'datatables2.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
-	 "{'id':10,'parentId':4, 'name':'容器','resUrl':'/container/index.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table','module':'container','method':'index'}," +
-	 "{'id':5,'parentId':0, 'name':'Forms','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-pencil-square-o'}]");
+//	 var data = eval("[{'id':1,'parentId':0,'name':'Dashboard','resUrl':'index.html','clazz':'menu-item-parent','type':0,'title':'Dashboard','img':'fa fa-lg fa-fw fa-home'}," +
+//	 "{'id':2,'parentId':0,'name':'Inbox','resUrl':'inbox.html','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-inbox'}," +
+//	 "{'id':3,'parentId':0,'name':'Graphs','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-bar-chart-o'}," +
+//	 "{'id':4,'parentId':0,'name':'Tables','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
+//	 "{'id':6,'parentId':3, 'name':'Flot Chart','resUrl':'flot.html','clazz':'','type':1,'title':'','img':''}," +
+//	 "{'id':7,'parentId':3, 'name':'Morris Charts','resUrl':'morris.html','clazz':'','type':1,'title':'','img':''}," +
+//	 "{'id':8,'parentId':6, 'name':'Inline Charts','resUrl':'inline-charts.html','clazz':'','type':1,'title':'','img':''},"	 +
+//	 "{'id':9,'parentId':4, 'name':'Normal Tables','resUrl':'table.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
+//	 "{'id':10,'parentId':4, 'name':'Data Tables','resUrl':'datatables2.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
+//	 "{'id':10,'parentId':4, 'name':'容器','resUrl':'/container/index.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table','module':'container','method':'index'}," +
+//	 "{'id':5,'parentId':0, 'name':'Forms','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-pencil-square-o'}]");
 
-//
-//	$.getJSON("resource/menuLists", function(data) {
-//        //var $menu = new Menu();
-//        //$menu.loadMenu("/data.txt");
-//
-//		var menu = resourceMenu(data);
+//	var data = eval('[{"resUrl":"/ws/querySite","id":2,"parentId":0,"title":"站点管理","name":"站点管理","img":"fa fa-lg fa-fw fa-table","type":"1","clazz":"menu-item-parent"},{"resUrl":"/sysUser/queUserByCtnPgBn?page=1&rows=10&sysUser=","id":3,"parentId":0,"title":"用户管理","name":"用户管理","img":"fa fa-lg fa-fw fa-table","type":"1","clazz":"menu-item-parent"},{"resUrl":"/sysRole/queRoleByCtnPgBn?page=1&rows=10&sysRole=","id":4,"parentId":0,"title":"角色管理","name":"角色管理","img":"fa fa-lg fa-fw fa-table","type":"1","clazz":"menu-item-parent"},{"resUrl":"/sysMenu/queryAllMenu?page=1&rows=10&sysMenu=","id":5,"parentId":0,"title":"菜单管理","name":"菜单管理","img":"fa fa-lg fa-fw fa-table","type":"1","clazz":"menu-item-parent"},{"resUrl":"/sysDept/queryDeptByCondition?page=1&rows=10&sysDept=","id":6,"parentId":0,"title":"机构管理","name":"机构管理","img":"fa fa-lg fa-fw fa-table","type":"1","clazz":"menu-item-parent"}]');
+//	 var menu = resourceMenu(data);
 //		$("nav").html(ulLi(menu));
-//		initTree();
-//		addEvent();
-//	});
-//	$ips.load("http://localhost:8080/rest/resource/menuLists",null,null,function(data){
-//	$.getJSON("http://localhost:8080/resource/menuLists", function(data) {
-        //var $menu = new Menu();
-        //$menu.loadMenu("/data.txt");
-
-	$ips.load("resource/menuLists",null,null,function(data){
+	//var param_u = 
+	$ips.load("login","loginGetMenuList",{id:1},function(data){
+		console.log(data);
 		var menu = resourceMenu(data);
 		$("nav").html(ulLi(menu));
-		initTree();
 	});
 
-	
-	/*$ips.load("resource/menuLists",null,null,function(data){
-		alert(data);
-		var menu = resourceMenu(data.data);
-		$("nav").html(ulLi(menu));
-		initTree();
-		addEvent();
-	}, true);*/
+});
 
+//登陆
+$('#logoutButton').click(function() {
+    $ips.load('login', 'logout', pararm, function(result) {
+    	console.log(result);
+    	console.log(typeof result);
+    	window.location.href="login.html";
+//        if (result.success == true) {
+//        } else {
+//            $('.padding-top-10:first').animate({right: '10px'},80);
+//            $('.padding-top-10:first').animate({right: ''},80);
+//            $('.padding-top-10:first').animate({left: '10px'},80);
+//            $('.padding-top-10:first').animate({left: ''},80);
+//            $('.padding-top-10:first').removeAttr('style');
+//            $ips.error(result.message);
+//        }
+    });
+    return false;
 });
 
 function Menu() {
