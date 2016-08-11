@@ -62,8 +62,8 @@ http://localhost/sysDept/updateDept?sysDept={"createtime":1470240000000,"deptid"
 {"code":0,"data":{"code":0,"msg":"修改部门操作成功!"},"message":"修改部门操作成功!"}
 
 --------------------角色菜单关联--------------------
-http://localhost/sysRoleMenu/addRoleMenu?sysRoleMenu={"menuid":2, "roleid":4}
-------待测试成功------->"code":1,"data":{"code":1,"msg":"添加角色菜单操作失败!"},"message":"添加角色菜单操作失败!"}
+http://localhost/sysRoleMenu/addRoleMenu?sysRoleMenu={"menuid":2,"roleid":4}
+{"code":0,"data":{"code":0,"msg":"添加角色菜单操作成功!"},"message":"添加角色菜单操作成功!"}
 http://localhost/sysRoleMenu/delRoleMenu?id=4
 {"code":0,"data":{"code":0,"msg":"删除角色菜单操作成功!"},"message":"删除角色菜单操作成功!"}
 -------------------用户角色关联----------------------
