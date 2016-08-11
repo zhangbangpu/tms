@@ -1204,7 +1204,7 @@ Ips.prototype = {
      * @return {void}
      */
     unLockPage: function() {
-        $.unblockUI();
+        //$.unblockUI();
     }
 };
 

@@ -9,7 +9,6 @@ $("#s_btn1").click(function() {
 function genSearchParams()
 {
 	searchParams = $("#frmSearch").serializeArray();
-//	searchParams = $("#frmSearch").serialize();
 	return searchParams;
 }
 
@@ -32,15 +31,16 @@ function getRowIds(array) {
 }
 
 
-function edit(){
-	if(getRowIds() && getRowIds().split(",").length == 1){
-		$parm=parmData[getRowIds()];
-		return true;
-	}else{
-		$ips.error("请选择创建容器的镜像");
-		return false;
-	}
-}
+//function edit(){
+//	if(getRowIds() && getRowIds().split(",").length == 1){
+//		$parm=parmData[getRowIds()];
+//		return true;
+//	}else{
+//		$ips.error("请选择创建容器的镜像");
+//		return false;
+//	}
+//}
+
 
 $("#deletebtn").click(function(){
 	
@@ -85,14 +85,14 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					<span></span>\
 				</label>';
 				}
-            },
-            /*{
+            },{
                 sTitle: "操作",
                 sName: "id",
                 sWidth: "25px",
                 sClass: "center",
                 bSortable: false,
                 mRender:function(data, type, full){
+//                	console.log(data);
                 	return '<div class="btn-group">\
 					<button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">\
 						<i class="fa fa-pencil"></i>\
@@ -100,7 +100,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					</button>\
 	                <ul class="dropdown-menu">\
 					   	<li>\
-					   		<a href="javascript:void(0);" onclick="classlinepriceEdit(\'' + data + '\')" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
+					   		<a href="#tms/basic/site_edit.html?id='+ data +'" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
 					   	</li>\
 	                   <li class="divider"></li>\
 	                   <li>\
@@ -109,7 +109,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 	                </ul>\
 	            </div>';
 				}
-            },*/
+            },
                 {sTitle: "站点编号", sName: "code"},
                 {sTitle: "站点名称", sName: "name"},
                 {sTitle: "站点类型", sName: "types"},

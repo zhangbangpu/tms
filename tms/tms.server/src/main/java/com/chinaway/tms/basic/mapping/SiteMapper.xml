@@ -95,8 +95,8 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Site" >
-	  insert into site(id,name,code,area,deptname,types,isprivate,updatetime,province,city,address,createtime)
-      values(#{id},#{name},#{code},#{area},#{deptname},#{types},#{isprivate},#{updatetime},#{province},#{city},#{address},#{createtime})
+	  insert into site(name,code,area,deptname,types,isprivate,updatetime,province,city,address,createtime)
+      values(#{name},#{code},#{area},#{deptname},#{types},#{isprivate},#{updatetime},#{province},#{city},#{address},#{createtime})
 	</insert>
 
 	<!-- 根据id，修改记录-->  

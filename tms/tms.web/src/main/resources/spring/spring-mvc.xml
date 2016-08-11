@@ -40,14 +40,14 @@
     	<!-- @ResponseBody返回值中文乱码问题 -->
 		<mvc:message-converters register-defaults="true">
 			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
-				<property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+				<!-- <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/> -->
 				<!-- 配置了application/json之后将响应内容再次解析了，controller里面返回必须是个对象 -->
-				<!-- <property name="supportedMediaTypes">
+				<property name="supportedMediaTypes">
 					<list>
-						<value>text/html;charset=UTF-8</value>
 						<value>application/json;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
 					</list>
-				</property> -->
+				</property>
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>

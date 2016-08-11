@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,13 +91,14 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
-	public Result queryOneById(String id) {
-		Map<String, Object> resultMap = new HashMap<>();
+	public Result queryOneById(HttpServletRequest request) {
+		String id = request.getParameter("id");
 		int code = 1;
 		String msg = "根据id查询部门操作失败!";
 
+		Site site = null;
 		try {
-			Site site = siteService.selectById(id == "" ? 0 : Integer.parseInt(id));
+			site = siteService.selectById(id == "" ? 0 : Integer.parseInt(id));
 
 			if (null != site) {
 				code = 0;
@@ -107,9 +109,7 @@ public class SiteManagerController {
 			e.getStackTrace();
 		}
 
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, site, msg);
 
 		return result;
 	}
@@ -126,14 +126,21 @@ public class SiteManagerController {
 	public Result addSite(Site site) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加站点失败!";
+		String msg = "操作站点失败!";
 
 		int ret = 0;
 		try {
-			siteService.insert(site);
+			
+			site.setUpdatetime(new Date());
+			if (site.getId() > 0) {
+				ret = siteService.updateSelective(site);
+			}else{
+				site.setCreatetime(new Date());
+				ret = siteService.insert(site);
+			}
 			if (ret > 0) {
 				code = 0;
-				msg = "添加站点成功!";
+				msg = "操作站点成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();

@@ -29,11 +29,11 @@ function validateButtonsPrivilege()
     if (ids.length == 0) {
         return false;
     }
-    $ips.load('common', 'validatebuttons', {ids : ids}, function (res) {
-        $.each(ids, function (index, item) {
-            if (typeof res[item] == 'undefined') {
-                $('[data-button-resource="' + item + '"]').hide();
-            }
-        });
-    });
+//    $ips.load('common', 'validatebuttons', {ids : ids}, function (res) {
+//        $.each(ids, function (index, item) {
+//            if (typeof res[item] == 'undefined') {
+//                $('[data-button-resource="' + item + '"]').hide();
+//            }
+//        });
+//    });
 }

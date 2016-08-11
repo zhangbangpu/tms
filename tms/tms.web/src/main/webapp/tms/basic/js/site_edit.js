@@ -1,24 +1,38 @@
 //编辑
 //var parms = $ips.getUrlParams();
-var carInfo = [];
-var classlinetype = [];
-var updateid;
+loadScript("js/plugin/jquery-form/jquery-form.min.js", runFormValidation);
+var editid;
 
 $(function(){
-	if($parm){
-		updateid = $parm.taskid;
-		$("#account").val($parm.account);
-		$("#password").val($parm.password);
-//		$("#parentCard").val($parm.parentCard);
-//		$("#subCardList").val($parm.subCardList);
-		$("#cardType").val($parm.cardType);
-		$("#taskType").val($parm.taskType);
-		$("#jobnum").val($parm.jobnum);
-		$("#level").val($parm.level);
-		$("#params").val($parm.params);
-		$("#taskid").val($parm.taskid);
-		$parm = false;
-	}
+    //编辑
+    var param = $ips.getUrlParams();
+    if (param.id) {
+        editid = param.id;
+        
+        var isedit = $("#isedit").val();
+        $ips.load("site", "queryOneById", {'id': param.id}, function(data) {
+            if (data) {
+                var data1 = new Array();
+                chooseId = data.orgcode;
+                $.each(data, function(i, v) {
+                    if (v != "" && v != null) {
+                        data1[i] = v;
+                    }
+                    if (v == "0000-00-00" || v == "0000-00-00 00-00-00") {
+                        data1[i] = "";
+                    }
+                });
+                $ips.fillFormInput("editfrom", data1);
+//                //img handle
+//                $('#showdriverimage').attr('src',data1['driverimage']);
+//                $('#driverimageattach_tip').css('display','block');
+            }
+			orglist();
+        });
+    } else {
+        editid = '';
+        orglist();
+    }
 	
 	// 保存
 	$("#btnSubmit").click(function(){
@@ -34,7 +48,7 @@ $(function(){
  
 // Registration validation script
 function runFormValidation() {
-	var $checkoutForm = $('#frmInfo').validate({
+	var $checkoutForm = $('#editfrom').validate({
 		// Rules for form validation
 		rules : {
 		},
@@ -59,65 +73,37 @@ function runFormValidation() {
 }
 	
 function classlinepriceSave(newed) {
-	//if(!$('#frmInfo').validate().form()) {
-	//    return false;
-	//}
-//	if($('#classlinename').val() == '') {
-//		$ips.error('回调地址名称必填!');
-//		return '';
-//	}
-//
-//	if($('#classlineid').val() == '') {
-//		$ips.error('回调地址必填!');
-//		return '';
-//	}
 
-	var params = $("#frmInfo").serializeArray();
-	console.log(params);
-//	if(updateid){
-//	}
-	var jsonParams = '{';
-		$.each(params, function(i, item) {
-            jsonParams += '"'+item.name+'":"'+item.value+'",'
-        });
-		jsonParams += '"id":'+ updateid +'}';
-	console.log(jsonParams);
-		
-	$ips.load("fuelCard/save", jsonParams, "", "json", function(result){
+	//form验证 对应runFormValidation方法里面
+//    if (!$('#editfrom').validate($checkoutForm).form()) {
+//        return false;
+//    }
+    
+    var pararm = $("#editfrom").serialize();
+	var color = $("#color").val();
+	pararm += "&color=#"+color;
+    var privacy = 1;
+    if($("#privacy").is(':checked')){
+        privacy = 0;
+    }
+    pararm += "&privacy="+privacy;
+	$ips.load("site", "addSite", pararm, function(result){
+//		$ips.unLockPage();
+		console.log(result);
 		if(result) {
-			console.log(result);
-			$ips.succeed("保存成功。");
-			// $('#areaorgcode').select2('val', '');
-			// $('#classlineid').select2('val', '');
-			// $('#carnum').select2('val', '');
-			if (newed) {
-//				isupdate = updateid = 0;
-				$('#frmInfo')[0].reset();
-			} else
-				window.history.go(-1);
-		} else {
-			$ips.error("保存失败。" + result);
+			$ips.succeed("保存站点成功。");
+			if (newed) { //继续标注
+				$('#editfrom')[0].reset();
+			} else{
+				$ips.locate("tms/basic","site_list");
+			}
+		}else {
+			$ips.error("保存站点表失败。" + result);
 		}
-	}, function(result) {
-		// 验证失败的code号码
-		if (result.code == 555) {
-			var errors = {};
-			$.each(eval('(' + result.message + ')'), function($k, $v) {
-				if ($('input#' + $k).size() > 0)
-					errors[$k] = $v;
-				else
-					$ips.error($k + '：' + $v);
-			});
-			// 显示后端验证失败信息
-			validator.showErrors(errors);
-		} else if(result.code == 2) {
-			$ips.error(result.message );
-		}
-		else
-			$ips.showError(result.code, result.message);
 	});
 	return false;
 }
+
 
 // PAGE RELATED SCRIPTS
 /*$ips.include(["js/plugin/jquery-form/jquery-form.min.js"],
@@ -148,4 +134,22 @@ function IsDate(str) {
 	    if(d.getDate()!=r[3])return false; 
 	    return true;
  }
+
+function orglist() {
+//	loadScript("/js/hui/jquery.hui.tree.js?v=1.1", function() {
+//		$('#orgname').tree({
+//			type: 'fiter',
+//			module: 'sysDept',
+//			method: 'queryDept4Tree',
+//			selectid: 'deptid',
+//			chooseType: 1,
+//			//chooseId: chooseId,
+//			params: {
+//				selectids: ''
+//			},
+//			callback: function(result) {
+//			}
+//		});
+//	},true,true);
+}
 

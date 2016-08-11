@@ -25,7 +25,7 @@ var initJs = [
 for (var index in initJs) {
     loadFile(initJs[index]);
     loadFile(RESOURCEURL + 'js/ips.public.js');
-//    loadFile(RESOURCEURL + '/js/iframe.js');
+    loadFile(RESOURCEURL + 'js/iframe.js');
 }
 
 var initCss = [
