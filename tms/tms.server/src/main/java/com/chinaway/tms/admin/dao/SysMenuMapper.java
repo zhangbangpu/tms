@@ -21,7 +21,7 @@ public interface SysMenuMapper extends BaseMapper<SysMenu, Integer> {
 	 * @param id
 	 * @return
 	 */
-	List<SysMenu> queryMenuByRoleId(@Param(value="id") Integer id);
+	List<Map<String,Object>> queryMenuByRoleId(@Param(value="id") Integer id);
 	
 	/**
 	 * 批量删除菜单

@@ -20,6 +20,10 @@
 		c.id,c.name,c.pid,c.levels,c.createtime,c.requesturl,c.menutype,c.sotid
 	</sql>
 	
+	<sql id="login_Menu_List">
+		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype as type,c.clazz as clazz,c.title as title,c.img as img
+	</sql>
+	
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
@@ -79,7 +83,7 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
-	<!-- 条件查询所有菜单 -->  
+	<!-- 条件查询所有菜单 -->
 	<select id="selectAllMenu4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
@@ -88,9 +92,9 @@
 	</select>
 	
 	<!-- 根据角色id查询菜单信息(连表查询用于登录) -->
-	<select id="queryMenuByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="queryMenuByRoleId" resultType="java.util.Map" parameterType="java.lang.Integer">
 		select
-		<include refid="Base_Column_Menu_List" />
+		<include refid="login_Menu_List" />
 		from sys_role a,sys_role_menu b,sys_menu c
 		where c.id = b.menuid 
 		and  b.roleid = a.id

@@ -2,9 +2,11 @@ package com.chinaway.tms.admin.service.impl;
 
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.chinaway.tms.admin.dao.SysMenuMapper;
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.service.SysMenuService;
@@ -50,8 +52,9 @@ public class SysMenuServiceImpl extends AbstractService<SysMenu, Integer> implem
 	}
 	
 	@Override
-	public List<SysMenu> queryMenuByRoleId(int roleId) {
-		return sysMenuMapper.queryMenuByRoleId(roleId);
+	public List<Map<String,Object>> queryMenuByRoleId(int roleId) {
+//		List<Map<String,Object>> sysMenuMap = (List)sysMenuMapper.queryMenuByRoleId(roleId);
+		return (List<Map<String,Object>>)sysMenuMapper.queryMenuByRoleId(roleId);
 	}
 	
 	@Override

@@ -31,7 +31,6 @@ public interface SysUserMapper extends BaseMapper<SysUser, Integer> {
 	 * @return
 	 */
 	List<SysUser> queAllUserByCtn(Map<String, Object> argsMap);
-
 	
 
 	/**

@@ -58,6 +58,16 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer>impleme
 	public List<SysUser> queAllUserByCtn(Map<String, Object> argsMap) {
 		return sysUserMapper.queAllUserByCtn(argsMap);
 	}
+	
+	@Override
+	public SysUser queOneUserByCtn(Map<String, Object> argsMap) {
+		List<SysUser> sysUserList = sysUserMapper.queAllUserByCtn(argsMap);
+		if (null != sysUserList && sysUserList.size() > 0) {
+			return sysUserList.get(0);
+		}
+
+		return new SysUser();
+	}
 
 	@Override
 	public int deleteByIds(String[] idArry) {

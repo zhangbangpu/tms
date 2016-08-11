@@ -28,6 +28,13 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
 	 * @return
 	 */
 	List<SysUser> queAllUserByCtn(Map<String, Object> argsMap);
+	
+	/**
+	 * 根据条件查询用户信息不连表不分页
+	 * @param argsMap
+	 * @return
+	 */
+	SysUser queOneUserByCtn(Map<String, Object> argsMap);
 
 	/**
 	 * 删除用户根据ids
