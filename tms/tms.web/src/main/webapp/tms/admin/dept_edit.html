@@ -1,0 +1,319 @@
+<div class="row">
+	<div class="col col-sm-6 col-xs-12">
+		<a href="#org/index.html" class="btn btn-default"> &lt; 返回</a>
+	</div>
+</div>
+
+<div class="row"><br /></div>
+
+<div class="well no-padding">
+    <form action="" class="smart-form" novalidate="novalidate" id="frmInfo" method="post">
+        <input type="hidden" name="id" placeholder="">
+		<header>基本信息</header>
+		
+		<fieldset>
+ 
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red ">机构名称</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="name" name="name" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+           
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">自定义机构编码</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="customerid" name="customerid" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red ">联系人</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="contact" name="contact" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+           
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red  ">地址</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="address" name="address" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+            
+          <div class="clearfix"></div>
+          
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red  ">电话</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="tel" name="tel" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+           
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">备注</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="remark" name="remark" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+          <div class="clearfix"></div>
+          
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right">上级机构</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="hidden" class="select2" id="parentid" data-placeholder="请选择机构" style="width:100%" value=""/>
+                        </label>
+                    </section>
+                </div>
+            </div>
+           
+            <div class="col-xs-12 col-sm-6 " id="authcode-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">授权码</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="authcode" name="authcode" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+
+			<div class="col-xs-12 col-sm-6 col-md-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">登录页面logo</label>
+                    <section  class="col col-8">
+                        <label >
+                            <div>
+                                <input type="file" id="loginLogo" name="loginLogo" class='btn btn-default'>
+                            </div>
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+
+			<div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">门户头部logo</label>
+                    <section  class="col col-8">
+                        <label >
+                            <div>
+                                <input type="file" id="gatewayLogo" name="gatewayLogo" class='btn btn-default'>
+                            </div>
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">门户首页图片</label>
+                    <section  class="col col-8">
+                        <label >
+                            <div>
+                                <input type="file" id="gatewayBackground" name="gatewayBackground" class='btn btn-default'>
+                            </div>
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+           <!--  
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red ">状态</label>
+                    <section class="col col-8">
+                        <label class="select">
+						<select id="status" name="status">
+							<option value="1">可用</option>
+							<option value="0">禁用</option>
+						</select>
+                        </label>
+                    </section>
+                </div>
+            </div>
+           -->
+        </fieldset>
+        
+		<footer>
+    		<button type="button" class="btn btn-default" onclick="window.history.go(-1)">取消</button>
+    		<button id="btnSubmitNew" type="button" class="btn btn-default">保存并新建</button>
+    		<button id="btnSubmit" type="button" class="btn btn-primary">
+    			<i class="fa fa-save"></i>保存
+    		</button>
+		</footer>
+	</form>
+</div>
+
+
+<!-- loginLogo -->
+<div class="modal fade" id="myUpload" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title">上传文件</h4>
+			</div>
+			<div class="modal-body">             
+			<form class="smart-form" role="form" id="upload" method="post" enctype="multipart/form-data">
+					<div class="row">
+						<label class="label col col-3 text-align-right">登录页面logo</label>
+						<section class="col col-8">
+							<label for="file" class="input input-file ">
+								<input type="file" id="imgFile" name="file" />
+							</label>
+						</section>
+
+						<label class="label col col-3 text-align-right"></label>
+						<section class="col col-8">
+							<label for="file" class="input input-file ">
+								登录页面logo尺寸要求：48*48 ，最大不能超过2MB，支持jpg,png,gif,bmp,jpeg格式
+							</label>
+						</section>
+					</div>
+			</div>
+			
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-default" data-dismiss="modal">
+						取消
+					</button>
+					<button type="submit" class="btn btn-primary btn-sm" id="saveImage">
+						<span class="glyphicon glyphicon-floppy-disk"></span> 确认
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- gatewayLogo -->
+<div class="modal fade" id="myUpload2" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title">上传文件</h4>
+			</div>
+			<div class="modal-body">             
+			<form class="smart-form" role="form" id="upload2" method="post" enctype="multipart/form-data">
+					<div class="row">
+						<label class="label col col-3 text-align-right">门户页面logo</label>
+						<section class="col col-8">
+							<label for="file" class="input input-file ">
+								<input type="file" id="imgFile2" name="file" />
+							</label>
+						</section>
+
+						<label class="label col col-3 text-align-right"></label>
+						<section class="col col-8">
+							<label for="file" class="input input-file ">
+								门户页面logo尺寸要求：145*32 ，最大不能超过2MB，支持jpg,png,gif,bmp,jpeg格式
+							</label>
+						</section>
+						
+					</div>
+			</div>
+			
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-default" data-dismiss="modal">
+						取消
+					</button>
+					<button type="submit" class="btn btn-primary btn-sm" id="saveImage2">
+						<span class="glyphicon glyphicon-floppy-disk"></span> 确认
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- gatewayBackground -->
+<div class="modal fade" id="gatewayBackgroundModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">上传文件</h4>
+            </div>
+            <div class="modal-body">             
+            <form class="smart-form" role="form" id="upload2" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <label class="label col col-3 text-align-right">门户首页图片</label>
+                        <section class="col col-8">
+                            <label for="file" class="input input-file ">
+                                <input type="file" id="gatewayBackgroundInput" name="file" />
+                            </label>
+                        </section>
+
+                        <label class="label col col-3 text-align-right"></label>
+                        <section class="col col-8">
+                            <label for="file" class="input input-file ">
+                                门户页面首页尺寸要求：1920 * 1080 ，最大不能超过2MB，支持jpg,png,gif,bmp,jpeg格式
+                            </label>
+                        </section>
+                        
+                    </div>
+            </div>
+            
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal">
+                        取消
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="gatewayBackgroundBtn">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> 确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	// DO NOT REMOVE : GLOBAL FUNCTIONS!
+	pageSetUp();
+	
+	// G7初始化页面 
+	$ips.startup();
+</script>
+
+

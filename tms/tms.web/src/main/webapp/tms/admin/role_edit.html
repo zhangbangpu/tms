@@ -1,0 +1,84 @@
+<div class="row">
+	<div class="col col-sm-6 col-xs-12">
+		<a href="#role/index.html" class="btn btn-default"> &lt; 返回</a>
+	</div>
+</div>
+
+<div class="row"><br /></div>
+
+<div class="well no-padding" style="height:auto !important; height:1200px;"> 
+    <form action="" class="smart-form" novalidate="novalidate" id="frmInfo" method="post">
+        <input type="hidden" name="id" placeholder="">
+		<header>基本信息</header>
+		
+		<fieldset>
+ 
+            <div class="col-xs-12 col-sm-4">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red ">角色名称</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="name" name="name" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">机构</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="hidden" id="orgcode" name="orgcode" value="" style="width:100%;" />
+                        </label>
+                    </section>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4" id="projecttyperow">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">资源类型</label>
+                    <section class="col col-8">
+                        <label class="select">
+                            <select name="projecttype" id="projecttype">
+                                <option value="">标准产品</option>
+                            </select><i></i>
+                        </label>
+                    </section>
+                </div>
+            </div>
+        </fieldset>
+        
+		<fieldset>
+			<div style="height:auto !important; height:600px;min-height:200px;">
+				<table id="markers" class="table table-bordered">
+					<thead>
+						<tr>
+							<th>分配资源</th>
+						</tr>
+					</thead>
+					<tr>
+						<td><input type="hidden" id="orgvalue" name="orgvalue">
+							<div id="resource-list"></div>
+                            <div class="clearfix"></div>
+						</td>
+					</tr>
+                </table>
+			</div>
+		</fieldset>
+		<footer>
+			<button type="button" class="btn btn-default"
+				onclick="window.history.go(-1)">取消</button>
+			<button id="btnSubmitNew" type="button" class="btn btn-default">保存并新建</button>
+			<button id="btnSubmit" type="button" class="btn btn-primary">
+				<i class="fa fa-save"></i>保存
+			</button>
+		</footer>
+	</form>
+</div>
+<script type="text/javascript">
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+    pageSetUp();
+
+	// G7初始化页面 
+	$ips.startup();
+</script>

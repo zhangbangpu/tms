@@ -1,0 +1,188 @@
+<div class="row">
+	<div class="col col-sm-6 col-xs-12">
+		<a href="#resource/index.html" class="btn btn-default"> &lt; 返回</a>
+	</div>
+</div>
+
+<div class="row"><br /></div>
+
+<div class="well no-padding">
+    <form action="" class="smart-form" novalidate="novalidate" id="frmInfo" method="post">
+        <input type="hidden" name="id" placeholder="">
+		<header>基本信息</header>
+		
+		<fieldset>
+ 
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="height: 47px; overflow: hidden;">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red ">所属子系统</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <div id="subsystem" style="width:100%" class="select2"></div>
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red ">名称</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="name" name="name" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right txt-color-red ">资源类型</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <div id="type" class="select2" style="width:100%"></div>
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="url-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">连接地址</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="url" name="url" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="icon-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">图标</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="icon" name="icon" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+ 
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="target-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right ">打开窗口</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <div id="target" class="select2" style="width:100%"></div>
+                        </label>
+                    </section>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="parentid-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right ">父资源</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="hidden" name="parentid" id="parentid" class="select2" style="width:100%" />
+                        </label>
+                    </section>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right ">关联资源</label>
+                    <section class="col col-8">
+                        <label class="select">
+                            <select name="relateid" id="relateid" >
+                                <option value="">请选择关联资源</option>
+                            </select><i></i>
+                        </label>
+                    </section>
+                </div>
+            </div>
+      
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">方法</label>
+                    <section class="col col-8">
+                        <label class="textarea">
+                            <textarea type="text" id="method" name="method" placeholder="" class="custom-scroll" row="3"></textarea>
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="orderby-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">是否默认拥有</label>
+                    <section class="col col-8">
+                        <label class="select">
+                            <select id="isdefault" name="isdefault">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select><i></i>
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="orderby-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">是否只允许超级管理员使用</label>
+                    <section class="col col-8">
+                        <label class="select">
+                            <select id="isdisable" name="isdisable">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select><i></i>
+                        </label>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="orderby-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">项目定制资源</label>
+                    <section class="col col-6">
+                        <label class="select">
+                            <select id="projecttype" name="projecttype">
+                                <option value="">定制资源请选择,标准产品资源请忽略</option>
+                            </select><i></i>
+                        </label>
+                    </section>
+                    <button type="button" class="btn btn-default btn-sm" id="addOptionBtn">增加</button>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="orderby-row">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">排序方式</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="orderby" name="orderby" placeholder="" />
+                        </label>
+                    </section>
+                </div>
+            </div>
+        </fieldset>
+        
+		<footer>
+    		<button type="button" class="btn btn-default" onclick="window.history.go(-1)">取消</button>
+    		<button id="btnSubmitNew" type="button" class="btn btn-default">保存并新建</button>
+    		<button id="btnSubmit" type="button" class="btn btn-primary">
+    			<i class="fa fa-save"></i>保存
+    		</button>
+		</footer>
+	</form>
+</div>
+<script type="text/javascript">
+	// DO NOT REMOVE : GLOBAL FUNCTIONS!
+	pageSetUp();
+	
+	// G7初始化页面 
+	$ips.startup();
+</script>
+
+
