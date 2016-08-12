@@ -71,7 +71,7 @@ $('#form_button').click(function() {
     $ips.load('login', 'login', pararm, function(result) {
     	console.log(result);
     	console.log(typeof result);
-    	window.location.href="index.html";
+    	window.location.href="index.html#tms/basic/site_list.html";
 //        if (result.success == true) {
 //        } else {
 //            $('.padding-top-10:first').animate({right: '10px'},80);
