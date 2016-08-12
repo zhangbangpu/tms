@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.chinaway.tms.admin.controller.LoginController;
 import com.chinaway.tms.basic.model.Site;
 import com.chinaway.tms.basic.service.SiteService;
 import com.chinaway.tms.utils.MyBeanUtil;
@@ -36,7 +37,7 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/selectAllSiteByCtn")
 	@ResponseBody
-	public String selectAllSiteByCtn() {
+	public String selectAllSiteByCtn(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "查询所有站点操作失败!";
@@ -74,6 +75,9 @@ public class SiteManagerController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectSite2PageBean(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<Site> pageBean = siteService.select2PageBean(argsMap);
@@ -92,6 +96,10 @@ public class SiteManagerController {
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
 	public Result queryOneById(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		String id = request.getParameter("id");
 		int code = 1;
 		String msg = "根据id查询部门操作失败!";
@@ -123,7 +131,11 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/addSite")
 	@ResponseBody
-	public Result addSite(Site site) {
+	public Result addSite(HttpServletRequest request, Site site) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "操作站点失败!";
@@ -163,7 +175,11 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/deleteById")
 	@ResponseBody
-	public Result deleteById(@RequestParam("ids") String ids) {
+	public Result deleteById(HttpServletRequest request, @RequestParam("ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -196,7 +212,11 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/delDept")
 	@ResponseBody
-	public Result updateDept(Site site) {
+	public Result updateDept(HttpServletRequest request, Site site) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "修改站点失败!";
