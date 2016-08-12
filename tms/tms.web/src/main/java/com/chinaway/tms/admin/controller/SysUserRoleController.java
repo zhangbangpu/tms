@@ -50,9 +50,9 @@ public class SysUserRoleController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		return result;
+		return new Result(0, ret);
 	}
 	
 	/**
@@ -83,8 +83,8 @@ public class SysUserRoleController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		return result;
+		return new Result(0, ret);
 	}
 }

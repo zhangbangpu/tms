@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.service.SysMenuService;
+import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
@@ -25,6 +26,23 @@ public class SysMenuController {
 	@Autowired
 	private SysMenuService sysMenuService;
 
+	/**
+	 * 根据条件查询站点信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/page")
+	@ResponseBody
+	public Result selectUser2PageBean(HttpServletRequest request) {
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		PageBean<SysMenu> pageBean = sysMenuService.select2PageBean(argsMap);
+		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
+		//return JsonUtil.obj2JsonStr(resultJson);
+		return new Result(0, pageBean);
+	}
 	
 	/**
 	 * 用户登录<br>
@@ -53,47 +71,47 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/queryAllMenu")
 	@ResponseBody
-	public Result queryAllMenu(@RequestParam(value="page", defaultValue="1") int pageNo, 
-			@RequestParam(value="rows", defaultValue="10") int pageSize , @RequestParam(value="sysMenu") String sysMenu) {
-		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+	public Result queryAllMenu(HttpServletRequest request) {
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+//		
+//		Map<String, Object> argsMap = new HashMap<String, Object>();
+//		argsMap.put("pageNo", pageNo);
+//		argsMap.put("pageSize", pageSize);
+//		if(null != menu){
+//			argsMap.put("name", menu.getName());
+//			argsMap.put("levels", menu.getLevels());
+//			argsMap.put("menutype", menu.getMenutype());
+//			argsMap.put("pid", menu.getPid());
+//			argsMap.put("requesturl", menu.getRequesturl());
+//			argsMap.put("sotid", menu.getSotid());
+//		}
 		
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("pageNo", pageNo);
-		argsMap.put("pageSize", pageSize);
-		if(null != menu){
-			argsMap.put("name", menu.getName());
-			argsMap.put("levels", menu.getLevels());
-			argsMap.put("menutype", menu.getMenutype());
-			argsMap.put("pid", menu.getPid());
-			argsMap.put("requesturl", menu.getRequesturl());
-			argsMap.put("sotid", menu.getSotid());
-		}
-		
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "查询所有菜单操作失败!";
-		int ret = 0;
-		try {
+//		Map<String, Object> resultMap = new HashMap<>();
+//		int code = 1;
+//		String msg = "查询所有菜单操作失败!";
+//		int ret = 0;
+//		try {
 			PageBean<SysMenu> sysMenuPgBn = sysMenuService.selectMenu2PageBean(argsMap);
-			if(null != sysMenuPgBn && null != sysMenuPgBn.getResult()){
-				ret = sysMenuPgBn.getResult().size();
-			}
-			
-			if (ret > 0) {
-				code = 0;
-				msg = "查询所有菜单操作成功!";
-				resultMap.put("sysMenuList", sysMenuPgBn.getResult());
-			}
+//			if(null != sysMenuPgBn && null != sysMenuPgBn.getResult()){
+//				ret = sysMenuPgBn.getResult().size();
+//			}
+//			
+//			if (ret > 0) {
+//				code = 0;
+//				msg = "查询所有菜单操作成功!";
+//				resultMap.put("sysMenuList", sysMenuPgBn.getResult());
+//			}
+//
+//		} catch (Exception e) {
+//			e.getStackTrace();
+//		}
+//
+//		resultMap.put("code", code);
+//		resultMap.put("msg", msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return result;
+		return new Result(0, sysMenuPgBn);
 	}
 	
 	/**
@@ -106,28 +124,28 @@ public class SysMenuController {
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
 	public Result queryOneById(@RequestParam(value="id") String id) {
-		Map<String, Object> resultMap = new HashMap<>();
-		int code = 1;
-		String msg = "根据id查询菜单操作失败!";
+//		Map<String, Object> resultMap = new HashMap<>();
+//		int code = 1;
+//		String msg = "根据id查询菜单操作失败!";
 
-		try {
+//		try {
 			SysMenu sysMenu = sysMenuService.selectById(id == "" ? 0 : Integer.parseInt(id));
 
-			if (null != sysMenu) {
-				code = 0;
-				msg = "根据id查询菜单操作成功!";
-				resultMap.put("sysMenu", sysMenu);
-			}
+//			if (null != sysMenu) {
+//				code = 0;
+//				msg = "根据id查询菜单操作成功!";
+//				resultMap.put("sysMenu", sysMenu);
+//			}
+//
+//		} catch (Exception e) {
+//			e.getStackTrace();
+//		}
+//
+//		resultMap.put("code", code);
+//		resultMap.put("msg", msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
-
-		return result;
+		return new Result(0, sysMenu);
 	}
 	
 	/**
@@ -160,9 +178,9 @@ public class SysMenuController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		return result;
+		return new Result(0, ret);
 	}
 	
 	/**
@@ -181,8 +199,7 @@ public class SysMenuController {
 
 		int ret = 0;
 		try {
-			String idsArray[] = ids.split(",");
-			ret = sysMenuService.deleteByIds(idsArray);
+			ret = sysMenuService.deleteByIds(ids);
 
 			if (ret > 0) {
 				code = 0;
@@ -194,9 +211,9 @@ public class SysMenuController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		return result;
+		return new Result(0, ret);
 	}
 	
 	/**
@@ -208,14 +225,14 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/delMenu")
 	@ResponseBody
-	public Result delMenu(@RequestParam(value="id") String id) {
+	public Result delMenu(@RequestParam(value="ids") String ids) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
 
 		int ret = 0;
 		try {
-			ret = sysMenuService.deleteById(id);
+			ret = sysMenuService.deleteById(ids);
 
 			if (ret > 0) {
 				code = 0;
@@ -227,9 +244,9 @@ public class SysMenuController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		return result;
+		return new Result(0, ret);
 	}
 	
 	/**
@@ -262,9 +279,9 @@ public class SysMenuController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-		Result result = new Result(code, resultMap, msg);
+//		Result result = new Result(code, resultMap, msg);
 
-		return result;
+		return new Result(0, ret);
 	}
 	
 }
