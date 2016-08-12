@@ -18,7 +18,7 @@ $("#deleteOrg").click(function(){
 	if(ids.length>0){
 		$ips.confirm("您确定要删除这条记录吗? （将删除该机构所有下属机构、角色和用户，请谨慎操作！）",function(btn) {
 		    if (btn == "确定") {
-				$ips.load("org", "delete", {'ids':ids}, function(data) {
+				$ips.load("sysDept", "delDept", {'ids':ids}, function(data) {
 					if(data>0){
 						$.smallBox({
 							title : "提示",
@@ -54,17 +54,16 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 	       	{sTitle: '<label class="checkbox"><input type="checkbox" name="checkbox style-0" class="checkbox style-0 checkAll" id="checkAll"><span></span></label>', sName: "idCheckbox","bSortable": false},
 	       	{sTitle: "操作", sName: "idAction", sWidth: "25px", sClass: "center", bSortable: false},
 			{sTitle: "机构名称", sName: "name"},
-			{sTitle: "机构编码", sName: "orgcode"},
+			{sTitle: "机构编码", sName: "deptid"},
 			{sTitle: "自定义机构编号", sName: "customerid"},
 			{sTitle: "联系人", sName: "contact"},
 			{sTitle: "地址", sName: "address"},
 			{sTitle: "电话", sName: "tel"},
-			{sTitle: "备注", sName: "remark"},
-			
+			{sTitle: "备注", sName: "remark"}
 		],
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			var searchParams = genSearchParams();
-			$ips.gridLoadData(sSource, aoData, fnCallback, "org", "search", searchParams, function(data) {
+			$ips.gridLoadData(sSource, aoData, fnCallback, "sysDept", "page", searchParams, function(data) {
 				userOrgid = data.userOrgid;
 				$.each(data.result, function(i, item) {
 					item.idCheckbox = '<label class="checkbox"><input id="' + item.id + '" type="checkbox" name="checkbox-inline" value="'+item.id+'" class="checkbox style-0"><span></span></label>';
@@ -89,13 +88,13 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 
 
 function orgEdit(id) {
-	$ips.locate("org", "edit", "id="+id);
+	$ips.locate("sysDept", "updateDept", "id="+id);
 }
 
 function orgDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?（将删除该机构所有下属机构、角色和用户，请谨慎操作！）",function(btn) {
         if (btn == "确定") {
-            $ips.load("org", "delete", "ids=" + id, function(result){
+            $ips.load("sysDept", "delDept", "ids=" + id, function(result){
                 if(result > 0) {
             		 $ips.succeed("删除成功。");
             		 $('#tblMain').grid("fnDraw");
@@ -118,9 +117,10 @@ function getRowIds(){
 		}
         
     });
-	if(id==""){
-		return [];
-	}else{
-		return id.split(",");
-	}
+//	if(id==""){
+//		return [];
+//	}else{
+//		return id.split(",");
+//	}
+	return id;
 }

@@ -6,6 +6,9 @@ $("#btnSearch").click(function() {
 function genSearchParams()
 {
 	var searchParams = $("#frmSearch").serializeArray();
+//	if(searchParams == ""){
+//		searchParams = "{sysUser:}"
+//	}
 	return searchParams;
 }
 
@@ -15,7 +18,7 @@ $("#deleteUser").click(function(){
 	if(ids.length>0){
 		$ips.confirm("您确定要删除这条记录吗?",function(btn) {
 		    if (btn == "确定") {
-				$ips.load("user", "delete", {'ids':ids}, function(data) {
+				$ips.load("sysUser", "delUser", {'ids':ids}, function(data) {
 					if(data>0){
 						$.smallBox({
 							title : "提示",
@@ -70,17 +73,18 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		"aoColumns" : [
            	{sTitle: '<label class="no-margin"><input type="checkbox" name="checkbox style-0 " class="checkbox style-0 checkAll" id="checkAll"><span></span></label>', sName: "idCheckbox", sWidth: "20px", sClass: "center", bSortable: false},
            	{sTitle: "操作", sName: "idAction", sWidth: "25px", sClass: "center", bSortable: false},
-            {sTitle: "登陆名", sName: "username"},
+            {sTitle: "登陆名", sName: "loginname"},
             {sTitle: "姓名", sName: "realname"},
-            {sTitle: "角色", sName: "roleidsname"},
-			{sTitle: "机构", sName: "orgname"},
-			{sTitle: "手机", sName: "mobile"},
+            {sTitle: "角色", sName: "roleName"},
+//			{sTitle: "机构", sName: "deptName"},
+			{sTitle: "手机", sName: "phone"},
 			{sTitle: "邮箱", sName: "email"},
-			{sTitle: "创建时间", sName: "createtime"},
+			{sTitle: "创建时间", sName: "createtime"}
 		],
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			var searchParams = genSearchParams();
-			$ips.gridLoadData(sSource, aoData, fnCallback, "user", "search", searchParams, function(data) {
+			$ips.gridLoadData(sSource, aoData, fnCallback, "sysUser", "queUserByCtnPgBn", searchParams, function(data) {
+				console.log(data);
 				$.each(data.result, function(i, item) {
 					item.idCheckbox = '<label class="checkbox"><input id="' + item.id + '" type="checkbox" name="checkbox-inline" value="'+item.id+'" class="checkbox style-0"><span></span></label>';
 					item.idAction = '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">' +
@@ -154,13 +158,13 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 // }
 
 function userEdit(id) {
-	$ips.locate("user", "edit", "id="+id);
+	$ips.locate("sysUser", "updateUser", "id="+id);
 }
 
 function userDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?",function(btn) {
         if (btn == "确定") {
-            $ips.load("user", "delete", "ids=" + id, function(result){
+            $ips.load("sysUser", "delUser", "ids=" + id, function(result){
                 if(result > 0) {
             		 $ips.succeed("删除成功。");
             		 $('#tblMain').grid("fnDraw");
@@ -183,9 +187,10 @@ function getRowIds(){
 		}
         
     });
-	if(id==""){
-		return [];
-	}else{
-		return id.split(",");
-	}
+//	if(id==""){
+//		return [];
+//	}else{
+//		return id.split(",");
+//	}
+	return id;
 }

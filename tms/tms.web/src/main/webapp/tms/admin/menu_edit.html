@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col col-sm-6 col-xs-12">
-		<a href="#resource/index.html" class="btn btn-default"> &lt; 返回</a>
+		<a href="#tms/admin/menu_list.html" class="btn btn-default"> &lt; 返回</a>
 	</div>
 </div>
 
@@ -37,12 +37,15 @@
  
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="row">
-                    <label class="label col col-4 text-align-right txt-color-red ">资源类型</label>
-                    <section class="col col-8">
-                        <label class="input">
-                            <div id="type" class="select2" style="width:100%"></div>
-                        </label>
-                    </section>
+                    <label class="label col col-4 text-align-right">类型：</label>
+					<section class="col col-8 no-padding">
+						<label class="select"> 
+							<select name="type" id="type" class="input-sm">
+								<option value="menu">菜单</option>
+								<option value="button">按钮</option>
+							</select> <i></i>
+						</label>
+					</section>
                 </div>
             </div>
  
@@ -70,12 +73,15 @@
  
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="target-row">
                 <div class="row">
-                    <label class="label col col-4 text-align-right ">打开窗口</label>
-                    <section class="col col-8">
-                        <label class="input">
-                            <div id="target" class="select2" style="width:100%"></div>
-                        </label>
-                    </section>
+                    <label class="label col col-4 text-align-right">打开窗口：</label>
+					<section class="col col-8 no-padding">
+						<label class="select"> 
+							<select name="type" id="type" class="input-sm">
+								<option value="menu">本页</option>
+								<option value="button">新页</option>
+							</select> <i></i>
+						</label>
+					</section>
                 </div>
             </div>
             

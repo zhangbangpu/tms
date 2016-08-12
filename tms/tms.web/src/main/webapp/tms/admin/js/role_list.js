@@ -12,10 +12,11 @@ function genSearchParams()
 $("#deleteRole").click(function(){
 	var ids = new Array();
 	ids = getRowIds();
+	console.log(ids);
 	if(ids.length>0){
 		$ips.confirm("您确定要删除这条记录吗?",function(btn) {
 		    if (btn == "确定") {
-				$ips.load("role", "delete", {'ids':ids}, function(data) {
+				$ips.load("sysRole", "delRole", {'ids':ids}, function(data) {
 					if(data>0){
 						$.smallBox({
 							title : "提示",
@@ -42,23 +43,23 @@ $("#deleteRole").click(function(){
 	return false;//防止点击提示框，跳转页面
 });
 
-$("#orgcode").select2({
-    placeholder: '请选择机构',
-    minimumInputLength: 1,  
-    multiple:false,
-    allowClear : true,
-    //数据加载
-    query: function (query){
-        $ips.load('org','getOrgByName',{keyword:query.term, isorgroot : 1},function(e){
-            var _pre_data = [];
-            $.each(e,function(k,v){
-                _pre_data.push({id:v.orgcode,text:v.name});
-            });
-            var data = {results: _pre_data};                 
-            query.callback(data);
-        });         
-    }
-}); 
+//$("#orgcode").select2({
+//    placeholder: '请选择机构',
+//    minimumInputLength: 1,  
+//    multiple:false,
+//    allowClear : true,
+//    //数据加载
+//    query: function (query){
+//        $ips.load('sysDept','getOrgByName',{keyword:query.term, isorgroot : 1},function(e){
+//            var _pre_data = [];
+//            $.each(e,function(k,v){
+//                _pre_data.push({id:v.orgcode,text:v.name});
+//            });
+//            var data = {results: _pre_data};                 
+//            query.callback(data);
+//        });         
+//    }
+//}); 
 
 // 表格控件
 loadScript('js/hui/jquery.hui.grid.js', function () {
@@ -66,15 +67,14 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		"aoColumns" : [
            	{sTitle: '<label class="no-margin"><input type="checkbox" name="checkbox style-0 " class="checkbox style-0 checkAll" id="checkAll"><span></span></label>', sName: "idCheckbox", sWidth: "20px", sClass: "center", bSortable: false},
            	{sTitle: "操作", sName: "idAction", sWidth: "25px", sClass: "center", bSortable: false},
-			{sTitle: "所属机构", sName: "orgname"},
+//			{sTitle: "所属机构", sName: "orgname"},
 			{sTitle: "角色名称", sName: "name"},
 			{sTitle: "创建时间", sName: "createtime"},
-			{sTitle: "更新时间", sName: "updatetime"},
-			
+			{sTitle: "更新时间", sName: "updatetime"}
 		],
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			var searchParams = genSearchParams();
-			$ips.gridLoadData(sSource, aoData, fnCallback, "role", "search", searchParams, function(data) {
+			$ips.gridLoadData(sSource, aoData, fnCallback, "sysRole", "queRoleByCtnPgBn", searchParams, function(data) {
 				$.each(data.result, function(i, item) {
 					item.idCheckbox = '<label class="checkbox"><input id="' + item.id + '" type="checkbox" name="checkbox-inline" value="'+item.id+'" class="checkbox style-0"><span></span></label>';
 					item.idAction = '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">' +
@@ -94,13 +94,13 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 
 
 function roleEdit(id) {
-	$ips.locate("role", "edit", "id="+id);
+	$ips.locate("sysRole", "updateRole", "id="+id);
 }
 
 function roleDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?",function(btn) {
         if (btn == "确定") {
-            $ips.load("role", "delete", "ids=" + id, function(result){
+            $ips.load("sysRole", "delRole", "ids=" + id, function(result){
                 if(result > 0) {
             		 $ips.succeed("删除成功。");
             		 $('#tblMain').grid("fnDraw");
@@ -123,9 +123,10 @@ function getRowIds(){
 		}
         
     });
-	if(id==""){
-		return [];
-	}else{
-		return id.split(",");
-	}
+//	if(id==""){
+//		return [];
+//	}else{
+//		return id.split(",");
+//	}
+	return id;
 }
