@@ -84,6 +84,7 @@ $('#form_button').click(function() {
     });
     return false;
 });
+
 //根据平台类型以及浏览器宽度调制登录框的大小
 function loadCSS() {
     var kwidth = $('body').width();

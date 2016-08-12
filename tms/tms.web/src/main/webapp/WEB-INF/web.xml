@@ -61,7 +61,7 @@
 		<!-- url-pattern配置为/，不带文件后缀，会造成其它静态文件(js，css等)不能访问,
 		需在spring-mvc.xml中配置。如配为*.do，则不影响静态文件的访问，但正文乱码不好解决  -->
 		<url-pattern>/</url-pattern>
-		<!-- <url-pattern>*.do</url-pattern> -->
+<!-- 		<url-pattern>*.do</url-pattern> -->
 	</servlet-mapping>
 
 <!-- 配置session超时时间，单位分钟 

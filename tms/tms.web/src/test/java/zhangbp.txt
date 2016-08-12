@@ -1,12 +1,14 @@
 //添加站点
-http://localhost/tms/ws/addSite?siteInfo={"address":"四川省成都市双流区天府四街软件园","area":"0","city":"成都","code":"028","createtime":"2016-08-02 17:28:21","deptname":"1919酒类直供","id":0,"isprivate":"私有","name":"天府四街仓库","province":"四川省","types":"标点","updatetime":"2016-08-02 17:28:21"}
+http://localhost/site/addSite?siteInfo={"address":"四川省成都市双流区天府四街软件园","area":"0","city":"成都","code":"028","createtime":"2016-08-02 17:28:21","deptname":"1919酒类直供","id":0,"isprivate":"私有","name":"天府四街仓库","province":"四川省","types":"标点","updatetime":"2016-08-02 17:28:21"}
 //添加班线
-//http://localhost/tms/ws/addLine?lineInfo={"code":"01","deptname":"分拨站","endsite":"08","fromcode":"03","halfwaysite":"02","id":0,"linetype":"1","mileage":"20km","name":"旅游班线","operates":"修改线路成功","pdeptname":"物流中心","roadtoll":1,"runtime":"30","startsite":"01","transmoney":1,"transtype":"2","updatetime":"2016-08-03 10:34:20","vehicleline":"最近线路"}
+//http://localhost/ws/addLine?lineInfo={"code":"01","deptname":"分拨站","endsite":"08","fromcode":"03","halfwaysite":"02","id":0,"linetype":"1","mileage":"20km","name":"旅游班线","operates":"修改线路成功","pdeptname":"物流中心","roadtoll":1,"runtime":"30","startsite":"01","transmoney":1,"transtype":"2","updatetime":"2016-08-03 10:34:20","vehicleline":"最近线路"}
 //登录
-http://localhost/tms/ws/login?username=huitongwuliu&password=123
+http://localhost/ws/login?username=huitongwuliu&password=123
+//登录后获取菜单列表
+http://localhost/login/loginGetMenuList?username=huitongwuliu1&password=1234
 
 -------------------------用户模块-------------------------------
-//分页查询用户信息带分页 连表
+//分页查询用户信息带分页连表
 http://localhost/sysUser/queUserByCtnPgBn?page=1&rows=10&sysUser={"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"1","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","roleName":"品牌公司角色1","state":"3","type":"1"}
 {"code":0,"data":{"code":0,"msg":"按条件查询角色操作成功!","sysUserList":[{"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"0","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","roleName":"品牌公司角色1","state":"2","type":"2"}]},"message":"按条件查询角色操作成功!"}
 http://localhost/sysUser/queAllUserByCtn
