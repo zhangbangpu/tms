@@ -35,5 +35,5 @@ public interface SysRoleService extends BaseService<SysRole, Integer> {
 	 * @param idsArray
 	 * @return
 	 */
-	int deleteByIds(String[] idsArray);
+	int deleteByIds(String ids);
 }

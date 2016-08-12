@@ -28,5 +28,5 @@ public interface SysDeptService extends BaseService<SysDept, Integer> {
 	 * @param idsArray
 	 * @return
 	 */
-	int deleteByIds(String[] idsArray);
+	int deleteByIds(String ids);
 }

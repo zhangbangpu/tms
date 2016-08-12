@@ -6,10 +6,12 @@
 		<result column="name" property="name" />
 		<result column="description" property="description" />
 		<result column="type" property="type" />
+		<result column="createtime" property="createtime" />
+		<result column="updatetime" property="updatetime" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,name,description,type
+		id,name,description,type,createtime,updatetime
 	</sql>
 	
 	<sql id="Base_Column_role_List">

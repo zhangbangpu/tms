@@ -12,10 +12,15 @@
 		<result column="sotid" property="sotid" />
 		<result column="state" property="state" />
 		<result column="isenable" property="isenable" />
+		<result column="customerid" property="customerid" />
+		<result column="contact" property="contact" />
+		<result column="address" property="address" />
+		<result column="tel" property="tel" />
+		<result column="remark" property="remark" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,deptid,name,pid,levels,createtime,description,sotid,state,isenable
+		id,deptid,name,pid,levels,createtime,description,sotid,state,isenable,customerid,contact,address,tel,remark
 	</sql>
 
 	<!-- 动态查询条件 -->

@@ -10,18 +10,24 @@
 		<result column="requesturl" property="requesturl" />
 		<result column="menutype" property="menutype" />
 		<result column="sotid" property="sotid" />
+		<result column="clazz" property="clazz" />
+		<result column="title" property="title" />
+		<result column="img" property="img" />
+		<result column="type" property="type" />
+		<result column="subsystem" property="subsystem" />
+		<result column="target" property="target" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,name,pid,levels,createtime,requesturl,menutype,sotid
+		id,name,pid,levels,createtime,requesturl,menutype,sotid,clazz,title,img,type,subsystem,target
 	</sql>
 
-	<sql id="Base_Column_Menu_List">
-		c.id,c.name,c.pid,c.levels,c.createtime,c.requesturl,c.menutype,c.sotid
-	</sql>
+<!-- 	<sql id="Base_Column_Menu_List"> -->
+<!-- 		c.id,c.name,c.pid,c.levels,c.createtime,c.requesturl,c.menutype,c.sotid,c.type,c.subsystem,c.target -->
+<!-- 	</sql> -->
 	
 	<sql id="login_Menu_List">
-		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype as type,c.clazz as clazz,c.title as title,c.img as img
+		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype as type,c.sotid,c.clazz as clazz,c.title as title,c.img as img,c.type,c.subsystem,c.target
 	</sql>
 	
 	<!-- 动态查询条件 -->
@@ -152,9 +158,9 @@
 		delete from sys_menu where id = #{id}
 	</delete>
 	
-	<!-- 批量删除记录 -->
+	<!-- 批量删除记录  (可能暂时不使用)-->
 	<delete id="deleteByIds" parameterType="java.lang.String">
-		delete from sys_menu where id in
+		delete from sys_user where id in
 		<foreach item="idItem" collection="array" open="(" separator="," close=")">
 			#{idItem}
 		</foreach>

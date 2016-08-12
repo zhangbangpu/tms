@@ -71,7 +71,8 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 	}
 
 	@Override
-	public int deleteByIds(String[] idsArray) {
+	public int deleteByIds(String ids) {
+		String[] idsArray = ids.split(",");
 		return sysDeptMapper.deleteByIds(idsArray);
 	}
 

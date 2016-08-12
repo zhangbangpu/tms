@@ -38,5 +38,5 @@ public interface SysUserMapper extends BaseMapper<SysUser, Integer> {
 	 * @param idArry
 	 * @return
 	 */
-	int deleteById(@Param(value="idItem")String[] idArry);
+	int deleteByIds(@Param(value="idItem")String[] idArry);
 }

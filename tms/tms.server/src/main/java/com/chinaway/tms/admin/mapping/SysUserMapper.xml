@@ -4,6 +4,7 @@
 	<resultMap id="BaseResultMap" type="com.chinaway.tms.admin.model.SysUser">
 		<id column="id" property="id" />
 		<result column="loginname" property="loginname" />
+		<result column="realname" property="realname" />
 		<result column="password" property="password" />
 		<result column="type" property="type" />
 		<result column="name" property="name" />
@@ -16,15 +17,15 @@
 		<result column="createtime" property="createtime" />
 		<result column="codeid" property="codeid" />
 		<result column="deptid" property="deptid"/>
-		<result column="roleName" property="roleName"/>
+		<result column="email" property="email"/>
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid,deptid
+		id,loginname,realname,password,type,name,intro,certificate,corporation,corporationim,phone,state,email,createtime,codeid,deptid
 	</sql>
 	
 	<sql id="Base_Column_lb_List">
-		a.id,a.loginname,a.password,a.type,a.name,a.intro,a.certificate,a.corporation,a.corporationim,a.phone,a.state,a.createtime,a.codeid,a.deptid,c.name as roleName
+		a.id,a.loginname,a.realname,a.password,a.type,a.name,a.intro,a.certificate,a.corporation,a.corporationim,a.phone,a.state,a.email,a.createtime,a.codeid,a.deptid,c.name as rolename
 	</sql>
 	
 	<sql id="Base_Column_Menu_List">

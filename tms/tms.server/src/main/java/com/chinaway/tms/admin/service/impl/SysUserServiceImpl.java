@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.chinaway.tms.admin.dao.SysUserMapper;
+import com.chinaway.tms.admin.dao.SysUserRoleMapper;
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.core.AbstractService;
@@ -17,6 +18,9 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer>impleme
 
 	@Autowired
 	private SysUserMapper sysUserMapper;
+	
+	@Autowired
+	private SysUserRoleMapper sysUserRoleMapper;
 
 	/** 具体子类service的实现需要使用的mapper */
 	@Override
@@ -70,8 +74,9 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer>impleme
 	}
 
 	@Override
-	public int deleteByIds(String[] idArry) {
-		return sysUserMapper.deleteById(idArry);
+	public int deleteByIds(String ids) {
+		String[] idsArray = ids.split(",");
+		return sysUserMapper.deleteByIds(idsArray);
 	}
 
 	@Override
@@ -80,6 +85,7 @@ public class SysUserServiceImpl extends AbstractService<SysUser, Integer>impleme
 		String[] idsStr = ids.split(",");
 		if (idsStr.length > 0) {
 			for (String id : idsStr) {
+				sysUserRoleMapper.deleteById(Integer.parseInt(id));
 				sysUserMapper.deleteById(Integer.parseInt(id));
 			}
 			return 1;

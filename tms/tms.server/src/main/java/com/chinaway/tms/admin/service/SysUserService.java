@@ -41,5 +41,5 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
 	 * @param idArry
 	 * @return
 	 */
-	int deleteByIds(String[] idArry);
+	int deleteByIds(String ids);
 }

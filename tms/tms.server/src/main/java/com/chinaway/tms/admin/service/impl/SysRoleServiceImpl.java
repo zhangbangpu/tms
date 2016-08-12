@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.chinaway.tms.admin.dao.SysRoleMapper;
+import com.chinaway.tms.admin.dao.SysRoleMenuMapper;
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.core.AbstractService;
@@ -19,6 +20,9 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 	
 	@Autowired
 	private SysRoleMapper sysRoleMapper;
+	
+	@Autowired
+	private SysRoleMenuMapper sysRoleMenuMapper;
 	
 	/**具体子类service的实现需要使用的mapper*/
 	@Override
@@ -67,6 +71,7 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 		String[] idsStr = ids.split(",");
 		if (idsStr.length > 0) {
 			for (String id : idsStr) {
+				sysRoleMenuMapper.deleteById(Integer.parseInt(id));
 				sysRoleMapper.deleteById(Integer.parseInt(id));
 			}
 			return 1;
@@ -76,7 +81,8 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 	}
 
 	@Override
-	public int deleteByIds(String[] idsArray) {
-		return sysRoleMapper.deleteByIds(idsArray);
+	public int deleteByIds(String ids) {
+		String idsArr[] = ids.split(",");
+		return sysRoleMapper.deleteByIds(idsArr);
 	}
 }

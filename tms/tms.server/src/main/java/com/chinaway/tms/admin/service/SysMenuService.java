@@ -28,5 +28,5 @@ public interface SysMenuService extends BaseService<SysMenu, Integer> {
 	 * @param idsArray
 	 * @return
 	 */
-	public int deleteByIds(String[] idsArray);
+	int deleteByIds(String ids);
 }
