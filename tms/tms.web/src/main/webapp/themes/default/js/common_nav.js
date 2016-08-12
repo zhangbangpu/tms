@@ -25,7 +25,7 @@ $(function() {
 
 //登陆
 $('#logoutButton').click(function() {
-    $ips.load('login', 'logout', pararm, function(result) {
+    $ips.load('login', 'logout', '{"username":"huitongwuliu1","password":"1234"}', function(result) {
     	console.log(result);
     	console.log(typeof result);
     	window.location.href="login.html";
