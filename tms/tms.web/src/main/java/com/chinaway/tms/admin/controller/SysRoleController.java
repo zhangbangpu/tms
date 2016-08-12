@@ -36,6 +36,9 @@ public class SysRoleController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysRole> pageBean = sysRoleService.select2PageBean(argsMap);
@@ -54,6 +57,10 @@ public class SysRoleController {
 	@RequestMapping(value = "/queRoleByCtnPgBn")
 	@ResponseBody
 	public Result queRoleByCtnPgBn(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		SysRole role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
 //		Map<String, Object> argsMap = new HashMap<String, Object>();
@@ -104,6 +111,10 @@ public class SysRoleController {
 	@RequestMapping(value = "/queryAllRole")
 	@ResponseBody
 	public Result queryAllRole(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		int code = 1;
 //		String msg = "查询所有角色操作失败!";
@@ -142,7 +153,11 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
-	public Result queryOneById(@RequestParam(value="id")String id) {
+	public Result queryOneById(HttpServletRequest request, @RequestParam(value="id")String id) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据id查询角色操作失败!";
@@ -177,7 +192,11 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/addRole")
 	@ResponseBody
-	public Result addRole(@RequestParam(value="sysRole") String sysRole) {
+	public Result addRole(HttpServletRequest request, @RequestParam(value="sysRole") String sysRole) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		SysRole role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
 		
 		Map<String, Object> resultMap = new HashMap<>();
@@ -213,7 +232,11 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/bathDelRole")
 	@ResponseBody
-	public Result bathDelRole(@RequestParam(value="ids") String ids) {
+	public Result bathDelRole(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -247,7 +270,11 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/delRole")
 	@ResponseBody
-	public Result delRole(@RequestParam(value="ids") String ids) {
+	public Result delRole(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -281,7 +308,11 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/updateRole")
 	@ResponseBody
-	public Result updateRole(@RequestParam(value="sysRole") String sysRole) {
+	public Result updateRole(HttpServletRequest request, @RequestParam(value="sysRole") String sysRole) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		SysRole role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

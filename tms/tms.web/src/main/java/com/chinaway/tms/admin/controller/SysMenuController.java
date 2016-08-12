@@ -36,6 +36,9 @@ public class SysMenuController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysMenu> pageBean = sysMenuService.select2PageBean(argsMap);
@@ -55,6 +58,10 @@ public class SysMenuController {
 	@RequestMapping(value = "/ajaxLoginGetMenuList")
 	@ResponseBody
 	public String AjaxLoginGetMenuList(HttpServletRequest request) {
+//		if (!LoginController.checkLogin(request)) {
+//			return new Result(2, "");
+//		}
+		
 		//连表查询角色信息
 		List<SysMenu> sysMenuList = (List<SysMenu>)request.getSession().getAttribute("sysMenuList");
 
@@ -72,6 +79,10 @@ public class SysMenuController {
 	@RequestMapping(value = "/queryAllMenu")
 	@ResponseBody
 	public Result queryAllMenu(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
 //		
@@ -123,7 +134,11 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
-	public Result queryOneById(@RequestParam(value="id") String id) {
+	public Result queryOneById(HttpServletRequest request, @RequestParam(value="id") String id) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
 //		String msg = "根据id查询菜单操作失败!";
@@ -157,7 +172,11 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/addMenu")
 	@ResponseBody
-	public Result addMenu(@RequestParam(value="sysMenu") String sysMenu) {
+	public Result addMenu(HttpServletRequest request, @RequestParam(value="sysMenu") String sysMenu) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
 		
 		Map<String, Object> resultMap = new HashMap<>();
@@ -192,7 +211,11 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/bathDelMenu")
 	@ResponseBody
-	public Result bathDelMenu(@RequestParam(value="ids") String ids) {
+	public Result bathDelMenu(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -225,7 +248,11 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/delMenu")
 	@ResponseBody
-	public Result delMenu(@RequestParam(value="ids") String ids) {
+	public Result delMenu(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -258,7 +285,11 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/updateMenu")
 	@ResponseBody
-	public Result updateMenu(@RequestParam(value="sysMenu") String sysMenu) {
+	public Result updateMenu(HttpServletRequest request, @RequestParam(value="sysMenu") String sysMenu) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
 		
 		Map<String, Object> resultMap = new HashMap<>();

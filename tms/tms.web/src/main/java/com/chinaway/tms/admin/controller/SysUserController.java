@@ -34,6 +34,9 @@ public class SysUserController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysUser> pageBean = sysUserService.select2PageBean(argsMap);
@@ -52,6 +55,10 @@ public class SysUserController {
 	@RequestMapping(value = "/queUserByCtnPgBn")
 	@ResponseBody
 	public Result queUserByCtnPgBn(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
 //		Map<String, Object> argsMap = new HashMap<String, Object>();
@@ -102,6 +109,9 @@ public class SysUserController {
 	@RequestMapping(value = "/queAllUserByCtn")
 	@ResponseBody
 	public Result queAllUserByCtn(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
@@ -141,7 +151,10 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/queryUserById")
 	@ResponseBody
-	public Result queryUserById(@RequestParam(value="id") String id) {
+	public Result queryUserById(HttpServletRequest request, @RequestParam(value="id") String id) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
 //		String msg = "根据id查询用戶操作失败!";
@@ -177,7 +190,10 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/addUser")
 	@ResponseBody
-	public Result addUser(@RequestParam(value="sysUser") String sysUser) {
+	public Result addUser(HttpServletRequest request, @RequestParam(value="sysUser") String sysUser) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
 		
 		Map<String, Object> resultMap = new HashMap<>();
@@ -213,7 +229,10 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/bathDelUser")
 	@ResponseBody
-	public Result bathDelUser(@RequestParam(value="ids") String ids) {
+	public Result bathDelUser(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -246,7 +265,10 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/delUser")
 	@ResponseBody
-	public Result delUser(@RequestParam(value="ids") String ids) {
+	public Result delUser(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -280,7 +302,10 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/updateUser")
 	@ResponseBody
-	public Result updateUser(@RequestParam(value="sysUser") String sysUser) {
+	public Result updateUser(HttpServletRequest request, @RequestParam(value="sysUser") String sysUser) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
 		
 		Map<String, Object> resultMap = new HashMap<>();

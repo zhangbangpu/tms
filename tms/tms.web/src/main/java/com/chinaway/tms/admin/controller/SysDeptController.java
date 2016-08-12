@@ -36,7 +36,9 @@ public class SysDeptController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
-		
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysDept> pageBean = sysDeptService.select2PageBean(argsMap);
 		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
@@ -54,6 +56,10 @@ public class SysDeptController {
 	@RequestMapping(value = "/queryDeptByCondition")
 	@ResponseBody
 	public Result queryDeptByCondition(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
 //		
@@ -105,6 +111,10 @@ public class SysDeptController {
 	@RequestMapping(value = "/queryAllDept")
 	@ResponseBody
 	public Result queryAllDept(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
@@ -143,7 +153,11 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
-	public Result queryOneById(@RequestParam(value="id") String id) {
+	public Result queryOneById(HttpServletRequest request, @RequestParam(value="id") String id) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
 //		String msg = "根据id查询部门操作失败!";
@@ -178,7 +192,10 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/addDept")
 	@ResponseBody
-	public Result addDept(@RequestParam(value="sysDept") String  sysDept) {
+	public Result addDept(HttpServletRequest request, @RequestParam(value="sysDept") String  sysDept) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
 		
 		Map<String, Object> resultMap = new HashMap<>();
@@ -213,7 +230,10 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/bathDelDept")
 	@ResponseBody
-	public Result bathDelDept(@RequestParam(value="ids") String ids) {
+	public Result bathDelDept(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -246,7 +266,10 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/delDept")
 	@ResponseBody
-	public Result delDept(@RequestParam(value="ids") String ids) {
+	public Result delDept(HttpServletRequest request, @RequestParam(value="ids") String ids) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除部门操作失败!";
@@ -279,7 +302,10 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/updateDept")
 	@ResponseBody
-	public Result updateDept(@RequestParam(value="sysDept") String sysDept) {
+	public Result updateDept(HttpServletRequest request, @RequestParam(value="sysDept") String sysDept) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
 		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
 		
 		Map<String, Object> resultMap = new HashMap<>();
