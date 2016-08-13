@@ -45,21 +45,21 @@ function getRowIds(array) {
 $("#deletebtn").click(function(){
 	
 	var ids = getRowIds(true);
-	if(ids.length != 1) {
-		ids.length>1?$ips.error("只能删除一条！"):$ips.error("未选择记录！");
-        return;
-    }
+//	if(ids.length != 1) {
+//		ids.length>1?$ips.error("只能删除一条！"):$ips.error("未选择记录！");
+//        return;
+//    }
 	
     $ips.confirm("您确定要删除选中的记录吗?",function(btn) {
         if (btn == "确定") {
-            $ips.load("agent/del/"+ids, "", "", function(result){
-            	console.log(result);
-//                if(result > 0) {
-//            		 $ips.succeed("删除成功。");
-//            		 $('#tblMain').grid("fnDraw");
-//            	 } else {
-//            		 $ips.error("删除失败！" + result);
-//            	 }
+            $ips.load("site", "deleteById", "ids=" + ids, function(result){
+            	console.log(result.code == 0);
+                if(result.code == 0) {
+            		 $ips.succeed("删除成功。");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error("删除失败！" + result);
+            	 }
             });
 		}
     });

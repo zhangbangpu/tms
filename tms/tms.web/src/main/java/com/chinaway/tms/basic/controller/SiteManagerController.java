@@ -75,9 +75,6 @@ public class SiteManagerController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectSite2PageBean(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<Site> pageBean = siteService.select2PageBean(argsMap);
@@ -96,9 +93,6 @@ public class SiteManagerController {
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
 	public Result queryOneById(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
 		
 		String id = request.getParameter("id");
 		int code = 1;
@@ -132,9 +126,6 @@ public class SiteManagerController {
 	@RequestMapping(value = "/addSite")
 	@ResponseBody
 	public Result addSite(HttpServletRequest request, Site site) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -144,7 +135,7 @@ public class SiteManagerController {
 		try {
 			
 			site.setUpdatetime(new Date());
-			if (site.getId() > 0) {
+			if (site.getId() != null) {
 				ret = siteService.updateSelective(site);
 			}else{
 				site.setCreatetime(new Date());
@@ -176,9 +167,6 @@ public class SiteManagerController {
 	@RequestMapping(value = "/deleteById")
 	@ResponseBody
 	public Result deleteById(HttpServletRequest request, @RequestParam("ids") String ids) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
