@@ -92,4 +92,12 @@
 		</property>
 	</bean>
 
+	<mvc:interceptors>  
+        <mvc:interceptor>  
+            <mvc:mapping path="*.html"/><!-- 映射路径后缀名 -->  
+            <mvc:exclude-mapping path="/ws*"/>
+            <bean class="com.chinaway.tms.utils.http.SessionFilter"/><!-- 自定义拦截器 -->  
+        </mvc:interceptor>  
+    </mvc:interceptors>  
+
 </beans>
