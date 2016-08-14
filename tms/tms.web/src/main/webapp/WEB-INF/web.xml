@@ -52,7 +52,7 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>classpath*:spring/spring-mvc.xml</param-value>
 		</init-param>
-		<!-- <load-on-startup>1</load-on-startup> -->
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
 	<!--servlet的映射，如果有多个需要注意加载顺序 -->
@@ -77,7 +77,7 @@
 	</error-page>
 -->
 	<welcome-file-list>
-		<welcome-file>login.html</welcome-file>
+		<welcome-file>login.jsp</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>

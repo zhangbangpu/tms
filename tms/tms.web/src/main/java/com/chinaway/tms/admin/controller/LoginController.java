@@ -59,7 +59,10 @@ public class LoginController {
 //			argsMap.put("password", password);
 			
 			SysUser sysUser = sysUserService.queOneUserByCtn(argsMap);
-			request.getSession().setAttribute("sysUser", sysUser);
+			if(null != sysUser){
+				request.getSession().setAttribute("sysUser", sysUser);
+				request.getSession().setAttribute("username", sysUser.getLoginname());
+			}
 			
 			resultMap.put("sysUser", sysUser);
 			if (null != sysUser) {

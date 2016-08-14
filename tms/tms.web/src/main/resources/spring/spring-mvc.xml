@@ -16,6 +16,20 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<mvc:interceptors>  
+        <mvc:interceptor>  
+            <mvc:mapping path="/"/><!-- 映射路径后缀名 -->
+            <mvc:mapping path="/tms/**" />  
+       		<mvc:mapping path="/test/**" />  
+            <mvc:exclude-mapping path="/ws/"/>
+            <bean class="com.intercept.CommonInterceptor"/><!-- 自定义拦截器 -->  
+        </mvc:interceptor>  
+    </mvc:interceptors>
+    
+    <mvc:resources mapping="/js/**" location="/js/"/>    
+	<mvc:resources mapping="/css/**" location="/css/"/>    
+	<mvc:resources mapping="/img/**" location="/img/"/>
+    
 	<!-- <aop:aspectj-autoproxy proxy-target-class="true"/> -->
 	<aop:aspectj-autoproxy />
 	<!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
@@ -91,13 +105,5 @@
 			<value>4096</value>
 		</property>
 	</bean>
-
-	<mvc:interceptors>  
-        <mvc:interceptor>  
-            <mvc:mapping path="*.html"/><!-- 映射路径后缀名 -->  
-            <mvc:exclude-mapping path="/ws*"/>
-            <bean class="com.intercept.SessionFilter"/><!-- 自定义拦截器 -->  
-        </mvc:interceptor>  
-    </mvc:interceptors>  
 
 </beans>

@@ -197,7 +197,6 @@ $(document).ready(function() {
 				localStorage.clear();
 				location.reload();
 			}
-
 		});
 		e.preventDefault();
 	});
@@ -230,21 +229,27 @@ $(document).ready(function() {
 	// LOGOUT BUTTON
 	$('#logout a').click(function(e) {
 		//get the link
-		$.loginURL = $(this).attr('href');
-
+		if(window.confirm('你确定要退出登录吗？')){
+			$.loginURL = $(this).attr('href');
+            //alert("确定");
+            return true;
+         }else{
+            //alert("取消");
+            return false;
+        }
 		// ask verification
-		$.SmartMessageBox({
-			title : "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",
-			content : "You can improve your security further after logging out by closing this opened browser",
-			buttons : '[No][Yes]'
-
-		}, function(ButtonPressed) {
-			if (ButtonPressed == "Yes") {
-				$.root_.addClass('animated fadeOutUp');
-				setTimeout(logout, 1000)
-			}
-
-		});
+//		$.SmartMessageBox({
+//			title : "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",
+//			content : "You can improve your security further after logging out by closing this opened browser",
+//			buttons : '[No][Yes]'
+//
+//		}, function(ButtonPressed) {
+//			if (ButtonPressed == "Yes") {
+//				$.root_.addClass('animated fadeOutUp');
+//				setTimeout(logout, 1000)
+//			}
+//
+//		});
 		e.preventDefault();
 	});
 
