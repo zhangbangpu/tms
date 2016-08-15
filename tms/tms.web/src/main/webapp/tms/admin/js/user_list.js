@@ -92,8 +92,8 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 										'<i class="fa fa-caret-down"></i>' +
 									'</button>' +
 					                '<ul class="dropdown-menu">' +
-									   '<li><a href="javascript:void(0);" data-button-resource="3D0D299083B8B9738EA929013B8B7F1C" onclick="userEdit(\'' + item.id + '\')">编辑</a></li>' +
-					                   '<li class="divider"></li>' +
+//									   '<li><a href="javascript:void(0);" data-button-resource="3D0D299083B8B9738EA929013B8B7F1C" onclick="userEdit(\'' + item.id + '\')">编辑</a></li>' +
+//					                   '<li class="divider"></li>' +
 					                   '<li><a href="javascript:void(0);" data-button-resource="B8E2AAE664980C89BB68369D36C052F4" onclick="userDelete(\'' + item.id + '\')">删除</a></li>' +
 					                '</ul></div>';
 					     if('1' == item.status ){

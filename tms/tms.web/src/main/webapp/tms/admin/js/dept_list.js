@@ -71,12 +71,14 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 										'<i class="fa fa-pencil fa-fw"></i>' +
 										'<i class="fa fa-caret-down"></i>' +
 									'</button>' +
-					                '<ul class="dropdown-menu">' +
-									   '<li><a href="javascript:void(0);" data-button-resource="BCD01F0FB983E7BEBC8EFBE9073C327A" onclick="orgEdit(\'' + item.id + '\')">编辑</a></li>';
+					                '<ul class="dropdown-menu">' 
+//									+ '<li><a href="javascript:void(0);" data-button-resource="BCD01F0FB983E7BEBC8EFBE9073C327A" onclick="orgEdit(\'' + item.id + '\')">编辑</a></li>'
+					                ;
 
 					//判断不允许删除自己机构
 					if(userOrgid != item.id){
-						item.idAction += '<li class="divider"></li>' +
+						item.idAction += 
+//							'<li class="divider"></li>' +
 					                     '<li><a href="javascript:void(0);"  data-button-resource="169EC2F61F4260BB45F098004E86B3BA" onclick="orgDelete(\'' + item.id + '\')">删除</a></li>';
 					}
 					item.idAction += '</ul></div>';

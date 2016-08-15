@@ -155,8 +155,8 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 							'<i class="fa fa-caret-down"></i>' +
 						'</button>' +
 		                '<ul class="dropdown-menu">' +
-						   '<li><a href="javascript:void(0);" data-button-resource="B42D5811D906814E360904EDB360A467" onclick="resourceEdit(\'' + item.id + '\')">编辑</a></li>' +
-		                   '<li class="divider"></li>' +
+//						   '<li><a href="javascript:void(0);" data-button-resource="B42D5811D906814E360904EDB360A467" onclick="resourceEdit(\'' + item.id + '\')">编辑</a></li>' +
+//		                   '<li class="divider"></li>' +
 		                   '<li><a href="javascript:void(0);"  data-button-resource="EF5F3071BA06469A995BAF5AFAF36CBD" onclick="resourceDelete(\'' + item.id + '\')">删除</a></li>' +
 		                '</ul></div>';
 	                item.orderby = '<a class="orderby">' + item.orderby + '</a>'

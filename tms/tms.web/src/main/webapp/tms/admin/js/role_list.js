@@ -82,8 +82,8 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 										'<i class="fa fa-caret-down"></i>' +
 									'</button>' +
 					                '<ul class="dropdown-menu">' +
-									   '<li><a href="javascript:void(0);" data-button-resource="0933F41DC2D4608D61631DE826689B02" onclick="roleEdit(\'' + item.id + '\')">编辑</a></li>' +
-					                   '<li class="divider"></li>' +
+//									   '<li><a href="javascript:void(0);" data-button-resource="0933F41DC2D4608D61631DE826689B02" onclick="roleEdit(\'' + item.id + '\')">编辑</a></li>' +
+//					                   '<li class="divider"></li>' +
 					                   '<li><a href="javascript:void(0);" data-button-resource="F76F35A9900A047358E5484DC66A1D49" onclick="roleDelete(\'' + item.id + '\')">删除</a></li>' +
 					                '</ul></div>';
 				});
