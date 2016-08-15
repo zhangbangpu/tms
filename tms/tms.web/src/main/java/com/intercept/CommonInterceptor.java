@@ -29,7 +29,8 @@ public class CommonInterceptor implements HandlerInterceptor {
         String username =  (String)request.getSession().getAttribute("username");   
         if(username == null){  
             log.info("Interceptor：跳转到login页面！");  
-            request.getRequestDispatcher("/login.jsp").forward(request, response);  
+            request.getRequestDispatcher("/login.html").forward(request, response);  
+//            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);  
             return false;  
         }else  
             return true;  

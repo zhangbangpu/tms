@@ -18,7 +18,7 @@ public class ResultUtil {
 	private static final Base64 base64 = new Base64(true);
 	public static final String LAST_PAGE = "lastPage";// 未登录时访问的页面
 	public static final String REDIRECT_HOME = "/";// 未登录时跳转到首页
-	public static final String LOGIN_HOME = "/index.jsp";// 登录成功后进入的页面
+	public static final String LOGIN_HOME = "/index.html";// 登录成功后进入的页面
 
 	/**
 	 * 保存当前请求
