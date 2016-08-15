@@ -88,7 +88,7 @@
 	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
         <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
-        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="prefix" value="/jsp/" />  
         <property name="suffix" value=".jsp"></property>  
     </bean>
 

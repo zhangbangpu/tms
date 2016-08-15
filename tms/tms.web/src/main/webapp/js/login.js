@@ -48,11 +48,11 @@ $('#login-form').validate({
     // Messages for form validation
     messages: {
         email: {
-            required: 'Please enter your username'
+            required: '请输入用户名'
             // email : 'Please enter a VALID email address'
         },
         password: {
-            required: 'Please enter your password'
+            required: '请输入密码'
         }
     },
 
@@ -71,16 +71,17 @@ $('#form_button').click(function() {
     $ips.load('login', 'login', pararm, function(result) {
     	console.log(result);
     	console.log(typeof result);
-    	window.location.href="index.html#tms/basic/site_list.html";
-//        if (result.success == true) {
-//        } else {
-//            $('.padding-top-10:first').animate({right: '10px'},80);
-//            $('.padding-top-10:first').animate({right: ''},80);
-//            $('.padding-top-10:first').animate({left: '10px'},80);
-//            $('.padding-top-10:first').animate({left: ''},80);
-//            $('.padding-top-10:first').removeAttr('style');
-//            $ips.error(result.message);
-//        }
+        if (result.code == 0) {
+        	window.location.href="index.html?username="+result.username+"#tms/basic/site_list.html";
+//        	window.location.href="/jsp/index.jsp#tms/basic/site_list.html";
+        } else {
+            $('.padding-top-10:first').animate({right: '10px'},80);
+            $('.padding-top-10:first').animate({right: ''},80);
+            $('.padding-top-10:first').animate({left: '10px'},80);
+            $('.padding-top-10:first').animate({left: ''},80);
+            $('.padding-top-10:first').removeAttr('style');
+            $ips.error(result.message);
+        }
     });
     return false;
 });
