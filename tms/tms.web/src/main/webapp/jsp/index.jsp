@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%> --%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+// 	String username = request.getSession().getAttribute("username");
 %>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -109,7 +110,7 @@
 			<div class="login-info">
 				<span> <!-- User image size is adjusted inside CSS, it should stay as it --> 
 					<img src="<%=basePath%>img/avatars/sunny.png" alt="me" class="online" /> 
-					<a href="javascript:void(0);" id="show-shortcut">john.doe <!-- <i class="fa fa-angle-down"></i> -->
+<%-- 					<a href="javascript:void(0);" id="show-shortcut"><%=username%> <!-- <i class="fa fa-angle-down"></i> --> --%>
 					</a> 
 				</span>
 			</div>
@@ -141,7 +142,7 @@
 
 				<!-- breadcrumb -->
 				<ol class="breadcrumb">
-					<li>Home</li><li>Dashboard</li>
+<!-- 					<li>Home</li><li>Dashboard</li> -->
 				</ol>
 				<!-- end breadcrumb -->
 
@@ -163,36 +164,34 @@
 			<div id="content">
 
 				<div class="row">
-					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-						<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> Dashboard <span>> My Dashboard</span></h1>
-					</div>
-					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
-						<ul id="sparks" class="">
-							<li class="sparks-info">
-								<h5> <span class="txt-color-blue"></span></h5>
-								<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
+<!-- 					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4"> -->
+<!-- 						<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> Dashboard <span>> My Dashboard</span></h1> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8"> -->
+<!-- 						<ul id="sparks" class=""> -->
+<!-- 							<li class="sparks-info"> -->
+<!-- 								<h5> <span class="txt-color-blue"></span></h5> -->
+<!-- 								<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm"> -->
 									
-								</div>
-							</li>
-							<li class="sparks-info">
-								<h5> <span class="txt-color-purple"><i class="fa fa-arrow-circle-up"></i>&nbsp;45%</span></h5>
-								<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
+<!-- 								</div> -->
+<!-- 							</li> -->
+<!-- 							<li class="sparks-info"> -->
+<!-- 								<h5> <span class="txt-color-purple"><i class="fa fa-arrow-circle-up"></i>&nbsp;45%</span></h5> -->
+<!-- 								<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm"> -->
 									
-								</div>
-							</li>
-							<li class="sparks-info">
-								<h5> <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i></span></h5>
-								<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
+<!-- 								</div> -->
+<!-- 							</li> -->
+<!-- 							<li class="sparks-info"> -->
+<!-- 								<h5> <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i></span></h5> -->
+<!-- 								<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm"> -->
 								
-								</div>
-							</li>
-						</ul>
-					</div>
+<!-- 								</div> -->
+<!-- 							</li> -->
+<!-- 						</ul> -->
+<!-- 					</div> -->
 				</div>
 				<!-- widget grid -->
 				<section id="widget-grid" class="">
-
-
 
 				</section>
 				<!-- end widget grid -->
@@ -208,26 +207,26 @@
 		you can add as many as you like
 		-->
 		<div id="shortcut">
-			<ul>
-				<li>
-					<a href="#inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
-				</li>
-				<li>
-					<a href="#calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
-				</li>
-				<li>
-					<a href="#gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
-				</li>
-				<li>
-					<a href="#invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span> </a>
-				</li>
-				<li>
-					<a href="#gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
-				</li>
-			</ul>
+<!-- 			<ul> -->
+<!-- 				<li> -->
+<!-- 					<a href="#inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a> -->
+<!-- 				</li> -->
+<!-- 				<li> -->
+<!-- 					<a href="#calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a> -->
+<!-- 				</li> -->
+<!-- 				<li> -->
+<!-- 					<a href="#gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a> -->
+<!-- 				</li> -->
+<!-- 				<li> -->
+<!-- 					<a href="#invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span> </a> -->
+<!-- 				</li> -->
+<!-- 				<li> -->
+<!-- 					<a href="#gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a> -->
+<!-- 				</li> -->
+<!-- 				<li> -->
+<!-- 					<a href="javascript:void(0);" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a> -->
+<!-- 				</li> -->
+<!-- 			</ul> -->
 		</div>
 		<!-- END SHORTCUT AREA -->
 
