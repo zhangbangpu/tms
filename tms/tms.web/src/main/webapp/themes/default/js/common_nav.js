@@ -15,6 +15,18 @@ $(function() {
 //	 var menu = resourceMenu(data);
 //		$("nav").html(ulLi(menu));
 	//var param_u = 
+	
+	$.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+	
+	var username = $.getUrlParam('username');
+	$("#show-shortcut").html("<a href='javascript:void(0);' id='show-shortcut'>"+username+"</a>");
+	
+	console.log(username);
+	
 	$ips.load("login","loginGetMenuList",{id:1},function(data){
 		console.log(data);
 		var menu = resourceMenu(data);
@@ -23,21 +35,22 @@ $(function() {
 
 });
 
-//登陆
+//登出
 $('#logoutButton').click(function() {
     $ips.load('login', 'logout', '{"username":"huitongwuliu1","password":"1234"}', function(result) {
     	console.log(result);
     	console.log(typeof result);
-    	window.location.href="login.html";
-//        if (result.success == true) {
-//        } else {
-//            $('.padding-top-10:first').animate({right: '10px'},80);
-//            $('.padding-top-10:first').animate({right: ''},80);
-//            $('.padding-top-10:first').animate({left: '10px'},80);
-//            $('.padding-top-10:first').animate({left: ''},80);
-//            $('.padding-top-10:first').removeAttr('style');
-//            $ips.error(result.message);
-//        }
+        if (result.code == 0) {
+        	window.location.href="login.html";
+//        	window.location.href="/jsp/login.jsp";
+        } else {
+            $('.padding-top-10:first').animate({right: '10px'},80);
+            $('.padding-top-10:first').animate({right: ''},80);
+            $('.padding-top-10:first').animate({left: '10px'},80);
+            $('.padding-top-10:first').animate({left: ''},80);
+            $('.padding-top-10:first').removeAttr('style');
+            $ips.error(result.message);
+        }
     });
     return false;
 });
