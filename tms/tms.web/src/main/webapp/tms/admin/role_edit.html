@@ -24,23 +24,24 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-4">
-                <div class="row">
-                    <label class="label col col-4 text-align-right  ">机构</label>
-                    <section class="col col-8">
-                        <label class="input">
-                            <input type="hidden" id="orgcode" name="orgcode" value="" style="width:100%;" />
-                        </label>
-                    </section>
-                </div>
-            </div>
+<!--             <div class="col-xs-12 col-sm-4"> -->
+<!--                 <div class="row"> -->
+<!--                     <label class="label col col-4 text-align-right  ">机构</label> -->
+<!--                     <section class="col col-8"> -->
+<!--                         <label class="input"> -->
+<!--                             <input type="hidden" id="deptid" name="deptid" value="" style="width:100%;" /> -->
+<!--                         </label> -->
+<!--                     </section> -->
+<!--                 </div> -->
+<!--             </div> -->
             <div class="col-xs-12 col-sm-4" id="projecttyperow">
                 <div class="row">
                     <label class="label col col-4 text-align-right  ">资源类型</label>
                     <section class="col col-8">
                         <label class="select">
-                            <select name="projecttype" id="projecttype">
-                                <option value="">标准产品</option>
+                            <select name="type" id="projecttype">
+                                <option value="1">标准产品</option>
+                                <option value="2">其他产品</option>
                             </select><i></i>
                         </label>
                     </section>
@@ -48,23 +49,23 @@
             </div>
         </fieldset>
         
-		<fieldset>
-			<div style="height:auto !important; height:600px;min-height:200px;">
-				<table id="markers" class="table table-bordered">
-					<thead>
-						<tr>
-							<th>分配资源</th>
-						</tr>
-					</thead>
-					<tr>
-						<td><input type="hidden" id="orgvalue" name="orgvalue">
-							<div id="resource-list"></div>
-                            <div class="clearfix"></div>
-						</td>
-					</tr>
-                </table>
-			</div>
-		</fieldset>
+<!-- 		<fieldset> -->
+<!-- 			<div style="height:auto !important; height:600px;min-height:200px;"> -->
+<!-- 				<table id="markers" class="table table-bordered"> -->
+<!-- 					<thead> -->
+<!-- 						<tr> -->
+<!-- 							<th>分配资源</th> -->
+<!-- 						</tr> -->
+<!-- 					</thead> -->
+<!-- 					<tr> -->
+<!-- 						<td><input type="hidden" id="orgvalue" name="orgvalue"> -->
+<!-- 							<div id="resource-list"></div> -->
+<!--                             <div class="clearfix"></div> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+<!--                 </table> -->
+<!-- 			</div> -->
+<!-- 		</fieldset> -->
 		<footer>
 			<button type="button" class="btn btn-default"
 				onclick="window.history.go(-1)">取消</button>
@@ -75,10 +76,3 @@
 		</footer>
 	</form>
 </div>
-<script type="text/javascript">
-    // DO NOT REMOVE : GLOBAL FUNCTIONS!
-    pageSetUp();
-
-	// G7初始化页面 
-	$ips.startup();
-</script>

@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,9 @@ public class SysMenuController {
 			return new Result(2, "");
 		}
 		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		id = String.valueOf(argsMap.get("id"));
+		
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
 //		String msg = "根据id查询菜单操作失败!";
@@ -177,7 +181,25 @@ public class SysMenuController {
 			return new Result(2, "");
 		}
 		
-		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+		SysMenu menu = new SysMenu();
+//		menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		menu.setCreatetime(new Date());
+		menu.setImg(String.valueOf(argsMap.get("img")));
+		menu.setLevels(String.valueOf(argsMap.get("levels")));
+		menu.setMenutype(String.valueOf(argsMap.get("menutype")));
+		menu.setName(String.valueOf(argsMap.get("name")));
+		if(null != String.valueOf(argsMap.get("pid"))){
+			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+		}
+		menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
+		if(null != String.valueOf(argsMap.get("sotid"))){
+			menu.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
+		}
+		menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
+		menu.setTarget(String.valueOf(argsMap.get("target")));
+		menu.setTitle(String.valueOf(argsMap.get("title")));
+		menu.setType(String.valueOf(argsMap.get("type")));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -216,6 +238,9 @@ public class SysMenuController {
 			return new Result(2, "");
 		}
 		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		ids = String.valueOf(argsMap.get("ids"));
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -252,6 +277,9 @@ public class SysMenuController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		ids = String.valueOf(argsMap.get("ids"));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -290,7 +318,25 @@ public class SysMenuController {
 			return new Result(2, "");
 		}
 		
-		SysMenu menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+		SysMenu menu = new SysMenu();
+//		menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		menu.setCreatetime(new Date());
+		menu.setImg(String.valueOf(argsMap.get("img")));
+		menu.setLevels(String.valueOf(argsMap.get("levels")));
+		menu.setMenutype(String.valueOf(argsMap.get("menutype")));
+		menu.setName(String.valueOf(argsMap.get("name")));
+		if(null != String.valueOf(argsMap.get("pid"))){
+			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+		}
+		menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
+		if(null != String.valueOf(argsMap.get("sotid"))){
+			menu.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
+		}
+		menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
+		menu.setTarget(String.valueOf(argsMap.get("target")));
+		menu.setTitle(String.valueOf(argsMap.get("title")));
+		menu.setType(String.valueOf(argsMap.get("type")));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

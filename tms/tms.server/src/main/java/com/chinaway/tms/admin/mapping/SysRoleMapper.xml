@@ -26,7 +26,7 @@
 				and id = #{id}
 			</if>
 			<if test="name != null and name != '' ">
-				and name = #{name}
+				and name like CONCAT('%',#{name},'%')
 			</if>
 			<if test="description != null and description != '' ">
 				and description = #{description}
@@ -88,7 +88,7 @@
 	</select>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysRole">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.admin.model.SysRole">
 		insert into sys_role(id,name,description,type)
 		values(#{id},#{name},#{description},#{type})
 	</insert>

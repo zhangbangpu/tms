@@ -31,10 +31,10 @@
 				and id = #{id}
 			</if>
 			<if test="deptid != null and deptid != '' ">
-				and deptid = #{deptid}
+				and deptid like CONCAT('%',#{deptid},'%')
 			</if>
 			<if test="name != null and name != '' ">
-				and name = #{name}
+				and name like CONCAT('%',#{name},'%')
 			</if>
 			<if test="pid != null and pid != '' ">
 				and pid = #{pid}
@@ -56,6 +56,21 @@
 			</if>
 			<if test="isenable != null and isenable != '' ">
 				and isenable = #{isenable}
+			</if>
+			<if test="customerid != null and customerid != '' ">
+				and customerid like CONCAT('%',#{customerid},'%')
+			</if>
+			<if test="contact != null and contact != '' ">
+				and contact like CONCAT('%',#{contact},'%')
+			</if>
+			<if test="address != null and address != '' ">
+				and address = #{address}
+			</if>
+			<if test="tel != null and tel != '' ">
+				and tel = #{tel}
+			</if>
+			<if test="remark != null and remark != '' ">
+				and remark = #{remark}
 			</if>
 		</trim>
 	</sql>

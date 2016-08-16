@@ -42,6 +42,9 @@
 			<if test="loginname != null and loginname != '' ">
 				and loginname = #{loginname}
 			</if>
+			<if test="realname != null and realname != '' ">
+				and realname = #{realname}
+			</if>
 			<if test="password != null and password != '' ">
 				and password = #{password}
 			</if>
@@ -75,6 +78,12 @@
 			<if test="codeid != null and codeid != '' ">
 				and codeid = #{codeid}
 			</if>
+			<if test="deptid != null and deptid != '' ">
+				and deptid = #{deptid}
+			</if>
+			<if test="email != null and email != '' ">
+				and email = #{email}
+			</if>
 		</trim>
 	</sql>
 	
@@ -90,7 +99,10 @@
 				and a.id = #{id}
 			</if>
 			<if test="loginname != null and loginname != '' ">
-				and a.loginname = #{loginname}
+				and a.loginname like CONCAT('%',#{loginname},'%')
+			</if>
+			<if test="realname != null and realname != '' ">
+				and a.realname like CONCAT('%',#{realname},'%')
 			</if>
 			<if test="password != null and password != '' ">
 				and a.password = #{password}
@@ -99,7 +111,7 @@
 				and a.type = #{type}
 			</if>
 			<if test="name != null and name != '' ">
-				and a.name = #{name}
+				and a.name like CONCAT('%',#{name},'%') 
 			</if>
 			<if test="intro != null and intro != '' ">
 				and a.intro = #{intro}
@@ -114,7 +126,7 @@
 				and a.corporationim = #{corporationim}
 			</if>
 			<if test="phone != null and phone != '' ">
-				and a.phone = #{phone}
+				and a.phone like CONCAT('%',#{phone},'%')
 			</if>
 			<if test="state != null and state != '' ">
 				and a.state = #{state}
@@ -124,6 +136,12 @@
 			</if>
 			<if test="codeid != null and codeid != '' ">
 				and a.codeid = #{codeid}
+			</if>
+			<if test="deptid != null and deptid != '' ">
+				and deptid = #{deptid}
+			</if>
+			<if test="email != null and email != '' ">
+				and email = #{email}
 			</if>
 		</trim>
 	</sql>
@@ -169,7 +187,7 @@
 	</select>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysUser">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.admin.model.SysUser">
 		insert into
 		sys_user(id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid)
 		values(#{id},#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid})

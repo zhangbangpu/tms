@@ -1,21 +1,20 @@
 package com.chinaway.tms.admin.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.chinaway.tms.admin.model.SysRole;
+import com.chinaway.tms.admin.model.SysRoleMenu;
+import com.chinaway.tms.admin.service.SysRoleMenuService;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.utils.MyBeanUtil;
-import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 
@@ -25,6 +24,9 @@ public class SysRoleController {
 
 	@Autowired
 	private SysRoleService sysRoleService;
+	
+	@Autowired
+	private SysRoleMenuService sysRoleDeptService;
 
 	/**
 	 * 根据条件查询站点信息<br>
@@ -158,6 +160,9 @@ public class SysRoleController {
 			return new Result(2, "");
 		}
 		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		id = String.valueOf(argsMap.get("id"));
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据id查询角色操作失败!";
@@ -197,7 +202,16 @@ public class SysRoleController {
 			return new Result(2, "");
 		}
 		
-		SysRole role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
+		SysRole role = new SysRole();
+//		role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		
+		role.setCreatetime(new Date());
+		role.setDeptid(String.valueOf(argsMap.get("deptid")));
+		role.setDescription(String.valueOf(argsMap.get("description")));
+		role.setName(String.valueOf(argsMap.get("name")));
+		role.setType(String.valueOf(argsMap.get("type")));
+		role.setUpdatetime(new Date());
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -206,6 +220,14 @@ public class SysRoleController {
 		int ret = 0;
 		try {
 			ret = sysRoleService.insert(role);
+			
+			SysRoleMenu sysRoleMenu = new SysRoleMenu();
+			for(int i=0;i<5;i++){
+				sysRoleMenu.setMenuid(i+1);
+				sysRoleMenu.setRoleid(role.getId());
+				sysRoleDeptService.insert(sysRoleMenu);
+			}
+			
 			if (ret > 0) {
 				code = 0;
 				msg = "添加操作成功!";
@@ -236,6 +258,9 @@ public class SysRoleController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		ids = String.valueOf(argsMap.get("ids"));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -275,6 +300,9 @@ public class SysRoleController {
 			return new Result(2, "");
 		}
 		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		ids = String.valueOf(argsMap.get("ids"));
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -313,7 +341,17 @@ public class SysRoleController {
 			return new Result(2, "");
 		}
 		
-		SysRole role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
+		SysRole role = new SysRole();
+//		role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		
+		role.setCreatetime(new Date());
+		role.setDeptid(String.valueOf(argsMap.get("deptid")));
+		role.setDescription(String.valueOf(argsMap.get("description")));
+		role.setName(String.valueOf(argsMap.get("name")));
+		role.setType(String.valueOf(argsMap.get("type")));
+		role.setUpdatetime(new Date());
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "修改角色操作失败!";

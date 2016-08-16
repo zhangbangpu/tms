@@ -1,21 +1,18 @@
 package com.chinaway.tms.admin.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.utils.MyBeanUtil;
-import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 
@@ -102,7 +99,7 @@ public class SysDeptController {
 	}
 	
 	/**
-	 * 根据说有部门信息<br>
+	 * 根据所有部门信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param deptInfo
@@ -158,6 +155,9 @@ public class SysDeptController {
 			return new Result(2, "");
 		}
 		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		id = String.valueOf(argsMap.get("id"));
+		
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
 //		String msg = "根据id查询部门操作失败!";
@@ -196,7 +196,28 @@ public class SysDeptController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
-		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
+		
+		SysDept dept = new SysDept();
+//		dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		dept.setAddress(String.valueOf(argsMap.get("address")));
+		dept.setContact(String.valueOf(argsMap.get("contact")));
+		dept.setCreatetime(new Date());
+		dept.setCustomerid(String.valueOf(argsMap.get("customerid")));
+		dept.setDeptid(String.valueOf(argsMap.get("deptid")));
+		dept.setDescription(String.valueOf(argsMap.get("description")));
+		dept.setIsenable(String.valueOf(argsMap.get("isenable")));
+		dept.setLevels(String.valueOf(argsMap.get("levels")));
+		dept.setName(String.valueOf(argsMap.get("name")));
+		if(null != String.valueOf(argsMap.get("pid"))){
+			dept.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+		}
+		dept.setRemark(String.valueOf(argsMap.get("remark")));
+		if(null != String.valueOf(argsMap.get("sotid"))){
+			dept.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
+		}
+		dept.setState(String.valueOf(argsMap.get("state")));
+		dept.setTel(String.valueOf(argsMap.get("tel")));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -234,6 +255,10 @@ public class SysDeptController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		ids = String.valueOf(argsMap.get("ids"));
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "批量删除操作失败!";
@@ -270,6 +295,10 @@ public class SysDeptController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		ids = String.valueOf(argsMap.get("ids"));
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除部门操作失败!";
@@ -306,7 +335,27 @@ public class SysDeptController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
-		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
+		SysDept dept = new SysDept();
+//		dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		dept.setAddress(String.valueOf(argsMap.get("address")));
+		dept.setContact(String.valueOf(argsMap.get("contact")));
+		dept.setCreatetime(new Date());
+		dept.setCustomerid(String.valueOf(argsMap.get("customerid")));
+		dept.setDeptid(String.valueOf(argsMap.get("deptid")));
+		dept.setDescription(String.valueOf(argsMap.get("description")));
+		dept.setIsenable(String.valueOf(argsMap.get("isenable")));
+		dept.setLevels(String.valueOf(argsMap.get("levels")));
+		dept.setName(String.valueOf(argsMap.get("name")));
+		if(null != String.valueOf(argsMap.get("pid"))){
+			dept.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+		}
+		dept.setRemark(String.valueOf(argsMap.get("remark")));
+		if(null != String.valueOf(argsMap.get("sotid"))){
+			dept.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
+		}
+		dept.setState(String.valueOf(argsMap.get("state")));
+		dept.setTel(String.valueOf(argsMap.get("tel")));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

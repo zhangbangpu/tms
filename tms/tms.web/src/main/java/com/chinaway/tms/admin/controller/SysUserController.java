@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.admin.model.SysUser;
+import com.chinaway.tms.admin.model.SysUserRole;
+import com.chinaway.tms.admin.service.SysUserRoleService;
 import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.utils.MyBeanUtil;
-import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 
@@ -23,6 +24,9 @@ public class SysUserController {
 
 	@Autowired
 	private SysUserService sysUserService;
+	
+	@Autowired
+	private SysUserRoleService sysUserRoleService;
 
 	/**
 	 * 根据条件查询站点信息<br>
@@ -155,6 +159,10 @@ public class SysUserController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		
+		id = String.valueOf(argsMap.get("id"));
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
 //		String msg = "根据id查询用戶操作失败!";
@@ -190,11 +198,65 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/addUser")
 	@ResponseBody
-	public Result addUser(HttpServletRequest request, @RequestParam(value="sysUser") String sysUser) {
+	public Result addUser(HttpServletRequest request) {
+//		public Result addUser(HttpServletRequest request, @RequestParam(value="sysUser") String sysUser) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
-		SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
+		
+		SysUser user = new SysUser();
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
+		
+		if(null != argsMap.get("certificate")){
+			user.setCertificate(String.valueOf(argsMap.get("certificate")));
+		}
+		if(null != argsMap.get("codeid")){
+			user.setCodeid(Integer.parseInt(String.valueOf(argsMap.get("codeid"))));
+		}
+		if(null != argsMap.get("corporation")){
+			user.setCorporation(String.valueOf(argsMap.get("corporation")));
+		}
+		if(null != argsMap.get("corporationim")){
+			user.setCorporationim(String.valueOf(argsMap.get("corporationim")));
+		}
+		user.setCreatetime(new Date());
+		if(null != argsMap.get("deptid")){
+			user.setDeptid(String.valueOf(argsMap.get("deptid")));
+		}
+		if(null != argsMap.get("deptname")){
+			user.setDeptname(String.valueOf(argsMap.get("deptname")));
+		}
+		if(null != argsMap.get("email")){
+			user.setEmail(String.valueOf(argsMap.get("email")));
+		}
+		if(null != argsMap.get("intro")){
+			user.setIntro(String.valueOf(argsMap.get("intro")));
+		}
+		if(null != argsMap.get("loginname")){
+			user.setLoginname(String.valueOf(argsMap.get("loginname")));
+		}
+		if(null != argsMap.get("name")){
+			user.setName(String.valueOf(argsMap.get("name")));
+		}
+		if(null != argsMap.get("password")){
+			user.setPassword(String.valueOf(argsMap.get("password")));
+		}
+		if(null != argsMap.get("phone")){
+			user.setPhone(String.valueOf(argsMap.get("phone")));
+		}
+		if(null != argsMap.get("realname")){
+			user.setRealname(String.valueOf(argsMap.get("realname")));
+		}
+		if(null != argsMap.get("rolename")){
+			user.setRolename(String.valueOf(argsMap.get("rolename")));
+		}
+		if(null != argsMap.get("state")){
+			user.setState(String.valueOf(argsMap.get("state")));
+		}
+		if(null != argsMap.get("type")){
+			user.setType(String.valueOf(argsMap.get("type")));
+		}
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -204,8 +266,13 @@ public class SysUserController {
 		try {
 			user.setCreatetime(new Date());
 			ret = sysUserService.insert(user);
+			
+			SysUserRole sysUserRole = new SysUserRole();
+			sysUserRole.setRoleid(3);
+			sysUserRole.setUserid(user.getId());
+			int retUr = sysUserRoleService.insert(sysUserRole);
 
-			if (ret > 0) {
+			if (ret > 0 && retUr > 0) {
 				code = 0;
 				msg = "添加操作成功!";
 			}
@@ -233,6 +300,11 @@ public class SysUserController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		
+		ids = String.valueOf(argsMap.get("ids"));
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -269,6 +341,9 @@ public class SysUserController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		ids = String.valueOf(argsMap.get("ids"));
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "删除操作失败!";
@@ -306,7 +381,30 @@ public class SysUserController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
-		SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		SysUser user = new SysUser();
+		
+//		user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
+		
+		user.setCertificate(String.valueOf(argsMap.get("certificate")));
+		if(null != String.valueOf(argsMap.get("codeid"))){
+			user.setCodeid(Integer.parseInt(String.valueOf(argsMap.get("codeid"))));
+		}
+		user.setCorporation(String.valueOf(argsMap.get("corporation")));
+		user.setCorporationim(String.valueOf(argsMap.get("corporationim")));
+		user.setCreatetime(new Date());
+		user.setDeptid(String.valueOf(argsMap.get("deptid")));
+		user.setDeptname(String.valueOf(argsMap.get("deptname")));
+		user.setEmail(String.valueOf(argsMap.get("email")));
+		user.setIntro(String.valueOf(argsMap.get("intro")));
+		user.setLoginname(String.valueOf(argsMap.get("loginname")));
+		user.setName(String.valueOf(argsMap.get("name")));
+		user.setPassword(String.valueOf(argsMap.get("password")));
+		user.setPhone(String.valueOf(argsMap.get("phone")));
+		user.setRealname(String.valueOf(argsMap.get("realname")));
+		user.setRolename(String.valueOf(argsMap.get("rolename")));
+		user.setState(String.valueOf(argsMap.get("state")));
+		user.setType(String.valueOf(argsMap.get("type")));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
