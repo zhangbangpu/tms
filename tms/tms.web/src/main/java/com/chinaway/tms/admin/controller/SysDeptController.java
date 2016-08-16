@@ -216,6 +216,8 @@ public class SysDeptController {
 		}
 		if(null != argsMap.get("deptid")){
 			dept.setDeptid(String.valueOf(argsMap.get("deptid")));
+		}else{
+			dept.setDeptid("1");
 		}
 		if(null != argsMap.get("description")){
 			dept.setDescription(String.valueOf(argsMap.get("description")));
