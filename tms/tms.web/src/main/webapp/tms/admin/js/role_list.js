@@ -68,7 +68,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
            	{sTitle: '<label class="no-margin"><input type="checkbox" name="checkbox style-0 " class="checkbox style-0 checkAll" id="checkAll"><span></span></label>', sName: "idCheckbox", sWidth: "20px", sClass: "center", bSortable: false},
            	{sTitle: "操作", sName: "idAction", sWidth: "25px", sClass: "center", bSortable: false},
 //			{sTitle: "所属机构", sName: "orgname"},
-//			{sTitle: "角色名称", sName: "name"},
+			{sTitle: "角色名称", sName: "name"},
 			{sTitle: "创建时间", sName: "createtime"},
 			{sTitle: "更新时间", sName: "updatetime"}
 		],

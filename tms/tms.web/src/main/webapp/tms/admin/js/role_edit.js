@@ -4,7 +4,7 @@ $("#orgcode").select2({
     allowClear : true,
     // 数据加载
     query : function(query) {
-        $ips.load('org', 'getOrgByName', {keyword : query.term, isorgroot : 1}, function(e) {
+        $ips.load('sysDept', 'getDeptByName', {keyword : query.term, isorgroot : 1}, function(e) {
             var _pre_data = [];
             $.each(e, function(k, v) {
                 _pre_data.push({
@@ -36,14 +36,14 @@ if (!user.isSuper) {
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
 if (parms["id"]) {
-    var entity = $ips.load("role", "get", "id=" + parms["id"]);
+    var entity = $ips.load("sysRole", "getRoleById", "id=" + parms["id"]);
     if (!entity.id) {
-        window.setTimeout("window.location.hash = '#role/index.html'", 2000);
+        window.setTimeout("window.location.hash = '#index.html'", 2000);
     }
     if (entity) {
         // 超级管理员需要指点当前编辑角色拥有的定制项目
         if (user.isSuper) {
-            entity.projecttype = $ips.load("role", "getProjectTypeByRole", {roleid : entity.id});
+            entity.projecttype = $ips.load("sysRole", "getTypeByRole", {roleid : entity.id});
         }
         $ips.fillFormInput('frmInfo', entity);
         $("#orgcode").select2('data', {id : entity.orgroot, text : entity.orgname});
@@ -118,12 +118,12 @@ function roleSave(newed) {
     }
 
     var params = $("#frmInfo").serializeArray();
-    params.push({name:'orgcode', value: $('#orgcode').val()});
+//    params.push({name:'deptid', value: $('#deptid').val()});
     if (isupdate) {
         params.push({name:'id', value: updateid});
     }
         //params += '&id=' + updateid;
-    $ips.load("role", "save", params, function(result) {
+    $ips.load("sysRole", "addRole", params, function(result) {
         if (result) {
             $ips.succeed("保存成功。");
             if (newed) {

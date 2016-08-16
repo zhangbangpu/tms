@@ -1,6 +1,6 @@
 $("#roleids").select2({
 	placeholder : '请选择角色',
-	minimumInputLength : 0,
+	minimumInputLength : 1,
 	multiple : false,
 	allowClear : true,
 	data : [],
@@ -12,7 +12,7 @@ $("#orgcode").select2({
 	allowClear : true,
 	// 数据加载
 	query : function(query) {
-		$ips.load('org', 'getOrgByName', {
+		$ips.load('sysDept', 'getDeptByName', {
 			keyword : query.term
 		}, function(e) {
 			var _pre_data = [];
@@ -31,13 +31,13 @@ $("#orgcode").select2({
 	initSelection : function (e, r) {
 	}
 }).on('change', function (e) {
-	var orgcode = $('#orgcode').select2('val');
-	if (orgcode == '') {
+	var deptid = $('#deptid').select2('val');
+	if (deptid == '') {
 		$("#roleids").select2({'data' : []});
 		$("#roleids").select2('val', '');
 		return false;
 	}
-	$ips.load('role', 'getRoleByOrgroot', {orgcode : orgcode}, function(res) {
+	$ips.load('sysRole', 'getRoleByDeptid', {deptid : deptid}, function(res) {
         var data = [];
         $.each(res, function(k, v) {
             data.push({
@@ -52,15 +52,15 @@ $("#orgcode").select2({
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
 if (parms["id"]) {
-	var entity = $ips.load("user", "get", "id=" + parms["id"]);
+	var entity = $ips.load("sysUser", "getUserById", "id=" + parms["id"]);
 	if (!entity.id) {
-		window.setTimeout("window.location.hash = '#user/index.html'", 2000);
+		window.setTimeout("window.location.hash = '#index.html'", 2000);
 	}
 	if (entity) {
 		$ips.fillFormInput('frmInfo', entity);
 
-		$("#orgcode").select2('data', {id : entity.orgcode, text : entity.orgname}).val(entity.orgcode);
-		var roles = $ips.load('role', 'getRoleByOrgroot', {orgcode : $('#orgcode').val()});
+		$("#deptid").select2('data', {id : entity.deptid, text : entity.deptname}).val(entity.deptid);
+		var roles = $ips.load('role', 'getRoleByDeptid', {orgcode : $('#deptid').val()});
 		var initRoles = [];
 		$.each(roles, function(k, v) {
             initRoles.push({
@@ -145,7 +145,7 @@ function uploadFile() {
 	// 编辑时上传头像
 	$("#imgFile").upload(
 			{
-				module : "user",
+				module : "sysUser",
 				method : "uploadImage",
 				onSuccess : function(uploadRes) {
 					if (uploadRes.data) {
@@ -208,8 +208,6 @@ function runFormValidation() {
 		}
 	});
 
-	
-	
 	// 保存
 	$("#btnSubmit").click(function() {
 		return userSave(false);
@@ -224,7 +222,6 @@ function userSave(newed) {
 	if (!$('#frmInfo').validate().form()) {
 		return false;
 	}
-
 
 //	$('#frmInfo').ajaxSubmit({
 //		url: $ips.getApiurl() + "?t=json&m=user&f=save",
@@ -249,7 +246,7 @@ function userSave(newed) {
 	var pararm = $("#frmInfo").serialize();
     if (isupdate)
         pararm += '&id=' + updateid;
-	$ips.load("user", "save", pararm, function(result) {
+	$ips.load("sysUser", "addUser", pararm, function(result) {
         if (result) {
             $ips.succeed("保存成功。");
             if (newed) {

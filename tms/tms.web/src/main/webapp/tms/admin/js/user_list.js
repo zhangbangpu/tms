@@ -75,7 +75,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
            	{sTitle: "操作", sName: "idAction", sWidth: "25px", sClass: "center", bSortable: false},
             {sTitle: "登陆名", sName: "loginname"},
             {sTitle: "姓名", sName: "realname"},
-            {sTitle: "角色", sName: "roleName"},
+            {sTitle: "角色", sName: "rolename"},
 //			{sTitle: "机构", sName: "deptName"},
 			{sTitle: "手机", sName: "phone"},
 			{sTitle: "邮箱", sName: "email"},
