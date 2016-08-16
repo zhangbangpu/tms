@@ -176,7 +176,8 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/addMenu")
 	@ResponseBody
-	public Result addMenu(HttpServletRequest request, @RequestParam(value="sysMenu") String sysMenu) {
+	public Result addMenu(HttpServletRequest request) {
+//		public Result addMenu(HttpServletRequest request, @RequestParam(value="sysMenu") String sysMenu) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
@@ -185,21 +186,41 @@ public class SysMenuController {
 //		menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		menu.setCreatetime(new Date());
-		menu.setImg(String.valueOf(argsMap.get("img")));
-		menu.setLevels(String.valueOf(argsMap.get("levels")));
-		menu.setMenutype(String.valueOf(argsMap.get("menutype")));
-		menu.setName(String.valueOf(argsMap.get("name")));
-		if(null != String.valueOf(argsMap.get("pid"))){
-			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+		if(null != argsMap.get("img")){
+			menu.setImg(String.valueOf(argsMap.get("img")));
 		}
-		menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
-		if(null != String.valueOf(argsMap.get("sotid"))){
+		if(null != argsMap.get("levels")){
+			menu.setLevels(String.valueOf(argsMap.get("levels")));
+		}
+		if(null != argsMap.get("menutype")){
+			menu.setMenutype(String.valueOf(argsMap.get("menutype")));
+		}
+		if(null != argsMap.get("name")){
+			menu.setName(String.valueOf(argsMap.get("name")));
+		}
+		if(null != argsMap.get("pid")){
+			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+		}else{
+			menu.setPid(0);
+		}
+		if(null != argsMap.get("requesturl")){
+			menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
+		}
+		if(null != argsMap.get("sotid")){
 			menu.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
 		}
-		menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
-		menu.setTarget(String.valueOf(argsMap.get("target")));
-		menu.setTitle(String.valueOf(argsMap.get("title")));
-		menu.setType(String.valueOf(argsMap.get("type")));
+		if(null != argsMap.get("subsystem")){
+			menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
+		}
+		if(null != argsMap.get("target")){
+			menu.setTarget(String.valueOf(argsMap.get("target")));
+		}
+		if(null != argsMap.get("title")){
+			menu.setTitle(String.valueOf(argsMap.get("title")));
+		}
+		if(null != argsMap.get("type")){
+			menu.setType(String.valueOf(argsMap.get("type")));
+		}
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

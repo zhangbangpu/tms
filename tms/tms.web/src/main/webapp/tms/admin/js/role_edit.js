@@ -21,18 +21,18 @@ $("#orgcode").select2({
     initSelection : function (e, r) {
     }
 });
-var user = $ips.getCurrentUser();
-if (!user.isSuper) {
-    $('#projecttyperow').hide();
-} else {
-    var projecttypes = $ips.load('resource', 'getprojects', {});
-    console.log(projecttypes);
-    if (typeof projecttypes != 'undefined' && projecttypes.length != 0) {
-        $.each(projecttypes, function (index, item) {
-            $('<option></option>').val(item.projecttype).text(item.projecttype).appendTo($('#projecttype'));
-        });
-    }
-}
+//var user = $ips.getCurrentUser();
+//if (!user.isSuper) {
+//    $('#projecttyperow').hide();
+//} else {
+//    var projecttypes = $ips.load('resource', 'getprojects', {});
+//    console.log(projecttypes);
+//    if (typeof projecttypes != 'undefined' && projecttypes.length != 0) {
+//        $.each(projecttypes, function (index, item) {
+//            $('<option></option>').val(item.projecttype).text(item.projecttype).appendTo($('#projecttype'));
+//        });
+//    }
+//}
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
 if (parms["id"]) {
@@ -42,9 +42,9 @@ if (parms["id"]) {
     }
     if (entity) {
         // 超级管理员需要指点当前编辑角色拥有的定制项目
-        if (user.isSuper) {
-            entity.projecttype = $ips.load("sysRole", "getTypeByRole", {roleid : entity.id});
-        }
+//        if (user.isSuper) {
+//            entity.projecttype = $ips.load("sysRole", "getTypeByRole", {roleid : entity.id});
+//        }
         $ips.fillFormInput('frmInfo', entity);
         $("#orgcode").select2('data', {id : entity.orgroot, text : entity.orgname});
         $("#orgcode").select2('val', entity.orgroot);
@@ -56,29 +56,28 @@ if (parms["id"]) {
         updateid = entity['id'];
     }
 } else {
-    $("#orgcode").select2('data', {id : user.organ.orgroot, text : user.organ.name});
-    $("#orgcode").select2('val', user.organ.orgroot);
-    if (user.isSuper != 1) {
+//    $("#orgcode").select2('data', {id : user.organ.orgroot, text : user.organ.name});
+//    $("#orgcode").select2('val', user.organ.orgroot);
+//    if (user.isSuper != 1) {
         $('#orgcode').select2('enable', false);
-    }
+//    }
 }
-loadScript("/js/hui/jquery.hui.tree.js", function() {
-    $('#resource-list').tree({
-        method: 'index',
-        selectid: 'orgvalue',
-        params: {
-            'dataType': 'resource',
-            'subsystem': '', // 车辆管理
-            'rid': parms['id'],
-            'projecttype' : $('#projecttype').val()
-
-        },
-        callback: function(result) {
-            
-        }
-    });
-});
-
+//loadScript("/js/hui/jquery.hui.tree.js", function() {
+//    $('#resource-list').tree({
+//        method: 'index',
+//        selectid: 'orgvalue',
+//        params: {
+//            'dataType': 'resource',
+//            'subsystem': '', // 车辆管理
+//            'rid': parms['id'],
+//            'projecttype' : $('#projecttype').val()
+//
+//        },
+//        callback: function(result) {
+//            
+//        }
+//    });
+//});
 
 // Load form valisation dependency 
 loadScript("js/plugin/jquery-form/jquery-form.min.js", runFormValidation);
@@ -101,7 +100,6 @@ function runFormValidation() {
     });
 }
 
-
 // 保存
 $("#btnSubmit").click(function() {
     return roleSave(false);
@@ -118,11 +116,14 @@ function roleSave(newed) {
     }
 
     var params = $("#frmInfo").serializeArray();
-//    params.push({name:'deptid', value: $('#deptid').val()});
+    
+    console.log(params);
+    
+    //  params.push({name:'deptid', value: $('#deptid').val()});
     if (isupdate) {
         params.push({name:'id', value: updateid});
     }
-        //params += '&id=' + updateid;
+    //params += '&id=' + updateid;
     $ips.load("sysRole", "addRole", params, function(result) {
         if (result) {
             $ips.succeed("保存成功。");

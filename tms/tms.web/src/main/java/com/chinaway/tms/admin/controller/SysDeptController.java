@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.utils.MyBeanUtil;
@@ -192,7 +195,8 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/addDept")
 	@ResponseBody
-	public Result addDept(HttpServletRequest request, @RequestParam(value="sysDept") String  sysDept) {
+	public Result addDept(HttpServletRequest request) {
+//		public Result addDept(HttpServletRequest request, @RequestParam(value="sysDept") String  sysDept) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
@@ -200,24 +204,46 @@ public class SysDeptController {
 		SysDept dept = new SysDept();
 //		dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		dept.setAddress(String.valueOf(argsMap.get("address")));
-		dept.setContact(String.valueOf(argsMap.get("contact")));
+		if(null != argsMap.get("address")){
+			dept.setAddress(String.valueOf(argsMap.get("address")));
+		}
+		if(null != argsMap.get("contact")){
+			dept.setContact(String.valueOf(argsMap.get("contact")));
+		}
 		dept.setCreatetime(new Date());
-		dept.setCustomerid(String.valueOf(argsMap.get("customerid")));
-		dept.setDeptid(String.valueOf(argsMap.get("deptid")));
-		dept.setDescription(String.valueOf(argsMap.get("description")));
-		dept.setIsenable(String.valueOf(argsMap.get("isenable")));
-		dept.setLevels(String.valueOf(argsMap.get("levels")));
-		dept.setName(String.valueOf(argsMap.get("name")));
-		if(null != String.valueOf(argsMap.get("pid"))){
+		if(null != argsMap.get("customerid")){
+			dept.setCustomerid(String.valueOf(argsMap.get("customerid")));
+		}
+		if(null != argsMap.get("deptid")){
+			dept.setDeptid(String.valueOf(argsMap.get("deptid")));
+		}
+		if(null != argsMap.get("description")){
+			dept.setDescription(String.valueOf(argsMap.get("description")));
+		}
+		if(null != argsMap.get("isenable")){
+			dept.setIsenable(String.valueOf(argsMap.get("isenable")));
+		}
+		if(null != argsMap.get("levels")){
+			dept.setLevels(String.valueOf(argsMap.get("levels")));
+		}
+		if(null != argsMap.get("name")){
+			dept.setName(String.valueOf(argsMap.get("name")));
+		}
+		if(null != argsMap.get("pid")){
 			dept.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
 		}
-		dept.setRemark(String.valueOf(argsMap.get("remark")));
-		if(null != String.valueOf(argsMap.get("sotid"))){
+		if(null != argsMap.get("remark")){
+			dept.setRemark(String.valueOf(argsMap.get("remark")));
+		}
+		if(null != argsMap.get("sotid")){
 			dept.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
 		}
-		dept.setState(String.valueOf(argsMap.get("state")));
-		dept.setTel(String.valueOf(argsMap.get("tel")));
+		if(null != argsMap.get("state")){
+			dept.setState(String.valueOf(argsMap.get("state")));
+		}
+		if(null != argsMap.get("tel")){
+			dept.setTel(String.valueOf(argsMap.get("tel")));
+		}
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

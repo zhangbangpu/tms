@@ -197,7 +197,8 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/addRole")
 	@ResponseBody
-	public Result addRole(HttpServletRequest request, @RequestParam(value="sysRole") String sysRole) {
+//	public Result addRole(HttpServletRequest request, @RequestParam(value="sysRole") String sysRole) {
+	public Result addRole(HttpServletRequest request) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
@@ -207,10 +208,18 @@ public class SysRoleController {
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		
 		role.setCreatetime(new Date());
-		role.setDeptid(String.valueOf(argsMap.get("deptid")));
-		role.setDescription(String.valueOf(argsMap.get("description")));
-		role.setName(String.valueOf(argsMap.get("name")));
-		role.setType(String.valueOf(argsMap.get("type")));
+		if(null != argsMap.get("deptid")){
+			role.setDeptid(String.valueOf(argsMap.get("deptid")));
+		}
+		if(null != argsMap.get("description")){
+			role.setDescription(String.valueOf(argsMap.get("description")));
+		}
+		if(null != argsMap.get("name")){
+			role.setName(String.valueOf(argsMap.get("name")));
+		}
+		if(null != argsMap.get("type")){
+			role.setType(String.valueOf(argsMap.get("type")));
+		}
 		role.setUpdatetime(new Date());
 		
 		Map<String, Object> resultMap = new HashMap<>();
