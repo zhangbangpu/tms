@@ -1,15 +1,11 @@
 package com.chinaway.tms.quartz;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.chinaway.tms.basic.model.Cpmd;
 import com.chinaway.tms.basic.model.Smd;
@@ -18,13 +14,13 @@ import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.SmdService;
 import com.chinaway.tms.basic.service.WarehouseService;
 import com.chinaway.tms.utils.http.HttpClientUtils;
-import com.chinaway.tms.utils.json.JsonUtil;
 
 /**
  * 中台平台的数据拉取
  * @author shu
  *
  */
+@Component
 public class FromZTJob {
 
 	@Autowired
