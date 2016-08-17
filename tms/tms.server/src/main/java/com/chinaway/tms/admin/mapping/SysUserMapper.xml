@@ -207,6 +207,9 @@
 			<if test="loginname != null  and loginname != '' ">
 				loginname=#{loginname},
 			</if>
+			<if test="realname != null and realname != '' ">
+				realname=#{realname},
+			</if>
 			<if test="password != null  and password != '' ">
 				password=#{password},
 			</if>
@@ -239,6 +242,12 @@
 			</if>
 			<if test="codeid != null  ">
 				codeid=#{codeid},
+			</if>
+			<if test="deptid != null and deptid != '' ">
+				deptid=#{deptid},
+			</if>
+			<if test="email != null and email != '' ">
+				email=#{email},
 			</if>
 		</trim>
 		where id=#{id}

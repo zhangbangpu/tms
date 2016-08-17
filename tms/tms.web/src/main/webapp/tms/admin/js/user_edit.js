@@ -1,58 +1,91 @@
-$("#roleids").select2({
-	placeholder : '请选择角色',
-	minimumInputLength : 1,
-	multiple : false,
-	allowClear : true,
-	data : [],
-	initSelection : function () {}
-});
-$("#orgcode").select2({
-	placeholder : '请选择机构',
-	minimumInputLength : 1,
-	allowClear : true,
-	// 数据加载
-	query : function(query) {
-		$ips.load('sysDept', 'getDeptByName', {
-			keyword : query.term
-		}, function(e) {
-			var _pre_data = [];
-			$.each(e, function(k, v) {
-				_pre_data.push({
-					id : v.orgcode,
-					text : v.name
-				});
-			});
-			var data = {
-				results : _pre_data
-			};
-			query.callback(data);
-		});
-	},
-	initSelection : function (e, r) {
-	}
-}).on('change', function (e) {
-	var deptid = $('#deptid').select2('val');
-	if (deptid == '') {
-		$("#roleids").select2({'data' : []});
-		$("#roleids").select2('val', '');
-		return false;
-	}
-	$ips.load('sysRole', 'getRoleByDeptid', {deptid : deptid}, function(res) {
-        var data = [];
-        $.each(res, function(k, v) {
-            data.push({
-                id : v.id,
-                text : v.name
-            });
-        });
-        $("#roleids").select2({'data' : data});
-		$("#roleids").select2('val', '');
-    });
-});
+//$(function(){
+//    //编辑
+//    var param = $ips.getUrlParams();
+//    if (param.id) {
+//        editid = param.id;
+//        
+//        var isedit = $("#isedit").val();
+//        $ips.load("sysUser", "queryOneById", {'id': param.id}, function(data) {
+//            if (data) {
+//                var data1 = new Array();
+//                chooseId = data.orgcode;
+//                $.each(data, function(i, v) {
+//                    if (v != "" && v != null) {
+//                        data1[i] = v;
+//                    }
+//                    if (v == "0000-00-00" || v == "0000-00-00 00-00-00") {
+//                        data1[i] = "";
+//                    }
+//                });
+//                $ips.fillFormInput("editfrom", data1);
+////                //img handle
+////                $('#showdriverimage').attr('src',data1['driverimage']);
+////                $('#driverimageattach_tip').css('display','block');
+//            }
+//			orglist();
+//        });
+//    } else {
+//        editid = '';
+//        orglist();
+//    }
+//	
+//})
+
+//$("#roleids").select2({
+//	placeholder : '请选择角色',
+//	minimumInputLength : 1,
+//	multiple : false,
+//	allowClear : true,
+//	data : [],
+//	initSelection : function () {}
+//});
+//$("#orgcode").select2({
+//	placeholder : '请选择机构',
+//	minimumInputLength : 1,
+//	allowClear : true,
+//	// 数据加载
+//	query : function(query) {
+//		$ips.load('sysDept', 'getDeptByName', {
+//			keyword : query.term
+//		}, function(e) {
+//			var _pre_data = [];
+//			$.each(e, function(k, v) {
+//				_pre_data.push({
+//					id : v.orgcode,
+//					text : v.name
+//				});
+//			});
+//			var data = {
+//				results : _pre_data
+//			};
+//			query.callback(data);
+//		});
+//	},
+//	initSelection : function (e, r) {
+//	}
+//}).on('change', function (e) {
+//	var deptid = $('#deptid').select2('val');
+//	if (deptid == '') {
+//		$("#roleids").select2({'data' : []});
+//		$("#roleids").select2('val', '');
+//		return false;
+//	}
+//	$ips.load('sysRole', 'getRoleByDeptid', {deptid : deptid}, function(res) {
+//        var data = [];
+//        $.each(res, function(k, v) {
+//            data.push({
+//                id : v.id,
+//                text : v.name
+//            });
+//        });
+//        $("#roleids").select2({'data' : data});
+//		$("#roleids").select2('val', '');
+//    });
+//});
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
 if (parms["id"]) {
-	var entity = $ips.load("sysUser", "getUserById", "id=" + parms["id"]);
+	var entity = $ips.load("sysUser", "queryOneById", "id=" + parms["id"]);
 	if (!entity.id) {
 		window.setTimeout("window.location.hash = '#index.html'", 2000);
 	}
@@ -60,16 +93,16 @@ if (parms["id"]) {
 		$ips.fillFormInput('frmInfo', entity);
 
 		$("#deptid").select2('data', {id : entity.deptid, text : entity.deptname}).val(entity.deptid);
-		var roles = $ips.load('role', 'getRoleByDeptid', {orgcode : $('#deptid').val()});
-		var initRoles = [];
-		$.each(roles, function(k, v) {
-            initRoles.push({
-                id : v.id,
-                text : v.name
-            });
-        });
-		$("#roleids").select2({data : initRoles});
-		$('#roleids').select2('val', entity.roleids);
+//		var roles = $ips.load('role', 'getRoleByDeptid', {orgcode : $('#deptid').val()});
+//		var initRoles = [];
+//		$.each(roles, function(k, v) {
+//            initRoles.push({
+//                id : v.id,
+//                text : v.name
+//            });
+//        });
+//		$("#roleids").select2({data : initRoles});
+//		$('#roleids').select2('val', entity.roleids);
 		$('input[name=username]').attr("readonly", "readonly");
 		$('#userpic').hide();
 		var userpicRow = $('#userpic').closest('label');
@@ -80,16 +113,16 @@ if (parms["id"]) {
 		}).addClass('btn btn-sm btn-link').bind('click', function() {
 			$('#imgFile').val('');
 		}).appendTo(userpicRow);
-		$('#passwd').hide();
-		var passwdRow = $('#passwd').closest('label');
-		passwdRow.empty();
+		$('#password').hide();
+		var passwordRow = $('#password').closest('label');
+		passwordRow.empty();
 		$('<a href="">修改密码</a>').attr({
 			'data-toggle' : "modal",
 			'data-target' : "#myModal"
 		}).addClass('btn btn-sm btn-link').bind('click', function() {
 			$('#newPassword').val('');
 			$('#newPasswordAgain').val('');
-		}).appendTo(passwdRow);
+		}).appendTo(passwordRow);
 		// 修改标记
 		isupdate = 1;
 		// 需要更新的Id
@@ -123,7 +156,9 @@ $('#saveNewPassword').bind(
 				$ips.error('密码长度不得小于6位大于16');
 				return false;
 			}
-			$ips.load('user', 'changePassword', {
+			alert(parms["id"]);
+			
+			$ips.load('sysUser', 'updateUser', {
 				id : parms["id"],
 				password : $('#newPassword').val()
 			}, function(res) {
@@ -190,7 +225,7 @@ function runFormValidation() {
 			username : {
 				required : true
 			},
-			passwd : {
+			password : {
 				required : true
 			},
 			email : {

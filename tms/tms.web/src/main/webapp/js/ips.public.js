@@ -653,8 +653,14 @@ Ips.prototype = {
             return paraObj;
         }
         url = url.replace('#', '');
-        var paraString = url.substring(url.indexOf('?') + 1, url.length)
-        .split('&');
+        var paraString;
+        if(url.indexOf('?') == 1){
+        	paraString = url.substring(url.indexOf('?') + 1, url.length)
+        	.split('&');
+        }else{
+        	paraString = url.substring(url.lastIndexOf('?') + 1, url.length)
+        	.split('&');
+        }
         if (!isNoToLower) {
             for (var i = 0; j = paraString[i]; i++) {
                 paraObj[j.substring(0, j.indexOf('=')).toLowerCase()] = 

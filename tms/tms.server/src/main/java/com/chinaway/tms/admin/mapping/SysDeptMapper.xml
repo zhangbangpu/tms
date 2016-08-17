@@ -152,6 +152,21 @@
 			<if test="isenable != null  and isenable != '' ">
 				isenable=#{isenable},
 			</if>
+			<if test="customerid != null  and customerid != '' ">
+				customerid=#{customerid},
+			</if>
+			<if test="contact != null  and contact != '' ">
+				contact=#{contact},
+			</if>
+			<if test="address != null  and address != '' ">
+				address=#{address},
+			</if>
+			<if test="tel != null  and tel != '' ">
+				tel=#{tel},
+			</if>
+			<if test="remark != null  and remark != '' ">
+				remark=#{remark},
+			</if>
 		</trim>
 		where id=#{id}
 	</update>

@@ -1,26 +1,26 @@
-$("#orgcode").select2({
-    placeholder : '请选择机构',
-    minimumInputLength : 1,
-    allowClear : true,
-    // 数据加载
-    query : function(query) {
-        $ips.load('sysDept', 'getDeptByName', {keyword : query.term, isorgroot : 1}, function(e) {
-            var _pre_data = [];
-            $.each(e, function(k, v) {
-                _pre_data.push({
-                    id : v.orgcode,
-                    text : v.name
-                });
-            });
-            var data = {
-                results : _pre_data
-            };
-            query.callback(data);
-        });
-    },
-    initSelection : function (e, r) {
-    }
-});
+//$("#orgcode").select2({
+//    placeholder : '请选择机构',
+//    minimumInputLength : 1,
+//    allowClear : true,
+//    // 数据加载
+//    query : function(query) {
+//        $ips.load('sysDept', 'getDeptByName', {keyword : query.term, isorgroot : 1}, function(e) {
+//            var _pre_data = [];
+//            $.each(e, function(k, v) {
+//                _pre_data.push({
+//                    id : v.orgcode,
+//                    text : v.name
+//                });
+//            });
+//            var data = {
+//                results : _pre_data
+//            };
+//            query.callback(data);
+//        });
+//    },
+//    initSelection : function (e, r) {
+//    }
+//});
 //var user = $ips.getCurrentUser();
 //if (!user.isSuper) {
 //    $('#projecttyperow').hide();
@@ -36,7 +36,7 @@ $("#orgcode").select2({
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
 if (parms["id"]) {
-    var entity = $ips.load("sysRole", "getRoleById", "id=" + parms["id"]);
+    var entity = $ips.load("sysRole", "queryOneById", "id=" + parms["id"]);
     if (!entity.id) {
         window.setTimeout("window.location.hash = '#index.html'", 2000);
     }

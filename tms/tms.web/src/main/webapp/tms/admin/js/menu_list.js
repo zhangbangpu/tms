@@ -78,9 +78,9 @@ $("#deleteResource").click(function(){
 	return false;//防止点击提示框，跳转页面
 });
 
-function resourceEdit(id) {
-	$ips.locate("sysMenu", "updateMenu", "id="+id);
-}
+//function resourceEdit(id) {
+//	$ips.locate("sysMenu", "updateMenu", "id="+id);
+//}
 
 function resourceDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?",function(btn) {
@@ -155,8 +155,8 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 							'<i class="fa fa-caret-down"></i>' +
 						'</button>' +
 		                '<ul class="dropdown-menu">' +
-//						   '<li><a href="javascript:void(0);" data-button-resource="B42D5811D906814E360904EDB360A467" onclick="resourceEdit(\'' + item.id + '\')">编辑</a></li>' +
-//		                   '<li class="divider"></li>' +
+						   '<li><a href="#tms/admin/menu_edit.html?id='+ item.id +'" data-button-resource="B42D5811D906814E360904EDB360A467" >编辑</a></li>' +
+		                   '<li class="divider"></li>' +
 		                   '<li><a href="javascript:void(0);"  data-button-resource="EF5F3071BA06469A995BAF5AFAF36CBD" onclick="resourceDelete(\'' + item.id + '\')">删除</a></li>' +
 		                '</ul></div>';
 	                item.orderby = '<a class="orderby">' + item.orderby + '</a>'

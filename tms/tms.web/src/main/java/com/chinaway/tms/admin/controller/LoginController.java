@@ -59,18 +59,15 @@ public class LoginController {
 //			argsMap.put("password", password);
 			
 			SysUser sysUser = sysUserService.queOneUserByCtn(argsMap);
-			if(null != sysUser){
+			if(null != sysUser && null != sysUser.getId()){
 				request.getSession().setAttribute("sysUser", sysUser);
 				request.getSession().setAttribute("username", sysUser.getLoginname());
 				resultMap.put("username", sysUser.getLoginname());
-			}
-			
-			if (null != sysUser) {
 //				//连表查询角色信息
 				code = 0;
 				msg = "登录成功!";
 			}else{
-				code = 1;
+				code = 2;
 				msg = "用户名或密码不正确!";
 			}
 		} catch (Exception e) {

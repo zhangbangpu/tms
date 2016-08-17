@@ -93,8 +93,8 @@ public class SiteManagerController {
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
 	public Result queryOneById(HttpServletRequest request) {
-		
-		String id = request.getParameter("id");
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		String id = String.valueOf(argsMap.get("id"));
 		int code = 1;
 		String msg = "根据id查询部门操作失败!";
 
@@ -198,9 +198,9 @@ public class SiteManagerController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/delDept")
+	@RequestMapping(value = "/updateSite")
 	@ResponseBody
-	public Result updateDept(HttpServletRequest request, Site site) {
+	public Result updateSite(HttpServletRequest request, Site site) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}

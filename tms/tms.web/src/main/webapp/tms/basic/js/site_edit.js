@@ -1,5 +1,5 @@
 //编辑
-//var parms = $ips.getUrlParams();
+var parms = $ips.getUrlParams();
 loadScript("js/plugin/jquery-form/jquery-form.min.js", runFormValidation);
 var editid;
 
@@ -73,7 +73,7 @@ function runFormValidation() {
 }
 	
 function classlinepriceSave(newed) {
-
+//    alert($checkoutForm);
 	//form验证 对应runFormValidation方法里面
 //    if (!$('#editfrom').validate($checkoutForm).form()) {
 //        return false;

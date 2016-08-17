@@ -185,7 +185,9 @@ public class SysMenuController {
 		SysMenu menu = new SysMenu();
 //		menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		menu.setCreatetime(new Date());
+		if(null != argsMap.get("id")){
+			menu.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
+		}
 		if(null != argsMap.get("img")){
 			menu.setImg(String.valueOf(argsMap.get("img")));
 		}
@@ -228,12 +230,17 @@ public class SysMenuController {
 
 		int ret = 0;
 		try {
-			ret = sysMenuService.insert(menu);
+			menu.setCreatetime(new Date());
+			if (menu.getId() != null) {
+				ret = sysMenuService.updateSelective(menu);
+			} else {
+				ret = sysMenuService.insert(menu);
+			}
+
 			if (ret > 0) {
 				code = 0;
 				msg = "添加菜单操作成功!";
 			}
-
 		} catch (Exception e) {
 			e.getStackTrace();
 		}

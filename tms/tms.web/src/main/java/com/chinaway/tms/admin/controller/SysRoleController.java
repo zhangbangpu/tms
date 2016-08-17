@@ -206,8 +206,9 @@ public class SysRoleController {
 		SysRole role = new SysRole();
 //		role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		
-		role.setCreatetime(new Date());
+		if(null != argsMap.get("id")){
+			role.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
+		}
 		if(null != argsMap.get("deptid")){
 			role.setDeptid(String.valueOf(argsMap.get("deptid")));
 		}
@@ -228,13 +229,17 @@ public class SysRoleController {
 
 		int ret = 0;
 		try {
-			ret = sysRoleService.insert(role);
-			
-			SysRoleMenu sysRoleMenu = new SysRoleMenu();
-			for(int i=0;i<5;i++){
-				sysRoleMenu.setMenuid(i+1);
-				sysRoleMenu.setRoleid(role.getId());
-				sysRoleDeptService.insert(sysRoleMenu);
+			role.setCreatetime(new Date());
+			if (role.getId() != null) {
+				ret = sysRoleService.updateSelective(role);
+			} else {
+				ret = sysRoleService.insert(role);
+				SysRoleMenu sysRoleMenu = new SysRoleMenu();
+				for(int i=0;i<5;i++){
+					sysRoleMenu.setMenuid(i+1);
+					sysRoleMenu.setRoleid(role.getId());
+					sysRoleDeptService.insert(sysRoleMenu);
+				}
 			}
 			
 			if (ret > 0) {

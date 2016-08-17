@@ -72,13 +72,12 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 										'<i class="fa fa-caret-down"></i>' +
 									'</button>' +
 					                '<ul class="dropdown-menu">' 
-//									+ '<li><a href="javascript:void(0);" data-button-resource="BCD01F0FB983E7BEBC8EFBE9073C327A" onclick="orgEdit(\'' + item.id + '\')">编辑</a></li>'
-					                ;
+									+ '<li><a href="#tms/admin/dept_edit.html?id='+ item.id +'" data-button-resource="BCD01F0FB983E7BEBC8EFBE9073C327A">编辑</a></li>';
 
 					//判断不允许删除自己机构
 					if(userOrgid != item.id){
 						item.idAction += 
-//							'<li class="divider"></li>' +
+							'<li class="divider"></li>' +
 					                     '<li><a href="javascript:void(0);"  data-button-resource="169EC2F61F4260BB45F098004E86B3BA" onclick="orgDelete(\'' + item.id + '\')">删除</a></li>';
 					}
 					item.idAction += '</ul></div>';
@@ -89,9 +88,9 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 });
 
 
-function orgEdit(id) {
-	$ips.locate("sysDept", "updateDept", "id="+id);
-}
+//function orgEdit(id) {
+//	$ips.locate("sysDept", "updateDept", "id="+id);
+//}
 
 function orgDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?（将删除该机构所有下属机构、角色和用户，请谨慎操作！）",function(btn) {

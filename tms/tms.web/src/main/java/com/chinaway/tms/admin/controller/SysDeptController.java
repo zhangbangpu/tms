@@ -204,6 +204,9 @@ public class SysDeptController {
 		SysDept dept = new SysDept();
 //		dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		if(null != argsMap.get("id")){
+			dept.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
+		}
 		if(null != argsMap.get("address")){
 			dept.setAddress(String.valueOf(argsMap.get("address")));
 		}
@@ -253,10 +256,14 @@ public class SysDeptController {
 
 		int ret = 0;
 		try {
-			ret = sysDeptService.insert(dept);
+			if (dept.getId() != null) {
+				ret = sysDeptService.updateSelective(dept);
+			} else {
+				ret = sysDeptService.insert(dept);
+			}
 			if (ret > 0) {
 				code = 0;
-				msg = "添加操作成功!";
+				msg = "操作成功!";
 			}
 
 		} catch (Exception e) {

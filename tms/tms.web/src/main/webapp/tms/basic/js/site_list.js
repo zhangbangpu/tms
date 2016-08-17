@@ -98,12 +98,12 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 						<i class="fa fa-pencil"></i>\
 						<i class="fa fa-caret-down"></i>\
 					</button>\
-	                <ul class="dropdown-menu">'+
-//					   	<li>\
-//					   		<a href="#tms/basic/site_edit.html?id='+ data +'" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
-//					   	</li>\
-//	                   <li class="divider"></li>\
-	                   '<li>\
+	                <ul class="dropdown-menu">\
+					   	<li>\
+					   		<a href="#tms/basic/site_edit.html?id='+ data +'" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
+					   	</li>\
+	                   <li class="divider"></li>\
+	                   <li>\
 	                   		<a href="javascript:void(0);" onclick="classlinepriceDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
 	                   </li>\
 	                </ul>\

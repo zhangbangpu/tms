@@ -27,57 +27,57 @@
 //    }
 //});
 
-//var isupdate = updateid = 0;
-//var parms = $ips.getUrlParams();
-//if (parms["id"]) {
-//    var entity = $ips.load("org", "get", "id=" + parms["id"]);
-//    if (!entity.id) {
-//        $ips.error('指定的机构未找到');
-//        window.setTimeout("window.location.hash = '#org/index.html'", 2000);
-//    }
-//
-//    if (entity) {
-//        $ips.fillFormInput('frmInfo', entity);
-//        
-//        if (entity.parentid != '0') {
-//            $("#parentid").attr('data-placeholder', entity.parentname);
-//            $('#parentid').select2('data', {id : entity.parentid, text : entity.parentname});
-//        }
-//        $('#parentid').select2("enable", false);
-//
-//		if(entity.userOrgcode == entity.orgcode){
-//			$('input[name=name]').attr("disabled", "true")
-//                .css("border", "1px solid #DDDDDD")
-//			    .parent('label').attr("class", "input state-success");
-//			$('input[name=customerid]').attr("disabled", "true")
-//			    .css("border", "1px solid #DDDDDD")
-//			    .parent('label').attr("class", "input state-success");
-//			$('input[name=authcode]').attr("disabled", "true")
-//			    .css("border", "1px solid #DDDDDD")
-//			    .parent('label').attr("class", "input state-success");	
-//		}
-//        if(entity.orgcode !== entity.orgroot){
-//        	$('#authcode-row').hide();
-//        }
-//        //修改标记
-//        isupdate = 1;
-//        //需要更新的Id
-//        updateid = entity['id'];
-//    }
-//} else {
-//	var currentUserInfos = $ips.getCurrentUser();
-//	if(currentUserInfos.isSuper){
-//		 $("#parentid").attr('data-placeholder', '请选择机构');
-//	}else{
-//        $('#parentid').select2('data', {id : currentUserInfos.organ.orgid, text : currentUserInfos.organ.name});
-//        $('#parentid').on('select2-clearing', function () {
-//            return false;
-//        })
-//        
-//		$("#parentid").select2('val', currentUserInfos.organ.orgid);
-//        $('#authcode-row').hide();
-//	}
-//}
+var isupdate = updateid = 0;
+var parms = $ips.getUrlParams();
+if (parms["id"]) {
+    var entity = $ips.load("sysDept", "queryOneById", "id=" + parms["id"]);
+    if (!entity.id) {
+        $ips.error('指定的机构未找到');
+        window.setTimeout("window.location.hash = '#index.html'", 2000);
+    }
+
+    if (entity) {
+        $ips.fillFormInput('frmInfo', entity);
+        
+        if (entity.parentid != '0') {
+            $("#parentid").attr('data-placeholder', entity.parentname);
+            $('#parentid').select2('data', {id : entity.parentid, text : entity.parentname});
+        }
+        $('#parentid').select2("enable", false);
+
+		if(entity.userOrgcode == entity.orgcode){
+			$('input[name=name]').attr("disabled", "true")
+                .css("border", "1px solid #DDDDDD")
+			    .parent('label').attr("class", "input state-success");
+			$('input[name=customerid]').attr("disabled", "true")
+			    .css("border", "1px solid #DDDDDD")
+			    .parent('label').attr("class", "input state-success");
+			$('input[name=authcode]').attr("disabled", "true")
+			    .css("border", "1px solid #DDDDDD")
+			    .parent('label').attr("class", "input state-success");	
+		}
+        if(entity.orgcode !== entity.orgroot){
+        	$('#authcode-row').hide();
+        }
+        //修改标记
+        isupdate = 1;
+        //需要更新的Id
+        updateid = entity['id'];
+    }
+} else {
+	var currentUserInfos = $ips.getCurrentUser();
+	if(currentUserInfos.isSuper){
+		 $("#parentid").attr('data-placeholder', '请选择机构');
+	}else{
+        $('#parentid').select2('data', {id : currentUserInfos.organ.orgid, text : currentUserInfos.organ.name});
+        $('#parentid').on('select2-clearing', function () {
+            return false;
+        })
+        
+		$("#parentid").select2('val', currentUserInfos.organ.orgid);
+        $('#authcode-row').hide();
+	}
+}
 
 //$('#loginLogo').hide();
 //var userpicRow = $('#loginLogo').closest('label');
