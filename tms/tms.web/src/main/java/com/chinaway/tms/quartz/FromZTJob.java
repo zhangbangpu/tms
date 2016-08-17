@@ -63,7 +63,7 @@ public class FromZTJob {
 		Map<String, Object> argsMap = new HashMap<>();
 		List<Warehouse> oldList = warehouseService.selectAll4Page(argsMap);
 		//post请求的参数
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<>();
 		if (oldList.size() > 0 ) {
 			//加上增量条件
 //				String param ="{\"address\":\"四川省成都市双流区天府四街软件园\",\"area\":\"0\",\"city\":\"成都\",\"code\":\"028\",\"createtime\":\"2016-08-02 17:28:21\",\"deptname\":\"1919酒类直供\",\"id\":0,\"isprivate\":\"私有\",\"name\":\"天府四街仓库\",\"province\":\"四川省\",\"types\":\"标点\",\"updatetime\":\"2016-08-02 17:28:21\"}";
@@ -94,7 +94,7 @@ public class FromZTJob {
 		Map<String, Object> argsMap = new HashMap<>();
 		List<Smd> oldList = smdService.selectAll4Page(argsMap);
 		//post请求的参数
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<>();
 		if (oldList.size() > 0 ) {
 			//加上增量条件
 //				String param ="{\"address\":\"四川省成都市双流区天府四街软件园\",\"area\":\"0\",\"city\":\"成都\",\"code\":\"028\",\"createtime\":\"2016-08-02 17:28:21\",\"deptname\":\"1919酒类直供\",\"id\":0,\"isprivate\":\"私有\",\"name\":\"天府四街仓库\",\"province\":\"四川省\",\"types\":\"标点\",\"updatetime\":\"2016-08-02 17:28:21\"}";
@@ -125,7 +125,7 @@ public class FromZTJob {
 		Map<String, Object> argsMap = new HashMap<>();
 		List<Cpmd> oldList = cpmdService.selectAll4Page(argsMap);
 		//post请求的参数
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<>();
 		if (oldList.size() > 0 ) {
 			//加上增量条件
 //				String param ="{\"address\":\"四川省成都市双流区天府四街软件园\",\"area\":\"0\",\"city\":\"成都\",\"code\":\"028\",\"createtime\":\"2016-08-02 17:28:21\",\"deptname\":\"1919酒类直供\",\"id\":0,\"isprivate\":\"私有\",\"name\":\"天府四街仓库\",\"province\":\"四川省\",\"types\":\"标点\",\"updatetime\":\"2016-08-02 17:28:21\"}";
