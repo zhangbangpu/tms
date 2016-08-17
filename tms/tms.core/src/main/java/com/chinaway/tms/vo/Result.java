@@ -11,6 +11,11 @@ public class Result {
 		this.data = data;
 	}
 	
+	public Result(int code, String message){
+		this.code = code;
+		this.message = message;
+	}
+	
 	public Result(int code, Object data, String message){
 		this.code = code;
 		this.data = data;
