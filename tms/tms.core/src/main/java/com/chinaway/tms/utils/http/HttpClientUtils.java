@@ -61,6 +61,14 @@ public class HttpClientUtils {
         httpClient = httpBulder.build();
         return httpClient;
     }
+    
+    public static CloseableHttpClient getConnection(String hostName) {
+    	HttpHost target = new HttpHost(hostName);
+    	connectionManager.setMaxPerRoute(new HttpRoute(target), 20);
+    	CloseableHttpClient httpClient = httpBulder.build();
+    	httpClient = httpBulder.build();
+    	return httpClient;
+    }
  
     /**
      * 
@@ -69,12 +77,12 @@ public class HttpClientUtils {
      * @param method
      * @return
      */
-    public static HttpUriRequest getRequestMethod(Map<String, String> map, String url, String method) {
+    public static HttpUriRequest getRequestMethod(Map<String, Object> map, String url, String method) {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        Set<Map.Entry<String, String>> entrySet = map.entrySet();
-        for (Map.Entry<String, String> e : entrySet) {
+        Set<Map.Entry<String, Object>> entrySet = map.entrySet();
+        for (Map.Entry<String, Object> e : entrySet) {
             String name = e.getKey();
-            String value = e.getValue();
+            String value = e.getValue().toString();
             NameValuePair pair = new BasicNameValuePair(name, value);
             params.add(pair);
         }
@@ -101,26 +109,44 @@ public class HttpClientUtils {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public static HttpResponse getHttpResponse(Map<String, String> map, String urlRoot, String url, String method) throws ClientProtocolException, IOException {
-//    	ReadProperties readProperties=new ReadProperties();
-//		String urlRoot = readProperties.readProperties("payms.url");
-		String url2 = urlRoot;
-		if(urlRoot.startsWith("http://")){
-			//substring(start,end)索引从0开始，[start,end),end没有默认是str.length()
-			url2 = urlRoot.substring(7);
-		}else if(urlRoot.startsWith("https://")){
-			url2 = urlRoot.substring(8);
-		}
-		String ip = url2.substring(0, url2.indexOf(':'));
-		String port = url2.substring(url2.indexOf(':')+1,url2.indexOf('/'));
+    public static HttpResponse getHttpResponse(Map<String, Object> map, String urlRoot, String url, String method) throws ClientProtocolException, IOException {
 
-        HttpClient client = getConnection(ip,Integer.parseInt(port));
+        HttpClient client = getConnection(urlRoot);
         String urlPath = urlRoot + url;
         HttpUriRequest post = getRequestMethod(map, urlPath, method);
         HttpResponse response = client.execute(post);
         
         return response;
     }
+//    /**
+//     * 
+//     * @param map 参数
+//     * @param url 方法名
+//     * @param method 请求方式
+//     * @return
+//     * @throws ClientProtocolException
+//     * @throws IOException
+//     */
+//    public static HttpResponse getHttpResponse(Map<String, String> map, String urlRoot, String url, String method) throws ClientProtocolException, IOException {
+////    	ReadProperties readProperties=new ReadProperties();
+////		String urlRoot = readProperties.readProperties("payms.url");
+//    	String url2 = urlRoot;
+//    	if(urlRoot.startsWith("http://")){
+//    		//substring(start,end)索引从0开始，[start,end),end没有默认是str.length()
+//    		url2 = urlRoot.substring(7);
+//    	}else if(urlRoot.startsWith("https://")){
+//    		url2 = urlRoot.substring(8);
+//    	}
+//    	String ip = url2.substring(0, url2.indexOf(':'));
+//    	String port = url2.substring(url2.indexOf(':')+1,url2.indexOf('/'));
+//    	
+//    	HttpClient client = getConnection(ip,Integer.parseInt(port));
+//    	String urlPath = urlRoot + url;
+//    	HttpUriRequest post = getRequestMethod(map, urlPath, method);
+//    	HttpResponse response = client.execute(post);
+//    	
+//    	return response;
+//    }
     
     /**
      * 获得返回结果
@@ -130,7 +156,7 @@ public class HttpClientUtils {
      * @param string3
      * @return
      */
-	public static Map<String, Object> getResult(Map<String, String> map, String urlRoot, String url, String method) throws Exception {
+	public static Map<String, Object> getResult(Map<String, Object> map, String urlRoot, String url, String method) throws Exception {
 		Map<String, Object> resultMap = null;
 		
 		HttpResponse response = HttpClientUtils.getHttpResponse(map, urlRoot, url, method);
@@ -150,7 +176,7 @@ public class HttpClientUtils {
     //测试
     public static void main(String args[]) throws Exception {
         //post请求的参数
-    	Map<String, String> map = new HashMap<String, String>();
+    	Map<String, Object> map = new HashMap<>();
     	String param ="{\"address\":\"四川省成都市双流区天府四街软件园\",\"area\":\"0\",\"city\":\"成都\",\"code\":\"028\",\"createtime\":\"2016-08-02 17:28:21\",\"deptname\":\"1919酒类直供\",\"id\":0,\"isprivate\":\"私有\",\"name\":\"天府四街仓库\",\"province\":\"四川省\",\"types\":\"标点\",\"updatetime\":\"2016-08-02 17:28:21\"}";
         map.put("siteInfo", param);
 
