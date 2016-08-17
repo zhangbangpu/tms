@@ -111,7 +111,7 @@ public class ExcelUtil {
 		// }
 		int rownum = sheet.getLastRowNum();// 总行数
 		// Read the Row
-		for (int i = 0; i < rownum; i++) {
+		for (int i = 1; i <= rownum; i++) {
 			HSSFRow hssfRow = sheet.getRow(i);
 			int colnum = hssfRow.getLastCellNum();// 总列数
 			String[] str = new String[colnum];
@@ -166,7 +166,7 @@ public class ExcelUtil {
 		// }
 		int rownum = sheet.getLastRowNum();// 总行数
 		// Read the Row
-		for (int i = 0; i < rownum; i++) {
+		for (int i = 1; i <= rownum; i++) {
 			XSSFRow xssfRow = sheet.getRow(i);
 			int colnum = xssfRow.getLastCellNum();// 总列数
 			String[] str = new String[colnum];

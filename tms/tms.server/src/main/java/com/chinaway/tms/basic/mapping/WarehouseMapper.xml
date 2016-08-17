@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.WarehouseMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Warehouse" >
+		<id column="id" property="id"/>
+		<result column="bukrs" property="bukrs"/>
+		<result column="butxt" property="butxt"/>
+		<result column="werks" property="werks"/>
+		<result column="name1" property="name1"/>
+		<result column="kunnr" property="kunnr"/>
+		<result column="lifnr" property="lifnr"/>
+		<result column="regio" property="regio"/>
+		<result column="bezei_1" property="bezei_1"/>
+		<result column="cityc" property="cityc"/>
+		<result column="bezei_2" property="bezei_2"/>
+		<result column="transpzone" property="transpzone"/>
+		<result column="vtext" property="vtext"/>
+		<result column="updatetime" property="updatetime"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,bukrs,butxt,werks,name1,kunnr,lifnr,regio,bezei_1,cityc,bezei_2,transpzone,vtext,updatetime
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="bukrs != null and bukrs != '' ">
+		    and bukrs = #{bukrs}
+		</if>
+		<if test="butxt != null and butxt != '' ">
+		    and butxt = #{butxt}
+		</if>
+		<if test="werks != null and werks != '' ">
+		    and werks = #{werks}
+		</if>
+		<if test="name1 != null and name1 != '' ">
+		    and name1 = #{name1}
+		</if>
+		<if test="kunnr != null and kunnr != '' ">
+		    and kunnr = #{kunnr}
+		</if>
+		<if test="lifnr != null and lifnr != '' ">
+		    and lifnr = #{lifnr}
+		</if>
+		<if test="regio != null and regio != '' ">
+		    and regio = #{regio}
+		</if>
+		<if test="bezei_1 != null and bezei_1 != '' ">
+		    and bezei_1 = #{bezei_1}
+		</if>
+		<if test="cityc != null and cityc != '' ">
+		    and cityc = #{cityc}
+		</if>
+		<if test="bezei_2 != null and bezei_2 != '' ">
+		    and bezei_2 = #{bezei_2}
+		</if>
+		<if test="transpzone != null and transpzone != '' ">
+		    and transpzone = #{transpzone}
+		</if>
+		<if test="vtext != null and vtext != '' ">
+		    and vtext = #{vtext}
+		</if>
+		<if test="updatetime != null and updatetime != '' ">
+		    and updatetime = #{updatetime}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from warehouse where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from warehouse
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Warehouse" >
+	  insert into warehouse(id,bukrs,butxt,werks,name1,kunnr,lifnr,regio,bezei_1,cityc,bezei_2,transpzone,vtext,updatetime)
+ values(#{id},#{bukrs},#{butxt},#{werks},#{name1},#{kunnr},#{lifnr},#{regio},#{bezei_1},#{cityc},#{bezei_2},#{transpzone},#{vtext},#{updatetime})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.Warehouse" >
+	  update warehouse set bukrs=#{bukrs},butxt=#{butxt},werks=#{werks},name1=#{name1},kunnr=#{kunnr},lifnr=#{lifnr},regio=#{regio},bezei_1=#{bezei_1},cityc=#{cityc},bezei_2=#{bezei_2},transpzone=#{transpzone},vtext=#{vtext},updatetime=now() where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Warehouse" >
+		update warehouse set 
+	<trim  suffixOverrides="," >
+	<if test="bukrs != null  and bukrs != '' ">
+		bukrs=#{bukrs},
+	</if>
+	<if test="butxt != null  and butxt != '' ">
+		butxt=#{butxt},
+	</if>
+	<if test="werks != null  and werks != '' ">
+		werks=#{werks},
+	</if>
+	<if test="name1 != null  and name1 != '' ">
+		name1=#{name1},
+	</if>
+	<if test="kunnr != null  and kunnr != '' ">
+		kunnr=#{kunnr},
+	</if>
+	<if test="lifnr != null  and lifnr != '' ">
+		lifnr=#{lifnr},
+	</if>
+	<if test="regio != null  and regio != '' ">
+		regio=#{regio},
+	</if>
+	<if test="bezei_1 != null  and bezei_1 != '' ">
+		bezei_1=#{bezei_1},
+	</if>
+	<if test="cityc != null  and cityc != '' ">
+		cityc=#{cityc},
+	</if>
+	<if test="bezei_2 != null  and bezei_2 != '' ">
+		bezei_2=#{bezei_2},
+	</if>
+	<if test="transpzone != null  and transpzone != '' ">
+		transpzone=#{transpzone},
+	</if>
+	<if test="vtext != null  and vtext != '' ">
+		vtext=#{vtext},
+	</if>
+	<if test="updatetime != null  ">
+		updatetime=#{updatetime},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Warehouse" >
+		delete 	 from warehouse where id = #{id}
+	</delete>
+  	
+</mapper>

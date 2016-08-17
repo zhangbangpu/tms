@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.CpmdMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Cpmd" >
+		<id column="id" property="id"/>
+		<result column="matnr" property="matnr"/>
+		<result column="maktx" property="maktx"/>
+		<result column="meins" property="meins"/>
+		<result column="brgew" property="brgew"/>
+		<result column="ntgew" property="ntgew"/>
+		<result column="gewei" property="gewei"/>
+		<result column="volum" property="volum"/>
+		<result column="voleh" property="voleh"/>
+		<result column="groes" property="groes"/>
+		<result column="ean11" property="ean11"/>
+		<result column="bclass" property="bclass"/>
+		<result column="swor" property="swor"/>
+		<result column="sclass" property="sclass"/>
+		<result column="mhdhb" property="mhdhb"/>
+		<result column="zzpsms" property="zzpsms"/>
+		<result column="zzspbm" property="zzspbm"/>
+		<result column="zzspsx" property="zzspsx"/>
+		<result column="zzlsdj" property="zzlsdj"/>
+		<result column="zzhydj" property="zzhydj"/>
+		<result column="zzmlfs" property="zzmlfs"/>
+		<result column="zzsdbl" property="zzsdbl"/>
+		<result column="bstrf" property="bstrf"/>
+		<result column="zzbrand" property="zzbrand"/>
+		<result column="updatetime" property="updatetime"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,matnr,maktx,meins,brgew,ntgew,gewei,volum,voleh,groes,ean11,bclass,swor,sclass,mhdhb,zzpsms,zzspbm,zzspsx,zzlsdj,zzhydj,zzmlfs,zzsdbl,bstrf,zzbrand,updatetime
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="matnr != null and matnr != '' ">
+		    and matnr = #{matnr}
+		</if>
+		<if test="maktx != null and maktx != '' ">
+		    and maktx = #{maktx}
+		</if>
+		<if test="meins != null and meins != '' ">
+		    and meins = #{meins}
+		</if>
+		<if test="brgew != null and brgew != '' ">
+		    and brgew = #{brgew}
+		</if>
+		<if test="ntgew != null and ntgew != '' ">
+		    and ntgew = #{ntgew}
+		</if>
+		<if test="gewei != null and gewei != '' ">
+		    and gewei = #{gewei}
+		</if>
+		<if test="volum != null and volum != '' ">
+		    and volum = #{volum}
+		</if>
+		<if test="voleh != null and voleh != '' ">
+		    and voleh = #{voleh}
+		</if>
+		<if test="groes != null and groes != '' ">
+		    and groes = #{groes}
+		</if>
+		<if test="ean11 != null and ean11 != '' ">
+		    and ean11 = #{ean11}
+		</if>
+		<if test="bclass != null and bclass != '' ">
+		    and bclass = #{bclass}
+		</if>
+		<if test="swor != null and swor != '' ">
+		    and swor = #{swor}
+		</if>
+		<if test="sclass != null and sclass != '' ">
+		    and sclass = #{sclass}
+		</if>
+		<if test="mhdhb != null and mhdhb != '' ">
+		    and mhdhb = #{mhdhb}
+		</if>
+		<if test="zzpsms != null and zzpsms != '' ">
+		    and zzpsms = #{zzpsms}
+		</if>
+		<if test="zzspbm != null and zzspbm != '' ">
+		    and zzspbm = #{zzspbm}
+		</if>
+		<if test="zzspsx != null and zzspsx != '' ">
+		    and zzspsx = #{zzspsx}
+		</if>
+		<if test="zzlsdj != null and zzlsdj != '' ">
+		    and zzlsdj = #{zzlsdj}
+		</if>
+		<if test="zzhydj != null and zzhydj != '' ">
+		    and zzhydj = #{zzhydj}
+		</if>
+		<if test="zzmlfs != null and zzmlfs != '' ">
+		    and zzmlfs = #{zzmlfs}
+		</if>
+		<if test="zzsdbl != null and zzsdbl != '' ">
+		    and zzsdbl = #{zzsdbl}
+		</if>
+		<if test="bstrf != null and bstrf != '' ">
+		    and bstrf = #{bstrf}
+		</if>
+		<if test="zzbrand != null and zzbrand != '' ">
+		    and zzbrand = #{zzbrand}
+		</if>
+		<if test="updatetime != null and updatetime != '' ">
+		    and updatetime = #{updatetime}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from cpmd where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from cpmd
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Cpmd" >
+	  insert into cpmd(id,matnr,maktx,meins,brgew,ntgew,gewei,volum,voleh,groes,ean11,bclass,swor,sclass,mhdhb,zzpsms,zzspbm,zzspsx,zzlsdj,zzhydj,zzmlfs,zzsdbl,bstrf,zzbrand,updatetime)
+ values(#{id},#{matnr},#{maktx},#{meins},#{brgew},#{ntgew},#{gewei},#{volum},#{voleh},#{groes},#{ean11},#{bclass},#{swor},#{sclass},#{mhdhb},#{zzpsms},#{zzspbm},#{zzspsx},#{zzlsdj},#{zzhydj},#{zzmlfs},#{zzsdbl},#{bstrf},#{zzbrand},#{updatetime})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.Cpmd" >
+	  update cpmd set matnr=#{matnr},maktx=#{maktx},meins=#{meins},brgew=#{brgew},ntgew=#{ntgew},gewei=#{gewei},volum=#{volum},voleh=#{voleh},groes=#{groes},ean11=#{ean11},bclass=#{bclass},swor=#{swor},sclass=#{sclass},mhdhb=#{mhdhb},zzpsms=#{zzpsms},zzspbm=#{zzspbm},zzspsx=#{zzspsx},zzlsdj=#{zzlsdj},zzhydj=#{zzhydj},zzmlfs=#{zzmlfs},zzsdbl=#{zzsdbl},bstrf=#{bstrf},zzbrand=#{zzbrand},updatetime=now() where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Cpmd" >
+		update cpmd set 
+	<trim  suffixOverrides="," >
+	<if test="matnr != null  and matnr != '' ">
+		matnr=#{matnr},
+	</if>
+	<if test="maktx != null  and maktx != '' ">
+		maktx=#{maktx},
+	</if>
+	<if test="meins != null  and meins != '' ">
+		meins=#{meins},
+	</if>
+	<if test="brgew != null  and brgew != '' ">
+		brgew=#{brgew},
+	</if>
+	<if test="ntgew != null  and ntgew != '' ">
+		ntgew=#{ntgew},
+	</if>
+	<if test="gewei != null  and gewei != '' ">
+		gewei=#{gewei},
+	</if>
+	<if test="volum != null  and volum != '' ">
+		volum=#{volum},
+	</if>
+	<if test="voleh != null  and voleh != '' ">
+		voleh=#{voleh},
+	</if>
+	<if test="groes != null  and groes != '' ">
+		groes=#{groes},
+	</if>
+	<if test="ean11 != null  and ean11 != '' ">
+		ean11=#{ean11},
+	</if>
+	<if test="bclass != null  and bclass != '' ">
+		bclass=#{bclass},
+	</if>
+	<if test="swor != null  and swor != '' ">
+		swor=#{swor},
+	</if>
+	<if test="sclass != null  and sclass != '' ">
+		sclass=#{sclass},
+	</if>
+	<if test="mhdhb != null  and mhdhb != '' ">
+		mhdhb=#{mhdhb},
+	</if>
+	<if test="zzpsms != null  and zzpsms != '' ">
+		zzpsms=#{zzpsms},
+	</if>
+	<if test="zzspbm != null  and zzspbm != '' ">
+		zzspbm=#{zzspbm},
+	</if>
+	<if test="zzspsx != null  and zzspsx != '' ">
+		zzspsx=#{zzspsx},
+	</if>
+	<if test="zzlsdj != null  and zzlsdj != '' ">
+		zzlsdj=#{zzlsdj},
+	</if>
+	<if test="zzhydj != null  and zzhydj != '' ">
+		zzhydj=#{zzhydj},
+	</if>
+	<if test="zzmlfs != null  and zzmlfs != '' ">
+		zzmlfs=#{zzmlfs},
+	</if>
+	<if test="zzsdbl != null  and zzsdbl != '' ">
+		zzsdbl=#{zzsdbl},
+	</if>
+	<if test="bstrf != null  and bstrf != '' ">
+		bstrf=#{bstrf},
+	</if>
+	<if test="zzbrand != null  and zzbrand != '' ">
+		zzbrand=#{zzbrand},
+	</if>
+	<if test="updatetime != null  ">
+		updatetime=#{updatetime},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Cpmd" >
+		delete 	 from cpmd where id = #{id}
+	</delete>
+  	
+</mapper>

@@ -122,6 +122,31 @@ public class HttpClientUtils {
         return response;
     }
     
+    /**
+     * 获得返回结果
+     * @param map
+     * @param string
+     * @param string2
+     * @param string3
+     * @return
+     */
+	public static Map<String, Object> getResult(Map<String, String> map, String urlRoot, String url, String method) throws Exception {
+		Map<String, Object> resultMap = null;
+		
+		HttpResponse response = HttpClientUtils.getHttpResponse(map, urlRoot, url, method);
+		if (response.getStatusLine().getStatusCode() == 200) {
+		    HttpEntity entity = response.getEntity();
+		    String message = EntityUtils.toString(entity, "utf-8");
+		    System.out.println(message);
+		    
+		    resultMap = JsonUtil.jsonStr2Map(message);
+		} else {
+		    System.out.println("请求失败");
+		}
+		
+		return resultMap;
+	}
+    
     //测试
     public static void main(String args[]) throws Exception {
         //post请求的参数
@@ -152,4 +177,5 @@ public class HttpClientUtils {
         }
         
     }
+
 }

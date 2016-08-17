@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.SmdMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Smd" >
+		<id column="id" property="id"/>
+		<result column="werks" property="werks"/>
+		<result column="ze58sttp" property="ze58sttp"/>
+		<result column="ze58rp01" property="ze58rp01"/>
+		<result column="loclb" property="loclb"/>
+		<result column="name1" property="name1"/>
+		<result column="ze58longi" property="ze58longi"/>
+		<result column="ze58lati" property="ze58lati"/>
+		<result column="stras" property="stras"/>
+		<result column="tel_number" property="tel_number"/>
+		<result column="pstlz" property="pstlz"/>
+		<result column="ze58hus22" property="ze58hus22"/>
+		<result column="ze58hus23" property="ze58hus23"/>
+		<result column="tel_number1" property="tel_number1"/>
+		<result column="ze58huf02" property="ze58huf02"/>
+		<result column="ze58scyn" property="ze58scyn"/>
+		<result column="zclass" property="zclass"/>
+		<result column="region" property="region"/>
+		<result column="bezei_1" property="bezei_1"/>
+		<result column="cityc" property="cityc"/>
+		<result column="bezei_2" property="bezei_2"/>
+		<result column="lzone" property="lzone"/>
+		<result column="vtext" property="vtext"/>
+		<result column="updatetime" property="updatetime"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,werks,ze58sttp,ze58rp01,loclb,name1,ze58longi,ze58lati,stras,tel_number,pstlz,ze58hus22,ze58hus23,tel_number1,ze58huf02,ze58scyn,zclass,region,bezei_1,cityc,bezei_2,lzone,vtext,updatetime
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="werks != null and werks != '' ">
+		    and werks = #{werks}
+		</if>
+		<if test="ze58sttp != null and ze58sttp != '' ">
+		    and ze58sttp = #{ze58sttp}
+		</if>
+		<if test="ze58rp01 != null and ze58rp01 != '' ">
+		    and ze58rp01 = #{ze58rp01}
+		</if>
+		<if test="loclb != null and loclb != '' ">
+		    and loclb = #{loclb}
+		</if>
+		<if test="name1 != null and name1 != '' ">
+		    and name1 = #{name1}
+		</if>
+		<if test="ze58longi != null and ze58longi != '' ">
+		    and ze58longi = #{ze58longi}
+		</if>
+		<if test="ze58lati != null and ze58lati != '' ">
+		    and ze58lati = #{ze58lati}
+		</if>
+		<if test="stras != null and stras != '' ">
+		    and stras = #{stras}
+		</if>
+		<if test="tel_number != null and tel_number != '' ">
+		    and tel_number = #{tel_number}
+		</if>
+		<if test="pstlz != null and pstlz != '' ">
+		    and pstlz = #{pstlz}
+		</if>
+		<if test="ze58hus22 != null and ze58hus22 != '' ">
+		    and ze58hus22 = #{ze58hus22}
+		</if>
+		<if test="ze58hus23 != null and ze58hus23 != '' ">
+		    and ze58hus23 = #{ze58hus23}
+		</if>
+		<if test="tel_number1 != null and tel_number1 != '' ">
+		    and tel_number1 = #{tel_number1}
+		</if>
+		<if test="ze58huf02 != null and ze58huf02 != '' ">
+		    and ze58huf02 = #{ze58huf02}
+		</if>
+		<if test="ze58scyn != null and ze58scyn != '' ">
+		    and ze58scyn = #{ze58scyn}
+		</if>
+		<if test="zclass != null and zclass != '' ">
+		    and zclass = #{zclass}
+		</if>
+		<if test="region != null and region != '' ">
+		    and region = #{region}
+		</if>
+		<if test="bezei_1 != null and bezei_1 != '' ">
+		    and bezei_1 = #{bezei_1}
+		</if>
+		<if test="cityc != null and cityc != '' ">
+		    and cityc = #{cityc}
+		</if>
+		<if test="bezei_2 != null and bezei_2 != '' ">
+		    and bezei_2 = #{bezei_2}
+		</if>
+		<if test="lzone != null and lzone != '' ">
+		    and lzone = #{lzone}
+		</if>
+		<if test="vtext != null and vtext != '' ">
+		    and vtext = #{vtext}
+		</if>
+		<if test="updatetime != null and updatetime != '' ">
+		    and updatetime = #{updatetime}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from smd where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from smd
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Smd" >
+	  insert into smd(id,werks,ze58sttp,ze58rp01,loclb,name1,ze58longi,ze58lati,stras,tel_number,pstlz,ze58hus22,ze58hus23,tel_number1,ze58huf02,ze58scyn,zclass,region,bezei_1,cityc,bezei_2,lzone,vtext,updatetime)
+ values(#{id},#{werks},#{ze58sttp},#{ze58rp01},#{loclb},#{name1},#{ze58longi},#{ze58lati},#{stras},#{tel_number},#{pstlz},#{ze58hus22},#{ze58hus23},#{tel_number1},#{ze58huf02},#{ze58scyn},#{zclass},#{region},#{bezei_1},#{cityc},#{bezei_2},#{lzone},#{vtext},#{updatetime})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.Smd" >
+	  update smd set werks=#{werks},ze58sttp=#{ze58sttp},ze58rp01=#{ze58rp01},loclb=#{loclb},name1=#{name1},ze58longi=#{ze58longi},ze58lati=#{ze58lati},stras=#{stras},tel_number=#{tel_number},pstlz=#{pstlz},ze58hus22=#{ze58hus22},ze58hus23=#{ze58hus23},tel_number1=#{tel_number1},ze58huf02=#{ze58huf02},ze58scyn=#{ze58scyn},zclass=#{zclass},region=#{region},bezei_1=#{bezei_1},cityc=#{cityc},bezei_2=#{bezei_2},lzone=#{lzone},vtext=#{vtext},updatetime=now() where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Smd" >
+		update smd set 
+	<trim  suffixOverrides="," >
+	<if test="werks != null  and werks != '' ">
+		werks=#{werks},
+	</if>
+	<if test="ze58sttp != null  and ze58sttp != '' ">
+		ze58sttp=#{ze58sttp},
+	</if>
+	<if test="ze58rp01 != null  and ze58rp01 != '' ">
+		ze58rp01=#{ze58rp01},
+	</if>
+	<if test="loclb != null  and loclb != '' ">
+		loclb=#{loclb},
+	</if>
+	<if test="name1 != null  and name1 != '' ">
+		name1=#{name1},
+	</if>
+	<if test="ze58longi != null  and ze58longi != '' ">
+		ze58longi=#{ze58longi},
+	</if>
+	<if test="ze58lati != null  and ze58lati != '' ">
+		ze58lati=#{ze58lati},
+	</if>
+	<if test="stras != null  and stras != '' ">
+		stras=#{stras},
+	</if>
+	<if test="tel_number != null  and tel_number != '' ">
+		tel_number=#{tel_number},
+	</if>
+	<if test="pstlz != null  and pstlz != '' ">
+		pstlz=#{pstlz},
+	</if>
+	<if test="ze58hus22 != null  and ze58hus22 != '' ">
+		ze58hus22=#{ze58hus22},
+	</if>
+	<if test="ze58hus23 != null  and ze58hus23 != '' ">
+		ze58hus23=#{ze58hus23},
+	</if>
+	<if test="tel_number1 != null  and tel_number1 != '' ">
+		tel_number1=#{tel_number1},
+	</if>
+	<if test="ze58huf02 != null  and ze58huf02 != '' ">
+		ze58huf02=#{ze58huf02},
+	</if>
+	<if test="ze58scyn != null  and ze58scyn != '' ">
+		ze58scyn=#{ze58scyn},
+	</if>
+	<if test="zclass != null  and zclass != '' ">
+		zclass=#{zclass},
+	</if>
+	<if test="region != null  and region != '' ">
+		region=#{region},
+	</if>
+	<if test="bezei_1 != null  and bezei_1 != '' ">
+		bezei_1=#{bezei_1},
+	</if>
+	<if test="cityc != null  and cityc != '' ">
+		cityc=#{cityc},
+	</if>
+	<if test="bezei_2 != null  and bezei_2 != '' ">
+		bezei_2=#{bezei_2},
+	</if>
+	<if test="lzone != null  and lzone != '' ">
+		lzone=#{lzone},
+	</if>
+	<if test="vtext != null  and vtext != '' ">
+		vtext=#{vtext},
+	</if>
+	<if test="updatetime != null  ">
+		updatetime=#{updatetime},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Smd" >
+		delete 	 from smd where id = #{id}
+	</delete>
+  	
+</mapper>
