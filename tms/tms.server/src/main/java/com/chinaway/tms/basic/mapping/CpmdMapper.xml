@@ -119,7 +119,7 @@
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select <include refid="Base_Column_List" /> 
-	 from cpmd where id = #{id}
+	    from cpmd where id = #{id}
 	</select>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
@@ -129,11 +129,19 @@
 		from cpmd
 		<include refid="Example_Where_Clause"/>
 	</select>
+	
+	<!-- 条件查询所有 -->
+	<select id="selectAllCpmdByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from cpmd
+		<include refid="Example_Where_Clause"/>
+	</select>
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Cpmd" >
 	  insert into cpmd(id,matnr,maktx,meins,brgew,ntgew,gewei,volum,voleh,groes,ean11,bclass,swor,sclass,mhdhb,zzpsms,zzspbm,zzspsx,zzlsdj,zzhydj,zzmlfs,zzsdbl,bstrf,zzbrand,updatetime)
- values(#{id},#{matnr},#{maktx},#{meins},#{brgew},#{ntgew},#{gewei},#{volum},#{voleh},#{groes},#{ean11},#{bclass},#{swor},#{sclass},#{mhdhb},#{zzpsms},#{zzspbm},#{zzspsx},#{zzlsdj},#{zzhydj},#{zzmlfs},#{zzsdbl},#{bstrf},#{zzbrand},#{updatetime})
+ 	  values(#{id},#{matnr},#{maktx},#{meins},#{brgew},#{ntgew},#{gewei},#{volum},#{voleh},#{groes},#{ean11},#{bclass},#{swor},#{sclass},#{mhdhb},#{zzpsms},#{zzspbm},#{zzspsx},#{zzlsdj},#{zzhydj},#{zzmlfs},#{zzsdbl},#{bstrf},#{zzbrand},#{updatetime})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
