@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.controller.LoginController;
-import com.chinaway.tms.basic.model.Site;
-import com.chinaway.tms.basic.service.SiteService;
+import com.chinaway.tms.basic.model.Cpmd;
+import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 
 @Controller
-@RequestMapping(value = "/site")
-public class SiteManagerController {
+@RequestMapping(value = "/cpmd")
+public class CpmdManagerController {
 	
 	@Autowired
-	private SiteService siteService;
+	private CpmdService cpmdService;
 	
 	/**
 	 * 根据条件查询所有站点信息<br>
@@ -34,34 +34,35 @@ public class SiteManagerController {
 	 * @param deptInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/selectAllSiteByCtn")
+	@RequestMapping(value = "/selectAllCpmdByCtn")
 	@ResponseBody
-	public Result selectAllSiteByCtn(HttpServletRequest request) {
+	public Result selectAllCpmdByCtn(HttpServletRequest request) {
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
 //		String msg = "查询所有站点操作失败!";
 		Map<String, Object> argsMap = new HashMap<String, Object>();
 //		int ret = 0;
 //		try {
-			List<Site> sitetList = siteService.selectAllSiteByCtn(argsMap);
-//			if(null != sitetList){
-//				ret = sitetList.size();
+			List<Cpmd> cpmdtList = cpmdService.selectAllCpmdByCtn(argsMap);
+//			if(null != cpmdtList){
+//				ret = cpmdtList.size();
 //			}
 //			
 //			if (ret > 0) {
 //				code = 0;
 //				msg = "查询所有站点操作成功!";
+//				resultMap.put("cpmdtList", cpmdtList);
 //			}
 //
 //		} catch (Exception e) {
 //			e.getStackTrace();
 //		}
-//
+
 //		resultMap.put("code", code);
 //		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, sitetList);
+		return new Result(0, cpmdtList);
 	}
 	
 	/**
@@ -73,10 +74,10 @@ public class SiteManagerController {
 	 */
 	@RequestMapping(value = "/page")
 	@ResponseBody
-	public Result selectSite2PageBean(HttpServletRequest request) {
+	public Result selectCpmd2PageBean(HttpServletRequest request) {
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		PageBean<Site> pageBean = siteService.select2PageBean(argsMap);
+		PageBean<Cpmd> pageBean = cpmdService.select2PageBean(argsMap);
 		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
 		//return JsonUtil.obj2JsonStr(resultJson);
 		return new Result(0, pageBean);
@@ -97,11 +98,11 @@ public class SiteManagerController {
 //		int code = 1;
 //		String msg = "根据id查询部门操作失败!";
 
-		Site site = null;
+		Cpmd cpmd = null;
 //		try {
-			site = siteService.selectById(id == "" ? 0 : Integer.parseInt(id));
+			cpmd = cpmdService.selectById(id == "" ? 0 : Integer.parseInt(id));
 
-//			if (null != site) {
+//			if (null != cpmd) {
 //				code = 0;
 //				msg = "根据id查询站点操作成功!";
 //			}
@@ -109,10 +110,10 @@ public class SiteManagerController {
 //		} catch (Exception e) {
 //			e.getStackTrace();
 //		}
-//
-//		Result result = new Result(code, site, msg);
 
-		return new Result(0, site);
+//		Result result = new Result(code, cpmd, msg);
+
+		return new Result(0, cpmd);
 	}
 	
 	/**
@@ -122,10 +123,9 @@ public class SiteManagerController {
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value = "/addSite")
+	@RequestMapping(value = "/addCpmd")
 	@ResponseBody
-	public Result addSite(HttpServletRequest request, Site site) {
-		
+	public Result addCpmd(HttpServletRequest request, Cpmd cpmd) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "操作站点失败!";
@@ -133,12 +133,11 @@ public class SiteManagerController {
 		int ret = 0;
 		try {
 			
-			site.setUpdatetime(new Date());
-			if (site.getId() != null) {
-				ret = siteService.updateSelective(site);
+			cpmd.setUpdatetime(new Date());
+			if (cpmd.getId() != null) {
+				ret = cpmdService.updateSelective(cpmd);
 			}else{
-				site.setCreatetime(new Date());
-				ret = siteService.insert(site);
+				ret = cpmdService.insert(cpmd);
 			}
 			if (ret > 0) {
 				code = 0;
@@ -173,7 +172,7 @@ public class SiteManagerController {
 
 		int ret = 0;
 		try {
-			ret = siteService.deleteById(ids);
+			ret = cpmdService.deleteById(ids);
 
 			if (ret > 0) {
 				code = 0;
@@ -187,7 +186,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return new Result(0, code);
 	}
 	
 	/**
@@ -197,9 +196,9 @@ public class SiteManagerController {
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/updateSite")
+	@RequestMapping(value = "/updateCpmd")
 	@ResponseBody
-	public Result updateSite(HttpServletRequest request, Site site) {
+	public Result updateCpmd(HttpServletRequest request, Cpmd cpmd) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
@@ -210,7 +209,7 @@ public class SiteManagerController {
 
 		int ret = 0;
 		try {
-			ret = siteService.update(site);
+			ret = cpmdService.update(cpmd);
 
 			if (ret > 0) {
 				code = 0;
@@ -224,7 +223,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return new Result(0, code);
 	}
 	
 }

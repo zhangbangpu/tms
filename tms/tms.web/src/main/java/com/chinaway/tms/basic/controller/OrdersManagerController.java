@@ -14,79 +14,120 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.controller.LoginController;
-import com.chinaway.tms.basic.model.Site;
-import com.chinaway.tms.basic.service.SiteService;
+import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 
 @Controller
-@RequestMapping(value = "/site")
-public class SiteManagerController {
+@RequestMapping(value = "/orders")
+public class OrdersManagerController {
 	
 	@Autowired
-	private SiteService siteService;
+	private OrdersService ordersService;
+	
 	
 	/**
-	 * 根据条件查询所有站点信息<br>
+	 * 根据条件查询所有订单信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param deptInfo
+	 * @param ordersInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/selectAllSiteByCtn")
+	@RequestMapping(value = "/selectAllOrdersByCtn")
 	@ResponseBody
-	public Result selectAllSiteByCtn(HttpServletRequest request) {
+	public Result selectAllOrdersByCtn(HttpServletRequest request) {
 //		Map<String, Object> resultMap = new HashMap<>();
 //		int code = 1;
-//		String msg = "查询所有站点操作失败!";
+//		String msg = "查询所有订单操作失败!";
 		Map<String, Object> argsMap = new HashMap<String, Object>();
 //		int ret = 0;
 //		try {
-			List<Site> sitetList = siteService.selectAllSiteByCtn(argsMap);
-//			if(null != sitetList){
-//				ret = sitetList.size();
+			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(argsMap);
+//			if(null != ordersList){
+//				ret = ordersList.size();
+//			}
+			
+//			if (ret > 0) {
+//				code = 0;
+//				msg = "查询所有订单操作成功!";
+//				resultMap.put("ordersList", ordersList);
+//			}
+//			
+//		} catch (Exception e) {
+//			e.getStackTrace();
+//		}
+//		
+//		resultMap.put("code", code);
+//		resultMap.put("msg", msg);
+//		Result result = new Result(code, resultMap, msg);
+		
+//		return JsonUtil.obj2JsonStr(result);
+		return new Result(0, ordersList);
+	}
+	
+	/**
+	 * 根据条件查询所有订单信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param ordersInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryWlcompanysByOrderId")
+	@ResponseBody
+	public Result queryWlcompanysByOrderId(HttpServletRequest request) {
+//		Map<String, Object> resultMap = new HashMap<>();
+//		int code = 1;
+//		String msg = "查询运单列表操作失败!";
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+//		int ret = 0;
+//		try {
+			List<Integer> wlcompanyIdList = ordersService.queryWlcompanysByOrderId(argsMap);
+//			if(null != wlcompanyIdList){
+//				ret = wlcompanyIdList.size();
 //			}
 //			
 //			if (ret > 0) {
 //				code = 0;
-//				msg = "查询所有站点操作成功!";
+//				msg = "查询运单列表操作成功!";
+//				resultMap.put("wlcompanyIdList", wlcompanyIdList);
 //			}
-//
+//			
 //		} catch (Exception e) {
 //			e.getStackTrace();
 //		}
-//
+		
 //		resultMap.put("code", code);
 //		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
-
-		return new Result(0, sitetList);
+		
+//		return JsonUtil.obj2JsonStr(result);
+		return new Result(0, wlcompanyIdList);
 	}
 	
 	/**
-	 * 根据条件查询站点信息<br>
+	 * 根据条件查询订单信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param deptInfo
+	 * @param ordersInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/page")
 	@ResponseBody
-	public Result selectSite2PageBean(HttpServletRequest request) {
-		
+	public Result selectOrders2PageBean(HttpServletRequest request) {
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		PageBean<Site> pageBean = siteService.select2PageBean(argsMap);
+		PageBean<Orders> pageBean = ordersService.select2PageBean(argsMap);
 		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
 		//return JsonUtil.obj2JsonStr(resultJson);
 		return new Result(0, pageBean);
 	}
 	
 	/**
-	 * 根据条件查询单个站点信息<br>
+	 * 根据条件查询单个订单信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param deptInfo
+	 * @param ordersInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/queryOneById")
@@ -96,53 +137,53 @@ public class SiteManagerController {
 		String id = String.valueOf(argsMap.get("id"));
 //		int code = 1;
 //		String msg = "根据id查询部门操作失败!";
-
-		Site site = null;
+//
+		Orders orders = null;
 //		try {
-			site = siteService.selectById(id == "" ? 0 : Integer.parseInt(id));
-
-//			if (null != site) {
+			orders = ordersService.selectById(id == "" ? 0 : Integer.parseInt(id));
+//
+//			if (null != orders) {
 //				code = 0;
-//				msg = "根据id查询站点操作成功!";
+//				msg = "根据id查询订单操作成功!";
 //			}
 //
 //		} catch (Exception e) {
 //			e.getStackTrace();
 //		}
-//
-//		Result result = new Result(code, site, msg);
 
-		return new Result(0, site);
+//		Result result = new Result(code, orders, msg);
+
+//		return result;
+		return new Result(0, orders);
 	}
 	
 	/**
-	 * 添加站点信息<br>
-	 * 返回站点的json串
+	 * 添加订单信息<br>
+	 * 返回订单的json串
 	 * @param username
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value = "/addSite")
+	@RequestMapping(value = "/addOrders")
 	@ResponseBody
-	public Result addSite(HttpServletRequest request, Site site) {
+	public Result addOrders(HttpServletRequest request, Orders orders) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "操作站点失败!";
+		String msg = "操作订单失败!";
 
 		int ret = 0;
 		try {
 			
-			site.setUpdatetime(new Date());
-			if (site.getId() != null) {
-				ret = siteService.updateSelective(site);
+			if (orders.getId() != null) {
+				ret = ordersService.updateSelective(orders);
 			}else{
-				site.setCreatetime(new Date());
-				ret = siteService.insert(site);
+				orders.setCreatetime(new Date());
+				ret = ordersService.insert(orders);
 			}
 			if (ret > 0) {
 				code = 0;
-				msg = "操作站点成功!";
+				msg = "操作订单成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -152,6 +193,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
 
+//		return result;
 		return new Result(0, ret);
 	}
 	
@@ -173,7 +215,7 @@ public class SiteManagerController {
 
 		int ret = 0;
 		try {
-			ret = siteService.deleteById(ids);
+			ret = ordersService.deleteById(ids);
 
 			if (ret > 0) {
 				code = 0;
@@ -191,30 +233,30 @@ public class SiteManagerController {
 	}
 	
 	/**
-	 * 修改站点信息<br>
+	 * 修改订单信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param userInfo
 	 * @return
 	 */
-	@RequestMapping(value = "/updateSite")
+	@RequestMapping(value = "/updateOrders")
 	@ResponseBody
-	public Result updateSite(HttpServletRequest request, Site site) {
+	public Result updateOrders(HttpServletRequest request, Orders orders) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改站点失败!";
+		String msg = "修改订单失败!";
 
 		int ret = 0;
 		try {
-			ret = siteService.update(site);
+			ret = ordersService.update(orders);
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改站点成功!";
+				msg = "修改订单成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -224,7 +266,7 @@ public class SiteManagerController {
 		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return new Result(0, code);
 	}
 	
 }
