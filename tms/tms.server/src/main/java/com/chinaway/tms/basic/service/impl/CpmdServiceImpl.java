@@ -1,11 +1,10 @@
 package com.chinaway.tms.basic.service.impl;
 
+import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.chinaway.tms.basic.dao.CpmdMapper;
 import com.chinaway.tms.basic.model.Cpmd;
 import com.chinaway.tms.basic.service.CpmdService;
@@ -39,6 +38,11 @@ public class CpmdServiceImpl extends AbstractService<Cpmd, Integer> implements C
 	}
 	
 	@Override
+	public List<Cpmd> selectAllCpmdByCtn(Map<String, Object> argsMap) {
+		return cpmdMapper.selectAllCpmdByCtn(argsMap);
+	}
+	
+	@Override
 	@Transactional
 	public int deleteById(String ids) {
 		String[] idsStr = ids.split(",");
@@ -51,4 +55,5 @@ public class CpmdServiceImpl extends AbstractService<Cpmd, Integer> implements C
 			return 0;
 		}
 	}
+
 }
