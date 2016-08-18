@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.chinaway.tms.basic.dao.OrderMapper" >
-  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Order" >
+<mapper namespace="com.chinaway.tms.basic.dao.OrdersMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Orders" >
 		<id column="id" property="id"/>
 		<result column="code" property="code"/>
 		<result column="fromcode" property="fromcode"/>
@@ -27,151 +27,158 @@
    
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
-	where 1=1
-	<trim suffixOverrides="," >
-		<if test="id != null and id != '' ">
-		    and id = #{id}
-		</if>
-		<if test="code != null and code != '' ">
-		    and code = #{code}
-		</if>
-		<if test="fromcode != null and fromcode != '' ">
-		    and fromcode = #{fromcode}
-		</if>
-		<if test="orderfrom != null and orderfrom != '' ">
-		    and orderfrom = #{orderfrom}
-		</if>
-		<if test="createtime != null and createtime != '' ">
-		    and createtime = #{createtime}
-		</if>
-		<if test="deptname != null and deptname != '' ">
-		    and deptname = #{deptname}
-		</if>
-		<if test="subcontractor != null and subcontractor != '' ">
-		    and subcontractor = #{subcontractor}
-		</if>
-		<if test="amount != null and amount != '' ">
-		    and amount = #{amount}
-		</if>
-		<if test="unit != null and unit != '' ">
-		    and unit = #{unit}
-		</if>
-		<if test="weight != null and weight != '' ">
-		    and weight = #{weight}
-		</if>
-		<if test="volume != null and volume != '' ">
-		    and volume = #{volume}
-		</if>
-		<if test="fhaddress != null and fhaddress != '' ">
-		    and fhaddress = #{fhaddress}
-		</if>
-		<if test="shaddress != null and shaddress != '' ">
-		    and shaddress = #{shaddress}
-		</if>
-		<if test="requstarttime != null and requstarttime != '' ">
-		    and requstarttime = #{requstarttime}
-		</if>
-		<if test="requendtime != null and requendtime != '' ">
-		    and requendtime = #{requendtime}
-		</if>
-		<if test="state != null and state != '' ">
-		    and state = #{state}
-		</if>
-		<if test="exceptcount != null and exceptcount != '' ">
-		    and exceptcount = #{exceptcount}
-		</if>
-	
-	</trim>
+		where 1=1
+		<trim suffixOverrides="," >
+			<if test="id != null and id != '' ">
+			    and id = #{id}
+			</if>
+			<if test="code != null and code != '' ">
+			    and code = #{code}
+			</if>
+			<if test="fromcode != null and fromcode != '' ">
+			    and fromcode = #{fromcode}
+			</if>
+			<if test="orderfrom != null and orderfrom != '' ">
+			    and orderfrom = #{orderfrom}
+			</if>
+			<if test="createtime != null and createtime != '' ">
+			    and createtime = #{createtime}
+			</if>
+			<if test="deptname != null and deptname != '' ">
+			    and deptname = #{deptname}
+			</if>
+			<if test="subcontractor != null and subcontractor != '' ">
+			    and subcontractor = #{subcontractor}
+			</if>
+			<if test="amount != null and amount != '' ">
+			    and amount = #{amount}
+			</if>
+			<if test="unit != null and unit != '' ">
+			    and unit = #{unit}
+			</if>
+			<if test="weight != null and weight != '' ">
+			    and weight = #{weight}
+			</if>
+			<if test="volume != null and volume != '' ">
+			    and volume = #{volume}
+			</if>
+			<if test="fhaddress != null and fhaddress != '' ">
+			    and fhaddress = #{fhaddress}
+			</if>
+			<if test="shaddress != null and shaddress != '' ">
+			    and shaddress = #{shaddress}
+			</if>
+			<if test="requstarttime != null and requstarttime != '' ">
+			    and requstarttime = #{requstarttime}
+			</if>
+			<if test="requendtime != null and requendtime != '' ">
+			    and requendtime = #{requendtime}
+			</if>
+			<if test="state != null and state != '' ">
+			    and state = #{state}
+			</if>
+			<if test="exceptcount != null and exceptcount != '' ">
+			    and exceptcount = #{exceptcount}
+			</if>
+		</trim>
 	</sql>
  
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select <include refid="Base_Column_List" /> 
-	 from order where id = #{id}
+	    from orders where id = #{id}
 	</select>
  
 	<!-- 查询max id  -->
 	<select id="selectMaxId"  resultType="java.lang.Integer" >
-		select max(id) from order 
+		select max(id) from orders 
 	</select>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from order
+		from orders
+		<include refid="Example_Where_Clause"/>
+	</select>
+	
+	<!-- 条件查询所有-->
+	<select id="selectAllOrdersByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from orders
 		<include refid="Example_Where_Clause"/>
 	</select>
    
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Order" >
-	  insert into order(id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount)
- values(#{id},#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount})
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Orders" >
+	    insert into orders(id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount)
+        values(#{id},#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
-	 <update id="update" parameterType="com.chinaway.tms.basic.model.Order" >
-	  update order set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount} where id=#{id}
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.Orders" >
+	 	update orders set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount} where id=#{id}
 	 </update>
  
 	 <!-- 动态修改记录，只修改只不为空的字段 -->
-	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Order" >
-		update order set 
-	<trim  suffixOverrides="," >
-	<if test="code != null  and code != '' ">
-		code=#{code},
-	</if>
-	<if test="fromcode != null  and fromcode != '' ">
-		fromcode=#{fromcode},
-	</if>
-	<if test="orderfrom != null  and orderfrom != '' ">
-		orderfrom=#{orderfrom},
-	</if>
-	<if test="createtime != null  ">
-		createtime=#{createtime},
-	</if>
-	<if test="deptname != null  and deptname != '' ">
-		deptname=#{deptname},
-	</if>
-	<if test="subcontractor != null  and subcontractor != '' ">
-		subcontractor=#{subcontractor},
-	</if>
-	<if test="amount != null  ">
-		amount=#{amount},
-	</if>
-	<if test="unit != null  and unit != '' ">
-		unit=#{unit},
-	</if>
-	<if test="weight != null  ">
-		weight=#{weight},
-	</if>
-	<if test="volume != null  ">
-		volume=#{volume},
-	</if>
-	<if test="fhaddress != null  and fhaddress != '' ">
-		fhaddress=#{fhaddress},
-	</if>
-	<if test="shaddress != null  and shaddress != '' ">
-		shaddress=#{shaddress},
-	</if>
-	<if test="requstarttime != null  ">
-		requstarttime=#{requstarttime},
-	</if>
-	<if test="requendtime != null  ">
-		requendtime=#{requendtime},
-	</if>
-	<if test="state != null  and state != '' ">
-		state=#{state},
-	</if>
-	<if test="exceptcount != null  ">
-		exceptcount=#{exceptcount},
-	</if>
-	</trim> where id=#{id}
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Orders" >
+		update orders set 
+		<trim  suffixOverrides="," >
+			<if test="code != null  and code != '' ">
+				code=#{code},
+			</if>
+			<if test="fromcode != null  and fromcode != '' ">
+				fromcode=#{fromcode},
+			</if>
+			<if test="orderfrom != null  and orderfrom != '' ">
+				orderfrom=#{orderfrom},
+			</if>
+			<if test="createtime != null  ">
+				createtime=#{createtime},
+			</if>
+			<if test="deptname != null  and deptname != '' ">
+				deptname=#{deptname},
+			</if>
+			<if test="subcontractor != null  and subcontractor != '' ">
+				subcontractor=#{subcontractor},
+			</if>
+			<if test="amount != null  ">
+				amount=#{amount},
+			</if>
+			<if test="unit != null  and unit != '' ">
+				unit=#{unit},
+			</if>
+			<if test="weight != null  ">
+				weight=#{weight},
+			</if>
+			<if test="volume != null  ">
+				volume=#{volume},
+			</if>
+			<if test="fhaddress != null  and fhaddress != '' ">
+				fhaddress=#{fhaddress},
+			</if>
+			<if test="shaddress != null  and shaddress != '' ">
+				shaddress=#{shaddress},
+			</if>
+			<if test="requstarttime != null  ">
+				requstarttime=#{requstarttime},
+			</if>
+			<if test="requendtime != null  ">
+				requendtime=#{requendtime},
+			</if>
+			<if test="state != null  and state != '' ">
+				state=#{state},
+			</if>
+			<if test="exceptcount != null  ">
+				exceptcount=#{exceptcount},
+			</if>
+		</trim> where id=#{id}
 	</update>
 
 	<!-- 删除记录 -->
-	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Order" >
-		delete 	 from order where id = #{id}
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Orders" >
+		delete from orders where id = #{id}
 	</delete>
   	
 </mapper>
