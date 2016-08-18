@@ -9,70 +9,112 @@ http://localhost/login/loginGetMenuList?username=huitongwuliu1&password=1234
 
 -------------------------用户模块-------------------------------
 //分页查询用户信息带分页连表
-http://localhost/sysUser/queUserByCtnPgBn?page=1&rows=10&sysUser={"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"1","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","roleName":"品牌公司角色1","state":"3","type":"1"}
+http://localhost/sysUser/queUserByCtnPgBn?pageNo=1&pageSize=10&sysUser={"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"1","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","roleName":"品牌公司角色1","state":"3","type":"1"}
 {"code":0,"data":{"code":0,"msg":"按条件查询角色操作成功!","sysUserList":[{"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"0","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","roleName":"品牌公司角色1","state":"2","type":"2"}]},"message":"按条件查询角色操作成功!"}
 http://localhost/sysUser/queAllUserByCtn
 {"code":0,"data":{"code":0,"msg":"查询所有用户操作成功!","sysUserList":[{"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","state":"3","type":"1"}]},"message":"查询所有用户操作成功!"}
 http://localhost/sysUser/queryUserById?id=1
 {"code":0,"data":{"sysUser":{"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","state":"3","type":"1"},"code":0,"msg":"根据id查询用戶操作成功!"},"message":"根据id查询用戶操作成功!"}
-http://localhost/sysUser/addUser?sysUser={"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","state":"3","type":"1"}
+http://localhost/sysUser/addUser?{"certificate":"c://tp.png","corporation":"张三","corporationim":"c://sfz.png","createtime":1470153600000,"deptid":"0","intro":"公司是什么公司，什么时候上市，人员多少等等","loginname":"huitongwuliu","name":"某某某物流","password":"123","phone":"15800023132","state":"3","type":"1"}
 {"code":0,"data":{"code":0,"msg":"添加操作成功!"},"message":"添加操作成功!"}
 http://localhost/sysUser/delUser?id=3
 {"code":0,"data":{"code":0,"msg":"删除操作成功!"},"message":"删除操作成功!"}
-http://localhost/sysUser/updateUser?sysUser={"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"1","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","state":"2","type":"2"}
+http://localhost/sysUser/updateUser?{"certificate":"c://tp1.png","corporation":"张三1","corporationim":"c://sfz1.png","createtime":1470153600000,"deptid":"1","id":1,"intro":"公司是什么公司，什么时候上市，人员多少等等1","loginname":"huitongwuliu1","name":"某某某物流1","password":"1234","phone":"15800023131","state":"2","type":"2"}
 {"code":0,"data":{"code":0,"msg":"修改用户操作成功!"},"message":"修改用户操作成功!"}
 
 -----------------------角色模块-------------------------------------
 //分页查询用户信息带分页 连表
-http://localhost/sysRole/queRoleByCtnPgBn?page=1&rows=10&sysRole={"description":"品牌公司角色","id":1,"name":"品牌公司角色","type":"1"}
+http://localhost/sysRole/queRoleByCtnPgBn?pageNo=1&pageSize=10&sysRole={"description":"品牌公司角色","id":1,"name":"品牌公司角色","type":"1"}
 {"code":0,"data":{"code":0,"sysRoleList":[{"description":"品牌公司角色","id":1,"name":"品牌公司角色","type":"1"}],"msg":"按条件查询角色操作成功!"},"message":"按条件查询角色操作成功!"}
 http://localhost/sysRole/queryAllRole
 {"code":0,"data":{"code":0,"sysRoleList":[{"description":"品牌公司角色","id":1,"name":"品牌公司角色","type":"1"},{"description":"承运商角色（物流公司）","id":2,"name":"承运商角色（物流公司）","type":"1"},{"description":"后台管理员","id":3,"name":"后台管理员","type":"1"}],"msg":"查询所有角色操作成功!"},"message":"查询所有角色操作成功!"}
 http://localhost/sysRole/queryOneById?id=1
 {"code":0,"data":{"code":0,"msg":"根据id查询部门操作成功!","sysRole":{"description":"品牌公司角色","id":1,"name":"品牌公司角色","type":"1"}},"message":"根据id查询部门操作成功!"}
-http://localhost/sysRole/addRole?sysRole={"description":"品牌公司角色","name":"品牌公司角色","type":"1"}
+http://localhost/sysRole/addRole?{"description":"品牌公司角色","name":"品牌公司角色","type":"1"}
 {"code":0,"data":{"code":0,"msg":"添加操作成功!"},"message":"添加操作成功!"}
 http://localhost/sysRole/delRole?id=4
 {"code":0,"data":{"code":0,"msg":"删除操作成功!"},"message":"删除操作成功!"}
-http://localhost/sysRole/updateRole?sysRole={"description":"品牌公司角色1","id":1,"name":"品牌公司角色1","type":"2"}
+http://localhost/sysRole/updateRole?{"description":"品牌公司角色1","id":1,"name":"品牌公司角色1","type":"2"}
 {"code":0,"data":{"code":0,"msg":"修改角色操作成功!"},"message":"修改角色操作成功!"}
 
 ----------------------菜单模块--------------------------------------
-http://localhost/sysMenu/queryAllMenu?page=1&rows=10&sysMenu={"createtime":1470240000000,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1}
+http://localhost/sysMenu/queryAllMenu?pageNo=1&pageSize=10&sysMenu={"createtime":1470240000000,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1}
 {"code":0,"data":{"sysMenuList":[{"createtime":1470240000000,"id":1,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1}],"code":0,"msg":"查询所有菜单操作成功!"},"message":"查询所有菜单操作成功!"}
 http://localhost/sysMenu/queryOneById?id=1
 {"code":0,"data":{"sysMenu":{"createtime":1470240000000,"id":1,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1},"code":0,"msg":"根据id查询菜单操作成功!"},"message":"根据id查询菜单操作成功!"}
-http://localhost/sysMenu/addMenu?sysMenu={"createtime":1470240000000,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1}
+http://localhost/sysMenu/addMenu?{"createtime":1470240000000,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1}
 {"code":0,"data":{"code":0,"msg":"添加菜单操作成功!"},"message":"添加菜单操作成功!"}
 http://localhost/sysMenu/delMenu?id=3
 {"code":0,"data":{"code":0,"msg":"删除操作成功!"},"message":"删除操作成功!"}
-http://localhost/sysMenu/updateMenu?sysMenu={"createtime":1470240000000,"id":1,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1}
+http://localhost/sysMenu/updateMenu?{"createtime":1470240000000,"id":1,"levels":"1","menutype":"1","name":"班线管理","pid":0,"requesturl":"/ws/queryLine","sotid":1}
 {"code":0,"data":{"code":0,"msg":"修改菜单操作成功!"},"message":"修改菜单操作成功!"}
 
 ----------------------部门模块--------------------------------------
-http://localhost/sysDept/queryDeptByCondition?page=1&rows=10&sysDept={"createtime":1470240000000,"deptid":"1","description":"软件外包","id":1,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}
+http://localhost/sysDept/queryDeptByCondition?pageNo=1&pageSize=10&sysDept={"createtime":1470240000000,"deptid":"1","description":"软件外包","id":1,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}
 {"code":0,"data":{"sysDeptList":[{"createtime":1470240000000,"deptid":"1","description":"软件外包","id":1,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"},{"createtime":1470240000000,"deptid":"1","description":"软件外包","id":2,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}],"code":0,"msg":"根据条件查询部门操作成功!"},"message":"根据条件查询部门操作成功!"}
 http://localhost/sysDept/queryAllDept
 {"code":0,"data":{"sysDeptList":[{"createtime":1470240000000,"deptid":"1","description":"软件外包","id":1,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}],"code":0,"msg":"查询所有部门操作成功!"},"message":"查询所有部门操作成功!"}
 http://localhost/sysDept/queryOneById?id=1
 {"code":0,"data":{"sysDept":{"createtime":1470240000000,"deptid":"1","description":"软件外包","id":1,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"},"code":0,"msg":"根据id查询部门操作成功!"},"message":"根据id查询部门操作成功!"}
-http://localhost/sysDept/addDept?sysDept={"createtime":1470240000000,"deptid":"1","description":"软件外包","isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}
+http://localhost/sysDept/addDept?{"createtime":1470240000000,"deptid":"1","description":"软件外包","isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}
 {"code":0,"data":{"code":0,"msg":"添加操作成功!"},"message":"添加操作成功!"}
 http://localhost/sysDept/delDept?id=3
 {"code":0,"data":{"code":0,"msg":"删除部门操作成功!"},"message":"删除部门操作成功!"}
-http://localhost/sysDept/updateDept?sysDept={"createtime":1470240000000,"deptid":"1","description":"软件外包","id":1,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}
+http://localhost/sysDept/updateDept?{"createtime":1470240000000,"deptid":"1","description":"软件外包","id":1,"isenable":"1","levels":"1","name":"外包部","pid":0,"sotid":1,"state":"1"}
 {"code":0,"data":{"code":0,"msg":"修改部门操作成功!"},"message":"修改部门操作成功!"}
 
 --------------------角色菜单关联--------------------
-http://localhost/sysRoleMenu/addRoleMenu?sysRoleMenu={"menuid":2,"roleid":4}
+http://localhost/sysRoleMenu/addRoleMenu?{"menuid":2,"roleid":4}
 {"code":0,"data":{"code":0,"msg":"添加角色菜单操作成功!"},"message":"添加角色菜单操作成功!"}
 http://localhost/sysRoleMenu/delRoleMenu?id=4
 {"code":0,"data":{"code":0,"msg":"删除角色菜单操作成功!"},"message":"删除角色菜单操作成功!"}
 -------------------用户角色关联---------------------
-http://localhost/sysUserRole/addUserRole?sysUserRole={"roleid":2,"userid":2}
+http://localhost/sysUserRole/addUserRole?{"roleid":2,"userid":2}
 {"code":0,"data":{"code":0,"msg":"添加用户角色操作成功!"},"message":"添加用户角色操作成功!"}
 http://localhost/sysUserRole/delUserRole?id=2
 {"code":0,"data":{"code":0,"msg":"删除用户角色操作成功!"},"message":"删除用户角色操作成功!"}
 
 -----------------站点管理--------------------------
-http://localhost/ws/addSite?siteInfo={"address":"四川省成都市双流区天府四街软件园","area":"0","city":"成都","code":"028","createtime":"2016-08-02 17:28:21","deptname":"1919酒类直供","id":0,"isprivate":"私有","name":"天府四街仓库","province":"四川省","types":"标点","updatetime":"2016-08-02 17:28:21"}
+http://localhost/site/selectAllSiteByCtn
+{"code":0,"data":[{"address":"1","area":"1","city":"1","code":"1","createtime":"2016-08-12 15:55:02","deptname":"1","id":1,"isprivate":"1","name":"1","province":"1","types":"1","updatetime":"2016-08-12 15:54:57","wlcompany":1111111111}]}
+http://localhost/site/page?pageNo=1&pageSize=10
+{"code":0,"data":{"pageLast":10,"pageNo":1,"pageSize":10,"result":[{"address":"1","area":"1","city":"1","code":"1","createtime":"2016-08-12 15:55:02","deptname":"1","id":1,"isprivate":"1","name":"1","province":"1","types":"1","updatetime":"2016-08-12 15:54:57","wlcompany":1111111111}]}}
+http://localhost/site/queryOneById?id=1
+{"code":0,"data":{"address":"1","area":"1","city":"1","code":"1","createtime":"2016-08-12 15:55:02","deptname":"1","id":1,"isprivate":"1","name":"1","province":"1","types":"1","updatetime":"2016-08-12 15:54:57","wlcompany":1111111111},"message":"根据id查询站点操作成功!"}
+http://localhost/site/deleteById?ids=1
+{"code":0,"data":1}
+http://localhost/site/addSite?{"address":"四川省成都市双流区天府四街软件园","area":"0","city":"成都","code":"028","createtime":"2016-08-02 17:28:21","deptname":"1919酒类直供","id":0,"isprivate":"私有","name":"天府四街仓库","province":"四川省","types":"标点","updatetime":"2016-08-02 17:28:21"}
+{"code":0,"data":0}
+http://localhost/site/updateSite?{"address":"1","area":"1","city":"1","code":"1","createtime":"2016-08-12 15:55:02","deptname":"1","id":1,"isprivate":"1","name":"1","province":"1","types":"1","updatetime":"2016-08-12 15:54:57","wlcompany":1111111111}
+{"code":0,"data":0}
+
+-----------------订单管理--------------------------
+http://localhost/orders/selectAllOrdersByCtn
+{"code":0,"data":{"ordersList":[{"code":"d23243","createtime":1472052953000,"fromcode":"23432","id":1,"orderfrom":"4"}],"code":0,"msg":"查询所有订单操作成功!"}}
+http://localhost/orders/queryWlcompanysByOrderId
+{"code":0,"data":[555555555]}
+http://localhost/orders/page?pageNo=1&pageSize=10
+{"code":0,"data":{"pageLast":10,"pageNo":1,"pageSize":10,"result":[{"code":"d23243","createtime":1472052953000,"fromcode":"23432","id":1,"orderfrom":"4"},{"amount":2,"code":"d33333","createtime":1471505301000,"deptname":"2","exceptcount":1,"fhaddress":"四川成都","fromcode":"232323","id":2,"orderfrom":"4","requendtime":1471505406000,"requstarttime":1471505403000,"shaddress":"四川成都双流区天府四街仓库","state":"1","subcontractor":"2","unit":"1","volume":30,"weight":30}],"start":0,"totalCount":2}}
+http://localhost/orders/queryOneById?id=1
+{"code":0,"data":{"code":"d23243","createtime":1472052953000,"fromcode":"23432","id":1,"orderfrom":"4"}}
+http://localhost/orders/addOrders?{"code":"d23243","createtime":1472052953000,"fromcode":"23432","id":1,"orderfrom":"4"}
+http://localhost/orders/deleteById?ids=1
+{"code":0,"data":1}
+http://localhost/orders/updateOrders?{"code":"d23243","createtime":1472052953000,"fromcode":"23432","id":1,"orderfrom":"4"}
+{"code":0,"data":1}
+
+-----------------商品管理--------------------------
+http://localhost/cpmd/selectAllCpmdByCtn
+{"code":0,"data":[{"bclass":"1","brgew":"1","bstrf":"1","ean11":"1","gewei":"1","groes":"1","id":1,"maktx":"1","matnr":"1","meins":"1","mhdhb":"1","ntgew":"1","sclass":"1","swor":"1","updatetime":1471509898000,"voleh":"1","volum":"1","zzbrand":"1","zzhydj":"1","zzlsdj":"1","zzmlfs":"1","zzpsms":"1","zzsdbl":"1","zzspbm":"1","zzspsx":"1"}]}
+http://localhost/cpmd/page?pageNo=1&pageSize=10
+{"code":0,"data":{"pageLast":10,"pageNo":1,"pageSize":10,"result":[],"start":0,"totalCount":0}}
+http://localhost/cpmd/queryOneById?id=1
+{"code":0,"data":{"bclass":"1","brgew":"1","bstrf":"1","ean11":"1","gewei":"1","groes":"1","id":1,"maktx":"1","matnr":"1","meins":"1","mhdhb":"1","ntgew":"1","sclass":"1","swor":"1","updatetime":1471509898000,"voleh":"1","volum":"1","zzbrand":"1","zzhydj":"1","zzlsdj":"1","zzmlfs":"1","zzpsms":"1","zzsdbl":"1","zzspbm":"1","zzspsx":"1"}}
+http://localhost/cpmd/addCpmd?{"bclass":"1","brgew":"1","bstrf":"1","ean11":"1","gewei":"1","groes":"1","id":1,"maktx":"1","matnr":"1","meins":"1","mhdhb":"1","ntgew":"1","sclass":"1","swor":"1","updatetime":1471509898000,"voleh":"1","volum":"1","zzbrand":"1","zzhydj":"1","zzlsdj":"1","zzmlfs":"1","zzpsms":"1","zzsdbl":"1","zzspbm":"1","zzspsx":"1"}
+{"code":0,"data":{"updatetime":1471510107707}}
+http://localhost/cpmd/updateCpmd?{"bclass":"1","brgew":"1","bstrf":"1","ean11":"1","gewei":"1","groes":"1","id":1,"maktx":"1","matnr":"1","meins":"1","mhdhb":"1","ntgew":"1","sclass":"1","swor":"1","updatetime":1471509898000,"voleh":"1","volum":"1","zzbrand":"1","zzhydj":"1","zzlsdj":"1","zzmlfs":"1","zzpsms":"1","zzsdbl":"1","zzspbm":"1","zzspsx":"1"}
+{"code":0,"data":1}
+
+
+
+
