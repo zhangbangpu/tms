@@ -1,0 +1,183 @@
+<div class="row">
+	<div class="col col-sm-6 col-xs-12">
+		<a href="#tms/basic/site_list.html" class="btn btn-default" > &lt; <span langlanguage="back">返回</span></a>
+	</div>
+</div>
+<div class="row"><br /></div>
+<div class="well well-light no-padding">
+	<form id="editfrom"  class="smart-form" novalidate="novalidate" >
+		<input type="hidden" name="id"  id="id">
+<!-- 		<input type="hidden" name="lat" id = "lat">
+		<input type="hidden" name="lng" id = "lng">
+		<input type="hidden" name="lnglats" id = "lnglats">
+		<input type="hidden" name="radius" id = "radius">
+		<input type="hidden" name="address" id = "address"> -->
+		<fieldset>
+			<header>基本信息( <span class="txt-color-red font-xs"> 红色为必填项 </span> )</header>
+			<div class="col col-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  txt-color-red">名称</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> 
+							<input type="text" id="name" name="name" placeholder="" class="input-sm">
+						</label>
+					</section>
+				</div>
+            </div>
+            <div class="col col-6" id="main_info">
+				<div class="row">
+					<label class="label col col-4 text-align-right">类型：</label>
+					<section class="col col-8 no-padding">
+						<label class="select"> 
+							<select name="types" id="types" class="input-sm">
+								<option value="1">加油站点</option>
+								<option value="2">装货点</option>
+							</select> <i></i>
+						</label>
+					</section>
+				</div>
+			</div>
+            <div class="clearfix"></div>
+            
+            <div class="col col-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right">编码：</label>
+                    <section class="col col-8 no-padding">
+                        <label class="input">
+                            <input type="text" name="code" id='code' placeholder="" class="input-sm">
+                        </label>
+                    </section>
+                </div>
+            </div>
+            <div class="col col-6" id="info_radius_div">
+                <div class="row">
+                    <label class="label col col-4 text-align-right">范围：</label>
+                    <section class="col col-8 no-padding">
+                        <label class="select" class="input-sm">
+                            <select name="area" onchange="setBound()" id="info_radius">
+                                <option value="500">500米</option>
+                                <option value="1000">1000米</option>
+                                <option value="2000">2000米</option>
+                                <option value="3000">3000米</option>
+                                <option value="4000">4000米</option>
+                                <option value="5000">5000米</option>
+                            </select> <i></i> </label>
+                    </section>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            
+            <!-- <div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right txt-color-red">机构：</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> 
+						<input id="orgname" type="text" name="deptname" class="input-sm">
+						</label> 
+						<input type="hidden" id="orgcode" name="orgcode" value="">
+					</section>
+				</div>
+			</div> -->
+			<div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right  ">省份</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> <input type="text" id="province"
+							name="province" placeholder="" class="input-sm">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right  ">城市</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> <input type="text" id="city"
+							name="city" placeholder="" class="input-sm">
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6" id='color_box'>
+				<div class="row">
+					<label class="label col col-4 text-align-right">颜色：</label>
+					<section class="col col-8 no-padding">
+						<label class="select"> <select name="color" id="color"
+							onchange="updateColor()" class="input-sm">
+								<option value="A90329" class="label bg-color-red pull-right">红色</option>
+								<option value="57889C" class="label bg-color-blue pull-right">蓝色</option>
+								<option value="356E35" class="label bg-color-green pull-right">绿色</option>
+								<option value="C79121" class="label bg-color-orange pull-right">土豪金</option>
+								<option value="AC5287" class="label bg-color-pink pull-right">紫色</option>
+						</select> <i></i>
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right  ">联系人</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> <input type="text"
+							id="contactpeople" name="contactpeople" placeholder=""
+							class="input-sm">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right  ">电话</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> <input type="text" id="contactphone"
+							name="contactphone" placeholder="" class="input-sm">
+						</label>
+					</section>
+				</div>
+			</div>
+
+			<div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right  ">地址</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> <input type="text" id="address"
+							name="address" placeholder="" class="input-sm">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right  ">备注</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> <input type="text" id="message"
+							name="message" placeholder="" class="input-sm">
+						</label>
+					</section>
+				</div>
+			</div>
+			<div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right  "></label> <label>
+						<input type="checkbox" id="privacy"> 设为私有
+					</label>
+				</div>
+			</div>
+            <div class="clearfix"></div>
+		</fieldset>
+		<footer>
+    		<button type="button" class="btn btn-default" onclick="window.history.go(-1)">取消</button>
+    		<button id="btnSubmitNew" type="button" class="btn btn-default"><span></span>保存并新建</button>
+    		<button id="btnSubmit" type="button" class="btn btn-primary">
+    			<span><i class="fa fa-fw fa-save"></i></span>保存
+    		</button>
+		</footer>
+	</form> 
+
+</div>
+
+<script src="tms/basic/js/site_edit.js"></script>

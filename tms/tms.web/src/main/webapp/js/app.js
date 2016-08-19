@@ -127,11 +127,11 @@ $(document).ready(function() {
 	$('#activity').click(function(e) {
 		$this = $(this);
 
-		if ($this.find('.badge').hasClass('bg-color-red')) {
-			$this.find('.badge').removeClassPrefix('bg-color-');
-			$this.find('.badge').text("0");
+//		if ($this.find('.badge').hasClass('bg-color-red')) {
+//			$this.find('.badge').removeClassPrefix('bg-color-');
+//			$this.find('.badge').text("0");
 			// console.log("Ajax call for activity")
-		}
+//		}
 
 		if (!$this.next('.ajax-dropdown').is(':visible')) {
 			$this.next('.ajax-dropdown').fadeIn(150);
