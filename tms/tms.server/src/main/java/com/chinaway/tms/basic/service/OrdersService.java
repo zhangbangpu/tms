@@ -22,7 +22,7 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	List<Orders> selectAllOrdersByCtn(Map<String, Object> argsMap);
 	
 	/**
-	 * 根据订单id查询运单
+	 * 根据订单id查询承运商id
 	 * @param map
 	 * @return
 	 */
@@ -34,5 +34,12 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @return
 	 */
 	public List<Integer> queryWlcompanysByOrderId(Map<String, Object> map);
+
+	/**
+	 * 生成运单
+	 * @param argsMap 
+	 * @return
+	 */
+	public int generateWaybill(Map<String, Object> argsMap);
 	
 }

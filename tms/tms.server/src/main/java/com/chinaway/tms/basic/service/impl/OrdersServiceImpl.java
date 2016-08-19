@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.chinaway.tms.basic.dao.OrdersMapper;
 import com.chinaway.tms.basic.dao.SiteMapper;
+import com.chinaway.tms.basic.dao.VehicleModelMapper;
+import com.chinaway.tms.basic.model.Cpmd;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.Site;
+import com.chinaway.tms.basic.model.VehicleModel;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.core.AbstractService;
 import com.chinaway.tms.core.BaseMapper;
@@ -25,6 +28,9 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 
 	@Autowired
 	private SiteMapper siteMapper;
+	
+	@Autowired
+	private VehicleModelMapper vehicleModelMapper;
 
 	/** 具体子类service的实现需要使用的mapper */
 	@Override
@@ -75,15 +81,21 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		List<Site> siteList = siteMapper.selectAllSiteByCtn(null);
 
 		List<Integer> wlcompanyList = new ArrayList<Integer>();
-
+		Orders retOrder = new Orders();
+        Integer orderId ;
 		for (Orders order : orderList) {
 			for (Site site : siteList) {
 				if (order.getShaddress().indexOf(site.getName()) != -1) {
 					wlcompanyList.add(site.getWlcompany());
+					orderId = order.getId();
+					retOrder.setId(orderId);
+					retOrder.setSubcontractor(String.valueOf(site.getWlcompany()));
 				}
 			}
 		}
-
+		//承运商信息同步到订单表
+		orderMapper.updateSelective(retOrder);
+		
 		return wlcompanyList.get(0);
 	}
 
@@ -105,6 +117,53 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		}
 
 		return wlcompanyList;
+	}
+
+	/**
+	 * 第一次匹配 生成运单
+	 * @return
+	 */
+	@Override
+	public int generateWaybill(Map<String, Object> map){
+		Cpmd cpmd = new Cpmd();
+//		argsMap.put("updatetime", cpmd.getUpdatetime());
+//		List<Cpmd> cpmdList = cpmdService.selectAllCpmdByCtn(argsMap);
+//		for(){
+//			
+//		}
+		int code = 1;
+		Integer waybill = 0;
+		Integer wlcompany = this.queryWlcompanyByOrderId(map);
+		Integer id = Integer.parseInt(String.valueOf(map.get("id")));
+		
+		Orders order = orderMapper.selectById(id);
+		//判断订单能否找到承运商
+		if(null != wlcompany && 0 != wlcompany){
+			//判断能否匹配上车型
+			Map<String, Object> argsMap = new HashMap<String, Object>();
+			argsMap.put("wlcompany", wlcompany);
+			List<VehicleModel> vehicleModelList = vehicleModelMapper.selectAllVehicleModelByCtn(argsMap);
+			for (VehicleModel vehicleModel : vehicleModelList) {
+                //体积匹配不小于20%
+				if((8 < (order.getVolume()/vehicleModel.getVolum())*10) && (order.getVolume()/vehicleModel.getVolum())*10 < 10){
+                	
+                }else{
+                	continue;
+                }
+				
+				//重量匹配不小于20%
+				if((8 < (order.getWeight()/vehicleModel.getWeight())*10) && ((order.getWeight()/vehicleModel.getWeight())*10 < 10)){
+					code = 0;
+					//TODO 生成运单 运单下发
+//					waybill = 
+					break;
+				}else{
+					continue;
+				}
+			}
+		}
+		
+		return code;
 	}
 
 }

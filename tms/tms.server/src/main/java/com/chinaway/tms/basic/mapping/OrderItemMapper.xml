@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.OrderItemMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.OrderItem" >
+		<id column="id" property="id"/>
+		<result column="orderid" property="orderid"/>
+		<result column="goodscode" property="goodscode"/>
+		<result column="goodsname" property="goodsname"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,orderid,goodscode,goodsname
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="orderid != null and orderid != '' ">
+		    and orderid = #{orderid}
+		</if>
+		<if test="goodscode != null and goodscode != '' ">
+		    and goodscode = #{goodscode}
+		</if>
+		<if test="goodsname != null and goodsname != '' ">
+		    and goodsname = #{goodsname}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from order_item where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from order_item
+		<include refid="Example_Where_Clause"/>
+	</select>
+	
+	<!-- 条件查询所有 -->
+	<select id="selectAllOrderItemByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from order_item
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.OrderItem" >
+	  insert into order_item(id,orderid,goodscode,goodsname)
+ values(#{id},#{orderid},#{goodscode},#{goodsname})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.OrderItem" >
+	  update order_item set orderid=#{orderid},goodscode=#{goodscode},goodsname=#{goodsname} where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.OrderItem" >
+		update order_item set 
+	<trim  suffixOverrides="," >
+	<if test="orderid != null  ">
+		orderid=#{orderid},
+	</if>
+	<if test="goodscode != null  ">
+		goodscode=#{goodscode},
+	</if>
+	<if test="goodsname != null  and goodsname != '' ">
+		goodsname=#{goodsname},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.OrderItem" >
+		delete 	 from order_item where id = #{id}
+	</delete>
+  	
+</mapper>

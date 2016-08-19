@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.VehicleModelMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.VehicleModel" >
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="weight" property="weight"/>
+		<result column="volum" property="volum"/>
+		<result column="wlcompany" property="wlcompany"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,name,weight,volum,wlcompany
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+		    and name = #{name}
+		</if>
+		<if test="weight != null and weight != '' ">
+		    and weight = #{weight}
+		</if>
+		<if test="volum != null and volum != '' ">
+		    and volum = #{volum}
+		</if>
+		<if test="wlcompany != null and wlcompany != '' ">
+		    and wlcompany = #{wlcompany}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from vehicle_model where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from vehicle_model
+		<include refid="Example_Where_Clause"/>
+	</select>
+	
+	<!-- 条件查询所有 -->
+	<select id="selectAllVehicleModelByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from vehicle_model
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.VehicleModel" >
+	  insert into vehicle_model(id,name,weight,volum,wlcompany)
+ values(#{id},#{name},#{weight},#{volum},#{wlcompany})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.VehicleModel" >
+	  update vehicle_model set name=#{name},weight=#{weight},volum=#{volum},wlcompany=#{wlcompany} where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.VehicleModel" >
+		update vehicle_model set 
+	<trim  suffixOverrides="," >
+	<if test="name != null  and name != '' ">
+		name=#{name},
+	</if>
+	<if test="weight != null  ">
+		weight=#{weight},
+	</if>
+	<if test="volum != null  ">
+		volum=#{volum},
+	</if>
+	<if test="wlcompany != null  and wlcompany != '' ">
+		wlcompany=#{wlcompany},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.VehicleModel" >
+		delete 	 from vehicle_model where id = #{id}
+	</delete>
+  	
+</mapper>
