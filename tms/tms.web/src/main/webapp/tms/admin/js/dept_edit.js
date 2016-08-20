@@ -65,18 +65,18 @@ if (parms["id"]) {
         updateid = entity['id'];
     }
 } else {
-	var currentUserInfos = $ips.getCurrentUser();
-	if(currentUserInfos.isSuper){
-		 $("#parentid").attr('data-placeholder', '请选择机构');
-	}else{
-        $('#parentid').select2('data', {id : currentUserInfos.organ.orgid, text : currentUserInfos.organ.name});
-        $('#parentid').on('select2-clearing', function () {
-            return false;
-        })
-        
-		$("#parentid").select2('val', currentUserInfos.organ.orgid);
-        $('#authcode-row').hide();
-	}
+//	var currentUserInfos = $ips.getCurrentUser();
+//	if(currentUserInfos.isSuper){
+//		 $("#parentid").attr('data-placeholder', '请选择机构');
+//	}else{
+//        $('#parentid').select2('data', {id : currentUserInfos.organ.orgid, text : currentUserInfos.organ.name});
+//        $('#parentid').on('select2-clearing', function () {
+//            return false;
+//        })
+//        
+//		$("#parentid").select2('val', currentUserInfos.organ.orgid);
+//        $('#authcode-row').hide();
+//	}
 }
 
 //$('#loginLogo').hide();

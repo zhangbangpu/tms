@@ -114,7 +114,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					</button>\
 	                <ul class="dropdown-menu">\
 					   	<li>\
-					   		<a href="#tms/basic/vehicleModel_edit.html?id='+ data +'" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
+					   		<a href="#tms/basic/vehicle_model_edit.html?id='+ data +'" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
 					   	</li>\
 	                   <li class="divider"></li>\
 	                   <li>\

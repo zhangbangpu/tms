@@ -12,6 +12,21 @@ function genSearchParams()
 	return searchParams;
 }
 
+function siteDelete(id) {
+    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
+        if (btn == "确定") {
+            $ips.load("site", "deleteById", "ids=" + id, function(result){
+                if(result.code == 0) {
+            		 $ips.succeed("删除成功。");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error("删除失败！" + result);
+            	 }
+            });
+		}
+    });
+}
+
 //获取选择的id
 function getRowIds(array) {
     var id = '';
@@ -104,7 +119,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					   	</li>\
 	                   <li class="divider"></li>\
 	                   <li>\
-	                   		<a href="javascript:void(0);" onclick="classlinepriceDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
+	                   		<a href="javascript:void(0);" onclick="siteDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
 	                   </li>\
 	                </ul>\
 	            </div>';

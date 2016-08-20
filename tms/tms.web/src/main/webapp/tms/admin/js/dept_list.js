@@ -19,7 +19,7 @@ $("#deleteOrg").click(function(){
 		$ips.confirm("您确定要删除这条记录吗? （将删除该机构所有下属机构、角色和用户，请谨慎操作！）",function(btn) {
 		    if (btn == "确定") {
 				$ips.load("sysDept", "delDept", {'ids':ids}, function(data) {
-					if(data>0){
+					if(data.code == 0){
 						$.smallBox({
 							title : "提示",
 							content : "<i class='fa fa-clock-o'></i> <i>删除成功</i>",
@@ -78,7 +78,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					if(userOrgid != item.id){
 						item.idAction += 
 							'<li class="divider"></li>' +
-					                     '<li><a href="javascript:void(0);"  data-button-resource="169EC2F61F4260BB45F098004E86B3BA" onclick="orgDelete(\'' + item.id + '\')">删除</a></li>';
+					                     '<li><a href="javascript:void(0);"  data-button-resource="169EC2F61F4260BB45F098004E86B3BA" onclick="deptDelete(\'' + item.id + '\')">删除</a></li>';
 					}
 					item.idAction += '</ul></div>';
 				});
@@ -92,11 +92,11 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 //	$ips.locate("sysDept", "updateDept", "id="+id);
 //}
 
-function orgDelete(id) {
+function deptDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?（将删除该机构所有下属机构、角色和用户，请谨慎操作！）",function(btn) {
         if (btn == "确定") {
             $ips.load("sysDept", "delDept", "ids=" + id, function(result){
-                if(result > 0) {
+                if(result.code == 0) {
             		 $ips.succeed("删除成功。");
             		 $('#tblMain').grid("fnDraw");
             	 } else {

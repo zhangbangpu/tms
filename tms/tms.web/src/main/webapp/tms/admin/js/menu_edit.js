@@ -25,10 +25,10 @@ var parms = $ips.getUrlParams();
 if(typeof parms.id != 'undefined' && parms.id != '') {
 	var entity = $ips.load("sysMenu", "queryOneById", "id=" + parms["id"]);
 	if (entity) {
-		if (entity.subsystem) {
+//		if (entity.subsystem) {
 //			renderParentSelect2(entity.subsystem);
-			$("#pid").select2('val', entity.parentid);
-		}
+//			$("#pid").select2('val', entity.parentid);
+//		}
 		$ips.fillFormInput('frmInfo',entity);
 		hideRow(entity.type);
 		//修改标记
@@ -96,7 +96,7 @@ function resourceSave(newed) {
     }
 	
 	var pararm = $("#frmInfo").serializeArray();
-	pararm.push({'name' : 'subsystem', 'value' : $('#subsystem').select2('val')});
+//	pararm.push({'name' : 'subsystem', 'value' : $('#subsystem').select2('val')});
 	pararm.push({'name' : 'type', 'value' : $('#type').select2('val')});
 	pararm.push({'name' : 'target', 'value' : $('#target').select2('val')});
 	pararm.push({'name' : 'requesturl', 'value' : $('#requesturl').select2('val')});
@@ -183,12 +183,12 @@ function hideRow(type) {
 	});
 }
 // 打开方式补全
-$("#target").select2({
-    placeholder: "请选择打开方式",
-    selectOnBlur:true,
-    allowClear: true,
-	data: [{id : '_self', text : '本页'},{'id' : '_blank', text : '新页面'}]
-})
+//$("#target").select2({
+//    placeholder: "请选择打开方式",
+//    selectOnBlur:true,
+//    allowClear: true,
+//	data: [{id : '_self', text : '本页'},{'id' : '_blank', text : '新页面'}]
+//})
 
 //$("#subsystem").on("select2-selected",function () {
 //	renderParentSelect2($('#subsystem').select2('val'));

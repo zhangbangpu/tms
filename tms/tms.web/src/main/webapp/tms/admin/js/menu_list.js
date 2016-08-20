@@ -52,7 +52,7 @@ $("#deleteResource").click(function(){
 		$ips.confirm("您确定要删除这条记录吗?",function(btn) {
 		    if (btn == "确定") {
 				$ips.load("sysMenu", "delMenu", {'ids':ids}, function(data) {
-					if(data>0){
+					if(data.code == 0){
 						$.smallBox({
 							title : "提示",
 							content : "<i class='fa fa-clock-o'></i> <i>删除成功</i>",
@@ -86,7 +86,7 @@ function resourceDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?",function(btn) {
         if (btn == "确定") {
             $ips.load("sysMenu", "delMenu", "ids=" + id, function(result){
-                if(result > 0) {
+                if(result.code == 0) {
             		 $ips.succeed("删除成功。");
             		 $('#tblMain').grid("fnDraw");
             	 } else {
