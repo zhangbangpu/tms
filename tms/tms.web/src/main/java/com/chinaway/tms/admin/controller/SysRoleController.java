@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -206,7 +208,7 @@ public class SysRoleController {
 		SysRole role = new SysRole();
 //		role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		if(null != argsMap.get("id")){
+		if (null != argsMap.get("id") && !StringUtils.isEmpty(String.valueOf(argsMap.get("id")))) {
 			role.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
 		}
 		if(null != argsMap.get("deptid")){

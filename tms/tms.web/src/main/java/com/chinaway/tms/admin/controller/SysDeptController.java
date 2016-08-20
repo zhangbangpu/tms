@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -204,7 +205,7 @@ public class SysDeptController {
 		SysDept dept = new SysDept();
 //		dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		if(null != argsMap.get("id")){
+		if(null != argsMap.get("id") && !StringUtils.isEmpty(String.valueOf(argsMap.get("id")))){
 			dept.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
 		}
 		if(null != argsMap.get("address")){
@@ -352,9 +353,9 @@ public class SysDeptController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return result;
 	}
 	
 	/**
