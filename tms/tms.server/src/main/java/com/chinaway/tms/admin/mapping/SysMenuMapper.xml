@@ -27,7 +27,7 @@
 <!-- 	</sql> -->
 	
 	<sql id="login_Menu_List">
-		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype as type,c.sotid,c.clazz as clazz,c.title as title,c.img as img,c.type,c.subsystem,c.target
+		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype as type,c.clazz as clazz,c.title as title,c.img as img
 	</sql>
 	
 	<!-- 动态查询条件 -->

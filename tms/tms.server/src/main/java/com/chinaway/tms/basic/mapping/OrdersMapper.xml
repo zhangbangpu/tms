@@ -82,6 +82,64 @@
 			</if>
 		</trim>
 	</sql>
+	
+	<!-- 动态查询条件 -->
+	<sql id="mf_Where_Clause">
+		where 1=1
+		<trim suffixOverrides="," >
+			<if test="id != null and id != '' ">
+			    and id = #{id}
+			</if>
+			<if test="code != null and code != '' ">
+			    and code like CONCAT('%',#{code},'%')
+			</if>
+			<if test="fromcode != null and fromcode != '' ">
+			    and fromcode = #{fromcode}
+			</if>
+			<if test="orderfrom != null and orderfrom != '' ">
+			    and orderfrom = #{orderfrom}
+			</if>
+			<if test="createtime != null and createtime != '' ">
+			    and createtime = #{createtime}
+			</if>
+			<if test="deptname != null and deptname != '' ">
+			    and deptname = #{deptname}
+			</if>
+			<if test="subcontractor != null and subcontractor != '' ">
+			    and subcontractor = #{subcontractor}
+			</if>
+			<if test="amount != null and amount != '' ">
+			    and amount = #{amount}
+			</if>
+			<if test="unit != null and unit != '' ">
+			    and unit = #{unit}
+			</if>
+			<if test="weight != null and weight != '' ">
+			    and weight = #{weight}
+			</if>
+			<if test="volume != null and volume != '' ">
+			    and volume = #{volume}
+			</if>
+			<if test="fhaddress != null and fhaddress != '' ">
+			    and fhaddress = #{fhaddress}
+			</if>
+			<if test="shaddress != null and shaddress != '' ">
+			    and shaddress = #{shaddress}
+			</if>
+			<if test="requstarttime != null and requstarttime != '' ">
+			    and requstarttime = #{requstarttime}
+			</if>
+			<if test="requendtime != null and requendtime != '' ">
+			    and requendtime = #{requendtime}
+			</if>
+			<if test="state != null and state != '' ">
+			    and state = #{state}
+			</if>
+			<if test="exceptcount != null and exceptcount != '' ">
+			    and exceptcount = #{exceptcount}
+			</if>
+		</trim>
+	</sql>
  
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -99,7 +157,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from orders
-		<include refid="Example_Where_Clause"/>
+		<include refid="mf_Where_Clause"/>
 	</select>
 	
 	<!-- 条件查询所有-->

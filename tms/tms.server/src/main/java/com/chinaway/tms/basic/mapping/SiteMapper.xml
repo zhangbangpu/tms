@@ -66,6 +66,52 @@
 			</if>
 		</trim>
 	</sql>
+	
+	<!-- 动态查询条件 -->
+	<sql id="mf_Where_Clause">
+		where 1=1
+		<trim suffixOverrides="," >
+			<if test="id != null and id != '' ">
+			    and id = #{id}
+			</if>
+			<if test="name != null and name != '' ">
+			    and name like CONCAT('%',#{name},'%')
+			</if>
+			<if test="code != null and code != '' ">
+			    and code = #{code}
+			</if>
+			<if test="area != null and area != '' ">
+			    and area = #{area}
+			</if>
+			<if test="deptname != null and deptname != '' ">
+			    and deptname = #{deptname}
+			</if>
+			<if test="types != null and types != '' ">
+			    and types = #{types}
+			</if>
+			<if test="isprivate != null and isprivate != '' ">
+			    and isprivate = #{isprivate}
+			</if>
+			<if test="updatetime != null and updatetime != '' ">
+			    and updatetime = #{updatetime}
+			</if>
+			<if test="province != null and province != '' ">
+			    and province = #{province}
+			</if>
+			<if test="city != null and city != '' ">
+			    and city = #{city}
+			</if>
+			<if test="address != null and address != '' ">
+			    and address = #{address}
+			</if>
+			<if test="createtime != null and createtime != '' ">
+			    and createtime = #{createtime}
+			</if>
+			<if test="wlcompany != null and wlcompany != '' ">
+			    and wlcompany = #{wlcompany}
+			</if>
+		</trim>
+	</sql>
  
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -78,7 +124,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from site
-		<include refid="Example_Where_Clause"/>
+		<include refid="mf_Where_Clause"/>
 	</select>
 	
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
@@ -86,7 +132,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from site
-		<include refid="Example_Where_Clause" />
+		<include refid="mf_Where_Clause" />
 	</select>
 	
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->

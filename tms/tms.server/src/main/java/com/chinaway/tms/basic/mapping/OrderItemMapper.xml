@@ -31,6 +31,25 @@
 	
 	</trim>
 	</sql>
+	
+		<!-- 动态查询条件 -->
+	<sql id="mf_Where_Clause">
+		where 1=1
+		<trim suffixOverrides="," >
+			<if test="id != null and id != '' ">
+			    and id = #{id}
+			</if>
+			<if test="orderid != null and orderid != '' ">
+			    and orderid like CONCAT('%',#{orderid},'%')
+			</if>
+			<if test="goodscode != null and goodscode != '' ">
+			    and goodscode = #{goodscode}
+			</if>
+			<if test="goodsname != null and goodsname != '' ">
+			    and goodsname = #{goodsname}
+			</if>
+		</trim>
+	</sql>
  
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -51,7 +70,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from order_item
-		<include refid="Example_Where_Clause"/>
+		<include refid="mf_Where_Clause"/>
 	</select>
    
 	<!-- 插入记录 -->
