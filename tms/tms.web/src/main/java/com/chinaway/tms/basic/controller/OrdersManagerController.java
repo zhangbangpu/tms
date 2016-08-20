@@ -4,16 +4,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.chinaway.tms.admin.controller.LoginController;
-import com.chinaway.tms.basic.model.Cpmd;
 import com.chinaway.tms.basic.model.Orders;
-import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
@@ -25,9 +26,6 @@ public class OrdersManagerController {
 	
 	@Autowired
 	private OrdersService ordersService;
-	
-	@Autowired
-	private CpmdService cpmdService;
 	
 	/**
 	 * 根据条件查询所有订单信息<br>

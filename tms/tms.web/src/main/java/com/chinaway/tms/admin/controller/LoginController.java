@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,14 +97,25 @@ public class LoginController {
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		argsMap.put("id", sysUser.getId());
-		
-//		SysUser retSysUser = sysUserService.queOneUserByCtn(argsMap);
-		//连表查询角色信息
-//		List<SysMenu> sysMenuList = (List<SysMenu>)request.getSession().getAttribute("sysMenuList");
-//		SysUser sysUser = (SysUser)request.getSession().getAttribute("sysUser");
-		SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
-		List<Map<String, Object>> sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
-		Result result = new Result(0, sysMenuMap, "success");
+
+		int code = 1;
+		String msg = "获取菜单异常!";
+		List<Map<String, Object>> sysMenuMap = new ArrayList<Map<String, Object>>();
+		try {
+			SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
+			sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
+			if (null != sysMenuMap) {
+				code = 0;
+				msg = "获取菜单成功!";
+			} else {
+				code = 1;
+				msg = "获取菜单不正确!";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Result result = new Result(code, sysMenuMap, msg);
 		return result;
 	}
 	
@@ -118,7 +130,7 @@ public class LoginController {
 	@ResponseBody
 	public Result logout(HttpServletRequest request) {
 		if (!checkLogin(request)) {
-			return new Result(0, "");
+			return new Result(2, "");
 		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
