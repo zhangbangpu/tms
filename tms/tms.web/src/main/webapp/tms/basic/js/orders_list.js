@@ -12,6 +12,21 @@ function genSearchParams()
 	return searchParams;
 }
 
+function ordersDelete(id) {
+    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
+        if (btn == "确定") {
+            $ips.load("orders", "delOrders", "ids=" + id, function(result){
+                if(result > 0) {
+            		 $ips.succeed("删除成功。");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error("删除失败！" + result);
+            	 }
+            });
+		}
+    });
+}
+
 //获取选择的id
 function getRowIds(array) {
     var id = '';
@@ -99,12 +114,8 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 						<i class="fa fa-caret-down"></i>\
 					</button>\
 	                <ul class="dropdown-menu">\
-					   	<li>\
-					   		<a href="#tms/basic/orders_edit.html?id='+ data +'" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
-					   	</li>\
-	                   <li class="divider"></li>\
 	                   <li>\
-	                   		<a href="javascript:void(0);" onclick="classlinepriceDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
+	                   		<a href="javascript:void(0);" onclick="ordersDelete(\'' + data.id + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
 	                   </li>\
 	                </ul>\
 	            </div>';

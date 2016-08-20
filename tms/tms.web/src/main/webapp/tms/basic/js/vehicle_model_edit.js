@@ -95,7 +95,7 @@ function classlinepriceSave(newed) {
 			if (newed) { //继续标注
 				$('#editfrom')[0].reset();
 			} else{
-				$ips.locate("tms/basic","vehicleModel_list");
+				$ips.locate("tms/basic","vehicle_model_list");
 			}
 		}else {
 			$ips.error("保存站点表失败。" + result);

@@ -41,6 +41,20 @@ function getRowIds(array) {
 //	}
 //}
 
+function vehicleModelDelete(id) {
+    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
+        if (btn == "确定") {
+            $ips.load("vehicleModel", "deleteById", "ids=" + id, function(result){
+                if(result > 0) {
+            		 $ips.succeed("删除成功。");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error("删除失败！" + result);
+            	 }
+            });
+		}
+    });
+}
 
 $("#deletebtn").click(function(){
 	
@@ -104,7 +118,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					   	</li>\
 	                   <li class="divider"></li>\
 	                   <li>\
-	                   		<a href="javascript:void(0);" onclick="classlinepriceDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
+	                   		<a href="javascript:void(0);" onclick="vehicleModelDelete(\'' + data.id + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
 	                   </li>\
 	                </ul>\
 	            </div>';
