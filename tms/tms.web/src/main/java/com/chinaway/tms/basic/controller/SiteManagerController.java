@@ -185,9 +185,9 @@ public class SiteManagerController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return result;
 	}
 	
 	/**

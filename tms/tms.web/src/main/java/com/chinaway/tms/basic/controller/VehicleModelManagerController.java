@@ -195,9 +195,9 @@ public class VehicleModelManagerController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, code);
+		return result;
 	}
 	
 	/**

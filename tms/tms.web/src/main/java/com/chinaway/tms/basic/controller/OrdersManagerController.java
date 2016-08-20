@@ -236,7 +236,7 @@ public class OrdersManagerController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "批量删除操作失败!";
+		String msg = "删除操作失败!";
 
 		int ret = 0;
 		try {
@@ -244,7 +244,7 @@ public class OrdersManagerController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "批量删除操作成功!";
+				msg = "删除操作成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -252,9 +252,9 @@ public class OrdersManagerController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return result;
 	}
 	
 	/**
