@@ -80,6 +80,52 @@ $("#deletebtn").click(function(){
     });
 });
 
+$("#reviewedbtn").click(function(){
+	
+	var ids = getRowIds(true);
+	if(ids.length != 1) {
+		ids.length>1?$ips.error("只能审核一条！"):$ips.error("未选择记录！");
+        return;
+    }
+	
+	$ips.confirm("您确定要审核选中的记录吗?",function(btn) {
+		if (btn == "确定") {
+			$ips.load("tckNumRvwed", "updateTckNumRvwed", {id : parseInt(ids),state : 1} , function(result){
+				console.log(result.code == 0);
+				if(result.code == 0) {
+					$ips.succeed("审核成功。");
+					$('#tblMain').grid("fnDraw");
+				} else {
+					$ips.error("审核失败！" + result);
+				}
+			});
+		}
+	});
+});
+
+$("#auditDismissedbtn").click(function(){
+	
+	var ids = getRowIds(true);
+	if(ids.length != 1) {
+		ids.length>1?$ips.error("只能审核一条！"):$ips.error("未选择记录！");
+        return;
+    }
+	
+	$ips.confirm("您确定要审核选中的记录吗?",function(btn) {
+		if (btn == "确定") {
+			$ips.load("tckNumRvwed", "updateTckNumRvwed", {id : parseInt(ids),state : -1}, function(result){
+				console.log(result.code == 0);
+				if(result.code == 0) {
+					$ips.succeed("审核成功。");
+					$('#tblMain').grid("fnDraw");
+				} else {
+					$ips.error("审核失败！" + result);
+				}
+			});
+		}
+	});
+});
+
 
 // 表格控件
 loadScript('js/hui/jquery.hui.grid.js', function () {
@@ -130,22 +176,6 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
                 {sTitle: "货品总数量", sName: "amount"},
                 {sTitle: "货品总重量", sName: "weight"},
                 {sTitle: "货品总体积", sName: "volume"},
-                /*{sTitle: "状态", sName: "status", 
-                	mRender:function(data, type, full){
-//                        		console.log(full[4]);
-                		var dateStr = full[5].replace(/-/g,"/");
-                		var update_date = new Date(dateStr);
-                		var new_date = new Date();
-                		var num = (new_date-update_date)/1000/60;//单位是毫秒
-//                        		console.log("num:"+num);
-//                        		console.log(typeof num);
-                		if(data == 0 || num>3){
-                			return "<span style='background-color:red;'>关闭</span>";
-                		}else if(data == 1){
-                			return "连接";
-                		}
-                	}
-                },*/
 			]
 		,
 		"fnServerData" : function(sSource, aoData, fnCallback) {

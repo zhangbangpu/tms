@@ -25,7 +25,7 @@ public class TckNumRvwedManagerController {
 	private WaybillService waybillService;
 	
 	/**
-	 * 根据条件查询所有站点信息<br>
+	 * 根据条件查询所有车次审核信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param deptInfo
@@ -62,7 +62,7 @@ public class TckNumRvwedManagerController {
 	}
 	
 	/**
-	 * 根据条件查询站点信息<br>
+	 * 根据条件查询车次审核信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param deptInfo
@@ -73,6 +73,7 @@ public class TckNumRvwedManagerController {
 	public Result selectTckNumRvwed2PageBean(HttpServletRequest request) {
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		argsMap.put("state", "0");
 		PageBean<Waybill> pageBean = waybillService.select2PageBean(argsMap);
 		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
 		//return JsonUtil.obj2JsonStr(resultJson);
@@ -80,7 +81,7 @@ public class TckNumRvwedManagerController {
 	}
 	
 	/**
-	 * 根据条件查询单个站点信息<br>
+	 * 根据条件查询单个车次审核信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param deptInfo
@@ -113,7 +114,7 @@ public class TckNumRvwedManagerController {
 	}
 	
 	/**
-	 * 添加站点信息<br>
+	 * 添加车次审核信息<br>
 	 * 返回站点的json串
 	 * @param username
 	 * @param password
@@ -153,7 +154,7 @@ public class TckNumRvwedManagerController {
 	
 	
 	/**
-	 * 删除部门信息<br>
+	 * 删除车次审核信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param userInfo
@@ -187,7 +188,7 @@ public class TckNumRvwedManagerController {
 	}
 	
 	/**
-	 * 修改站点信息<br>
+	 * 修改车次审核信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param userInfo
@@ -206,7 +207,7 @@ public class TckNumRvwedManagerController {
 
 		int ret = 0;
 		try {
-			ret = waybillService.update(waybill);
+			ret = waybillService.updateWaybill(waybill);
 
 			if (ret > 0) {
 				code = 0;
@@ -218,9 +219,9 @@ public class TckNumRvwedManagerController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return result;
 	}
 	
 }

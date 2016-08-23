@@ -39,7 +39,7 @@ $(function() {
 	//判断用户是否登陆
 	$ips.load('login', 'isLogin', null, function(result) {
 		if (result.code != 0) {
-				window.location.href = 'login.html';
+			window.location.href = 'login.html';
 		}
 	});
 	
@@ -48,28 +48,27 @@ $(function() {
 
 // 登出
 $('#logoutButton').click(function() {
-	if(window.confirm('你确定要退出登录吗？')){
-//		$.loginURL = $(this).attr('href');
-		$ips.load('login', 'logout', '{"username":"huitongwuliu1","password":"1234"}', function(result) {
-	    	console.log(result);
-	    	console.log(typeof result);
-	        if (result.code == 0) {
-	        	window.location.href="login.html";
-//	        	window.location.href="/jsp/login.jsp";
-	        } else {
-	            $('.padding-top-10:first').animate({right: '10px'},80);
-	            $('.padding-top-10:first').animate({right: ''},80);
-	            $('.padding-top-10:first').animate({left: '10px'},80);
-	            $('.padding-top-10:first').animate({left: ''},80);
-	            $('.padding-top-10:first').removeAttr('style');
-	            $ips.error(result.message);
-	        }
-	    });
-        return true;
-     }else{
-        //alert("取消");
-        return false;
-    }
+	$ips.confirm('你确定要退出登录吗？',function(btn) {
+        if (btn == "确定") {
+        	$ips.load('login', 'logout', '{"username":"huitongwuliu1","password":"1234"}', function(result) {
+    	    	console.log(result);
+    	    	console.log(typeof result);
+    	        if (result.code == 0) {
+    	        	window.location.href="login.html";
+    	        } else {
+    	            $('.padding-top-10:first').animate({right: '10px'},80);
+    	            $('.padding-top-10:first').animate({right: ''},80);
+    	            $('.padding-top-10:first').animate({left: '10px'},80);
+    	            $('.padding-top-10:first').animate({left: ''},80);
+    	            $('.padding-top-10:first').removeAttr('style');
+    	            $ips.error(result.message);
+    	        }
+    	    });
+		}else{
+	        //alert("取消");
+	        return false;
+	    }
+    });
     
     return false;
 });

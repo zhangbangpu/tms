@@ -181,11 +181,17 @@ public class LoginController {
 	@RequestMapping(value = "/isLogin")
 	@ResponseBody
 	public Result isLogin(HttpServletRequest request) {
-		if (!checkLogin(request)) {
-			return new Result(2, "");
+		int code = 1;
+		String msg = "登录校验异常!";
+		if (checkLogin(request)) {
+			code = 0;
+			msg = "用户未登录!";
 		}
-		
-		return new Result(0, "");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(0, resultMap, msg);
+		return result;
 	}
 	
 	/**

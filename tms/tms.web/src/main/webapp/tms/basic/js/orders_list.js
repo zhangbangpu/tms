@@ -122,34 +122,46 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 				}
             },
                 {sTitle: "订单号", sName: "code"},
-                {sTitle: "订单类型", sName: "type"},
+//                {sTitle: "订单类型", sName: "type"},
+				{
+					sTitle : "订单类型",
+					sName : "state",
+					mRender : function(data, type, full) {
+						if (data == 0) {
+							return "初始";
+						} else if (data == 1) {
+							return "已生成运单";
+						} else if (data == 2) {
+							return "订单已下发";
+						} else if (data == 3) {
+							return "订单在途";
+						} else
+							(data == 4)
+						{
+							return "已签收";
+						}
+					}
+				},
                 {sTitle: "城市", sName: "city"},
                 {sTitle: "发货地址", sName: "fhaddress"},
                 {sTitle: "收货地址", sName: "shaddress"},
                 {sTitle: "收货地址", sName: "shaddress"},
-                {sTitle: "订单状态", sName: "status"},
+//                {sTitle: "订单状态", sName: "status"},
+                {sTitle: "订单状态", sName: "status", 
+                	mRender:function(data, type, full){
+                		if(data == 0){
+                			return "自动";
+                		}else if(data == 1){
+                			return "手动";
+                		}
+                	}
+                },
                 {sTitle: "承运商", sName: "subcontractor"},
                 {sTitle: "货品名称", sName: "cpmdName"},
                 {sTitle: "货品数量", sName: "amount"},
                 {sTitle: "货品重量", sName: "weight"},
                 {sTitle: "货品体积", sName: "volume"},
                 {sTitle: "异常事件数", sName: "exceptcount"},
-                /*{sTitle: "状态", sName: "status", 
-                	mRender:function(data, type, full){
-//                        		console.log(full[4]);
-                		var dateStr = full[5].replace(/-/g,"/");
-                		var update_date = new Date(dateStr);
-                		var new_date = new Date();
-                		var num = (new_date-update_date)/1000/60;//单位是毫秒
-//                        		console.log("num:"+num);
-//                        		console.log(typeof num);
-                		if(data == 0 || num>3){
-                			return "<span style='background-color:red;'>关闭</span>";
-                		}else if(data == 1){
-                			return "连接";
-                		}
-                	}
-                },*/
 			]
 		,
 		"fnServerData" : function(sSource, aoData, fnCallback) {

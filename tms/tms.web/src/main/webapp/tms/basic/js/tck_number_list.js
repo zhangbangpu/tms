@@ -124,7 +124,20 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
             {sTitle: "车次编号", sName: "code"},
             {sTitle: "创建时间", sName: "createtime"},
             {sTitle: "车次类型", sName: "orderfrom"},
-            {sTitle: "任务状态", sName: "status"},
+//            {sTitle: "任务状态", sName: "state"},
+            {sTitle: "状态", sName: "state", 
+            	mRender:function(data, type, full){
+            		if(data == -1){
+            			return "审核不通过";
+            		}else if(data == 0){
+            			return "初始";
+            		}else if(data == 0){
+            			return "审核通过";
+            		}else{
+            			return "运单在途";
+            		}
+            	}
+            },
             {sTitle: "承运商", sName: "subcontractor"},
             {sTitle: "出发地", sName: "fhaddress"},
             {sTitle: "到达地", sName: "shaddress"},
@@ -132,22 +145,6 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
             {sTitle: "货品总重量", sName: "weight"},
             {sTitle: "货品总体积", sName: "volume"},
             {sTitle: "异常事件数", sName: "exceptcount"},
-                /*{sTitle: "状态", sName: "status", 
-                	mRender:function(data, type, full){
-//                        		console.log(full[4]);
-                		var dateStr = full[5].replace(/-/g,"/");
-                		var update_date = new Date(dateStr);
-                		var new_date = new Date();
-                		var num = (new_date-update_date)/1000/60;//单位是毫秒
-//                        		console.log("num:"+num);
-//                        		console.log(typeof num);
-                		if(data == 0 || num>3){
-                			return "<span style='background-color:red;'>关闭</span>";
-                		}else if(data == 1){
-                			return "连接";
-                		}
-                	}
-                },*/
 			]
 		,
 		"fnServerData" : function(sSource, aoData, fnCallback) {

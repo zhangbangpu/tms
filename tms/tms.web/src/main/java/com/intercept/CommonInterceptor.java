@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import com.chinaway.tms.utils.RequestUtil;
-import com.mysql.fabric.Response;
 
 public class CommonInterceptor implements HandlerInterceptor {  
 	private final Logger log = LoggerFactory.getLogger(CommonInterceptor.class);  

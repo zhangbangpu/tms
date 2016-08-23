@@ -37,33 +37,33 @@ public class OrdersManagerController {
 	@RequestMapping(value = "/selectAllOrdersByCtn")
 	@ResponseBody
 	public Result selectAllOrdersByCtn(HttpServletRequest request) {
-//		Map<String, Object> resultMap = new HashMap<>();
-//		int code = 1;
-//		String msg = "查询所有订单操作失败!";
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有订单操作失败!";
 		Map<String, Object> argsMap = new HashMap<String, Object>();
-//		int ret = 0;
-//		try {
+		int ret = 0;
+		try {
 			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(argsMap);
-//			if(null != ordersList){
-//				ret = ordersList.size();
-//			}
+			if(null != ordersList){
+				ret = ordersList.size();
+			}
 			
-//			if (ret > 0) {
-//				code = 0;
-//				msg = "查询所有订单操作成功!";
-//				resultMap.put("ordersList", ordersList);
-//			}
-//			
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
-//		
-//		resultMap.put("code", code);
-//		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有订单操作成功!";
+				resultMap.put("ordersList", ordersList);
+			}
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
 		
-//		return JsonUtil.obj2JsonStr(result);
-		return new Result(0, ordersList);
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+		
+		return result;
+//		return new Result(0, ordersList);
 	}
 	
 	/**
@@ -116,6 +116,7 @@ public class OrdersManagerController {
 	@ResponseBody
 	public Result selectOrders2PageBean(HttpServletRequest request) {
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		//查询订单状态为自动的
 		PageBean<Orders> pageBean = ordersService.select2PageBean(argsMap);
 		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
 		//return JsonUtil.obj2JsonStr(resultJson);
@@ -157,7 +158,7 @@ public class OrdersManagerController {
 	}
 	
 	/**
-	 * 添加订单信息<br>
+	 * 生成运单<br>
 	 * 返回订单的json串
 	 * @param username
 	 * @param password
