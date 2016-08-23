@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
 	<!--要调用的工作 -->
-	<!-- <bean id="myJob" class="com.shupro.oa.quartz.MyJob"></bean> -->
+	<bean id="myJob" class="com.chinaway.tms.quartz.AutoGenerateWaybill"></bean>
 	
 	<!--定义调用对象和调用对象的方法-->
 	<bean id="myDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
