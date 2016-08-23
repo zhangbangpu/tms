@@ -150,7 +150,6 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
                 		}
                 	}
                 },*/
-                {sTitle: "更新时间", sName: "updatetime"}
 			]
 		,
 		"fnServerData" : function(sSource, aoData, fnCallback) {

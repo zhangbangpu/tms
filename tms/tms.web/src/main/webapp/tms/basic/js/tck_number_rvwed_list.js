@@ -12,6 +12,21 @@ function genSearchParams()
 	return searchParams;
 }
 
+function tckNumRvwedDelete(id) {
+    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
+        if (btn == "确定") {
+            $ips.load("tckNumRvwed", "deleteById", "ids=" + id, function(result){
+                if(result.code == 0) {
+            		 $ips.succeed("删除成功。");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error("删除失败！" + result);
+            	 }
+            });
+		}
+    });
+}
+
 //获取选择的id
 function getRowIds(array) {
     var id = '';
@@ -41,20 +56,6 @@ function getRowIds(array) {
 //	}
 //}
 
-function vehicleModelDelete(id) {
-    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
-        if (btn == "确定") {
-            $ips.load("vehicleModel", "deleteById", "ids=" + id, function(result){
-                if(result > 0) {
-            		 $ips.succeed("删除成功。");
-            		 $('#tblMain').grid("fnDraw");
-            	 } else {
-            		 $ips.error("删除失败！" + result);
-            	 }
-            });
-		}
-    });
-}
 
 $("#deletebtn").click(function(){
 	
@@ -66,7 +67,7 @@ $("#deletebtn").click(function(){
 	
     $ips.confirm("您确定要删除选中的记录吗?",function(btn) {
         if (btn == "确定") {
-            $ips.load("vehicleModel", "deleteById", "ids=" + ids, function(result){
+            $ips.load("tckNumRvwed", "deleteById", "ids=" + ids, function(result){
             	console.log(result.code == 0);
                 if(result.code == 0) {
             		 $ips.succeed("删除成功。");
@@ -113,21 +114,22 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 						<i class="fa fa-caret-down"></i>\
 					</button>\
 	                <ul class="dropdown-menu">\
-					   	<li>\
-					   		<a href="#tms/basic/vehicle_model_edit.html?id='+ data +'" data-button-resource="E28F31186ECDC04FCCBAE9641AF17B33">编辑</a>\
-					   	</li>\
-	                   <li class="divider"></li>\
 	                   <li>\
-	                   		<a href="javascript:void(0);" onclick="vehicleModelDelete(\'' + data.id + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
+	                   		<a href="javascript:void(0);" onclick="tckNumRvwedDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
 	                   </li>\
 	                </ul>\
 	            </div>';
 				}
             },
-                {sTitle: "车型名称", sName: "name"},
-                {sTitle: "额度重量", sName: "weight"},
-                {sTitle: "额度体积", sName: "volum"},
-                {sTitle: "承运商id", sName: "wlcompany"},
+                {sTitle: "车次编号", sName: "code"},
+                {sTitle: "创建时间", sName: "createtime"},
+                {sTitle: "车次类型", sName: "orderfrom"},
+                {sTitle: "承运商", sName: "subcontractor"},
+                {sTitle: "出发地", sName: "fhaddress"},
+                {sTitle: "到达地", sName: "shaddress"},
+                {sTitle: "货品总数量", sName: "amount"},
+                {sTitle: "货品总重量", sName: "weight"},
+                {sTitle: "货品总体积", sName: "volume"},
                 /*{sTitle: "状态", sName: "status", 
                 	mRender:function(data, type, full){
 //                        		console.log(full[4]);
@@ -148,7 +150,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		,
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			 searchParams = genSearchParams();
-			$ips.gridLoadData(sSource, aoData, fnCallback, "vehicleModel", "page", searchParams, function(data) {
+			$ips.gridLoadData(sSource, aoData, fnCallback, "tckNumRvwed", "page", searchParams, function(data) {
 				console.log(typeof data);
 				console.log(data);
 				var dataArray = new Array();
