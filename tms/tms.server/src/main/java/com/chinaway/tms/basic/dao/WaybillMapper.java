@@ -21,5 +21,11 @@ public interface WaybillMapper extends BaseMapper<Waybill, Integer> {
 	 * @return
 	 */
 	List<Waybill> selectAllTckNumRvwedByCtn(Map<String, Object> argsMap);
+
+	/**
+	 * 查询最后一条数据id
+	 * @return
+	 */
+	int selectMaxId();
 	
 }

@@ -21,11 +21,10 @@
 		<result column="exceptcount" property="exceptcount"/>
 		<result column="c_weight" property="c_weight"/>
 		<result column="c_volume" property="c_volume"/>
-		<result column="status" property="status"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
-		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume,status
+		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume
 	</sql>
    
 	<!-- 动态查询条件 -->
@@ -88,9 +87,6 @@
 		</if>
 		<if test="c_volume != null and c_volume != '' ">
 		    and c_volume = #{c_volume}
-		</if>
-		<if test="status != null and status != '' ">
-		    and status = #{status}
 		</if>
 	
 	</trim>
@@ -157,9 +153,6 @@
 		<if test="c_volume != null and c_volume != '' ">
 		    and c_volume = #{c_volume}
 		</if>
-		<if test="status != null and status != '' ">
-		    and status = #{status}
-		</if>
 	
 	</trim>
 	</sql>
@@ -192,6 +185,11 @@
 		<include refid="Base_Column_List" />
 		from waybill
 		<include refid="Example_Where_Clause"/>
+	</select>
+	
+	<!-- 查询max id  -->
+	<select id="selectMaxId"  resultType="java.lang.Integer" >
+		select max(id) from waybill 
 	</select>
    
 	<!-- 插入记录 -->

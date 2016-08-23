@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.chinaway.tms.basic.dao.WaybillMapper;
+import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.Waybill;
+import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.core.AbstractService;
 import com.chinaway.tms.core.BaseMapper;
@@ -19,6 +22,9 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	
 	@Autowired
 	private WaybillMapper waybillMapper;
+	
+	@Autowired
+	private OrdersService ordersService;
 	
 	/**具体子类service的实现需要使用的mapper*/
 	@Override
@@ -63,5 +69,57 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		}
 	}
 
+	@Override
+	public int insertWaybill(Waybill waybill) {
+		// TODO 添加运单信息 初始化状态
+		return waybillMapper.insert(waybill);
+	}
+
+	@Override
+	public int updateWaybill(Waybill waybill) {
+		int retCode = waybillMapper.updateSelective(waybill);
+		Map<String, Object> map = new HashMap<String, Object>();
+		int retOrders = 0;
+		String ordersState = "0";
+		String ordersStatus = "0";
+		// 运单审核通过1，订单阶段修改为 2订单已下发  订单状态改为 0 自动
+		if ("1".equals(waybill.getState())) {
+			ordersState = "2";
+		}else if("-1".equals(waybill.getState())){
+			// 运单审核不通过1，订单阶段修改为 0初始  订单状态改为 1手动
+			ordersState = "0";
+			ordersStatus = "1";
+		}else if("2".equals(waybill.getState())){
+			// 运单在途，订单阶段修改为 3订单在途
+			ordersStatus = "3";
+		}else if("3".equals(waybill.getState())){
+			//运单3已完成 修改订单状态为0 手动
+			ordersStatus = "1";
+		}
+		
+		waybill = waybillMapper.selectById(waybill.getId());
+		map.put("waybillId", waybill.getId());
+		List<Orders> ordersList = ordersService.selectAllOrdersByCtn(map);
+		for (Orders orders : ordersList) {
+			// 订单状态设置为自动
+			orders.setStatus(ordersStatus);
+			// 订单阶段设置为订单已下发
+			orders.setState(ordersState);
+			retOrders = ordersService.updateSelective(orders);
+		}
+
+		if (retCode > 0 && retOrders > 0) {
+			// 返回成功标记
+			return 1;
+		} else {
+			// 返回失败标记
+			return -1;
+		}
+	}
+
+	@Override
+	public int selectMaxId() {
+		return waybillMapper.selectMaxId();
+	}
 
 }
