@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.OrdersWaybillMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.OrdersWaybill" >
+		<id column="id" property="id"/>
+		<result column="ordersid" property="ordersid"/>
+		<result column="waybillid" property="waybillid"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,ordersid,waybillid
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="ordersid != null and ordersid != '' ">
+		    and ordersid = #{ordersid}
+		</if>
+		<if test="waybillid != null and waybillid != '' ">
+		    and waybillid = #{waybillid}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from orders_waybill where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from orders_waybill
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.OrdersWaybill" >
+	  insert into orders_waybill(id,ordersid,waybillid)
+ values(#{id},#{ordersid},#{waybillid})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.OrdersWaybill" >
+	  update orders_waybill set ordersid=#{ordersid},waybillid=#{waybillid} where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.OrdersWaybill" >
+		update orders_waybill set 
+	<trim  suffixOverrides="," >
+	<if test="ordersid != null  ">
+		ordersid=#{ordersid},
+	</if>
+	<if test="waybillid != null  ">
+		waybillid=#{waybillid},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.OrdersWaybill" >
+		delete 	 from orders_waybill where id = #{id}
+	</delete>
+  	
+</mapper>
