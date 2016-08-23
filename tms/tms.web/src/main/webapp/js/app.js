@@ -229,14 +229,14 @@ $(document).ready(function() {
 	// LOGOUT BUTTON
 	$('#logout a').click(function(e) {
 		//get the link
-		if(window.confirm('你确定要退出登录吗？')){
-			$.loginURL = $(this).attr('href');
-            //alert("确定");
-            return true;
-         }else{
-            //alert("取消");
-            return false;
-        }
+//		if(window.confirm('你确定要退出登录吗？')){
+//			$.loginURL = $(this).attr('href');
+//            //alert("确定");
+//            return true;
+//         }else{
+//            //alert("取消");
+//            return false;
+//        }
 		// ask verification
 //		$.SmartMessageBox({
 //			title : "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",

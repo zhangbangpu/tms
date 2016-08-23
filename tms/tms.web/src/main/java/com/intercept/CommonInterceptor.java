@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import com.chinaway.tms.utils.RequestUtil;
+import com.mysql.fabric.Response;
 
 public class CommonInterceptor implements HandlerInterceptor {  
 	private final Logger log = LoggerFactory.getLogger(CommonInterceptor.class);  
@@ -27,10 +28,13 @@ public class CommonInterceptor implements HandlerInterceptor {
         log.info("url:"+url);    
           
         String username =  (String)request.getSession().getAttribute("username");   
-        if(username == null){  
-            log.info("Interceptor：跳转到login页面！");  
-            request.getRequestDispatcher("/login.html").forward(request, response);  
-//            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);  
+        if(username == null){
+            log.info("Interceptor：跳转到login页面！"); 
+            response.setStatus(0);
+//            response.sendRedirect(request.getSession().getServletContext().getContextPath()+"/login.htm");
+            response.getWriter().println("<script>window.location.href='/login.html';</script>");
+            response.getWriter().flush();
+            response.getWriter().close();
             return false;  
         }else  
             return true;  

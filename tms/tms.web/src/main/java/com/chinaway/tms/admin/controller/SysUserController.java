@@ -32,7 +32,7 @@ public class SysUserController {
 	 * 根据条件查询站点信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param deptInfo
+	 * @param userInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/page")
@@ -53,7 +53,7 @@ public class SysUserController {
 	 * 根据条件分页查询用户信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param deptInfo
+	 * @param userInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/queUserByCtnPgBn")
@@ -107,7 +107,7 @@ public class SysUserController {
 	 * 根据条件查询所有用户信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param deptInfo
+	 * @param userInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/queAllUserByCtn")
@@ -150,7 +150,7 @@ public class SysUserController {
 	 * 根据条件查询单个用戶信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param deptInfo
+	 * @param userInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/queryOneById")

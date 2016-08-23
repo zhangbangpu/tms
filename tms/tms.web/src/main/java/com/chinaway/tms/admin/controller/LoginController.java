@@ -92,7 +92,9 @@ public class LoginController {
 	@ResponseBody
 	public Result loginGetMenuList(HttpServletRequest request) {
 		if (!checkLogin(request)) {
-			return new Result(2, "");
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("code", 2);
+			return new Result(0, map);
 		}
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -145,8 +147,7 @@ public class LoginController {
 			List<SysUser> sysUserList = sysUserService.queryUserByCtn(argsMap);
 			if (null != sysUserList && sysUserList.size() > 0) {
 				request.getSession().removeAttribute("sysUser");
-				request.getSession().removeAttribute("sysRole");
-				request.getSession().removeAttribute("sysMenuList");
+				request.getSession().removeAttribute("username");
 				argsMap.put("status", "true");
 				argsMap.put("msg", "logout success!");
 				code = 0;
@@ -171,13 +172,30 @@ public class LoginController {
 	}
 	
 	/**
+	 * 
+	 * 判断用户是否登录
+	 * 
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/isLogin")
+	@ResponseBody
+	public Result isLogin(HttpServletRequest request) {
+		if (!checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
+		return new Result(0, "");
+	}
+	
+	/**
 	 * 检查是否登录
 	 * @param request
 	 * @return
 	 */
 	public static boolean checkLogin(HttpServletRequest request) {
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-		if (null == sysUser) {
+		String username = (String) request.getSession().getAttribute("username");
+		if (null == username) {
 			return false;
 		} else {
 			return true;

@@ -18,10 +18,11 @@
 
 	<mvc:interceptors>  
         <mvc:interceptor>  
-            <mvc:mapping path="/"/><!-- 映射路径后缀名 -->
+<!--             <mvc:mapping path="/**"/> -->
             <mvc:mapping path="/tms/**" />  
        		<mvc:mapping path="/test/**" />  
             <mvc:exclude-mapping path="/ws/"/>
+            <mvc:exclude-mapping path="/login.html*"/>
             <bean class="com.intercept.CommonInterceptor"/><!-- 自定义拦截器 -->  
         </mvc:interceptor>  
     </mvc:interceptors>
