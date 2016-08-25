@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.chinaway.tms.admin.controller.LoginController;
 import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.basic.service.WaybillService;
@@ -111,6 +114,38 @@ public class TckNumRvwedManagerController {
 //		Result result = new Result(code, tckNumRvwed, msg);
 
 		return new Result(0, waybill);
+	}
+	
+	/**
+	 * 上传excel站点信息<br>
+	 * 返回站点的json串
+	 * @return
+	 */
+	@RequestMapping(value = "/export")
+	@ResponseBody
+	public Result export(HttpServletRequest request, @RequestParam("ids") String ids) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "下载需要审核的运单失败!";
+
+		List<Waybill> waybillList = null;
+		try {
+			waybillList = waybillService.selectByIds(ids);
+			
+			if (null != waybillList && waybillList.size() > 0) {
+				code = 0;
+				msg = "下载需要审核的运单成功!";
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+//		Result result = new Result(code, resultMap, msg);
+
+		return new Result(0, code);
 	}
 	
 	/**

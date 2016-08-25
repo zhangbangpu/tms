@@ -155,6 +155,70 @@ public class SiteManagerController {
 		return new Result(0, ret);
 	}
 	
+	/**
+	 * 上传excel站点信息<br>
+	 * 返回站点的json串
+	 * @return
+	 */
+	@RequestMapping(value = "/importSite")
+	@ResponseBody
+	public Result importSite(HttpServletRequest request, Site site) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "操作站点失败!";
+
+		int ret = 0;
+		try {
+			
+			site.setUpdatetime(new Date());
+			
+//			ret = siteService.insert(site);
+			if (ret > 0) {
+				code = 0;
+				msg = "操作站点成功!";
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+//		Result result = new Result(code, resultMap, msg);
+
+		return new Result(0, ret);
+	}
+	
+	/**
+	 * 上传excel站点信息<br>
+	 * 返回站点的json串
+	 * @return
+	 */
+	@RequestMapping(value = "/export")
+	@ResponseBody
+	public Result export(HttpServletRequest request, @RequestParam("ids") String ids) {
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "下载站点失败!";
+
+		List<Site> siteList = null;
+		try {
+			siteList = siteService.selectByIds(ids);
+			
+			if (null != siteList && siteList.size() > 0) {
+				code = 0;
+				msg = "下载站点成功!";
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+//		Result result = new Result(code, resultMap, msg);
+
+		return new Result(0, code);
+	}
 	
 	/**
 	 * 删除部门信息<br>

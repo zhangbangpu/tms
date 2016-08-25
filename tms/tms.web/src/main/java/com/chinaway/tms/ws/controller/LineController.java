@@ -1,5 +1,6 @@
 package com.chinaway.tms.ws.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,17 +70,15 @@ public class LineController {
 	@ResponseBody
 	public String autoGenerateWaybill() {
 		System.out.println("quartz success!");
-
+		List<String> waybills = new ArrayList<String>();
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", "0");
 			map.put("state", "0");
 			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(map);
 			for (Orders orders : ordersList) {
-				Map<String, Object> argsMap = new HashMap<String, Object>();
-				argsMap.put("id", orders.getId());
-				int ret = ordersService.generateWaybill(argsMap);
-				if (ret == 0) {
+				waybills.addAll(ordersService.generateWaybill(orders));
+				if (null != waybills && waybills.size() > 0) {
 					System.out.println("---------------orders----------------" + orders.getId());
 				}
 			}
@@ -97,7 +96,7 @@ public class LineController {
 				}
 			}
 		}
-		return "";
+		return JsonUtil.obj2JsonStr(waybills);
 	}
     
 }

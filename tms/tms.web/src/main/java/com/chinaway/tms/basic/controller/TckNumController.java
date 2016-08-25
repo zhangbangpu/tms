@@ -155,8 +155,8 @@ public class TckNumController {
 						waybill = ordersService.setWaybill(orders, vehicleModelList.get(0));
 					}
 					
+					ret = waybillService.insertWaybill(waybill);
 				}
-				ret = waybillService.insertWaybill(waybill);
 			}
 			if (ret > 0) {
 				code = 0;

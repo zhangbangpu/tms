@@ -197,21 +197,51 @@ public class OrdersManagerController {
 	@RequestMapping(value = "/generateWaybill")
 	@ResponseBody
 	public Result generateWaybill(HttpServletRequest request) {
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		int code = 1;
 		String msg = "生成运单失败!";
-
-		int ret = 0;
 		try {
-			ret = ordersService.generateWaybill(argsMap);
-			if (ret > 0) {
+			Integer id = Integer.parseInt(String.valueOf(request.getParameter("id")));
+			Orders order = ordersService.selectById(id);
+			List<String> waybills = ordersService.generateWaybill(order);
+			if (null == waybills || waybills.size() <= 0) {
 				code = 0;
 				msg = "生成运单成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		return new Result(0, ret);
+		return new Result(0, code);
+	}
+	
+	/**
+	 * 上传excel站点信息<br>
+	 * 返回站点的json串
+	 * @return
+	 */
+	@RequestMapping(value = "/export")
+	@ResponseBody
+	public Result export(HttpServletRequest request, @RequestParam("ids") String ids) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "下载订单失败!";
+
+		List<Orders> ordersList = null;
+		try {
+			ordersList = ordersService.selectByIds(ids);
+			
+			if (null != ordersList && ordersList.size() > 0) {
+				code = 0;
+				msg = "下载订单成功!";
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+//		Result result = new Result(code, resultMap, msg);
+		return new Result(0, code);
 	}
 	
 	/**

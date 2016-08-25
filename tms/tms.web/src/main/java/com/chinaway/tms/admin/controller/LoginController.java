@@ -56,7 +56,7 @@ public class LoginController {
 		String msg = "登录异常!";
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-//			argsMap.put("loginname", username);
+			argsMap.put("loginname", argsMap.get("username"));
 //			argsMap.put("password", password);
 			
 			SysUser sysUser = sysUserService.queOneUserByCtn(argsMap);
