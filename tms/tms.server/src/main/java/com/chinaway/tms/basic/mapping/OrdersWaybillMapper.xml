@@ -44,8 +44,8 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.OrdersWaybill" >
-	  insert into orders_waybill(id,ordersid,waybillid)
- values(#{id},#{ordersid},#{waybillid})
+	    insert into orders_waybill(ordersid,waybillid)
+ 	    values(#{ordersid},#{waybillid})
 	</insert>
 
 	<!-- 根据id，修改记录-->  

@@ -149,9 +149,21 @@
 	</sql>
  
 	<!-- 根据id查询  -->
-	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select <include refid="Base_Column_List" /> 
-	    from orders where id = #{id}
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from orders where id = #{id}
+	</select>
+	
+	<!-- 根据ids查询订单列表  -->
+	<select id="selectByIds"  resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from orders where 
+		id in
+		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
 	</select>
  
 	<!-- 查询max id  -->
@@ -177,8 +189,8 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Orders" >
-	    insert into orders(id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status)
-        values(#{id},#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{status})
+	    insert into orders(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status)
+        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{status})
 	</insert>
 
 	<!-- 根据id，修改记录-->  

@@ -89,8 +89,8 @@
 	
 	<!-- 插入记录 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.admin.model.SysRole">
-		insert into sys_role(id,name,description,type)
-		values(#{id},#{name},#{description},#{type})
+		insert into sys_role(name,description,type)
+		values(#{name},#{description},#{type})
 	</insert>
 
 	<!-- 根据id，修改记录 -->

@@ -68,8 +68,8 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Car" >
-	  insert into car(id,name,code,weight,volum,carno,wlcompany)
- values(#{id},#{name},#{code},#{weight},#{volum},#{carno},#{wlcompany})
+	    insert into car(name,code,weight,volum,carno,wlcompany)
+ 		values(#{name},#{code},#{weight},#{volum},#{carno},#{wlcompany})
 	</insert>
 
 	<!-- 根据id，修改记录-->  

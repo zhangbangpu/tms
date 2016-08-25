@@ -168,6 +168,7 @@
 		<include refid="Base_Column_lb_List" />
 		from sys_user a,sys_user_role b, sys_role c
 		<include refid="lb_Where_Clause" />
+		order by a.createtime desc
 	</select>
 	
 	<!-- 条件查询所有(连表查询部门,角色信息 不分页)  todo 做连表关联 -->
@@ -189,8 +190,8 @@
 	<!-- 插入记录 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.admin.model.SysUser">
 		insert into
-		sys_user(id,loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid)
-		values(#{id},#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid})
+		sys_user(loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid)
+		values(#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid})
 	</insert>
 
 	<!-- 根据id，修改记录 -->

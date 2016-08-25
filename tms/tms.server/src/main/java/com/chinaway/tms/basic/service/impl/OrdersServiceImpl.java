@@ -143,18 +143,18 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	 * @return
 	 */
 	@Override
-	public int generateWaybill(Map<String, Object> map){
+	public List<String> generateWaybill(Orders order){
 //		Cpmd cpmd = new Cpmd();
 //		argsMap.put("updatetime", cpmd.getUpdatetime());
 //		List<Cpmd> cpmdList = cpmdService.selectAllCpmdByCtn(argsMap);
 //		for(){
 //			
 //		}
-		int code = 1;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", order.getId());
 		Integer wlcompany = this.queryWlcompanyByOrderId(map);
-		Integer id = Integer.parseInt(String.valueOf(map.get("id")));
+		List<String> waybills = new ArrayList<String>();
 		
-		Orders order = orderMapper.selectById(id);
 		//判断订单能否找到承运商
 		if(null != wlcompany && 0 != wlcompany){
 			//判断能否匹配上车型
@@ -170,7 +170,7 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 					System.out.println("------------车型体积：" + vehicleModel.getVolum());
 					System.out.println("------------订单除以车型：" + order.getVolume()/vehicleModel.getVolum());
 	                //体积匹配不小于20%
-					if(machVehMod(order.getVolume(),vehicleModel.getVolum())){
+					if (machVehMod(order.getVolume(), vehicleModel.getVolum())) {
 	                	
 	                }else{
 	                	continue;
@@ -178,11 +178,11 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 					
 					// 重量匹配不小于20%
 					if (machVehMod(order.getWeight(), vehicleModel.getWeight())) {
-						code = 0;
 						Waybill waybill = this.setWaybill(order, vehicleModel);
-						int retCode = waybillService.insertWaybill(waybill);
+						int ret = waybillService.insertWaybill(waybill);
+						waybills.add(waybill.getCode());
 						// 判断运单生成成功，修改订单状态我1 已生成运单
-						if (retCode > 0) {
+						if (ret > 0) {
 							order.setState("1");
 							order.setSubcontractor(vehicleModel.getWlcompany());
 							// 修改订单状态
@@ -205,7 +205,7 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 			
 		}
 		
-		return code;
+		return waybills;
 	}
 	
 	/**
@@ -266,6 +266,12 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		record.setWeight(order.getWeight());
 		record.setCreatetime(new Date());
 		return record;
+	}
+
+	@Override
+	public List<Orders> selectByIds(String ids) {
+		String[] idsArray = ids.split(",");
+		return orderMapper.selectByIds(idsArray);
 	}
 	
 }

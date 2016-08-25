@@ -28,7 +28,7 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	 * @param orders 
 	 * @return
 	 */
-	int insertWaybill(Waybill waybill);
+	Integer insertWaybill(Waybill waybill);
 
 	/**
 	 * 修改运单(运单审核)
@@ -42,5 +42,12 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	 * @return
 	 */
 	int selectMaxId();
+
+	/**
+	 * 根据订单id查询订单列表
+	 * @param ids
+	 * @return
+	 */
+	List<Waybill> selectByIds(String ids);
 	
 }

@@ -107,14 +107,15 @@
 		<if test="id != null and id != '' ">
 		    and a.id = #{id}
 		</if>
+		ORDER BY c.sotid ASC
 		<!-- <include refid="roleId_Where_Clause" /> -->
 	</select>
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysMenu">
 		insert into
-		sys_menu(id,name,pid,levels,createtime,requesturl,menutype,sotid)
-		values(#{id},#{name},#{pid},#{levels},#{createtime},#{requesturl},#{menutype},#{sotid})
+		sys_menu(name,pid,levels,createtime,requesturl,menutype,sotid)
+		values(#{name},#{pid},#{levels},#{createtime},#{requesturl},#{menutype},#{sotid})
 	</insert>
 
 	<!-- 根据id，修改记录 -->

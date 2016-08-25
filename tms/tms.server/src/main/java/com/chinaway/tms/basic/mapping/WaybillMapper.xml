@@ -158,9 +158,21 @@
 	</sql>
  
 	<!-- 根据id查询  -->
-	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select <include refid="Base_Column_List" /> 
-	 from waybill where id = #{id}
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from waybill where id = #{id}
+	</select>
+	
+	<!-- 根据ids查询列表  -->
+	<select id="selectByIds"  resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from waybill where
+		id in
+		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
 	</select>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
@@ -193,9 +205,9 @@
 	</select>
    
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Waybill" >
-	  insert into waybill(id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume)
- values(#{id},#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{c_weight},#{c_volume})
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.basic.model.Waybill" >
+	    insert into waybill(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume)
+        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{c_weight},#{c_volume})
 	</insert>
 
 	<!-- 根据id，修改记录-->  

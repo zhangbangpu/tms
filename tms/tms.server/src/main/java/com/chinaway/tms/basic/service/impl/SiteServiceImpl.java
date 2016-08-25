@@ -58,4 +58,10 @@ public class SiteServiceImpl extends AbstractService<Site, Integer> implements S
 			return 0;
 		}
 	}
+
+	@Override
+	public List<Site> selectByIds(String ids) {
+		String[] idsArray = ids.split(",");
+		return siteMapper.selectByIds(idsArray);
+	}
 }

@@ -39,10 +39,10 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 
 	/**
 	 * 生成运单
-	 * @param argsMap 
+	 * @param orders 
 	 * @return
 	 */
-	public int generateWaybill(Map<String, Object> argsMap);
+	public List<String> generateWaybill(Orders orders);
 	
 	/**
 	 * 根据订单对象，车型对象 生成运单
@@ -52,5 +52,12 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @throws Exception
 	 */
 	public Waybill setWaybill(Orders order, VehicleModel vehicleModel) throws Exception;
+
+	/**
+	 * 根据id列表查询订单
+	 * @param ids
+	 * @return
+	 */
+	List<Orders> selectByIds(String ids);
 	
 }

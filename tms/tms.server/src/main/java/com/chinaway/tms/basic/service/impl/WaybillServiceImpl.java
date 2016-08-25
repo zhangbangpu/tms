@@ -59,6 +59,11 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		return waybillMapper.selectAllTckNumRvwedByCtn(argsMap);
 	}
 	
+	public List<Waybill> selectByIds(String ids){
+		String[] idsArray = ids.split(",");
+		return waybillMapper.selectByIds(idsArray);
+	}
+	
 	@Override
 	@Transactional
 	public int deleteById(String ids) {
@@ -74,7 +79,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	}
 
 	@Override
-	public int insertWaybill(Waybill waybill) {
+	public Integer insertWaybill(Waybill waybill) {
 		// TODO 添加运单信息 初始化状态
 		return waybillMapper.insert(waybill);
 	}
@@ -94,7 +99,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 			ordersState = "0";
 			ordersStatus = "1";
 			Map<String, Object> argsmap = new HashMap<String, Object>();
-			argsmap.put("waybillId", waybill.getId());
+			argsmap.put("waybillid", waybill.getId());
 			int ret = ordersWaybillService.deleteByCtn(argsmap);
 
 			if (ret > 0) {

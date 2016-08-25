@@ -2,6 +2,9 @@ package com.chinaway.tms.basic.dao;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.chinaway.tms.basic.model.Site;
 import com.chinaway.tms.core.BaseMapper;
 import com.chinaway.tms.utils.page.PageBean;
@@ -20,6 +23,13 @@ public interface SiteMapper extends BaseMapper<Site, Integer> {
 	 * @return
 	 */
 	List<Site> selectAllSiteByCtn(Map<String, Object> argsMap);
+
+	/**
+	 * 根据id列表查询站点
+	 * @param resultMap
+	 * @return
+	 */
+	List<Site> selectByIds(@Param(value="idItem") String[] idArry);
 
 	
 }

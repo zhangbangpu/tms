@@ -75,8 +75,8 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.OrderItem" >
-	  insert into order_item(id,orderid,goodscode,goodsname)
- values(#{id},#{orderid},#{goodscode},#{goodsname})
+	    insert into order_item(orderid,goodscode,goodsname)
+ 		values(#{orderid},#{goodscode},#{goodsname})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
