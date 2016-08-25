@@ -48,8 +48,18 @@
                                   <a href="#tms/basic/orders_edit.html" data-button-resource="A772D941076309D2CA2143A67D9262B1" class="btn btn-default">编辑</a>
                               </div> -->
                               <div class="btn-group">
-                                  <a class="btn btn-default" id='deletebtn' data-button-resource="048625502851586667FA938190987180">删除</a>
+                                  <a class="btn btn-default" id='deletebtn' data-button-resource="27ABFE6C332DD1DB13EE504E151C007A">删除</a>
                               </div>
+                              <div class="btn-group">
+                                  <a class="btn btn-default" id='generateWaybillbtn' data-button-resource="048625502851586667FA938190987180">生成运单</a>
+                              </div>
+<!-- 			                  <div class="row"> -->
+<!-- 			                      <section class="col col-8"> -->
+<!-- 			                          <label class="input"> -->
+<!-- 			                              <input type="text" id="generateWaybillbtn" name="generateWaybillbtn" placeholder=""> -->
+<!-- 			                          </label> -->
+<!-- 			                      </section> -->
+<!-- 			                  </div> -->
 	                          <!-- <div class="btn-group" >
 		                         <a class="btn btn-primary  btn-sm" type="button" id='btnSearch'><i class="fa fa-search"></i>刷新</a>
 		                     </div> -->
@@ -76,6 +86,48 @@
 	<!-- end row -->
 
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">手动生成运单</h4>
+            </div>
+            <form class="form form-inline" role="form" id="generateWaybill">
+                <input type="hidden" name="orderid" id="orderid">
+                <div class="modal-body smart-form">             
+                    <div class="row">
+                        <label for="passeword" class="label col col-3 text-align-right">承运商</label>
+                        <section class="col col-6">
+                            <label class="input">
+                                <input type="text" id="wlcompany" class="form-control" placeholder="输入承运商名称" name="wlcompany" required>
+                            </label>
+                        </section>
+                    </div>
+
+                    <div class="row">
+                        <label for="passeword_again" class="label col col-3 text-align-right">车型</label>
+                        <section class="col col-6">
+                            <label class="input">
+                                <input type="text" id="vehiclemodel" class="form-control" placeholder="请输入车型" name="vehiclemodel" required>
+                            </label>
+                        </section>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="generateWaybill">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> 确认
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- end widget grid -->
 
 <script src="tms/basic/js/orders_list.js"></script>

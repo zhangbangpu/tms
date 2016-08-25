@@ -106,6 +106,36 @@ public class OrdersManagerController {
 	}
 	
 	/**
+	 * 根据条件查询所有订单信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param ordersInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryStatusById")
+	@ResponseBody
+	public Result queryStatusById(HttpServletRequest request, @RequestParam("id") String id) {
+		Map<String, Object> argsMap = new HashMap<String, Object>();
+		argsMap.put("id", id);
+		argsMap.put("state", "0"); //  初始状态
+		argsMap.put("status", "1"); // 手动状态
+		List<Orders> ordersList = null;
+		String code = "0";
+		try {
+			ordersList = ordersService.selectAllOrdersByCtn(argsMap);
+            if(null != ordersList && ordersList.size() > 0){
+            	code = "1";
+            }
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		Result result = new Result(0, ordersList, code);
+		return result;
+//		return new Result(0, code);
+	}
+	
+	/**
 	 * 根据条件查询订单信息<br>
 	 * 返回用户的json串
 	 * 

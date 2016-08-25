@@ -1,17 +1,23 @@
 package com.chinaway.tms.basic.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.chinaway.tms.admin.controller.LoginController;
+import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.basic.model.VehicleModel;
 import com.chinaway.tms.basic.model.Waybill;
+import com.chinaway.tms.basic.service.OrdersService;
+import com.chinaway.tms.basic.service.VehicleModelService;
 import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
@@ -23,6 +29,12 @@ public class TckNumController {
 	
 	@Autowired
 	private WaybillService waybillService;
+	
+	@Autowired
+	private OrdersService ordersService;
+	
+	@Autowired
+	private VehicleModelService vehicleModelService;
 	
 	/**
 	 * 根据条件查询所有站点信息<br>
@@ -133,8 +145,18 @@ public class TckNumController {
 			if (waybill.getId() != null) {
 				ret = waybillService.updateSelective(waybill);
 			}else{
-				waybill.setCreatetime(new Date());
-				ret = waybillService.insert(waybill);
+				if(null != waybill.getOrdersid()){
+					Orders orders = ordersService.selectById(waybill.getOrdersid());
+					Map<String, Object> map = new HashMap<String,Object>();
+					map.put("wlcompany", waybill.getWlcompany());
+					map.put("name", waybill.getVehiclemodel());
+					List<VehicleModel> vehicleModelList = vehicleModelService.selectAllVehicleModelByCtn(map);
+					if(null != vehicleModelList && vehicleModelList.size() > 0){
+						waybill = ordersService.setWaybill(orders, vehicleModelList.get(0));
+					}
+					
+				}
+				ret = waybillService.insertWaybill(waybill);
 			}
 			if (ret > 0) {
 				code = 0;

@@ -16,7 +16,7 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!-- 关联其他spring配置文件
-	<import resource="spring-quartz.xml"/> -->
+	<!-- 关联其他spring配置文件 -->
+<!-- 	 <import resource="spring-quartz.xml"/>   -->
 	
 </beans>

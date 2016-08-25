@@ -1,6 +1,7 @@
 package com.chinaway.tms.ws.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.basic.model.Line;
+import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.service.LineService;
+import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
@@ -20,6 +23,9 @@ public class LineController {
 	
 	@Autowired
 	private LineService lineService;
+	
+	@Autowired
+	private OrdersService ordersService;
 	
 	/**
 	 * 添加班线信息<br>
@@ -51,6 +57,47 @@ public class LineController {
 		LOGGER.info("addLine传出的参数:" + ret);
 
 		return ret;
+	}
+    
+	/**
+	 * 测试手动调度信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/ws/autoGeneratewaybill")
+	@ResponseBody
+	public String autoGenerateWaybill() {
+		System.out.println("quartz success!");
+
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("status", "0");
+			map.put("state", "0");
+			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(map);
+			for (Orders orders : ordersList) {
+				Map<String, Object> argsMap = new HashMap<String, Object>();
+				argsMap.put("id", orders.getId());
+				int ret = ordersService.generateWaybill(argsMap);
+				if (ret == 0) {
+					System.out.println("---------------orders----------------" + orders.getId());
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return "";
 	}
     
 }

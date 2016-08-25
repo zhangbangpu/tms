@@ -45,7 +45,7 @@ function getRowIds(array) {
     return id;
 }
 
-
+var waybillRow = $('#generateWaybillbtn').closest('div');
 //function edit(){
 //	if(getRowIds() && getRowIds().split(",").length == 1){
 //		$parm=parmData[getRowIds()];
@@ -55,15 +55,65 @@ function getRowIds(array) {
 //		return false;
 //	}
 //}
+$("#generateWaybill").bind('click', function() {
+	var ids = getRowIds(true);
+	if ($('#wlcompany').val() == '' || $('#wlcompany').val() == '') {
+		$ips.error('承运商不能为空');
+		return false;
+	}
+	if ($('#vehiclemodel').val() == '' || $('#vehiclemodel').val() == '') {
+		$ips.error('车型不能为空!');
+		return false;
+	}
 
+	$ips.load('tckNum', 'addTckNum', {
+		ordersid : ids,
+		wlcompany : $('#wlcompany').val(),
+		vehiclemodel : $('#vehiclemodel').val()
+	}, function(res) {
+		if (typeof res.code != 'undefined' && res.code != 0) {
+			$ips.error(res.message);
+			return false;
+		}
+		$ips.succeed('生成运单成功');
+		$('#myModal .modal-header button').trigger('click');
+	})
+	return false;
+});
+
+waybillRow.empty();
+$('<div class="btn-group"><a class="btn btn-default" data-button-resource="048625502851586667FA938190987180">生成运单</a></div>').bind('click', function() {
+	var ids = getRowIds(true);
+	if (ids.length != 1) {
+		ids.length > 1 ? $ips.error("只能选择一条！") : $ips.error("未选择记录！");
+		return;
+	}
+	
+	$ips.load("orders", "queryStatusById", "id=" + ids,
+		function(result) {
+			if (typeof result.code != 'undefined' && result.code != 0) {
+				$ips.error("只有手动的状态才能生成运单！");
+				return false;
+			}
+			
+			$(this).attr({
+				'data-toggle' : "modal",
+				'data-target' : "#myModal"
+			});
+			
+			$('#wlcompany').val('');
+			$('#vehiclemodel').val('');
+			$('#myModal .modal-header button').trigger('click');
+	});
+}).appendTo(waybillRow);
 
 $("#deletebtn").click(function(){
 	
 	var ids = getRowIds(true);
-//	if(ids.length != 1) {
-//		ids.length>1?$ips.error("只能删除一条！"):$ips.error("未选择记录！");
-//        return;
-//    }
+	if(ids.length != 1) {
+		ids.length>1?$ips.error("只能删除一条！"):$ips.error("未选择记录！");
+        return;
+    }
 	
     $ips.confirm("您确定要删除选中的记录吗?",function(btn) {
         if (btn == "确定") {
