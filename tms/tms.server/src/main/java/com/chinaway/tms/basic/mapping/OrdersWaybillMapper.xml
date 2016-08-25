@@ -70,5 +70,11 @@
 	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.OrdersWaybill" >
 		delete 	 from orders_waybill where id = #{id}
 	</delete>
+	
+	<!-- 根据条件删除记录 -->
+	<delete id="deleteByCtn" parameterType="java.util.Map" >
+		delete from orders_waybill 
+		<include refid="Example_Where_Clause"/>
+	</delete>
   	
 </mapper>

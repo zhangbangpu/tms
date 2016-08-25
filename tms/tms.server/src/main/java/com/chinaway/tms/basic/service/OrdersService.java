@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.basic.model.VehicleModel;
+import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.core.BaseService;
 
 public interface OrdersService extends BaseService<Orders, Integer> {
@@ -41,5 +43,14 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @return
 	 */
 	public int generateWaybill(Map<String, Object> argsMap);
+	
+	/**
+	 * 根据订单对象，车型对象 生成运单
+	 * @param order
+	 * @param vehicleModel
+	 * @return
+	 * @throws Exception
+	 */
+	public Waybill setWaybill(Orders order, VehicleModel vehicleModel) throws Exception;
 	
 }

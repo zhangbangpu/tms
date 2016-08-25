@@ -1,13 +1,16 @@
 package com.chinaway.tms.basic.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.chinaway.tms.basic.dao.OrdersMapper;
 import com.chinaway.tms.basic.dao.SiteMapper;
 import com.chinaway.tms.basic.dao.VehicleModelMapper;
@@ -162,15 +165,19 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 				//查询运单匹配上的车辆装载
 				List<VehicleModel> vehicleModelList = vehicleModelMapper.selectAllVehicleModelByCtn(argsMap);
 				for (VehicleModel vehicleModel : vehicleModelList) {
+					
+					System.out.println("------------订单体积：" + order.getVolume());
+					System.out.println("------------车型体积：" + vehicleModel.getVolum());
+					System.out.println("------------订单除以车型：" + order.getVolume()/vehicleModel.getVolum());
 	                //体积匹配不小于20%
-					if((8 < (order.getVolume()/vehicleModel.getVolum())*10) && (order.getVolume()/vehicleModel.getVolum())*10 < 10){
+					if(machVehMod(order.getVolume(),vehicleModel.getVolum())){
 	                	
 	                }else{
 	                	continue;
 	                }
 					
 					// 重量匹配不小于20%
-					if ((8 < (order.getWeight() / vehicleModel.getWeight()) * 10) && ((order.getWeight() / vehicleModel.getWeight()) * 10 < 10)) {
+					if (machVehMod(order.getWeight(), vehicleModel.getWeight())) {
 						code = 0;
 						Waybill waybill = this.setWaybill(order, vehicleModel);
 						int retCode = waybillService.insertWaybill(waybill);
@@ -201,6 +208,42 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		return code;
 	}
 	
+	/**
+	 * 匹配车型的体积和质量 是否在订单的体积和质量20%内
+	 * @param orderParam
+	 * @param vehModParam
+	 * @return
+	 */
+	private boolean machVehMod(double orderParam, double vehModParam) {
+		String mach = String.valueOf((orderParam / vehModParam) * 100);
+		mach = mach.substring(0, mach.indexOf("."));
+		if (80 < Integer.parseInt(mach) && Integer.parseInt(mach) < 100) {
+			return true;
+		}
+		return false;
+	}
+	
+	public Waybill setWaybill(Orders order,Waybill record) throws Exception {
+		int maxId = waybillService.selectMaxId();
+		record.setAmount(order.getAmount());
+		record.setCode("tms" + maxId );
+		record.setDeptname(order.getDeptname());
+		record.setExceptcount(order.getExceptcount());
+		record.setFhaddress(order.getFhaddress());
+		record.setFromcode(order.getFromcode());
+		record.setOrderfrom(order.getOrderfrom());
+		record.setRequendtime(order.getRequendtime());
+		record.setRequstarttime(order.getRequstarttime());
+		record.setShaddress(order.getShaddress());
+		record.setState("0");// 阶段初始为 0
+		record.setSubcontractor(record.getSubcontractor());
+		record.setUnit(order.getUnit());
+		record.setVolume(order.getVolume());
+		record.setWeight(order.getWeight());
+		record.setCreatetime(new Date());
+		return record;
+	}
+	
 	public Waybill setWaybill(Orders order, VehicleModel vehicleModel) throws Exception {
 		Waybill record = new Waybill();
 		int maxId = waybillService.selectMaxId();
@@ -221,6 +264,7 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		record.setUnit(order.getUnit());
 		record.setVolume(order.getVolume());
 		record.setWeight(order.getWeight());
+		record.setCreatetime(new Date());
 		return record;
 	}
 	

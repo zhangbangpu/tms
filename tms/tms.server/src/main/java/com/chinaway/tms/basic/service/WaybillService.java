@@ -25,6 +25,7 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	/**
 	 * 添加运单
 	 * @param waybill
+	 * @param orders 
 	 * @return
 	 */
 	int insertWaybill(Waybill waybill);

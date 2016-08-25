@@ -19,10 +19,11 @@
 		<result column="requendtime" property="requendtime"/>
 		<result column="state" property="state"/>
 		<result column="exceptcount" property="exceptcount"/>
+		<result column="status" property="status"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
-		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount
+		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status
 	</sql>
    
 	<!-- 动态查询条件 -->
@@ -79,6 +80,9 @@
 			</if>
 			<if test="exceptcount != null and exceptcount != '' ">
 			    and exceptcount = #{exceptcount}
+			</if>
+			<if test="status != null and status != '' ">
+			    and status = #{status}
 			</if>
 		</trim>
 	</sql>
@@ -138,6 +142,9 @@
 			<if test="exceptcount != null and exceptcount != '' ">
 			    and exceptcount = #{exceptcount}
 			</if>
+			<if test="status != null and status != '' ">
+			    and status = #{status}
+			</if>
 		</trim>
 	</sql>
  
@@ -170,13 +177,13 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Orders" >
-	    insert into orders(id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount)
-        values(#{id},#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount})
+	    insert into orders(id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status)
+        values(#{id},#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{status})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
 	 <update id="update" parameterType="com.chinaway.tms.basic.model.Orders" >
-	 	update orders set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount} where id=#{id}
+	 	update orders set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount},status=#{status} where id=#{id}
 	 </update>
  
 	 <!-- 动态修改记录，只修改只不为空的字段 -->
@@ -230,6 +237,9 @@
 			</if>
 			<if test="exceptcount != null  ">
 				exceptcount=#{exceptcount},
+			</if>
+			<if test="status != null  ">
+				status=#{status},
 			</if>
 		</trim> where id=#{id}
 	</update>

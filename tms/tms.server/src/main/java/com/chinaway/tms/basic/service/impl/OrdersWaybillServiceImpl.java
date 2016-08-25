@@ -51,4 +51,9 @@ public class OrdersWaybillServiceImpl extends AbstractService<OrdersWaybill, Int
 			return 0;
 		}
 	}
+
+	@Override
+	public int deleteByCtn(Map<String, Object> argsmap) {
+		return ordersWaybillMapper.deleteByCtn(argsmap);
+	}
 }
