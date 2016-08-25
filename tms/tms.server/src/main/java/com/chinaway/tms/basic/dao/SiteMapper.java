@@ -29,7 +29,7 @@ public interface SiteMapper extends BaseMapper<Site, Integer> {
 	 * @param resultMap
 	 * @return
 	 */
-	List<Site> selectByIds(@Param(value="idItem") String[] idArry);
+	List<Site> selectByIds(@Param(value="array") String[] idArry);
 
 	
 }

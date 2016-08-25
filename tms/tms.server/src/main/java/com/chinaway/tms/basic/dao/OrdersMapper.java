@@ -28,6 +28,6 @@ public interface OrdersMapper extends BaseMapper<Orders, Integer> {
 	 * @param idsArray
 	 * @return
 	 */
-	List<Orders> selectByIds(@Param(value="idItem")String[] idArry);
+	List<Orders> selectByIds(@Param(value="array")String[] idArry);
 	
 }

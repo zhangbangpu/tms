@@ -161,7 +161,7 @@
 		<include refid="Base_Column_List" />
 		from orders where 
 		id in
-		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+		<foreach item="idItem" index="index" collection="array" open="(" separator="," close=")">
 			#{idItem}
 		</foreach>
 	</select>

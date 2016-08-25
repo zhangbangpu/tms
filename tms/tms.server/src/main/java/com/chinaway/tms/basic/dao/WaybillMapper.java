@@ -35,6 +35,6 @@ public interface WaybillMapper extends BaseMapper<Waybill, Integer> {
 	 * @param idsArray
 	 * @return
 	 */
-	List<Waybill> selectByIds(@Param(value="idItem")String[] idArry);
+	List<Waybill> selectByIds(@Param(value="array")String[] idArry);
 	
 }
