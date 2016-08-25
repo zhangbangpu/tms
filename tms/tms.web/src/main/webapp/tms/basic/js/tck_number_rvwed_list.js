@@ -12,20 +12,6 @@ function genSearchParams()
 	return searchParams;
 }
 
-function tckNumRvwedDelete(id) {
-    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
-        if (btn == "确定") {
-            $ips.load("tckNumRvwed", "deleteById", "ids=" + id, function(result){
-                if(result.code == 0) {
-            		 $ips.succeed("删除成功。");
-            		 $('#tblMain').grid("fnDraw");
-            	 } else {
-            		 $ips.error("删除失败！" + result);
-            	 }
-            });
-		}
-    });
-}
 
 //获取选择的id
 function getRowIds(array) {
@@ -57,23 +43,18 @@ function getRowIds(array) {
 //}
 
 
-$("#deletebtn").click(function(){
+$("#exportbtn").click(function(){
 	
-	var ids = getRowIds(true);
-//	if(ids.length != 1) {
-//		ids.length>1?$ips.error("只能删除一条！"):$ips.error("未选择记录！");
-//        return;
-//    }
+	var ids = getRowIds(false);
 	
-    $ips.confirm("您确定要删除选中的记录吗?",function(btn) {
+    $ips.confirm("您确定要导出选中的记录吗?",function(btn) {
         if (btn == "确定") {
-            $ips.load("tckNumRvwed", "deleteById", "ids=" + ids, function(result){
-            	console.log(result.code == 0);
+            $ips.load("tckNumRvwed", "export", "ids=" + ids, function(result){
                 if(result.code == 0) {
-            		 $ips.succeed("删除成功。");
+            		 $ips.succeed("导出成功。");
             		 $('#tblMain').grid("fnDraw");
             	 } else {
-            		 $ips.error("删除失败！" + result);
+            		 $ips.error("导出失败！" + result);
             	 }
             });
 		}
@@ -159,11 +140,6 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 						<i class="fa fa-pencil"></i>\
 						<i class="fa fa-caret-down"></i>\
 					</button>\
-	                <ul class="dropdown-menu">\
-	                   <li>\
-	                   		<a href="javascript:void(0);" onclick="tckNumRvwedDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
-	                   </li>\
-	                </ul>\
 	            </div>';
 				}
             },

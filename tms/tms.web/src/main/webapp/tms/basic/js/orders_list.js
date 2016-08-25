@@ -96,38 +96,52 @@ $('<div class="btn-group"><a class="btn btn-default" data-button-resource="04862
 				return false;
 			}
 			
-			$(this).attr({
-				'data-toggle' : "modal",
-				'data-target' : "#myModal"
-			});
-			
 			$('#wlcompany').val('');
 			$('#vehiclemodel').val('');
-			$('#myModal .modal-header button').trigger('click');
+//			$('#myModal .modal-header button').trigger('click');
 	});
+}).attr({
+	'data-toggle' : "modal",
+	'data-target' : "#myModal"
 }).appendTo(waybillRow);
+
+$("#exportbtn").click(function(){
+	var ids = getRowIds(false);
+    $ips.confirm("您确定要导出选中的记录吗?",function(btn) {
+        if (btn == "确定") {
+            $ips.load("orders", "export", "ids=" + ids, function(result){
+                if(result.code == 0) {
+            		 $ips.succeed("导出成功。");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error("导出失败！" + result);
+            	 }
+            });
+		}
+    });
+});
 
 $("#deletebtn").click(function(){
 	
 	var ids = getRowIds(true);
 	if(ids.length != 1) {
 		ids.length>1?$ips.error("只能删除一条！"):$ips.error("未选择记录！");
-        return;
-    }
+		return;
+	}
 	
-    $ips.confirm("您确定要删除选中的记录吗?",function(btn) {
-        if (btn == "确定") {
-            $ips.load("orders", "deleteById", "ids=" + ids, function(result){
-            	console.log(result.code == 0);
-                if(result.code == 0) {
-            		 $ips.succeed("删除成功。");
-            		 $('#tblMain').grid("fnDraw");
-            	 } else {
-            		 $ips.error("删除失败！" + result);
-            	 }
-            });
+	$ips.confirm("您确定要删除选中的记录吗?",function(btn) {
+		if (btn == "确定") {
+			$ips.load("orders", "deleteById", "ids=" + ids, function(result){
+				console.log(result.code == 0);
+				if(result.code == 0) {
+					$ips.succeed("删除成功。");
+					$('#tblMain').grid("fnDraw");
+				} else {
+					$ips.error("删除失败！" + result);
+				}
+			});
 		}
-    });
+	});
 });
 
 

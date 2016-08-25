@@ -118,5 +118,6 @@ http://localhost/cpmd/updateCpmd?{"bclass":"1","brgew":"1","bstrf":"1","ean11":"
 ----------------车辆管理---------------------------
 http://localhost/car/addCarFromCommonCarrier?{"carno":"川A66888","code":"a1111","name":"车辆1","vehicleModelName":"Q5062.6T4MRCA","volum":1000,"weight":20,"wlcompany":"12332223232121"}
 
-
+----------------接口调用自动生成运单-------------------
+http://localhost/ws/autoGeneratewaybill
 

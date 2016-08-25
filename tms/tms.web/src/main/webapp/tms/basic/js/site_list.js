@@ -1,6 +1,10 @@
 //更多搜索条件按钮!
 var searchParams = '';//初始化数据
 
+var parms = $ips.getUrlParams();
+//loadScript("js/plugin/jquery-form/jquery-form.min.js", importFile);
+
+
 // 搜索按钮
 $("#s_btn1").click(function() {
 	$('#tblMain').grid("fnPageChange", "first");
@@ -81,6 +85,55 @@ $("#deletebtn").click(function(){
 });
 
 
+//Registration validation script
+function importFile() {
+	var $checkoutForm = $('#frmImport').validate({
+		rules : {
+		},
+		messages : {
+		},
+		errorPlacement : function(error, element) {
+			error.insertAfter(element.parent());
+		}
+	});
+	
+	var pararm = $("#frmImport").serialize();
+	var sitefile = $("#sitefile").val();
+	pararm += "&sitefile=#"+sitefile;
+    var privacy = 1;
+    if($("#privacy").is(':checked')){
+        privacy = 0;
+    }
+    pararm += "&privacy="+privacy;
+	$ips.load("site", "importSite", pararm, function(result){
+//		$ips.unLockPage();
+		console.log(result);
+		if(result) {
+			$ips.succeed("保存站点成功。");
+		}else {
+			$ips.error("保存站点表失败。" + result);
+		}
+	});
+	return false;
+}
+
+$("#exportbtn").click(function(){
+	var ids = getRowIds(false);
+    $ips.confirm("您确定要导出选中的记录吗?",function(btn) {
+        if (btn == "确定") {
+            $ips.load("site", "export", "ids=" + ids, function(result){
+                if(result.code == 0) {
+            		 $ips.succeed("导出成功。");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error("导出失败！" + result);
+            	 }
+            });
+		}
+    });
+});
+
+
 // 表格控件
 loadScript('js/hui/jquery.hui.grid.js', function () {
 	$('#tblMain').grid({
@@ -127,23 +180,16 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
             },
                 {sTitle: "站点编号", sName: "code"},
                 {sTitle: "站点名称", sName: "name"},
-                {sTitle: "站点类型", sName: "types"},
-                /*{sTitle: "状态", sName: "status", 
+//                {sTitle: "站点类型", sName: "types"},
+                {sTitle: "站点类型", sName: "types", 
                 	mRender:function(data, type, full){
-//                        		console.log(full[4]);
-                		var dateStr = full[5].replace(/-/g,"/");
-                		var update_date = new Date(dateStr);
-                		var new_date = new Date();
-                		var num = (new_date-update_date)/1000/60;//单位是毫秒
-//                        		console.log("num:"+num);
-//                        		console.log(typeof num);
-                		if(data == 0 || num>3){
-                			return "<span style='background-color:red;'>关闭</span>";
-                		}else if(data == 1){
-                			return "连接";
+                		if(data == 1){
+                			return "加油站点";
+                		}else {
+                			return "装货点";
                 		}
                 	}
-                },*/
+                },
                 {sTitle: "更新时间", sName: "updatetime"}
 			]
 		,
