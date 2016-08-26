@@ -23,6 +23,13 @@ public interface SysRoleMapper extends BaseMapper<SysRole, Integer> {
 	 * @return
 	 */
 	List<SysRole> queAllRoleByCtn(Map<String, Object> argsMap);
+	
+	/**
+	 * 根据部门id 连表查询角色
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysRole> queryRoleByDeptid(Map<String, Object> argsMap);
 
 	/**
 	 * 查询角色根据用户id

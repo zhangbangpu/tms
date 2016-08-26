@@ -17,6 +17,10 @@
 	<sql id="Base_Column_role_List">
 		c.id
 	</sql>
+	
+	<sql id="Base_Column_dept_Role_List">
+		c.id,c.name
+	</sql>
 
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -33,6 +37,16 @@
 			</if>
 			<if test="type != null and type != '' ">
 				and type = #{type}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 部门id连表 -->
+	<sql id="deptid_Where_Clause">
+		where a.deptid = b.deptid and b.id = d.userid and d.roleid = c.id
+		<trim suffixOverrides=",">
+			<if test="deptid != null and deptid != '' ">
+				and a.deptid = #{deptid}
 			</if>
 		</trim>
 	</sql>
@@ -70,6 +84,14 @@
 		<include refid="Base_Column_List" />
 		from sys_role
 		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 根据部门id 连表查询所有角色(不分页) -->
+	<select id="queryRoleByDeptid" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_dept_Role_List" />
+		from sys_dept a,sys_user b,sys_role c,sys_user_role d
+		<include refid="deptid_Where_Clause" />
 	</select>
 	
 	<!-- 根据用户id查询角色(连表查询用于登录) -->

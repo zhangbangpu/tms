@@ -24,6 +24,13 @@ public interface SysDeptMapper extends BaseMapper<SysDept, Integer> {
 	 * @return
 	 */
 	List<SysDept> selectDeptByCtn(Map<String, Object> argsMap);
+	
+	/**
+	 * 根据名称模糊查询
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysDept> selectDeptByName(Map<String, Object> argsMap);
 
 	/**
 	 * 批量删除部门

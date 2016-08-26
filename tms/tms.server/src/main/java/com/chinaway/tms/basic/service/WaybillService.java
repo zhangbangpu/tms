@@ -3,6 +3,7 @@ package com.chinaway.tms.basic.service;
 import java.util.List;
 import java.util.Map;
 
+import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.core.BaseService;
 
@@ -25,10 +26,11 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	/**
 	 * 添加运单
 	 * @param waybill
+	 * @param ordersList 
 	 * @param orders 
 	 * @return
 	 */
-	Integer insertWaybill(Waybill waybill);
+	Integer insertWaybill(Waybill waybill, List<Orders> ordersList);
 
 	/**
 	 * 修改运单(运单审核)

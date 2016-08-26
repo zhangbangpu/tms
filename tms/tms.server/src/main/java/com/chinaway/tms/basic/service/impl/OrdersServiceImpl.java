@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.chinaway.tms.basic.dao.OrdersMapper;
 import com.chinaway.tms.basic.dao.SiteMapper;
 import com.chinaway.tms.basic.dao.VehicleModelMapper;
+import com.chinaway.tms.basic.dao.WaybillMapper;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.OrdersWaybill;
 import com.chinaway.tms.basic.model.Site;
@@ -37,6 +38,9 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	
 	@Autowired
 	private VehicleModelMapper vehicleModelMapper;
+	
+	@Autowired
+	private WaybillMapper waybillMapper;
 	
 	@Autowired
 	private WaybillService waybillService;
@@ -143,6 +147,7 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	 * @return
 	 */
 	@Override
+	@Transactional
 	public List<String> generateWaybill(Orders order){
 //		Cpmd cpmd = new Cpmd();
 //		argsMap.put("updatetime", cpmd.getUpdatetime());
@@ -179,21 +184,9 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 					// 重量匹配不小于20%
 					if (machVehMod(order.getWeight(), vehicleModel.getWeight())) {
 						Waybill waybill = this.setWaybill(order, vehicleModel);
-						int ret = waybillService.insertWaybill(waybill);
+						waybillMapper.insert(waybill);
 						waybills.add(waybill.getCode());
-						// 判断运单生成成功，修改订单状态我1 已生成运单
-						if (ret > 0) {
-							order.setState("1");
-							order.setSubcontractor(vehicleModel.getWlcompany());
-							// 修改订单状态
-							int retOrdCode = orderMapper.updateSelective(order);
-							if (retOrdCode > 0) {
-								OrdersWaybill ordersWaybill = new OrdersWaybill();
-								ordersWaybill.setOrdersid(order.getId());
-								ordersWaybill.setWaybillid(waybill.getId());
-								ordersWaybillService.insert(ordersWaybill);
-							}
-						}
+						this.insertWaybillOrders(order, waybill.getId(), vehicleModel.getWlcompany());
 						break;
 					} else {
 						continue;
@@ -206,6 +199,20 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		}
 		
 		return waybills;
+	}
+	
+	public void insertWaybillOrders(Orders order, Integer waybillid, String wlcompany) {
+		// 判断运单生成成功，修改订单状态我1 已生成运单
+		order.setState("1");
+		order.setSubcontractor(wlcompany);
+		// 修改订单状态
+		int retOrdCode = orderMapper.updateSelective(order);
+		if (retOrdCode > 0) {
+			OrdersWaybill ordersWaybill = new OrdersWaybill();
+			ordersWaybill.setOrdersid(order.getId());
+			ordersWaybill.setWaybillid(waybillid);
+			ordersWaybillService.insert(ordersWaybill);
+		}
 	}
 	
 	/**
@@ -245,27 +252,27 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	}
 	
 	public Waybill setWaybill(Orders order, VehicleModel vehicleModel) throws Exception {
-		Waybill record = new Waybill();
+		Waybill waybill = new Waybill();
 		int maxId = waybillService.selectMaxId();
-		record.setAmount(order.getAmount());
-		record.setC_volume(vehicleModel.getVolum());
-		record.setC_weight(vehicleModel.getWeight());
-		record.setCode("tms" + maxId );
-		record.setDeptname(order.getDeptname());
-		record.setExceptcount(order.getExceptcount());
-		record.setFhaddress(order.getFhaddress());
-		record.setFromcode(order.getFromcode());
-		record.setOrderfrom(order.getOrderfrom());
-		record.setRequendtime(order.getRequendtime());
-		record.setRequstarttime(order.getRequstarttime());
-		record.setShaddress(order.getShaddress());
-		record.setState("0");// 阶段初始为 0
-		record.setSubcontractor(vehicleModel.getWlcompany());
-		record.setUnit(order.getUnit());
-		record.setVolume(order.getVolume());
-		record.setWeight(order.getWeight());
-		record.setCreatetime(new Date());
-		return record;
+		waybill.setAmount(order.getAmount());
+		waybill.setC_volume(vehicleModel.getVolum());
+		waybill.setC_weight(vehicleModel.getWeight());
+		waybill.setCode("tms" + maxId );
+		waybill.setDeptname(order.getDeptname());
+		waybill.setExceptcount(order.getExceptcount());
+		waybill.setFhaddress(order.getFhaddress());
+		waybill.setFromcode(order.getFromcode());
+		waybill.setOrderfrom(order.getOrderfrom());
+		waybill.setRequendtime(order.getRequendtime());
+		waybill.setRequstarttime(order.getRequstarttime());
+		waybill.setShaddress(order.getShaddress());
+		waybill.setState("0");// 阶段初始为 0
+		waybill.setSubcontractor(vehicleModel.getWlcompany());
+		waybill.setUnit(order.getUnit());
+		waybill.setVolume(order.getVolume());
+		waybill.setWeight(order.getWeight());
+		waybill.setCreatetime(new Date());
+		return waybill;
 	}
 
 	@Override

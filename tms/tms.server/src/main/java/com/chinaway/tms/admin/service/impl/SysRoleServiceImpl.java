@@ -61,6 +61,11 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 	}
 	
 	@Override
+	public List<SysRole> queryRoleByDeptid(Map<String, Object> argsMap) {
+		return sysRoleMapper.queryRoleByDeptid(argsMap);
+	}
+	
+	@Override
 	public SysRole queryRoleByUserId(int userId) {
 		return sysRoleMapper.queryRoleByUserId(userId);
 	}

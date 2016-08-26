@@ -79,12 +79,19 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	}
 
 	@Override
-	public Integer insertWaybill(Waybill waybill) {
+	public Integer insertWaybill(Waybill waybill , List<Orders> ordersList) {
 		// TODO 添加运单信息 初始化状态
-		return waybillMapper.insert(waybill);
+		 int ret = waybillMapper.insert(waybill);
+		 
+		 for(Orders orders: ordersList){
+			 ordersService.insertWaybillOrders(orders, waybill.getId(), waybill.getWlcompany());
+		 }
+		 
+		 return ret;
 	}
 
 	@Override
+	@Transactional
 	public int updateWaybill(Waybill waybill) {
 		int retCode = waybillMapper.updateSelective(waybill);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -102,12 +109,9 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 			argsmap.put("waybillid", waybill.getId());
 			int ret = ordersWaybillService.deleteByCtn(argsmap);
 
-			if (ret > 0) {
+			if (ret <= 0) {
 				// 返回成功标记
-				return 1;
-			} else {
-				// 返回失败标记
-				return -1;
+				retOrders = 1;
 			}
 		}else if("2".equals(waybill.getState())){
 			// 运单在途，订单阶段修改为 3订单在途

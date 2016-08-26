@@ -24,6 +24,13 @@ public interface SysDeptService extends BaseService<SysDept, Integer> {
 	List<SysDept> selectDeptByCtn(Map<String, Object> argsMap);
 	
 	/**
+	 * 按名称查询部门信息
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysDept> selectDeptByName(Map<String, Object> argsMap);
+	
+	/**
 	 * 根据id数组批量删除部门
 	 * @param idsArray
 	 * @return

@@ -60,4 +60,14 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 */
 	List<Orders> selectByIds(String ids);
 	
+	/**
+	 * 添加运单订单关系表
+	 * 
+	 * @param order
+	 * @param waybillid
+	 * @param wlcompany
+	 * @param ret
+	 */
+	public void insertWaybillOrders(Orders order, Integer waybillid, String wlcompany);
+	
 }

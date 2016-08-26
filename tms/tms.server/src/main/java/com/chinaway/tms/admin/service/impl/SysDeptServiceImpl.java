@@ -57,6 +57,11 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 	}
 	
 	@Override
+	public List<SysDept> selectDeptByName(Map<String, Object> argsMap) {
+		return sysDeptMapper.selectDeptByName(argsMap);
+	}
+	
+	@Override
 	@Transactional
 	public int deleteById(String ids) {
 		String[] idsStr = ids.split(",");

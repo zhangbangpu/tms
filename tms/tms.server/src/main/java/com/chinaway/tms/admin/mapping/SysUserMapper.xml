@@ -24,6 +24,11 @@
 		id,loginname,realname,password,type,name,intro,certificate,corporation,corporationim,phone,state,email,createtime,codeid,deptid
 	</sql>
 	
+	<!-- 管理部门查询的返回对象 -->
+	<sql id="Base_Column_dept_List">
+		a.id,a.loginname,a.realname,a.password,a.type,a.name,a.intro,a.certificate,a.corporation,a.corporationim,a.phone,a.state,a.email,a.createtime,a.codeid,a.deptid,b.name as deptname
+	</sql>
+	
 	<sql id="Base_Column_lb_List">
 		a.id,a.loginname,a.realname,a.password,a.type,a.name,a.intro,a.certificate,a.corporation,a.corporationim,a.phone,a.state,a.email,a.createtime,a.codeid,a.deptid,c.name as rolename
 	</sql>
@@ -149,8 +154,8 @@
 	<!-- 根据id查询 -->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
-		<include refid="Base_Column_List" />
-		from sys_user where id = #{id}
+		<include refid="Base_Column_dept_List" />
+		from sys_user a,sys_dept b where a.deptid = b.deptid and a.id = #{id}
 	</select>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
@@ -190,14 +195,14 @@
 	<!-- 插入记录 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.admin.model.SysUser">
 		insert into
-		sys_user(loginname,password,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid)
-		values(#{loginname},#{password},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid})
+		sys_user(loginname,password,realname,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid,email)
+		values(#{loginname},#{password},#{realname},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid},#{email})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="com.chinaway.tms.admin.model.SysUser">
 		update sys_user set
-		loginname=#{loginname},password=#{password},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state},codeid=#{codeid}
+		loginname=#{loginname},password=#{password},realname=#{realname},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state},codeid=#{codeid}
 		where id=#{id}
 	</update>
 

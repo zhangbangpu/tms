@@ -23,7 +23,7 @@
 		id,deptid,name,pid,levels,createtime,description,sotid,state,isenable,customerid,contact,address,tel,remark
 	</sql>
 
-	<!-- 动态查询条件 -->
+<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
@@ -74,6 +74,16 @@
 			</if>
 		</trim>
 	</sql>
+	
+	<!-- 按名称查询条件 -->
+	<sql id="name_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="name != null and name != '' ">
+				and name like CONCAT('%',#{name},'%')
+			</if>
+		</trim>
+	</sql>
 
 	<!-- 根据id查询 -->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -105,6 +115,14 @@
 		<include refid="Base_Column_List" />
 		from sys_dept
 		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 根据条件查询所有部门 -->
+	<select id="selectDeptByName" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_dept
+		<include refid="name_Where_Clause" />
 	</select>
 
 	<!-- 插入记录 -->
