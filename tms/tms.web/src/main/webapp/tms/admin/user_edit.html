@@ -88,10 +88,9 @@
             </div>
 
             <div class="clearfix"></div>
-            <!--
             <div class="col-xs-12 col-sm-6 col-md-6 ">
                 <div class="row">
-                    <label class="label col col-4 text-align-right ">用户手机号</label>
+                    <label class="label col col-4 text-align-right ">关联角色</label>
                     <section class="col col-8">
                         <label class="input">
                             <input type="text" id="mobile" name="mobile" placeholder="">
@@ -99,15 +98,19 @@
                     </section>
                 </div>
             </div>
-            -->
-
 
             <div class="col-xs-12 col-sm-6 col-md-6 ">
                 <div class="row">
                     <label class="label col col-4 text-align-right  ">用户电子邮箱</label>
                     <section class="col col-8">
                         <label class="input">
-                            <input type="text" id="email" name="email" placeholder="">
+                            <select id="roidId" name="roidId">
+                                <option value="1">车辆管理员</option>
+                                <option value="3">物流公司</option>
+                                <option value="4">订单管理员</option>
+                                <option value="7">运单管理员</option>
+                                <option value="8">后台管理员</option>
+                            </select>
                         </label>
                     </section>
                 </div>

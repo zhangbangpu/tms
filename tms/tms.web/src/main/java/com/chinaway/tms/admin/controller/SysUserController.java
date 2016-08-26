@@ -277,11 +277,13 @@ public class SysUserController {
 			} else {
 				user.setCreatetime(new Date());
 				ret = sysUserService.insert(user);
-
-				SysUserRole sysUserRole = new SysUserRole();
-				sysUserRole.setRoleid(3);
-				sysUserRole.setUserid(user.getId());
-				int retUr = sysUserRoleService.insert(sysUserRole);
+				int retUr = 0;
+				if (argsMap.get("roleId") instanceof Integer && null != argsMap.get("roleId")) {
+					SysUserRole sysUserRole = new SysUserRole();
+					sysUserRole.setRoleid((int) (argsMap.get("roleId")));
+					sysUserRole.setUserid(user.getId());
+					retUr = sysUserRoleService.insert(sysUserRole);
+				}
 				if (ret > 0 && retUr > 0) {
 					code = 0;
 					msg = "添加操作成功!";

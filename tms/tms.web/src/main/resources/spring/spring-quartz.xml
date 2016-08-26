@@ -28,11 +28,11 @@
 		<!-- cron表达式-->
 		<property name="cronExpression">
 			<!--<value>0 */1 * * * ?</value> 每分钟触发 -->
- 			<value>0/5 * * * * ?</value> <!-- 每5秒触发 -->
+ 			<value>0/10 * * * * ?</value> <!-- 每5秒触发 -->
 		</property>
 	</bean>
 	<!-- 暂时关闭定时任务 -->
-	<!-- 调度程序 
+	<!-- 调度程序     -->
 	<bean id="myScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
@@ -41,7 +41,7 @@
         </property>
         <property name="autoStartup" value="true"></property>
     </bean>
-    -->
+
     
 	<!-- 调度程序-多个
 	<bean id="myScheduler2" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
