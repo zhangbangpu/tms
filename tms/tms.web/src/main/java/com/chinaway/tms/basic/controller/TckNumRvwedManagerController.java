@@ -238,7 +238,7 @@ public class TckNumRvwedManagerController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改站点失败!";
+		String msg = "车次审核失败!";
 
 		int ret = 0;
 		try {
@@ -246,7 +246,7 @@ public class TckNumRvwedManagerController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改站点成功!";
+				msg = "车次审核成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();

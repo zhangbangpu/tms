@@ -117,12 +117,19 @@ function roleSave(newed) {
 
     var params = $("#frmInfo").serializeArray();
     
-    console.log(params);
+	var obj = document.getElementsByName('menuId'); // 选择所有name="'test'"的对象，返回数组
+	// 取到对象数组后，我们来循环检测它是不是被选中
+	var s = '';
+	for (var i = 0; i < obj.length; i++) {
+		if (obj[i].checked)
+			s += obj[i].value + ','; // 如果选中，将value添加到变量s中
+	} 
     
-    //  params.push({name:'deptid', value: $('#deptid').val()});
+    params.push({name:'menuIds', value: s});
     if (isupdate) {
         params.push({name:'id', value: updateid});
     }
+    
     //params += '&id=' + updateid;
     $ips.load("sysRole", "addRole", params, function(result) {
         if (result) {

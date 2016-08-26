@@ -56,7 +56,7 @@ var waybillRow = $('#generateWaybillbtn').closest('div');
 //	}
 //}
 $("#generateWaybill").bind('click', function() {
-	var ids = getRowIds(true);
+	var ids = getRowIds(false);
 	if ($('#wlcompany').val() == '' || $('#wlcompany').val() == '') {
 		$ips.error('承运商不能为空');
 		return false;
@@ -66,43 +66,38 @@ $("#generateWaybill").bind('click', function() {
 		return false;
 	}
 
-	$ips.load('tckNum', 'addTckNum', {
-		ordersid : ids,
-		wlcompany : $('#wlcompany').val(),
-		vehiclemodel : $('#vehiclemodel').val()
-	}, function(res) {
-		if (typeof res.code != 'undefined' && res.code != 0) {
-			$ips.error(res.message);
-			return false;
-		}
-		$ips.succeed('生成运单成功');
-		$('#myModal .modal-header button').trigger('click');
-	})
+	$ips.confirm("您确定要生成运单吗?",function(btn) {
+        if (btn == "确定") {
+			$ips.load('tckNum', 'addTckNum', {
+				ordersid : ids,
+				wlcompany : $('#wlcompany').val(),
+				vehiclemodel : $('#vehiclemodel').val()
+			}, function(res) {
+				if (typeof res.code != 'undefined' && res.code != 0) {
+					$ips.error(res.message);
+					return false;
+				}
+				$ips.succeed('生成运单成功');
+				$('#myModal .modal-header button').trigger('click');
+			})
+        }
+    });
+	
 	return false;
 });
 
 waybillRow.empty();
 $('<div class="btn-group"><a class="btn btn-default" data-button-resource="048625502851586667FA938190987180">生成运单</a></div>').bind('click', function() {
-	var ids = getRowIds(true);
-	if (ids.length != 1) {
-		ids.length > 1 ? $ips.error("只能选择一条！") : $ips.error("未选择记录！");
-		return;
+	var ids = getRowIds(false);
+	var orders = $ips.load("orders", "queryStatusById", {id : ids});
+    
+	if (orders.length > 0) {
+		$ips.error("订单号的状态不正确，生成运单失败！");
+		return false;
 	}
-	
-	$ips.load("orders", "queryStatusById", "id=" + ids,
-		function(result) {
-			if (typeof result.code != 'undefined' && result.code != 0) {
-				$ips.error("只有手动的状态才能生成运单！");
-				return false;
-			}
-			
-			$('#wlcompany').val('');
-			$('#vehiclemodel').val('');
-//			$('#myModal .modal-header button').trigger('click');
-	});
-}).attr({
-	'data-toggle' : "modal",
-	'data-target' : "#myModal"
+	$(this).attr({'data-toggle' : "modal",'data-target' : "#myModal"})
+	$('#wlcompany').val('');
+	$('#vehiclemodel').val('');
 }).appendTo(waybillRow);
 
 $("#exportbtn").click(function(){

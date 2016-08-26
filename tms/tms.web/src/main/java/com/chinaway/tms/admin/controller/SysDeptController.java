@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +101,29 @@ public class SysDeptController {
 //		Result result = new Result(code, resultMap, msg);
 
 		return new Result(0, sysDeptPgBn);
+	}
+	
+	/**
+	 * 根据名称查询部门信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/getDeptByName")
+	@ResponseBody
+	public Result getDeptByName(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		List<SysDept> sysDeptList = new ArrayList<SysDept>();
+		if(null != argsMap && null != argsMap.get("name")){
+			sysDeptList = sysDeptService.selectDeptByName(argsMap);
+		}
+		
+		return new Result(0, sysDeptList);
 	}
 	
 	/**

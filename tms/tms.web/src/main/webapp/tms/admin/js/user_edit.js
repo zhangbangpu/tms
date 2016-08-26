@@ -8,7 +8,7 @@
 //        $ips.load("sysUser", "queryOneById", {'id': param.id}, function(data) {
 //            if (data) {
 //                var data1 = new Array();
-//                chooseId = data.orgcode;
+//                chooseId = data.deptid;
 //                $.each(data, function(i, v) {
 //                    if (v != "" && v != null) {
 //                        data1[i] = v;
@@ -22,66 +22,66 @@
 ////                $('#showdriverimage').attr('src',data1['driverimage']);
 ////                $('#driverimageattach_tip').css('display','block');
 //            }
-//			orglist();
+//			deptlist();
 //        });
 //    } else {
 //        editid = '';
-//        orglist();
+//        deptlist();
 //    }
 //	
 //})
 
-//$("#roleids").select2({
-//	placeholder : '请选择角色',
-//	minimumInputLength : 1,
-//	multiple : false,
-//	allowClear : true,
-//	data : [],
-//	initSelection : function () {}
-//});
-//$("#orgcode").select2({
-//	placeholder : '请选择机构',
-//	minimumInputLength : 1,
-//	allowClear : true,
-//	// 数据加载
-//	query : function(query) {
-//		$ips.load('sysDept', 'getDeptByName', {
-//			keyword : query.term
-//		}, function(e) {
-//			var _pre_data = [];
-//			$.each(e, function(k, v) {
-//				_pre_data.push({
-//					id : v.orgcode,
-//					text : v.name
-//				});
-//			});
-//			var data = {
-//				results : _pre_data
-//			};
-//			query.callback(data);
-//		});
-//	},
-//	initSelection : function (e, r) {
-//	}
-//}).on('change', function (e) {
-//	var deptid = $('#deptid').select2('val');
-//	if (deptid == '') {
-//		$("#roleids").select2({'data' : []});
-//		$("#roleids").select2('val', '');
-//		return false;
-//	}
-//	$ips.load('sysRole', 'getRoleByDeptid', {deptid : deptid}, function(res) {
-//        var data = [];
-//        $.each(res, function(k, v) {
-//            data.push({
-//                id : v.id,
-//                text : v.name
-//            });
-//        });
-//        $("#roleids").select2({'data' : data});
-//		$("#roleids").select2('val', '');
-//    });
-//});
+$("#roleids").select2({
+	placeholder : '请选择角色',
+	minimumInputLength : 1,
+	multiple : false,
+	allowClear : true,
+	data : [],
+	initSelection : function () {}
+});
+$("#deptid").select2({
+	placeholder : '请选择机构',
+	minimumInputLength : 1,
+	allowClear : true,
+	// 数据加载
+	query : function(query) {
+		$ips.load('sysDept', 'getDeptByName', {
+			name : query.term
+		}, function(e) {
+			var _pre_data = [];
+			$.each(e, function(k, v) {
+				_pre_data.push({
+					id : v.deptid,
+					text : v.name
+				});
+			});
+			var data = {
+				results : _pre_data
+			};
+			query.callback(data);
+		});
+	},
+	initSelection : function (e, r) {
+	}
+}).on('change', function (e) {
+	var deptidP = $('#deptid').select2('val');
+	if (deptidP == '') {
+		$("#roleids").select2({'data' : []});
+		$("#roleids").select2('val', '');
+		return false;
+	}
+	$ips.load('sysRole', 'getRoleByDeptid', {deptid : deptidP}, function(res) {
+        var data = [];
+        $.each(res, function(k, v) {
+            data.push({
+                id : v.id,
+                text : v.name
+            });
+        });
+        $("#roleids").select2({'data' : data});
+		$("#roleids").select2('val', '');
+    });
+});
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
 if (parms["id"]) {
@@ -93,26 +93,29 @@ if (parms["id"]) {
 		$ips.fillFormInput('frmInfo', entity);
 
 		$("#deptid").select2('data', {id : entity.deptid, text : entity.deptname}).val(entity.deptid);
-//		var roles = $ips.load('role', 'getRoleByDeptid', {orgcode : $('#deptid').val()});
-//		var initRoles = [];
-//		$.each(roles, function(k, v) {
-//            initRoles.push({
-//                id : v.id,
-//                text : v.name
-//            });
-//        });
-//		$("#roleids").select2({data : initRoles});
-//		$('#roleids').select2('val', entity.roleids);
+		var roles = $ips.load('sysrole', 'getRoleByDeptid', {deptid : $('#deptid').val()});
+//		roles = entity.roleList;
+		alert(roles);
+		var initRoles = [];
+		$.each(roles, function(k, v) {
+			alert(v.name);
+            initRoles.push({
+                id : v.id,
+                text : v.name
+            });
+        });
+		$("#roleids").select2({data : initRoles});
+		$('#roleids').select2('val', entity.roleids);
 		$('input[name=username]').attr("readonly", "readonly");
 		$('#userpic').hide();
 		var userpicRow = $('#userpic').closest('label');
 		userpicRow.empty();
-		$('<a href="">上传</a>').attr({
-			'data-toggle' : "modal",
-			'data-target' : "#myUpload"
-		}).addClass('btn btn-sm btn-link').bind('click', function() {
-			$('#imgFile').val('');
-		}).appendTo(userpicRow);
+//		$('<a href="">上传</a>').attr({
+//			'data-toggle' : "modal",
+//			'data-target' : "#myUpload"
+//		}).addClass('btn btn-sm btn-link').bind('click', function() {
+//			$('#imgFile').val('');
+//		}).appendTo(userpicRow);
 		$('#password').hide();
 		var passwordRow = $('#password').closest('label');
 		passwordRow.empty();
@@ -128,7 +131,8 @@ if (parms["id"]) {
 		// 需要更新的Id
 		updateid = entity['id'];
 	}
-} else {
+} 
+//else {
 	// $('#userpic').closest('div').hide();
 	// $('#userpic').hide();
 	// var userpicRow = $('#userpic').closest('label');
@@ -136,7 +140,7 @@ if (parms["id"]) {
 	// $('<input href="">上传</a>').bind('click', function() {
 	// $('#imgFile').val('');
 	// }).appendTo(userpicRow);
-}
+//}
 
 
 $('#saveNewPassword').bind(
@@ -173,26 +177,26 @@ $('#saveNewPassword').bind(
 		});
 // Load form valisation dependency
 loadScript("js/plugin/jquery-form/jquery-form.min.js", runFormValidation);
-loadScript("js/hui/jquery.hui.upload.js", uploadFile);
+//loadScript("js/hui/jquery.hui.upload.js", uploadFile);
 
 // 上传头像
-function uploadFile() {
+//function uploadFile() {
 	// 编辑时上传头像
-	$("#imgFile").upload(
-			{
-				module : "sysUser",
-				method : "uploadImage",
-				onSuccess : function(uploadRes) {
-					if (uploadRes.data) {
-						var appendInput = $("<input type='hidden' value='"
-								+ uploadRes.data + "' name='picid' />");
-						$("#frmInfo").append(appendInput);
-					} else {
-						console.log('UPLOAD ERROR');
-					}
-
-				}
-			});
+//	$("#imgFile").upload(
+//			{
+//				module : "sysUser",
+//				method : "uploadImage",
+//				onSuccess : function(uploadRes) {
+//					if (uploadRes.data) {
+//						var appendInput = $("<input type='hidden' value='"
+//								+ uploadRes.data + "' name='picid' />");
+//						$("#frmInfo").append(appendInput);
+//					} else {
+//						console.log('UPLOAD ERROR');
+//					}
+//
+//				}
+//			});
 
 	// 新建上传头像
 	// $("#userpic").upload({
@@ -205,17 +209,17 @@ function uploadFile() {
 	// });
 
 	// 编辑时上传头像
-	$('#saveImage').bind('click', function() {
-		if ($('#imgFile').val() == '') {
-			$ips.error('没有选择文件');
-			return false;
-		}
-
-		$("#imgFile").upload("submit");
-		$('#myUpload .modal-header button').trigger('click');
-		return false;
-	});
-}
+//	$('#saveImage').bind('click', function() {
+//		if ($('#imgFile').val() == '') {
+//			$ips.error('没有选择文件');
+//			return false;
+//		}
+//
+//		$("#imgFile").upload("submit");
+//		$('#myUpload .modal-header button').trigger('click');
+//		return false;
+//	});
+//}
 
 // Registration validation script
 function runFormValidation() {

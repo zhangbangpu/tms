@@ -12,28 +12,6 @@
         <header>基本信息</header>
 
         <fieldset>
-<!--             <div class="col-xs-12 col-sm-6"> -->
-<!--                 <div class="row"> -->
-<!--                     <label class="label col col-4 text-align-right  txt-color-red ">所属机构</label> -->
-<!--                     <section class="col col-8"> -->
-<!--                         <div class="form-group"> -->
-<!--                             <input type="hidden" class="select2" id="deptid" name="deptid" data-placeholder="请选择机构" style="width:100%" value=""/> -->
-<!--                         </div> -->
-<!--                     </section> -->
-<!--                 </div> -->
-<!--             </div> -->
-
-<!--             <div class="col-xs-12 col-sm-6"> -->
-<!--                 <div class="row"> -->
-<!--                     <label class="label col col-4 text-align-right  txt-color-red ">角色</label> -->
-<!--                     <section class="col col-8"> -->
-<!--                         <div class="form-group"> -->
-<!--                             <input type="hidden" class="select2" id="roleids" name="roleids" data-placeholder="请选择角色" style="width:100%" value=""/> -->
-<!--                         </div> -->
-<!--                     </section> -->
-<!--                 </div> -->
-<!--             </div> -->
-
             <div class="clearfix"></div>
 
             <div class="col-xs-12 col-sm-6 col-md-6">
@@ -87,31 +65,37 @@
                 </div>
             </div>
 
-            <div class="clearfix"></div>
-            <div class="col-xs-12 col-sm-6 col-md-6 ">
-                <div class="row">
-                    <label class="label col col-4 text-align-right ">关联角色</label>
-                    <section class="col col-8">
-                        <label class="input">
-                            <input type="text" id="mobile" name="mobile" placeholder="">
-                        </label>
-                    </section>
-                </div>
-            </div>
-
             <div class="col-xs-12 col-sm-6 col-md-6 ">
                 <div class="row">
                     <label class="label col col-4 text-align-right  ">用户电子邮箱</label>
                     <section class="col col-8">
                         <label class="input">
-                            <select id="roidId" name="roidId">
-                                <option value="1">车辆管理员</option>
-                                <option value="3">物流公司</option>
-                                <option value="4">订单管理员</option>
-                                <option value="7">运单管理员</option>
-                                <option value="8">后台管理员</option>
-                            </select>
+                            <input type="text" id="email" name="email" placeholder="">
                         </label>
+                    </section>
+                </div>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <div class="col-xs-12 col-sm-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  txt-color-red ">角色</label>
+                    <section class="col col-8">
+                        <div class="form-group">
+                            <input type="hidden" class="select2" id="roleids" name="roleids" data-placeholder="请选择角色" style="width:100%" value=""/>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  txt-color-red ">所属机构</label>
+                    <section class="col col-8">
+                        <div class="form-group">
+                            <input type="hidden" class="select2" id="deptid" name="deptid" data-placeholder="请选择机构" style="width:100%" value=""/>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -127,24 +111,32 @@
 <!--              	</div> -->
 <!--             </div> -->
 
-            <!-- 
+            <div class="clearfix"></div>
             
             <div class="col-xs-12 col-sm-6 col-md-6 ">
                 <div class="row">
                     <label class="label col col-4 text-align-right txt-color-red ">状态</label>
                     <section class="col col-8">
                         <label class="select">
-                            <select id="status" name="status">
-                                                           <option value="0">可用</option>
-                                                           <option value="1">禁用</option>
-                                                   </select>
+                            <select id="state" name="state">
+	                            <option value="0">可用</option>
+	                            <option value="1">禁用</option>
+                            </select>
                         </label>
                     </section>
                 </div>
             </div>
-            -->
-
-            <div class="clearfix"></div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  ">电话号码</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="phone" name="phone" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
 
         </fieldset>
 

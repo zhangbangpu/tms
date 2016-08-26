@@ -3,9 +3,11 @@ package com.chinaway.tms.quartz;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.service.OrdersService;
 
@@ -25,7 +27,6 @@ public class AutoGenerateWaybill {
 	}
 
 	public void execute() {
-		System.out.println("quartz success!");
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", "0");
@@ -36,21 +37,20 @@ public class AutoGenerateWaybill {
 				argsMap.put("id", orders.getId());
 				List<String> waybills = ordersService.generateWaybill(orders);
 				if (null != waybills && waybills.size() > 0) {
-					// TODO 打日志
-					System.out.println("orders=" + orders.getId());
+//					logger.debug("orders=" + orders.getId());
 				}
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+//			logger.error(e.getMessage());
 		} finally {
 			try {
 			} catch (Exception e) {
-				e.printStackTrace();
+//				logger.error(e.getMessage());
 			} finally {
 				try {
 				} catch (Exception e) {
-					e.printStackTrace();
+//					logger.error(e.getMessage());
 				}
 			}
 		}

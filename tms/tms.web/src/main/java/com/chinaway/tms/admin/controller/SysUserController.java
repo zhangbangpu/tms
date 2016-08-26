@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.model.SysUserRole;
+import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.admin.service.SysUserRoleService;
 import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.utils.MyBeanUtil;
@@ -27,6 +30,9 @@ public class SysUserController {
 
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
+	
+	@Autowired
+	private SysRoleService sysRoleService;
 
 	/**
 	 * 根据条件查询站点信息<br>
@@ -150,7 +156,6 @@ public class SysUserController {
 	 * 根据条件查询单个用戶信息<br>
 	 * 返回用户的json串
 	 * 
-	 * @param userInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/queryOneById")
@@ -169,7 +174,7 @@ public class SysUserController {
 
 		// try {
 		SysUser sysUser = sysUserService.selectById(id == "" ? 0 : Integer.parseInt(id));
-
+		sysUser.setRoleList(sysRoleService.queAllRoleByCtn(new HashMap<String, Object>()));
 		// if (null != sysUser) {
 		// code = 0;
 		// msg = "根据id查询用戶操作成功!";
@@ -208,7 +213,7 @@ public class SysUserController {
 		SysUser user = new SysUser();
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		// user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
-		if (null != argsMap.get("id")) {
+		if (argsMap.get("roleId") instanceof String && StringUtils.isNotEmpty(String.valueOf(argsMap.get("id")))) {
 			user.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
 		}
 		if (null != argsMap.get("certificate")) {
@@ -278,9 +283,10 @@ public class SysUserController {
 				user.setCreatetime(new Date());
 				ret = sysUserService.insert(user);
 				int retUr = 0;
-				if (argsMap.get("roleId") instanceof Integer && null != argsMap.get("roleId")) {
+				if (argsMap.get("roleids") instanceof String
+						&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("roleids")))) {
 					SysUserRole sysUserRole = new SysUserRole();
-					sysUserRole.setRoleid((int) (argsMap.get("roleId")));
+					sysUserRole.setRoleid(Integer.parseInt(String.valueOf(argsMap.get("roleids"))));
 					sysUserRole.setUserid(user.getId());
 					retUr = sysUserRoleService.insert(sysUserRole);
 				}

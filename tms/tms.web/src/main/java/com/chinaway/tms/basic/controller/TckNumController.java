@@ -17,6 +17,7 @@ import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.VehicleModel;
 import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.basic.service.OrdersService;
+import com.chinaway.tms.basic.service.OrdersWaybillService;
 import com.chinaway.tms.basic.service.VehicleModelService;
 import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.utils.MyBeanUtil;
@@ -32,6 +33,9 @@ public class TckNumController {
 	
 	@Autowired
 	private OrdersService ordersService;
+	
+	@Autowired
+	private OrdersWaybillService ordersWaybillService;
 	
 	@Autowired
 	private VehicleModelService vehicleModelService;
@@ -146,16 +150,27 @@ public class TckNumController {
 				ret = waybillService.updateSelective(waybill);
 			}else{
 				if(null != waybill.getOrdersid()){
-					Orders orders = ordersService.selectById(waybill.getOrdersid());
+					List<Orders> ordersList = ordersService.selectByIds(waybill.getOrdersid());
 					Map<String, Object> map = new HashMap<String,Object>();
 					map.put("wlcompany", waybill.getWlcompany());
 					map.put("name", waybill.getVehiclemodel());
 					List<VehicleModel> vehicleModelList = vehicleModelService.selectAllVehicleModelByCtn(map);
 					if(null != vehicleModelList && vehicleModelList.size() > 0){
-						waybill = ordersService.setWaybill(orders, vehicleModelList.get(0));
+						Orders ordersNew = new Orders();
+						double totalVolume = 0d;
+						double totalWeight = 0d;
+						for(Orders orders: ordersList){
+							totalVolume += orders.getVolume();
+							totalWeight += orders.getWeight();
+							ordersNew = orders;
+						}
+						ordersNew.setVolume(totalVolume);
+						ordersNew.setWeight(totalWeight);
+						waybill = ordersService.setWaybill(ordersNew, vehicleModelList.get(0));
 					}
 					
-					ret = waybillService.insertWaybill(waybill);
+					ret = waybillService.insertWaybill(waybill, ordersList);
+
 				}
 			}
 			if (ret > 0) {
@@ -209,7 +224,7 @@ public class TckNumController {
 	}
 	
 	/**
-	 * 修改站点信息<br>
+	 * 审核运单信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param userInfo
@@ -224,7 +239,7 @@ public class TckNumController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改站点失败!";
+		String msg = "审核运单失败!";
 
 		int ret = 0;
 		try {
@@ -232,7 +247,7 @@ public class TckNumController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改站点成功!";
+				msg = "审核运单成功!";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();

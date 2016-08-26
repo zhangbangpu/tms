@@ -27,8 +27,8 @@
 		<property name="jobDetail" ref="myDetail"></property>
 		<!-- cron表达式-->
 		<property name="cronExpression">
-			<!--<value>0 */1 * * * ?</value> 每分钟触发 -->
- 			<value>0/10 * * * * ?</value> <!-- 每5秒触发 -->
+			<value>0 */5 * * * ?</value><!-- 每分钟触发 -->
+ 			<!--<value>0/10 * * * * ?</value>  每5秒触发 -->
 		</property>
 	</bean>
 	<!-- 暂时关闭定时任务 -->

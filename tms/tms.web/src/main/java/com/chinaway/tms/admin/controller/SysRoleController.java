@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.model.SysRoleMenu;
+import com.chinaway.tms.admin.service.SysMenuService;
 import com.chinaway.tms.admin.service.SysRoleMenuService;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.utils.MyBeanUtil;
@@ -28,7 +29,10 @@ public class SysRoleController {
 	private SysRoleService sysRoleService;
 	
 	@Autowired
-	private SysRoleMenuService sysRoleDeptService;
+	private SysRoleMenuService sysRoleMenuService;
+	
+	@Autowired
+	private SysMenuService sysMenuService;
 
 	/**
 	 * 根据条件查询站点信息<br>
@@ -112,6 +116,25 @@ public class SysRoleController {
 	 * @param deptInfo
 	 * @return
 	 */
+	@RequestMapping(value = "/getRoleByDeptid")
+	@ResponseBody
+	public Result getRoleByDeptid(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		List<SysRole> sysRoleList = sysRoleService.queryRoleByDeptid(argsMap);
+		return new Result(0, sysRoleList);
+	}
+	
+	/**
+	 * 根据条件查询所有角色信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param deptInfo
+	 * @return
+	 */
 	@RequestMapping(value = "/queryAllRole")
 	@ResponseBody
 	public Result queryAllRole(HttpServletRequest request) {
@@ -120,31 +143,7 @@ public class SysRoleController {
 		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-//		int code = 1;
-//		String msg = "查询所有角色操作失败!";
-//		Map<String, Object> argsMap = new HashMap<String, Object>();
-//		int ret = 0;
-//		try {
-			List<SysRole> sysRoleList = sysRoleService.queAllRoleByCtn(argsMap);
-//			if(null != sysRoleList){
-//				ret = sysRoleList.size();
-//			}
-//			
-//			if (ret > 0) {
-//				code = 0;
-//				msg = "查询所有角色操作成功!";
-//				resultMap.put("sysRoleList", sysRoleList);
-//			}
-//
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
-
-//		resultMap.put("code", code);
-//		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
-
-//		return JsonUtil.obj2JsonStr(result);
+		List<SysRole> sysRoleList = sysRoleService.queAllRoleByCtn(argsMap);
 		return new Result(0, sysRoleList);
 	}
 	
@@ -171,7 +170,7 @@ public class SysRoleController {
 
 //		try {
 			SysRole sysRole = sysRoleService.selectById(id == "" ? 0 : Integer.parseInt(id));
-
+			sysRole.setMenuList(sysMenuService.selectAll4Page(new HashMap<String, Object>()));
 //			if (null != sysRole) {
 //				code = 0;
 //				msg = "根据id查询部门操作成功!";
@@ -230,21 +229,29 @@ public class SysRoleController {
 		String msg = "添加操作失败!";
 
 		int ret = 0;
+		int insertRet = 0;
 		try {
 			role.setCreatetime(new Date());
 			if (role.getId() != null) {
 				ret = sysRoleService.updateSelective(role);
 			} else {
 				ret = sysRoleService.insert(role);
-				SysRoleMenu sysRoleMenu = new SysRoleMenu();
-				for(int i=0;i<5;i++){
-					sysRoleMenu.setMenuid(i+1);
-					sysRoleMenu.setRoleid(role.getId());
-					sysRoleDeptService.insert(sysRoleMenu);
+				
+				if (argsMap.get("menuIds") instanceof String
+						&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("menuIds")))) {
+					String[] menuids = String.valueOf(argsMap.get("menuIds")).split(",");
+					SysRoleMenu sysRoleMenu = new SysRoleMenu();
+					for (int i = 0; i < menuids.length; i++) {
+						if (StringUtils.isNotEmpty((menuids[i]))) {
+							sysRoleMenu.setMenuid(Integer.parseInt(menuids[i]));
+							sysRoleMenu.setRoleid(role.getId());
+							insertRet = sysRoleMenuService.insert(sysRoleMenu);
+						}
+					}
 				}
 			}
 			
-			if (ret > 0) {
+			if (ret > 0 && insertRet > 0) {
 				code = 0;
 				msg = "添加操作成功!";
 			}

@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -114,24 +115,27 @@ public class OrdersManagerController {
 	 */
 	@RequestMapping(value = "/queryStatusById")
 	@ResponseBody
-	public Result queryStatusById(HttpServletRequest request, @RequestParam("id") String id) {
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		argsMap.put("id", id);
-		argsMap.put("state", "0"); //  初始状态
-		argsMap.put("status", "1"); // 手动状态
-		List<Orders> ordersList = null;
-		String code = "0";
+	public Result queryStatusById(HttpServletRequest request, @RequestParam("id") String ids) {
+		//argsMap.put("state", "0"); //  初始状态
+		//argsMap.put("status", "1"); // 手动状态
+		List<Orders> retOrdersList = new ArrayList<Orders>();
+		int code = 0;
 		try {
-			ordersList = ordersService.selectAllOrdersByCtn(argsMap);
-            if(null != ordersList && ordersList.size() > 0){
-            	code = "1";
-            }
+			if(null != ids){
+				List<Orders> ordersList = ordersService.selectByIds(ids);
+				for(Orders orders : ordersList){
+					if(!"0".equals(orders.getState()) || !"1".equals(orders.getStatus())){
+						retOrdersList.add(orders);
+					}
+				}
+			}
 		} catch (Exception e) {
 			e.getStackTrace();
+			code = 1;
 		}
 
-		Result result = new Result(0, ordersList, code);
-		return result;
+//		Result result = new Result(0, retOrdersList, code);
+		return new Result(code, retOrdersList);
 //		return new Result(0, code);
 	}
 	
