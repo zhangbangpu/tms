@@ -1,5 +1,7 @@
 package com.intercept;
 
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -12,7 +14,8 @@ public class CommonInterceptor implements HandlerInterceptor {
 	private final Logger log = LoggerFactory.getLogger(CommonInterceptor.class);  
     public static final String LAST_PAGE = "com.alibaba.lastPage";  
     
-    @Override  
+    @SuppressWarnings({ "unused", "unchecked" })
+	@Override  
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {  
     	if ("GET".equalsIgnoreCase(request.getMethod())) {  
             RequestUtil.saveRequest(request);  
@@ -35,8 +38,24 @@ public class CommonInterceptor implements HandlerInterceptor {
             response.getWriter().flush();
             response.getWriter().close();
             return false;  
-        }else  
-            return true;  
+        }else{
+        	List<Map<String, Object>> sysMenuMap = (List<Map<String, Object>>) request.getSession().getAttribute("sysMenu");
+            boolean isValied = false;
+            for(Map<String,Object> map :sysMenuMap){
+            	if(requestUri.indexOf(String.valueOf(map.get("requesturl"))) != -1){
+            		isValied = true;
+            	}
+            }
+            
+            // 没有访问该地址的权限
+            if(!isValied){
+            	response.getWriter().println("<script>window.location.href='/noPermission.html';</script>");
+            	response.getWriter().flush();
+                response.getWriter().close();
+                return false;
+            }else
+        	return true;  
+        }
     }  
   
     @Override  

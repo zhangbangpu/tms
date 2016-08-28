@@ -64,6 +64,11 @@ public class LoginController {
 				request.getSession().setAttribute("sysUser", sysUser);
 				request.getSession().setAttribute("username", sysUser.getLoginname());
 				resultMap.put("username", sysUser.getLoginname());
+				
+				SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
+				request.getSession().setAttribute("rolename", sysRole.getName());
+				List<Map<String, Object>> sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
+				request.getSession().setAttribute("sysMenu", sysMenuMap);
 //				//连表查询角色信息
 				code = 0;
 				msg = "登录成功!";
@@ -88,6 +93,7 @@ public class LoginController {
 	 * @param userInfo
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/loginGetMenuList")
 	@ResponseBody
 	public Result loginGetMenuList(HttpServletRequest request) {
@@ -96,16 +102,18 @@ public class LoginController {
 			map.put("code", 2);
 			return new Result(0, map);
 		}
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-		argsMap.put("id", sysUser.getId());
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+//		argsMap.put("id", sysUser.getId());
 
 		int code = 1;
 		String msg = "获取菜单异常!";
 		List<Map<String, Object>> sysMenuMap = new ArrayList<Map<String, Object>>();
 		try {
-			SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
-			sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
+//			SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
+//			sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
+			
+			sysMenuMap = (List<Map<String, Object>>) request.getSession().getAttribute("sysMenu");
 			if (null != sysMenuMap) {
 				code = 0;
 				msg = "获取菜单成功!";
