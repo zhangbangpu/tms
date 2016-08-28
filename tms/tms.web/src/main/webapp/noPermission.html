@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<title>没权限</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<style type="text/css">
+		</style>
+	</head>
+	<script type="text/javascript">     
+		function countDown(secs,surl){     
+		 	//alert(surl);     
+			 var jumpTo = document.getElementById('jumpTo');
+			 jumpTo.innerHTML=secs;  
+			 if(--secs>0){     
+			     setTimeout("countDown("+secs+",'"+surl+"')",1000);     
+			 }else{       
+		     	location.href=surl;     
+		     }     
+		 }     
+	</script> 
+</head>
+	<body>
+		<!-- MAIN CONTENT -->
+		<div style="margin-left:350px;margin-top:200px;" >
+			<div>
+				<img style="height:68px;max-width:438px" src="img/g7tms/noPermission.png"/>
+				</br>
+				<span id="jumpTo">5</span>后自动跳转到登录
+				点击<a href="login.html">返回</a>登录
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">countDown(5,'login.html');</script>  
+</html>
