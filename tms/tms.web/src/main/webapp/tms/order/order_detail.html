@@ -1,0 +1,374 @@
+<style>
+    .schedule{ padding: 32px 0; margin: 0 auto;}
+    .schedule .stage{margin-bottom: 48px; padding-left: 69px;}
+    .schedule .stage li{ height: 22px; margin-right: 6px; display: inline-block}
+    .schedule .stage .gou{ position: relative; color: #1bbd8b; font-size: 22px; margin: 3px 1px 0 5px; display: none; cursor: pointer;}
+    .schedule .stage .txt{ font-size: 17px; line-height: 22px; color: #333; width: 150px; text-align: center; padding: 10px 5px 10px; font-weight: bold; background-color: #eee; border-radius: 22px;}
+    .schedule .stage .txt .onOverHide{display: block; padding-left: 2px; padding-right: 5px;}
+    .schedule .stage .dash{ width: 84px; height: 5px; background-color:#e5e5e5; margin-top: 18px; margin-right: 10px;}
+    .schedule .stage li.done .gou{display: inline-block;} 
+    .schedule .stage li.done .dash{ background-color:#1bbd8b;}
+    .schedule .info-box{ text-align: left; left: 50%; top: -164px; margin-left: -110px; -webkit-text-stroke-width:0; display: none; cursor: default}
+    .schedule .info-box .body{ border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;padding: 10px 20px;}
+    .schedule .info-box .body a{ color: #eee;}
+    .schedule .info-box .body .driver{ margin: 0 2px;}
+    .schedule .info-box .event{ font-size: 12px;}
+    .schedule .info-box:after{border-top-color: #414141;}
+    .timeTable .wrap{ margin: 0 auto; position: relative;}
+    .timeTable .title{ width: 69px; line-height: 40px; position: absolute; left: 0; top: 0;}
+    .timeTable .timeDiv{ border:1px solid #d6d6d6; margin-left: 69px; }
+    ul,li{list-style:none; margin: 0; padding: 0;}
+    .timeTable .timeDiv li{ float: left; width: 254px; height: 38px;  padding-left: 60px;  line-height: 38px;}
+    .timeTable .tb1 li{ color: #333; background: url(img/order_timeTable_1.png) no-repeat right 0}
+    .timeTable li:first-child{  width: 214px; padding-left: 25px; }
+    .timeTable li:last-child{ background-image: none; width: 200px;}
+    .timeTable .tb2{ margin-top: -1px;}
+    .timeTable .tb2 li.done{ color: #fff; background: url(img/order_timeTable_1.png) no-repeat right 0 #1bbe8a;}
+    .timeTable .tb2 .done.last{ background-image: url(img/order_timeTable_3.png)}
+    .timeTable .tb2 li.done_red{ color: #fff; background: url(img/order_timeTable_1.png) no-repeat right 0 #db4a67;}
+    .timeTable .tb2 .done_red.last{ background-image: url(img/order_timeTable_3_red.png)}
+    /*info窗口*/
+    .info-box{
+        position: absolute;
+        width: 220px;
+        /*top: 0;
+        right: 10px;*/
+        z-index: 999;
+        background-color: #353535;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+    }
+    .info-box:after{
+        position: absolute;
+        content: "";
+        left: 50%;
+        bottom: -20px;
+        border-color: #353535 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+        border-style: solid;
+        border-width: 10px;
+        margin-left: -10px;
+    }
+    .info-box .head{
+        height: 36px;
+        padding-left: 20px;
+        color: #eaeaea;
+        border-bottom: 1px solid #666;
+        line-height: 36px;
+        font-size: 15px;
+    }
+    .info-box .favorite{
+        margin:9px 14px 0 0;
+        /*cursor: pointer;*/
+    }
+    .info-box .favorite.active{
+        color: #ff9220;
+    }
+    .info-box .body{
+        background-color: #414141;
+        color: #b2b2b2;
+    }
+    .info-box .body .car{font-size: 13px; line-height: 20px;}
+    .info-box .body .event{ line-height: 21px;}
+    .info-box .foot{ padding: 9px 0; display: flex}
+    .info-box .foot  li{ flex:1; line-height: 20px; color: #fff; text-align: center; border-right: 1px solid #fff; cursor: pointer}
+    .info-box .foot  li:last-child{ border-right: none}
+    .table1{ width: 100%}
+    .table1 tr th{ padding:10px; text-align: right; font-weight: normal; color: #999;}
+    .table2{ width: 100%}
+    .table2 tr th,.table2 tr td{ padding:10px;}
+    .alert{ margin: 0!important;border-width:0 0 1px 0;}
+    .alert h4{  line-height: 20px;font-family: sans-serif,"Microsoft yahei";font-size: 15px;}
+    .alert p{ color: #333; text-indent: 87px;}
+
+
+    .schedule .stage .txt{
+        font-size: 13px;
+    }
+
+    .schedule .stage .txt {
+        padding: 5px 5px;
+    }
+
+    .schedule .stage .dash {
+        margin-top: 13px;
+    }
+    .schedule .stage {
+        margin-bottom: 40px;
+    }
+
+    #eventContent li{
+
+        font-size: 14px;
+        position: relative;
+        display: block;
+        padding-left: 15px;
+        padding-right:15px;
+        padding-top:3px;
+        padding-bottom:3px;
+        background-color: #fff;
+       /* height: 20px;
+        line-height:20px;*/
+        /* border: 1px solid #ddd; */
+        /*background-color: #f9f9f9;*/
+    }
+
+    #eventContent ul{
+        padding: 5px 15px;
+    }
+    #eventContent li a{
+        display: inline-block;
+        height:20px;
+        color:black;text-decoration:none;
+    }
+
+</style>
+
+<style type="text/css">
+    /*html, body {
+        height: 100%;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }*/
+    .reset-box-sizing,.reset-box-sizing *,.reset-box-sizing *:before,.reset-box-sizing *:after {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+    div.decoration {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        background: white;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+    }
+    #mapDiv{
+        /*position: absolute;*/
+        /*top:0;*/
+        /*bottom: 0;*/
+        /*right: 0;*/
+        /*left: 0;*/
+        /*width: 100%;*/
+        height: 400px;
+        background: #CEDDF2;
+        overflow: hidden;
+    }
+    #alertDiv{
+        position: absolute;
+        bottom: -288px;
+        left: -1px;
+        right: -1px;
+        background: #fff;
+        height: 320px;
+    }
+    #left-component {
+        width:380px;
+        min-width: 380px;
+    }
+
+    #vertical-divider {
+        left: 380px;
+        width: 5px;
+        background: #CCDADF;
+        border-right:1px solid #92A2A8;
+        border-left:1px solid #92A2A8;
+    }
+
+    #right-component {
+        left:380px;
+        margin-left: 5px;
+    }
+    .overHidden{
+        overflow: hidden!important;
+    }
+
+    .alertOpen{
+        bottom:-1px!important;
+    }
+    .map-leftList{padding-top:142px;}
+    .map-leftList .searchBox{position:absolute;top:0;left:0;right:0;z-index:10}
+    #leftToggleBtn{position:absolute;top:50%;bottom:50%;left:-1px; margin-top:-32px; width:14px; height:64px; background:#9EB9C2; border:1px solid #92A2A8; border-left:none; line-height:64px; z-index:10}
+
+    .hideLeftCom #left-component, .hideLeftCom #vertical-divider,.hideSearchOp{display: none;}
+    .hideLeftCom #right-component{left: 0!important;margin-left: 0!important;}
+    .hideLeftCom #leftToggleBtn{width: 17px!important;}
+
+
+    /*回放按钮位置*/
+    .playSlider{height:50px;position:relative}
+    /* 路线设置*/
+
+    #lineSetting-btn{
+        position:absolute;top:100px;right:5px;
+    }
+    #lineSetting-dialog{
+        position: absolute;top: 100px; right: -360px; width: 340px;
+    }
+    .right-ang:before{
+        left: auto !important;right: 19px;
+    }
+    .right-ang:after{
+        left: auto !important;right: 20px;
+    }
+
+    #review-btn{
+        position:absolute;top:230px;right:5px;
+    }
+
+    #review-dialog{
+        position: absolute;top: 50px; left: -360px; width: 340px;
+    }
+
+</style>
+
+
+<!-- <div class="well margin-top-10" style="overflow-x: auto;">
+    <div class="schedule">
+        <ul class="stage clearfix" id="status"> </ul>
+        <div class="timeTable">
+            <div class="wrap clearfix">
+                <span class="title">计划时间</span>
+                <ul class="timeDiv tb1 clearfix pull-left" id="plantime"></ul>
+            </div>
+            <div class="wrap clearfix">
+                <span class="title">实际时间</span>
+                <ul class="timeDiv tb2 clearfix pull-left" id="standtime"></ul>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="row">
+	<div class="col col-sm-6 col-xs-12">
+		<a href="#tms/order/order_list.html" class="btn btn-default" > &lt; <span langlanguage="back">返回</span></a>
+	</div>
+</div>
+<div class="row"><br /></div>
+<div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-0" data-widget-sortable="true" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+    <header>
+        <ul class="nav nav-tabs pull-left in">
+            <li class="active">
+                <a href="#hr1" data-toggle="tab"> <span class="hidden-mobile hidden-tablet"> 状态详情 </span> </a>
+            </li>
+            <li>
+                <a href="#hr2" data-toggle="tab"> <span class="hidden-mobile hidden-tablet"> 订单详情  </span> </a>
+            </li>
+            <li>
+                <a href="#hr3" data-toggle="tab"> <span class="hidden-mobile hidden-tablet"> 货品明细   </span> </a>
+            </li>
+        </ul>
+    </header>
+    <div class="tab-content no-padding">
+        <div id="hr1" class="tab-pane active">
+            <ul class="widget-body" style="margin-top:20px" id="eventContent"></ul>
+        </div>
+        <div id="hr2" class="tab-pane">
+            <div class="widget-body padding-10">
+                <table class="table1 table-striped">
+                    <tr>
+                        <th width="10%">订单号</th>
+                        <td width="23%" id="orderno"></td>
+                        <th width="10%">总件数</th>
+                        <td width="23%" id="number"></td>
+                        <th width="10%">要求发货时间</th>
+                        <td width="23%" id="sdatetime"></td>
+                    </tr>
+                    <tr>
+                        <th>ERP/WMS单号</th>
+                        <td id="wmsno"></td>
+                        <th>货品单位</th>
+                        <td id="entity"></td>
+                        <th>收货单位</th>
+                        <td id="rcompany"></td>
+                    </tr>
+                    <tr>
+                        <th>创建时间</th>
+                        <td id="createtime"></td>
+                        <th>货品总重(Kg)</th>
+                        <td id="weight"></td>
+                        <th>收货地址</th>
+                        <td id="rlocation"></td>
+                    </tr>
+                    <tr>
+                        <th>所属机构</th>
+                        <td id="orgcodeName"></td>
+                        <th>货品总体积(m³)</th>
+                        <td id="volume"></td>
+                        <th>收货站点</th>
+                        <td id="rsitename"></td>
+                    </tr>
+                    <tr>
+                        <th>来源机构</th>
+                        <td id="fromorgcodeName"></td>
+                        <th>发货单位</th>
+                        <td id="scompany"></td>
+                        <th>收货人</th>
+                        <td id="rname"></td>
+                    </tr>
+                    <tr>
+                        <th>转包承运商</th>
+                        <td id="toorgcodeName"></td>
+                        <th>发货地址</th>
+                        <td id="slocation"></td>
+                        <th>收货人电话</th>
+                        <td id="rphone"></td>
+                    </tr>
+                    <tr>
+                        <th>转包时间</th>
+                        <td id="assigntime"></td>
+                        <th>发货站点</th>
+                        <td id="ssitename"></td>
+                        <th>要求收货时间</th>
+                        <td id="rdatetime"></td>
+                    </tr>
+                    <tr>
+                        <th>实施模式</th>
+                        <td id="departureslist"></td>
+                        <th>发货人</th>
+                        <td id="sname"></td>
+                        <th>异常事件数</th>
+                        <td id="events"></td>
+                    </tr>
+                    <tr>
+                        <th>线路名称</th>
+                        <td id="classname"></td>
+                        <th>发货人电话</th>
+                        <td id="sphone"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="hr3" class="tab-pane padding-10">
+            <table class="table2 table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>货品名称</th>
+                        <th>货品单位</th>
+                        <th>货品数量</th>
+                        <th>货品重量（kg）</th>
+                        <th>货品体积（m3）</th>
+                    </tr>
+                </thead>
+                <tbody id="goodsHtml"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="tms/order/js/order_detail.js"></script>
+<!-- <script>
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+    pageSetUp();
+
+    // G7初始化页面
+    $ips.startup();
+    $(function(){
+        //默认左侧菜单收起
+        sendMessageToGateway({takeMenu: true});
+    })
+</script> -->
