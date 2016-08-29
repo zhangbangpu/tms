@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,7 +16,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 	private final Logger log = LoggerFactory.getLogger(CommonInterceptor.class);  
     public static final String LAST_PAGE = "com.alibaba.lastPage";  
     
-    @SuppressWarnings({ "unused", "unchecked" })
+    @SuppressWarnings({ "unchecked" })
 	@Override  
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {  
     	if ("GET".equalsIgnoreCase(request.getMethod())) {  
@@ -42,7 +44,11 @@ public class CommonInterceptor implements HandlerInterceptor {
         	List<Map<String, Object>> sysMenuMap = (List<Map<String, Object>>) request.getSession().getAttribute("sysMenu");
             boolean isValied = false;
             for(Map<String,Object> map :sysMenuMap){
-            	if(requestUri.indexOf(String.valueOf(map.get("requesturl"))) != -1){
+            	Object resUrl = map.get("resUrl");
+            	if(null == resUrl || StringUtils.isEmpty(String.valueOf(resUrl)) || "#".equals(String.valueOf(resUrl))){
+            		continue;
+            	}
+            	if(requestUri.indexOf(String.valueOf(resUrl).replace("#", "/")) != -1){
             		isValied = true;
             	}
             }

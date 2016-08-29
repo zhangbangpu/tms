@@ -16,13 +16,17 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<mvc:interceptors>  
+	<mvc:interceptors>
         <mvc:interceptor>  
 <!--             <mvc:mapping path="/**"/> -->
             <mvc:mapping path="/tms/**" />  
        		<mvc:mapping path="/test/**" />  
             <mvc:exclude-mapping path="/ws/"/>
             <mvc:exclude-mapping path="/login.html*"/>
+            <mvc:exclude-mapping path="/noPermission.html*"/>
+            <mvc:exclude-mapping path="/tms/basic/js/**"/>
+            <mvc:exclude-mapping path="/tms/admin/js/**"/>
+            <mvc:exclude-mapping path="/tms/order/js/**"/>
             <bean class="com.intercept.CommonInterceptor"/><!-- 自定义拦截器 -->  
         </mvc:interceptor>  
     </mvc:interceptors>
