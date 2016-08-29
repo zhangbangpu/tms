@@ -27,7 +27,7 @@
 <!-- 	</sql> -->
 	
 	<sql id="login_Menu_List">
-		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype as type,c.clazz as clazz,c.title as title,c.img as img
+		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype,c.type as type,c.clazz as clazz,c.title as title,c.img as img
 	</sql>
 	
 	<!-- 动态查询条件 -->
@@ -114,14 +114,14 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysMenu">
 		insert into
-		sys_menu(name,pid,levels,createtime,requesturl,menutype,sotid)
-		values(#{name},#{pid},#{levels},#{createtime},#{requesturl},#{menutype},#{sotid})
+		sys_menu(name,pid,levels,createtime,requesturl,menutype,sotid,img,title,clazz,type,target)
+		values(#{name},#{pid},#{levels},#{createtime},#{requesturl},#{menutype},#{sotid},#{img},#{name},#{clazz},#{type},#{target})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="com.chinaway.tms.admin.model.SysMenu">
 		update sys_menu set
-		name=#{name},pid=#{pid},levels=#{levels},requesturl=#{requesturl},menutype=#{menutype},sotid=#{sotid}
+		name=#{name},pid=#{pid},levels=#{levels},requesturl=#{requesturl},menutype=#{menutype},sotid=#{sotid},img=#{img},title=#{name},clazz=#{clazz},type=#{type},target=#{target}
 		where id=#{id}
 	</update>
 
@@ -149,6 +149,21 @@
 			</if>
 			<if test="sotid != null  ">
 				sotid=#{sotid},
+			</if>
+			<if test="img != null  and img != '' ">
+				img=#{img},
+			</if>
+			<if test="title != null  and title != '' ">
+				title=#{name},
+			</if>
+			<if test="clazz != null  and clazz != '' ">
+				clazz=#{clazz},
+			</if>
+			<if test="type != null  and type != '' ">
+				type=#{type},
+			</if>
+			<if test="target != null  and target != '' ">
+				target=#{target},
 			</if>
 		</trim>
 		where id=#{id}

@@ -14,6 +14,7 @@ public class SysMenu implements Serializable {
 	private String type;  //  资源类型
 	private String subsystem;  //  连接地址
 	private String target;  //  打开窗口
+	private boolean isChecked = false;  //   菜单是否被选中
 		public Integer getId() {	    return this.id;	}	public void setId(Integer id) {	    this.id=id;	}	public String getName() {	    return this.name;	}	public void setName(String name) {	    this.name=name;	}	public Integer getPid() {	    return this.pid;	}	public void setPid(Integer pid) {	    this.pid=pid;	}	public String getLevels() {	    return this.levels;	}	public void setLevels(String levels) {	    this.levels=levels;	}	public java.util.Date getCreatetime() {	    return this.createtime;	}	public void setCreatetime(java.util.Date createtime) {	    this.createtime=createtime;	}	public String getRequesturl() {	    return this.requesturl;	}	public void setRequesturl(String requesturl) {	    this.requesturl=requesturl;	}	public String getMenutype() {	    return this.menutype;	}	public void setMenutype(String menutype) {	    this.menutype=menutype;	}	public Integer getSotid() {	    return this.sotid;	}	public void setSotid(Integer sotid) {	    this.sotid=sotid;	}
 	public String getClazz() {
 		return clazz;
@@ -50,6 +51,12 @@ public class SysMenu implements Serializable {
 	}
 	public void setTarget(String target) {
 		this.target = target;
+	}
+	public boolean isChecked() {
+		return isChecked;
+	}
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
 	}
 	
 }

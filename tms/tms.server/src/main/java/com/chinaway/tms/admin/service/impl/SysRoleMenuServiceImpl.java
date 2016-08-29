@@ -1,6 +1,8 @@
 package com.chinaway.tms.admin.service.impl;
 
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +50,19 @@ public class SysRoleMenuServiceImpl extends AbstractService<SysRoleMenu, Integer
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	@Transactional
+	public int insertRoleMenu(String menuids, SysRoleMenu sysRoleMenu) {
+		sysRoleMenuMapper.deleteById(sysRoleMenu.getRoleid());
+		String[] menuidArr = String.valueOf(menuids).split(",");
+		for (int i = 0; i < menuidArr.length; i++) {
+			if (StringUtils.isNotEmpty((menuidArr[i]))) {
+				sysRoleMenu.setMenuid(Integer.parseInt(menuidArr[i]));
+				sysRoleMenuMapper.insert(sysRoleMenu);
+			}
+		}
+		return 0;
 	}
 }
