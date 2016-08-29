@@ -127,26 +127,28 @@ function ulLi(data, children) {
 
 	for (var i = 0; i < data.length; i++) {
 		var value = data[i];
-		if (value.type == 0) {
-			html += '<li><a href="' + value.resUrl + '" title="' + value.name
-					+ '"><i class="' + value.img + '"></i> <span class="'
-					+ value.clazz + '">' + value.name + '</span>';
-			// if(value.children){
-			// html+='<b class="collapse-sign"><em class="fa
-			// fa-expand-o"></em></b>';
-			// }
-			html += '</a>';
-		} else {
-			html += '<li><a href="' + value.resUrl + '" ';
-			if(value.module && value.method){
-				html += 'id="'+value.module+','+value.method+'"';
+		if(value.menutype=="menu"){
+			if (value.type == 0) {
+				html += '<li><a href="' + value.resUrl + '" title="' + value.name
+				+ '"><i class="' + value.img + '"></i> <span class="'
+				+ value.clazz + '">' + value.name + '</span>';
+				// if(value.children){
+				// html+='<b class="collapse-sign"><em class="fa
+				// fa-expand-o"></em></b>';
+				// }
+				html += '</a>';
+			} else {
+				html += '<li><a href="' + value.resUrl + '" ';
+				if(value.module && value.method){
+					html += 'id="'+value.module+','+value.method+'"';
+				}
+				html += '>' + value.name + '</a>';
 			}
-			html += '>' + value.name + '</a>';
+			if (value.children) {
+				html += ulLi(value.children, true);
+			}
+			html += '</li>';
 		}
-		if (value.children) {
-			html += ulLi(value.children, true);
-		}
-		html += '</li>';
 	}
 	html += '</ul>';
 	// console.log(html);

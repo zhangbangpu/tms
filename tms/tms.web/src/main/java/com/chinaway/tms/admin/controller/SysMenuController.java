@@ -177,53 +177,53 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/addMenu")
 	@ResponseBody
-	public Result addMenu(HttpServletRequest request) {
-//		public Result addMenu(HttpServletRequest request, @RequestParam(value="sysMenu") String sysMenu) {
+//	public Result addMenu(HttpServletRequest request) {
+	public Result addMenu(HttpServletRequest request, SysMenu sysMenu) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
 		
-		SysMenu menu = new SysMenu();
+//		SysMenu menu = new SysMenu();
 //		menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		if (null != argsMap.get("id") && !StringUtils.isEmpty(String.valueOf(argsMap.get("id")))) {
-			menu.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
-		}
-		if(null != argsMap.get("img")){
-			menu.setImg(String.valueOf(argsMap.get("img")));
-		}
-		if(null != argsMap.get("levels")){
-			menu.setLevels(String.valueOf(argsMap.get("levels")));
-		}
-		if(null != argsMap.get("menutype")){
-			menu.setMenutype(String.valueOf(argsMap.get("menutype")));
-		}
-		if(null != argsMap.get("name")){
-			menu.setName(String.valueOf(argsMap.get("name")));
-		}
-		if(null != argsMap.get("pid")){
-			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
-		}else{
-			menu.setPid(0);
-		}
-		if(null != argsMap.get("requesturl")){
-			menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
-		}
-		if(null != argsMap.get("sotid")){
-			menu.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
-		}
-		if(null != argsMap.get("subsystem")){
-			menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
-		}
-		if(null != argsMap.get("target")){
-			menu.setTarget(String.valueOf(argsMap.get("target")));
-		}
-		if(null != argsMap.get("title")){
-			menu.setTitle(String.valueOf(argsMap.get("title")));
-		}
-		if(null != argsMap.get("type")){
-			menu.setType(String.valueOf(argsMap.get("type")));
-		}
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		if (null != argsMap.get("id") && !StringUtils.isEmpty(String.valueOf(argsMap.get("id")))) {
+//			menu.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
+//		}
+//		if(null != argsMap.get("img")){
+//			menu.setImg(String.valueOf(argsMap.get("img")));
+//		}
+//		if(null != argsMap.get("levels")){
+//			menu.setLevels(String.valueOf(argsMap.get("levels")));
+//		}
+//		if(null != argsMap.get("menutype")){
+//			menu.setMenutype(String.valueOf(argsMap.get("menutype")));
+//		}
+//		if(null != argsMap.get("name")){
+//			menu.setName(String.valueOf(argsMap.get("name")));
+//		}
+//		if(null != argsMap.get("pid")){
+//			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+//		}else{
+//			menu.setPid(0);
+//		}
+//		if(null != argsMap.get("requesturl")){
+//			menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
+//		}
+//		if(null != argsMap.get("sotid")){
+//			menu.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
+//		}
+//		if(null != argsMap.get("subsystem")){
+//			menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
+//		}
+//		if(null != argsMap.get("target")){
+//			menu.setTarget(String.valueOf(argsMap.get("target")));
+//		}
+//		if(null != argsMap.get("title")){
+//			menu.setTitle(String.valueOf(argsMap.get("title")));
+//		}
+//		if(null != argsMap.get("type")){
+//			menu.setType(String.valueOf(argsMap.get("type")));
+//		}
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -231,11 +231,11 @@ public class SysMenuController {
 
 		int ret = 0;
 		try {
-			menu.setCreatetime(new Date());
-			if (menu.getId() != null) {
-				ret = sysMenuService.updateSelective(menu);
+			sysMenu.setCreatetime(new Date());
+			if (sysMenu.getId() != null) {
+				ret = sysMenuService.updateSelective(sysMenu);
 			} else {
-				ret = sysMenuService.insert(menu);
+				ret = sysMenuService.insert(sysMenu);
 			}
 
 			if (ret > 0) {

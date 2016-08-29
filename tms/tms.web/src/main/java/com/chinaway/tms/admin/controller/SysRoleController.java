@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.model.SysRoleMenu;
 import com.chinaway.tms.admin.service.SysMenuService;
@@ -154,6 +157,7 @@ public class SysRoleController {
 	 * @param deptInfo
 	 * @return
 	 */
+	@SuppressWarnings({"unchecked" })
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
 	public Result queryOneById(HttpServletRequest request, @RequestParam(value="id")String id) {
@@ -161,32 +165,41 @@ public class SysRoleController {
 			return new Result(2, "");
 		}
 		
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		id = String.valueOf(argsMap.get("id"));
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		id = String.valueOf(argsMap.get("id"));
 		
-		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "根据id查询角色操作失败!";
 
-//		try {
-			SysRole sysRole = sysRoleService.selectById(id == "" ? 0 : Integer.parseInt(id));
-			sysRole.setMenuList(sysMenuService.selectAll4Page(new HashMap<String, Object>()));
-//			if (null != sysRole) {
-//				code = 0;
-//				msg = "根据id查询部门操作成功!";
-//				resultMap.put("sysRole", sysRole);
-//			}
+		SysRole sysRole = new SysRole();
+		try {
+			if (!StringUtils.isEmpty(id)) {
+				sysRole = sysRoleService.selectById(Integer.parseInt(id));
+				List<Map<String, Object>> sysMenuList = sysMenuService.queryMenuByRoleId(Integer.parseInt(id));
+				List<SysMenu> allMenuList = (List<SysMenu>)sysMenuService.selectAll4Page(new HashMap<String, Object>());
+				for (SysMenu sysMenu : allMenuList) {
+					for (Map<String, Object> map : sysMenuList) {
+						if (sysMenu.getId().equals(map.get("id"))) {
+							sysMenu.setChecked(true);
+						}
+					}
+				}
+				sysRole.setMenuList(allMenuList);
+			}
+			
+			if (null != sysRole) {
+				code = 0;
+				msg = "根据id查询部门操作成功!";
+			}
 //
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
 
-		resultMap.put("code", code);
-		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, sysRole, msg);
 
 //		return JsonUtil.obj2JsonStr(result);
-		return new Result(0, sysRole);
+		return result;
 	}
 
 	/**
@@ -198,31 +211,31 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/addRole")
 	@ResponseBody
-//	public Result addRole(HttpServletRequest request, @RequestParam(value="sysRole") String sysRole) {
-	public Result addRole(HttpServletRequest request) {
+	public Result addRole(HttpServletRequest request, SysRole sysRole) {
+//	public Result addRole(HttpServletRequest request) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
 		
-		SysRole role = new SysRole();
+//		SysRole role = new SysRole();
 //		role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		if (null != argsMap.get("id") && !StringUtils.isEmpty(String.valueOf(argsMap.get("id")))) {
-			role.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
-		}
-		if(null != argsMap.get("deptid")){
-			role.setDeptid(String.valueOf(argsMap.get("deptid")));
-		}
-		if(null != argsMap.get("description")){
-			role.setDescription(String.valueOf(argsMap.get("description")));
-		}
-		if(null != argsMap.get("name")){
-			role.setName(String.valueOf(argsMap.get("name")));
-		}
-		if(null != argsMap.get("type")){
-			role.setType(String.valueOf(argsMap.get("type")));
-		}
-		role.setUpdatetime(new Date());
+//		if (null != argsMap.get("id") && !StringUtils.isEmpty(String.valueOf(argsMap.get("id")))) {
+//			role.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
+//		}
+//		if(null != argsMap.get("deptid")){
+//			role.setDeptid(String.valueOf(argsMap.get("deptid")));
+//		}
+//		if(null != argsMap.get("description")){
+//			role.setDescription(String.valueOf(argsMap.get("description")));
+//		}
+//		if(null != argsMap.get("name")){
+//			role.setName(String.valueOf(argsMap.get("name")));
+//		}
+//		if(null != argsMap.get("type")){
+//			role.setType(String.valueOf(argsMap.get("type")));
+//		}
+		sysRole.setUpdatetime(new Date());
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -231,24 +244,19 @@ public class SysRoleController {
 		int ret = 0;
 		int insertRet = 0;
 		try {
-			role.setCreatetime(new Date());
-			if (role.getId() != null) {
-				ret = sysRoleService.updateSelective(role);
+			sysRole.setCreatetime(new Date());
+			if (sysRole.getId() != null) {
+				ret = sysRoleService.updateSelective(sysRole);
 			} else {
-				ret = sysRoleService.insert(role);
-				
-				if (argsMap.get("menuIds") instanceof String
-						&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("menuIds")))) {
-					String[] menuids = String.valueOf(argsMap.get("menuIds")).split(",");
-					SysRoleMenu sysRoleMenu = new SysRoleMenu();
-					for (int i = 0; i < menuids.length; i++) {
-						if (StringUtils.isNotEmpty((menuids[i]))) {
-							sysRoleMenu.setMenuid(Integer.parseInt(menuids[i]));
-							sysRoleMenu.setRoleid(role.getId());
-							insertRet = sysRoleMenuService.insert(sysRoleMenu);
-						}
-					}
-				}
+				ret = sysRoleService.insert(sysRole);
+			}
+			
+			if (argsMap.get("menuIds") instanceof String
+					&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("menuIds")))) {
+				SysRoleMenu sysRoleMenu = new SysRoleMenu();
+				sysRoleMenu.setRoleid(sysRole.getId());
+				//TODO 待优化成批量插入
+				insertRet = sysRoleMenuService.insertRoleMenu(String.valueOf(argsMap.get("menuIds")), sysRoleMenu);
 			}
 			
 			if (ret > 0 && insertRet > 0) {

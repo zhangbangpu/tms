@@ -23,11 +23,10 @@
 <!--                     </section> -->
 <!--                 </div> -->
 <!--             </div> -->
- 
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="row">
-                    <label class="label col col-4 text-align-right txt-color-red ">名称</label>
-                    <section class="col col-8">
+                    <label class="label col col-3 text-align-right txt-color-red">名称</label>
+                    <section class="col col-8 no-padding">
                         <label class="input">
                             <input type="text" id="name" name="name" placeholder="">
                         </label>
@@ -37,10 +36,10 @@
  
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="row">
-                    <label class="label col col-4 text-align-right">类型：</label>
+                    <label class="label col col-3 text-align-right">菜单类型</label>
 					<section class="col col-8 no-padding">
 						<label class="select"> 
-							<select name="type" id="type" class="input-sm">
+							<select name="menutype" id="menutype" class="input-sm">
 								<option value="menu">菜单</option>
 								<option value="button">按钮</option>
 							</select> <i></i>
@@ -48,22 +47,64 @@
 					</section>
                 </div>
             </div>
- 
+            
+            <div class="clearfix"></div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <label class="label col col-3 text-align-right">类型</label>
+					<section class="col col-8  no-padding">
+						<label class="select"> 
+							<select name="type" id="type" class="input-sm">
+								<option value="0">节点菜单</option>
+								<option value="1">功能菜单</option>
+							</select> <i></i>
+						</label>
+					</section>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <label class="label col col-3 text-align-right">菜单样式</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> 
+							<input type="text" id="clazz" name="clazz" placeholder="">
+						</label>
+					</section>
+                </div>
+            </div>
+            
+ 			<div class="clearfix"></div>
+ 			
+ 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <label class="label col col-3 text-align-right">排序</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> 
+							<input type="text" id="sotid" name="sotid" placeholder="">
+						</label>
+					</section>
+                </div>
+            </div>
+            
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="url-row">
                 <div class="row">
-                    <label class="label col col-4 text-align-right  ">连接地址</label>
-                    <section class="col col-8">
+                    <label class="label col col-3 text-align-right">连接地址</label>
+                    <section class="col col-8 no-padding">
                         <label class="input">
                             <input type="text" id="requesturl" name="requesturl" placeholder="">
                         </label>
                     </section>
                 </div>
             </div>
+            
+ 			<div class="clearfix"></div>
  
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="icon-row">
                 <div class="row">
-                    <label class="label col col-4 text-align-right  ">图标</label>
-                    <section class="col col-8">
+                    <label class="label col col-3 text-align-right">图标</label>
+                    <section class="col col-8 no-padding">
                         <label class="input">
                             <input type="text" id="img" name="img" placeholder="">
                         </label>
@@ -73,18 +114,41 @@
  
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="target-row">
                 <div class="row">
-                    <label class="label col col-4 text-align-right">打开窗口：</label>
+                    <label class="label col col-3 text-align-right">打开窗口</label>
 					<section class="col col-8 no-padding">
 						<label class="select"> 
 							<select name="target" id="target" class="input-sm">
-								<option value="menu">本页</option>
-								<option value="button">新页</option>
+								<option value="_self">本页</option>
+								<option value="_blank">新页</option>
 							</select> <i></i>
 						</label>
 					</section>
                 </div>
             </div>
             
+            <div class="clearfix"></div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="url-row">
+                <div class="row">
+                    <label class="label col col-3 text-align-right">父菜单</label>
+                    <section class="col col-8 no-padding">
+                        <label class="input">
+                            <input type="text" id="pid" name="pid" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="url-row">
+                <div class="row">
+                    <label class="label col col-3 text-align-right">级别</label>
+                    <section class="col col-8 no-padding">
+                        <label class="input">
+                            <input type="text" id="levels" name="levels" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
 <!--             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="parentid-row"> -->
 <!--                 <div class="row"> -->
 <!--                     <label class="label col col-4 text-align-right ">父资源</label> -->

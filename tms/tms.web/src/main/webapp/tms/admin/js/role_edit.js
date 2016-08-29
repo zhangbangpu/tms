@@ -35,8 +35,9 @@
 //}
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
+var entity;
 if (parms["id"]) {
-    var entity = $ips.load("sysRole", "queryOneById", "id=" + parms["id"]);
+	entity = $ips.load("sysRole", "queryOneById", "id=" + parms["id"]);
     if (!entity.id) {
         window.setTimeout("window.location.hash = '#index.html'", 2000);
     }
@@ -46,22 +47,41 @@ if (parms["id"]) {
 //            entity.projecttype = $ips.load("sysRole", "getTypeByRole", {roleid : entity.id});
 //        }
         $ips.fillFormInput('frmInfo', entity);
-        $("#orgcode").select2('data', {id : entity.orgroot, text : entity.orgname});
-        $("#orgcode").select2('val', entity.orgroot);
-        $("#orgcode").select2('enable', false);
+//        $("#orgcode").select2('data', {id : entity.orgroot, text : entity.orgname});
+//        $("#orgcode").select2('val', entity.orgroot);
+//        $("#orgcode").select2('enable', false);
 
         //修改标记
         isupdate = 1;
         //需要更新的Id
         updateid = entity['id'];
     }
-} else {
+}else{
+		entity = $ips.load("sysRole", "queryOneById", "id=");
 //    $("#orgcode").select2('data', {id : user.organ.orgroot, text : user.organ.name});
 //    $("#orgcode").select2('val', user.organ.orgroot);
 //    if (user.isSuper != 1) {
-        $('#orgcode').select2('enable', false);
+//        $('#orgcode').select2('enable', false);
 //    }
 }
+
+if (entity) {
+	$("menu").html(checkbox(entity.menuList));
+}
+
+function checkbox(data) {
+	var html = '';
+	for (var i = 0; i < data.length; i++) {
+		var value = data[i];
+		if (value.checked == true) {
+			html += '<span style="padding:10px"><input name = "menuId" type = "checkbox" checked="checked" value="' + value.id + '"/>' + value.name + '</span>';
+		} else {
+			html += '<span style="padding:10px"><input name = "menuId" type = "checkbox" value="' + value.id + '"/>' + value.name + '</span>';
+		}
+	}
+	return html;
+}
+
 //loadScript("/js/hui/jquery.hui.tree.js", function() {
 //    $('#resource-list').tree({
 //        method: 'index',

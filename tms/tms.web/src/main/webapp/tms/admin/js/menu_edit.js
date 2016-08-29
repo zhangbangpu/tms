@@ -97,10 +97,13 @@ function resourceSave(newed) {
 	
 	var pararm = $("#frmInfo").serializeArray();
 //	pararm.push({'name' : 'subsystem', 'value' : $('#subsystem').select2('val')});
-	pararm.push({'name' : 'type', 'value' : $('#type').select2('val')});
-	pararm.push({'name' : 'target', 'value' : $('#target').select2('val')});
-	pararm.push({'name' : 'requesturl', 'value' : $('#requesturl').select2('val')});
-	pararm.push({'name' : 'img', 'value' : $('#img').select2('val')});
+//	pararm.push({'name' : 'type', 'value' : $('#type').select2('val')});
+//	pararm.push({'name' : 'menutype', 'value' : $('#menutype').select2('val')});
+//	pararm.push({'name' : 'clazz', 'value' : $('#clazz').select2('val')});
+//	pararm.push({'name' : 'sotid', 'value' : $('#sotid').select2('val')});
+//	pararm.push({'name' : 'target', 'value' : $('#target').select2('val')});
+//	pararm.push({'name' : 'requesturl', 'value' : $('#requesturl').select2('val')});
+//	pararm.push({'name' : 'img', 'value' : $('#img').select2('val')});
 //	pararm.push({'name' : 'pid', 'value' : $('#pid').select2('val')});
 	if(isupdate)
 		pararm['id'] = updateid;
@@ -183,12 +186,12 @@ function hideRow(type) {
 	});
 }
 // 打开方式补全
-//$("#target").select2({
-//    placeholder: "请选择打开方式",
-//    selectOnBlur:true,
-//    allowClear: true,
-//	data: [{id : '_self', text : '本页'},{'id' : '_blank', text : '新页面'}]
-//})
+$("#target").select2({
+    placeholder: "请选择打开方式",
+    selectOnBlur:true,
+    allowClear: true,
+	data: [{id : '_self', text : '本页'},{'id' : '_blank', text : '新页面'}]
+})
 
 //$("#subsystem").on("select2-selected",function () {
 //	renderParentSelect2($('#subsystem').select2('val'));

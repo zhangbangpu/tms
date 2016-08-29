@@ -68,6 +68,12 @@ public class LoginController {
 				SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
 				request.getSession().setAttribute("rolename", sysRole.getName());
 				List<Map<String, Object>> sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
+				for (Map<String, Object> map : sysMenuMap) {
+					if ("menu".equals(map.get("menutype"))) {
+						resultMap.put("defaultIndex", map.get("resUrl"));
+						break;
+					}
+				}
 				request.getSession().setAttribute("sysMenu", sysMenuMap);
 //				//连表查询角色信息
 				code = 0;

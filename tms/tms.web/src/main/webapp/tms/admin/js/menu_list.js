@@ -140,7 +140,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 //			{sTitle: "所属子系统", sName: "subsystem"},
 			{sTitle: "名称", sName: "name"},
 			{sTitle: "排序", sName: "sotid"},
-//			{sTitle: "资源类型", sName: "type"},
+			{sTitle: "资源类型", sName: "menutype"},
 			{sTitle: "连接地址", sName: "requesturl"},
 			{sTitle: "打开窗口", sName: "target"}
 		],
@@ -160,7 +160,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		                   '<li><a href="javascript:void(0);"  data-button-resource="EF5F3071BA06469A995BAF5AFAF36CBD" onclick="resourceDelete(\'' + item.id + '\')">删除</a></li>' +
 		                '</ul></div>';
 	                item.orderby = '<a class="orderby">' + item.orderby + '</a>'
-	                item.type = item.type == 'menu' ? '菜单' : '按钮';
+	                item.menutype = item.menutype == 'menu' ? '菜单' : '按钮';
 	                item.target = item.target == '_self' ? '本页' : '新页';
 //	                item.subsystem = item.subsystemName;
 				});

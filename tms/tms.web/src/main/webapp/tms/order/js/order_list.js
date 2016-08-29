@@ -88,6 +88,51 @@ $("#deletebtn").click(function(){
     });
 });
 
+var waybillRow = $('#generateWaybillbtn').closest('div');
+$("#generateWaybill").bind('click', function() {
+	var ids = getRowIds(false);
+	if ($('#wlcompany').val() == '' || $('#wlcompany').val() == '') {
+		$ips.error('承运商不能为空');
+		return false;
+	}
+	if ($('#vehiclemodel').val() == '' || $('#vehiclemodel').val() == '') {
+		$ips.error('车型不能为空!');
+		return false;
+	}
+
+	$ips.confirm("您确定要生成运单吗?",function(btn) {
+      if (btn == "确定") {
+			$ips.load('tckNum', 'addTckNum', {
+				ordersid : ids,
+				wlcompany : $('#wlcompany').val(),
+				vehiclemodel : $('#vehiclemodel').val()
+			}, function(res) {
+				if (typeof res.code != 'undefined' && res.code != 0) {
+					$ips.error(res.message);
+					return false;
+				}
+				$ips.succeed('生成运单成功');
+				$('#myModal .modal-header button').trigger('click');
+			})
+      }
+  });
+	
+	return false;
+});
+
+waybillRow.empty();
+$('<div class="btn-group"><a class="btn btn-default" data-button-resource="048625502851586667FA938190987180">生成运单</a></div>').bind('click', function() {
+	var ids = getRowIds(false);
+	var orders = $ips.load("orders", "queryStatusById", {id : ids});
+  
+	if (orders.length > 0) {
+		$ips.error("订单号的状态不正确，生成运单失败！");
+		return false;
+	}
+	$(this).attr({'data-toggle' : "modal",'data-target' : "#myModal"})
+	$('#wlcompany').val('');
+	$('#vehiclemodel').val('');
+}).appendTo(waybillRow);
 
 // 表格控件
 loadScript('js/hui/jquery.hui.grid.js', function () {
@@ -129,8 +174,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 				}
             },
                 {sTitle: "订单号", sName: "code"},
-                {sTitle: "订单类型", sName: "type"},
-                {sTitle: "城市", sName: "city"},
+                {sTitle: "订单来源", sName: "orderfrom"},
                 {sTitle: "发货地址", sName: "fhaddress"},
                 {sTitle: "收货地址", sName: "shaddress"},
                 {sTitle: "收货地址", sName: "shaddress"},
