@@ -157,7 +157,6 @@ public class SysRoleController {
 	 * @param deptInfo
 	 * @return
 	 */
-	@SuppressWarnings({"unchecked" })
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
 	public Result queryOneById(HttpServletRequest request, @RequestParam(value="id")String id) {

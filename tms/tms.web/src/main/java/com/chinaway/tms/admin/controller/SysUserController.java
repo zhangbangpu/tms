@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.model.SysUserRole;
 import com.chinaway.tms.admin.service.SysRoleService;
@@ -168,30 +170,25 @@ public class SysUserController {
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 
 		String id = String.valueOf(argsMap.get("id"));
-		// Map<String, Object> resultMap = new HashMap<>();
-		// int code = 1;
-		// String msg = "根据id查询用戶操作失败!";
+		int code = 1;
+		String msg = "根据id查询用戶操作失败!";
 
-		// try {
-		SysUser sysUser = sysUserService.selectById(id == "" ? 0 : Integer.parseInt(id));
-		sysUser.setRoleList(sysRoleService.queAllRoleByCtn(new HashMap<String, Object>()));
-		// if (null != sysUser) {
-		// code = 0;
-		// msg = "根据id查询用戶操作成功!";
-		// //用户对象放入map
-		// resultMap.put("sysUser", sysUser);
-		// }
-		//
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		//
-		// resultMap.put("code", code);
-		// resultMap.put("msg", msg);
-		// Result result = new Result(code, resultMap, msg);
+		SysUser sysUser = new SysUser();
+		try {
+			sysUser = sysUserService.selectById(id == "" ? 0 : Integer.parseInt(id));
+			List<SysRole> sysRoleList = sysRoleService.queAllRoleByCtn(null);
+			sysUser.setRoleList(sysRoleList);
+			if (null != sysUser) {
+				code = 0;
+				msg = "根据id查询用戶操作成功!";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Result result = new Result(code, sysUser, msg);
 
 		// return JsonUtil.obj2JsonStr(result);
-		return new Result(0, sysUser);
+		return result;
 	}
 
 	/**
@@ -203,67 +200,67 @@ public class SysUserController {
 	 */
 	@RequestMapping(value = "/addUser")
 	@ResponseBody
-	public Result addUser(HttpServletRequest request) {
+	public Result addUser(HttpServletRequest request,SysUser sysUser) {
 		// public Result addUser(HttpServletRequest request,
 		// @RequestParam(value="sysUser") String sysUser) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
 
-		SysUser user = new SysUser();
+//		SysUser user = new SysUser();
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		// user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
-		if (argsMap.get("roleId") instanceof String && StringUtils.isNotEmpty(String.valueOf(argsMap.get("id")))) {
-			user.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
-		}
-		if (null != argsMap.get("certificate")) {
-			user.setCertificate(String.valueOf(argsMap.get("certificate")));
-		}
-		if (null != argsMap.get("codeid")) {
-			user.setCodeid(Integer.parseInt(String.valueOf(argsMap.get("codeid"))));
-		}
-		if (null != argsMap.get("corporation")) {
-			user.setCorporation(String.valueOf(argsMap.get("corporation")));
-		}
-		if (null != argsMap.get("corporationim")) {
-			user.setCorporationim(String.valueOf(argsMap.get("corporationim")));
-		}
-		if (null != argsMap.get("deptid")) {
-			user.setDeptid(String.valueOf(argsMap.get("deptid")));
-		}
-		if (null != argsMap.get("deptname")) {
-			user.setDeptname(String.valueOf(argsMap.get("deptname")));
-		}
-		if (null != argsMap.get("email")) {
-			user.setEmail(String.valueOf(argsMap.get("email")));
-		}
-		if (null != argsMap.get("intro")) {
-			user.setIntro(String.valueOf(argsMap.get("intro")));
-		}
-		if (null != argsMap.get("loginname")) {
-			user.setLoginname(String.valueOf(argsMap.get("loginname")));
-		}
-		if (null != argsMap.get("name")) {
-			user.setName(String.valueOf(argsMap.get("name")));
-		}
-		if (null != argsMap.get("password")) {
-			user.setPassword(String.valueOf(argsMap.get("password")));
-		}
-		if (null != argsMap.get("phone")) {
-			user.setPhone(String.valueOf(argsMap.get("phone")));
-		}
-		if (null != argsMap.get("realname")) {
-			user.setRealname(String.valueOf(argsMap.get("realname")));
-		}
-		if (null != argsMap.get("rolename")) {
-			user.setRolename(String.valueOf(argsMap.get("rolename")));
-		}
-		if (null != argsMap.get("state")) {
-			user.setState(String.valueOf(argsMap.get("state")));
-		}
-		if (null != argsMap.get("type")) {
-			user.setType(String.valueOf(argsMap.get("type")));
-		}
+//		if (argsMap.get("roleId") instanceof String && StringUtils.isNotEmpty(String.valueOf(argsMap.get("id")))) {
+//			user.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
+//		}
+//		if (null != argsMap.get("certificate")) {
+//			user.setCertificate(String.valueOf(argsMap.get("certificate")));
+//		}
+//		if (null != argsMap.get("codeid")) {
+//			user.setCodeid(Integer.parseInt(String.valueOf(argsMap.get("codeid"))));
+//		}
+//		if (null != argsMap.get("corporation")) {
+//			user.setCorporation(String.valueOf(argsMap.get("corporation")));
+//		}
+//		if (null != argsMap.get("corporationim")) {
+//			user.setCorporationim(String.valueOf(argsMap.get("corporationim")));
+//		}
+//		if (null != argsMap.get("deptid")) {
+//			user.setDeptid(String.valueOf(argsMap.get("deptid")));
+//		}
+//		if (null != argsMap.get("deptname")) {
+//			user.setDeptname(String.valueOf(argsMap.get("deptname")));
+//		}
+//		if (null != argsMap.get("email")) {
+//			user.setEmail(String.valueOf(argsMap.get("email")));
+//		}
+//		if (null != argsMap.get("intro")) {
+//			user.setIntro(String.valueOf(argsMap.get("intro")));
+//		}
+//		if (null != argsMap.get("loginname")) {
+//			user.setLoginname(String.valueOf(argsMap.get("loginname")));
+//		}
+//		if (null != argsMap.get("name")) {
+//			user.setName(String.valueOf(argsMap.get("name")));
+//		}
+//		if (null != argsMap.get("password")) {
+//			user.setPassword(String.valueOf(argsMap.get("password")));
+//		}
+//		if (null != argsMap.get("phone")) {
+//			user.setPhone(String.valueOf(argsMap.get("phone")));
+//		}
+//		if (null != argsMap.get("realname")) {
+//			user.setRealname(String.valueOf(argsMap.get("realname")));
+//		}
+//		if (null != argsMap.get("rolename")) {
+//			user.setRolename(String.valueOf(argsMap.get("rolename")));
+//		}
+//		if (null != argsMap.get("state")) {
+//			user.setState(String.valueOf(argsMap.get("state")));
+//		}
+//		if (null != argsMap.get("type")) {
+//			user.setType(String.valueOf(argsMap.get("type")));
+//		}
 
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -271,23 +268,28 @@ public class SysUserController {
 
 		int ret = 0;
 		try {
-			user.setCreatetime(new Date());
-			if (user.getId() != null) {
-				ret = sysUserService.updateSelective(user);
+			sysUser.setCreatetime(new Date());
+			if (sysUser.getId() != null) {
+				ret = sysUserService.updateSelective(sysUser);
 				if (ret > 0) {
 					code = 0;
 					msg = "添加操作成功!";
 				}
 
 			} else {
-				user.setCreatetime(new Date());
-				ret = sysUserService.insert(user);
+				sysUser.setCreatetime(new Date());
+				resultMap.put("name", sysUser.getName());
+				SysUser sysUserNew = sysUserService.queOneUserByCtn(resultMap);
+				if (null != sysUserNew) {
+					ret = sysUserService.insert(sysUser);
+				}
+				
 				int retUr = 0;
 				if (argsMap.get("roleids") instanceof String
 						&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("roleids")))) {
 					SysUserRole sysUserRole = new SysUserRole();
 					sysUserRole.setRoleid(Integer.parseInt(String.valueOf(argsMap.get("roleids"))));
-					sysUserRole.setUserid(user.getId());
+					sysUserRole.setUserid(sysUser.getId());
 					retUr = sysUserRoleService.insert(sysUserRole);
 				}
 				if (ret > 0 && retUr > 0) {

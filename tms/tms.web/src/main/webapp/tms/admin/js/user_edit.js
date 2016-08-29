@@ -93,12 +93,10 @@ if (parms["id"]) {
 		$ips.fillFormInput('frmInfo', entity);
 
 		$("#deptid").select2('data', {id : entity.deptid, text : entity.deptname}).val(entity.deptid);
-		var roles = $ips.load('sysrole', 'getRoleByDeptid', {deptid : $('#deptid').val()});
+		var roles = $ips.load('sysRole', 'getRoleByDeptid', {deptid : $('#deptid').val()});
 //		roles = entity.roleList;
-		alert(roles);
 		var initRoles = [];
 		$.each(roles, function(k, v) {
-			alert(v.name);
             initRoles.push({
                 id : v.id,
                 text : v.name

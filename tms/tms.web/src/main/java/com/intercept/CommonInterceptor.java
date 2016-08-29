@@ -41,16 +41,23 @@ public class CommonInterceptor implements HandlerInterceptor {
             response.getWriter().close();
             return false;  
         }else{
+        	if("index.html".equals(requestUri)){
+        		return true;
+        	}
         	List<Map<String, Object>> sysMenuMap = (List<Map<String, Object>>) request.getSession().getAttribute("sysMenu");
             boolean isValied = false;
             for(Map<String,Object> map :sysMenuMap){
-            	Object resUrl = map.get("resUrl");
-            	if(null == resUrl || StringUtils.isEmpty(String.valueOf(resUrl)) || "#".equals(String.valueOf(resUrl))){
-            		continue;
-            	}
-            	if(requestUri.indexOf(String.valueOf(resUrl).replace("#", "/")) != -1){
-            		isValied = true;
-            	}
+				Object resUrl = map.get("resUrl");
+				if (null == resUrl || StringUtils.isEmpty(String.valueOf(resUrl)) || "#".equals(String.valueOf(resUrl))) {
+					continue;
+				}
+				String startUri = requestUri.substring(0, requestUri.lastIndexOf("."));
+				String uriFormDb = String.valueOf(resUrl).replace("#", "/");
+				String startUriFormDb = uriFormDb.substring(0, requestUri.lastIndexOf("."));
+				
+				if (startUri.indexOf(startUriFormDb) != -1) {
+					isValied = true;
+				}
             }
             
             // 没有访问该地址的权限
