@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.controller.LoginController;
+import com.chinaway.tms.basic.model.Cpmd;
+import com.chinaway.tms.basic.model.OrderItem;
 import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
@@ -27,6 +30,9 @@ public class OrdersManagerController {
 	
 	@Autowired
 	private OrdersService ordersService;
+	
+	@Autowired
+	private CpmdService cpmdService;
 	
 	/**
 	 * 根据条件查询所有订单信息<br>
@@ -189,6 +195,46 @@ public class OrdersManagerController {
 
 //		return result;
 		return new Result(0, orders);
+	}
+	
+	/**
+	 * 根据条件查询订单详情<br>
+	 * 返回用户的json串
+	 * 
+	 * @param ordersInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryOrdersDetail")
+	@ResponseBody
+	public Result queryOrdersDetail(HttpServletRequest request) {
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		String id = String.valueOf(argsMap.get("id"));
+		int code = 1;
+		String msg = "根据id查询订单详情!";
+
+		Orders orders = null;
+		try {
+			orders = ordersService.selectDetailById(id == "" ? 0 : Integer.parseInt(id));
+			
+//			for (String state : orders.getStateList()) {
+//				if (Integer.parseInt(state) > Integer.parseInt(orders.getState())) {
+//					orders.getStateList().remove(state);
+//				}
+//			}
+			
+			if (null != orders) {
+				code = 0;
+				msg = "根据id查询订单详情成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		
+		Result result = new Result(code, orders, msg);
+		
+//		return result;
+		return result;
 	}
 	
 	/**

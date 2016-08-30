@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.service.SysMenuService;
@@ -69,7 +66,7 @@ public class LoginController {
 				request.getSession().setAttribute("rolename", sysRole.getName());
 				List<Map<String, Object>> sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
 				for (Map<String, Object> map : sysMenuMap) {
-					if ("menu".equals(map.get("menutype"))) {
+					if ("menu".equals(map.get("menutype")) && !"#".equals(map.get("resUrl"))) {
 						resultMap.put("defaultIndex", map.get("resUrl"));
 						break;
 					}

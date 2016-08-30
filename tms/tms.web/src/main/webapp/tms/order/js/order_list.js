@@ -205,7 +205,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 			]
 		,
 		"fnServerData" : function(sSource, aoData, fnCallback) {
-			 searchParams = genSearchParams();
+			searchParams = genSearchParams();
 			$ips.gridLoadData(sSource, aoData, fnCallback, "orders", "page", searchParams, function(data) {
 				console.log(typeof data);
 				console.log(data);

@@ -53,7 +53,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 				}
 				String startUri = requestUri.substring(0, requestUri.lastIndexOf("."));
 				String uriFormDb = String.valueOf(resUrl).replace("#", "/");
-				String startUriFormDb = uriFormDb.substring(0, requestUri.lastIndexOf("."));
+				String startUriFormDb = uriFormDb.substring(0, uriFormDb.lastIndexOf("."));
 				
 				if (startUri.indexOf(startUriFormDb) != -1) {
 					isValied = true;

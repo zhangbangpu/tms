@@ -9,7 +9,7 @@ var reviewParams = [];
 $(function () {
     //$ips.lockPage();
 	
-    $ips.load('orders', 'queryOneById', {id: orderid}, function (data) {
+    $ips.load('orders', 'queryOrdersDetail', {id: orderid}, function (data) {
         sdatetime = data.sdatetime ? data.sdatetime : '---';
         pdatetime = data.rdatetime ? data.rdatetime : '---';
         if (!data) {
@@ -67,11 +67,11 @@ function createGoodLists(goods) {
     if (goods) {
         $.each(goods, function (k, v) {
             goodsHtml += '<tr>';
-            goodsHtml += '    <td>' + v.goodname + '</td>';
-            goodsHtml += '    <td>' + v.unit + '</td>';
-            goodsHtml += '    <td>' + v.number + '</td>';
-            goodsHtml += '    <td>' + v.weight + '</td>';
-            goodsHtml += '    <td>' + v.volume + '</td>';
+            goodsHtml += '    <td>' + v.maktx + '</td>';
+            goodsHtml += '    <td>' + v.meins + '</td>';
+            goodsHtml += '    <td>' + v.bstrf + '</td>';
+            goodsHtml += '    <td>' + v.ntgew + v.gewei + '</td>';
+            goodsHtml += '    <td>' + v.volum + v.voleh + '</td>';
             goodsHtml += '</tr>';
         })
     }
@@ -88,7 +88,7 @@ function createTimeLine(order, dispatchs, steps) {
     var statusHtml = '', planHtml = '', standHtml = '';
 
     var dispatchStatus = getDispatchStatus(dispatchs);
-
+    
     if (dispatchStatus.started == false) {
         statusHtml += '<li>';
         statusHtml += '<div class="txt pull-left">';
@@ -102,7 +102,7 @@ function createTimeLine(order, dispatchs, steps) {
         statusHtml = dispatchsHtml.statusHtml;
         planHtml = dispatchsHtml.planHtml;
         standHtml = dispatchsHtml.standHtml;
-
+        
         if(dispatchStatus.finished){
            var stepsHtml = createStepsHTML(steps);
            statusHtml += stepsHtml.statusHtml;
@@ -117,7 +117,7 @@ function createTimeLine(order, dispatchs, steps) {
        planHtml += signHtml.planHtml;
        standHtml += signHtml.standHtml;
 	}
-
+	
     $("#status").html(statusHtml);
     $("#plantime").html(planHtml);
     $("#standtime").html(standHtml);
@@ -127,18 +127,19 @@ function createTimeLine(order, dispatchs, steps) {
 function getDispatchStatus(dispatchs){
    var started = false;
    var finished = true;
-
+   
    for(var i =0; i < dispatchs.length; i ++){
-       if(dispatchs[i].started){
-	      started = true;
-	   }
-	   if(!dispatchs[i].started){
-	      finished = false;
+	   if(typeof dispatchs[i].started != undefined){
+		   if(dispatchs[i].started){
+			   started = true;
+		   }
+		   if(!dispatchs[i].started){
+			   finished = false;
+		   }
 	   }
    }
 
    return { started: started, finished: finished };
-
 }
 
 function createDispatchsHTML(dispatchs){
@@ -152,7 +153,6 @@ function createDispatchsHTML(dispatchs){
 
 	   var preStatusStarted = true;
         $.each(dispatchs, function (k, v) {
-
 			 if(preStatusStarted == false){
 			      return;
 			 }
@@ -214,7 +214,7 @@ function createStepsHTML(steps){
 	   var standHtml = '';
 	   
 	   var statusCount = steps.length;
-
+	   
 	   for(var k = 0; k < statusCount; k ++){
         //$.each(steps, function (k, v) {
             var v = steps[k];
@@ -257,7 +257,7 @@ function createStepsHTML(steps){
                 statusHtml += '</div>';
             }
             statusHtml += '</li>';
-
+            
             // 实际时间
             var gstarttime = v.gstarttime ? v.gstarttime : '---';
             var garrivetime = v.garrivetime ? v.garrivetime : '---';
@@ -382,7 +382,9 @@ function createOneEvent(type, details) {
                 eventHtml += '    <div class="margin-top-10">';
                 if (dv.photo) {
                     $.each(dv.photo, function (imgk, imgv) {
-                        eventHtml += '<img width="350" height="200" style="margin-left: 10px" alt="" src="' + imgv.photourl + '">';
+                    	if(imgv.photoUrl){
+                    		eventHtml += '<img width="350" height="200" style="margin-left: 10px" alt="" src="' + imgv.photoUrl + '">';
+                    	}
                     })
                 }
                 eventHtml += '    </div>';
