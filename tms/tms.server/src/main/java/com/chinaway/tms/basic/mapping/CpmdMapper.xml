@@ -32,6 +32,10 @@
 	<sql id="Base_Column_List" >
 		 id,matnr,maktx,meins,brgew,ntgew,gewei,volum,voleh,groes,ean11,bclass,swor,sclass,mhdhb,zzpsms,zzspbm,zzspsx,zzlsdj,zzhydj,zzmlfs,zzsdbl,bstrf,zzbrand,updatetime
 	</sql>
+	
+	<sql id="orders_Column_List">
+		 a.id,a.matnr,a.maktx,a.meins,a.brgew,a.ntgew,a.gewei,a.volum,a.voleh,a.groes,a.ean11,a.bclass,a.swor,a.sclass,a.mhdhb,a.zzpsms,a.zzspbm,a.zzspsx,a.zzlsdj,a.zzhydj,a.zzmlfs,a.zzsdbl,a.bstrf,a.zzbrand,a.updatetime
+	</sql>
    
 	<!-- 动态查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -112,8 +116,20 @@
 		<if test="updatetime != null and updatetime != '' ">
 		    and updatetime = #{updatetime}
 		</if>
-	
 	</trim>
+	</sql>
+	
+	<!-- 动态查询商品列表 -->
+	<sql id="lb_Where_Clause">
+		where 1=1
+		and a.id = b.goodscode
+		and b.orderid = c.id
+		<trim suffixOverrides="," >
+			<if test="orderid != null and orderid != '' ">
+			    and b.orderid = #{orderid}
+			</if>
+		</trim>
+		order by a.updatetime desc
 	</sql>
  
 	<!-- 根据id查询  -->
@@ -136,6 +152,14 @@
 		<include refid="Base_Column_List" />
 		from cpmd
 		<include refid="Example_Where_Clause"/>
+	</select>
+	
+	<!-- 根据订单id查询商品列表 -->
+	<select id="selectCpmdByOrdersId" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="orders_Column_List" />
+		from cpmd a,order_item b,orders c
+		<include refid="lb_Where_Clause" />
 	</select>
    
 	<!-- 插入记录 -->

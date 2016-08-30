@@ -15,11 +15,14 @@ import com.chinaway.tms.basic.dao.OrdersMapper;
 import com.chinaway.tms.basic.dao.SiteMapper;
 import com.chinaway.tms.basic.dao.VehicleModelMapper;
 import com.chinaway.tms.basic.dao.WaybillMapper;
+import com.chinaway.tms.basic.model.Cpmd;
+import com.chinaway.tms.basic.model.OrderItem;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.OrdersWaybill;
 import com.chinaway.tms.basic.model.Site;
 import com.chinaway.tms.basic.model.VehicleModel;
 import com.chinaway.tms.basic.model.Waybill;
+import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.basic.service.OrdersWaybillService;
 import com.chinaway.tms.basic.service.WaybillService;
@@ -47,6 +50,9 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	
 	@Autowired
 	private OrdersWaybillService ordersWaybillService;
+	
+	@Autowired
+	private CpmdService cpmdService;
 
 	/** 具体子类service的实现需要使用的mapper */
 	@Override
@@ -279,6 +285,18 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	public List<Orders> selectByIds(String ids) {
 		String[] idsArray = ids.split(",");
 		return orderMapper.selectByIds(idsArray);
+	}
+
+	@Override
+	public Orders selectDetailById(Integer id) {
+		Orders orders = orderMapper.selectById(id);
+		List<Cpmd> cpmdList = cpmdService.selectCpmdByOrdersId(id);
+		OrderItem orderItem = new OrderItem();
+		orderItem.setGoods(cpmdList);
+		orders.setBaseInfo(orderItem);
+		orders.getDispatchInfos();
+		orders.getSteps();
+		return orders;
 	}
 	
 }

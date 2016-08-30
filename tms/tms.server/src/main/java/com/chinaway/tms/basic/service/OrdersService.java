@@ -69,5 +69,12 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @param ret
 	 */
 	public void insertWaybillOrders(Orders order, Integer waybillid, String wlcompany);
+
+	/**
+	 * 查询订单详情
+	 * @param i
+	 * @return
+	 */
+	Orders selectDetailById(Integer i);
 	
 }

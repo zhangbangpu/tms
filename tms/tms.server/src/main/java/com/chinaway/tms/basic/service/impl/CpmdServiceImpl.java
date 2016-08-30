@@ -56,4 +56,9 @@ public class CpmdServiceImpl extends AbstractService<Cpmd, Integer> implements C
 		}
 	}
 
+	@Override
+	public List<Cpmd> selectCpmdByOrdersId(Integer id) {
+		return cpmdMapper.selectCpmdByOrdersId(id);
+	}
+
 }
