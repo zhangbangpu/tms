@@ -31,14 +31,6 @@
 //	
 //})
 
-$("#roleids").select2({
-	placeholder : '请选择角色',
-	minimumInputLength : 1,
-	multiple : false,
-	allowClear : true,
-	data : [],
-	initSelection : function () {}
-});
 $("#deptid").select2({
 	placeholder : '请选择机构',
 	minimumInputLength : 1,
@@ -82,6 +74,37 @@ $("#deptid").select2({
 		$("#roleids").select2('val', '');
     });
 });
+
+$("#roleids").select2({
+	placeholder : '请选择角色',
+	minimumInputLength : 1,
+	multiple : false,
+	allowClear : true,
+	query : function(query) {
+		$ips.load('sysRole', 'getRoleByName', {
+			name : query.term
+		}, function(e) {
+			var _pre_data = [];
+			$.each(e, function(k, v) {
+				_pre_data.push({
+					id : v.id,
+					text : v.name
+				});
+			});
+			var data = {
+				results : _pre_data
+			};
+			query.callback(data);
+		});
+	},
+	initSelection : function (e, r) {
+		
+	}
+}).on('change', function (e) {
+//	$("#roleids").select2({'data' : []});
+//	$("#roleids").select2('val', '');
+});
+
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();
 if (parms["id"]) {
@@ -91,8 +114,10 @@ if (parms["id"]) {
 	}
 	if (entity) {
 		$ips.fillFormInput('frmInfo', entity);
-
-		$("#deptid").select2('data', {id : entity.deptid, text : entity.deptname}).val(entity.deptid);
+        if(entity.deptname){
+        	$("#deptid").select2('data', {id : entity.deptid, text : entity.deptname}).val(entity.deptid);
+        }
+		$("#state").select2('data', {id : entity.state, text : getStateName(entity.state)}).val(entity.state);
 		var roles = $ips.load('sysRole', 'getRoleByDeptid', {deptid : $('#deptid').val()});
 //		roles = entity.roleList;
 		var initRoles = [];
@@ -253,6 +278,19 @@ function runFormValidation() {
 	$("#btnSubmitNew").click(function() {
 		return userSave(true);
 	});
+}
+
+//获取状态名称
+function getStateName(str) {
+    switch (str) {
+        case "0" :
+            var name = '禁用';
+            break;
+        case "1" :
+            var name = '可用';
+            break;
+    }
+    return name;
 }
 
 function userSave(newed) {

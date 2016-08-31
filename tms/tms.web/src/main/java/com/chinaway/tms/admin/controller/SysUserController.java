@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.model.SysUserRole;
+import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.admin.service.SysUserRoleService;
 import com.chinaway.tms.admin.service.SysUserService;
@@ -35,6 +37,9 @@ public class SysUserController {
 	
 	@Autowired
 	private SysRoleService sysRoleService;
+	
+	@Autowired
+	private SysDeptService sysDeptService;
 
 	/**
 	 * 根据条件查询站点信息<br>
@@ -172,13 +177,25 @@ public class SysUserController {
 		String id = String.valueOf(argsMap.get("id"));
 		int code = 1;
 		String msg = "根据id查询用戶操作失败!";
-
 		SysUser sysUser = new SysUser();
 		try {
-			sysUser = sysUserService.selectById(id == "" ? 0 : Integer.parseInt(id));
+			if (StringUtils.isEmpty(id)) {
+				return new Result(2, "");
+			}
+			
+			sysUser = sysUserService.selectById(Integer.parseInt(id));
+			if (StringUtils.isNotEmpty(sysUser.getDeptid())) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("deptid", sysUser.getDeptid());
+				List<SysDept> sysDeptList = sysDeptService.selectDeptByCtn(map);
+				if (null != sysDeptList && sysDeptList.size() > 0) {
+					sysUser.setDeptname(sysDeptList.get(0).getName());
+				}
+			}
+			
 			List<SysRole> sysRoleList = sysRoleService.queAllRoleByCtn(null);
-			sysUser.setRoleList(sysRoleList);
 			if (null != sysUser) {
+				sysUser.setRoleList(sysRoleList);
 				code = 0;
 				msg = "根据id查询用戶操作成功!";
 			}
@@ -271,9 +288,10 @@ public class SysUserController {
 			sysUser.setCreatetime(new Date());
 			if (sysUser.getId() != null) {
 				ret = sysUserService.updateSelective(sysUser);
-				if (ret > 0) {
+				int retUr = this.insertUserRole(argsMap, sysUser);
+				if (ret > 0 && retUr > 0) {
 					code = 0;
-					msg = "添加操作成功!";
+					msg = "修改操作成功!";
 				}
 
 			} else {
@@ -284,14 +302,7 @@ public class SysUserController {
 					ret = sysUserService.insert(sysUser);
 				}
 				
-				int retUr = 0;
-				if (argsMap.get("roleids") instanceof String
-						&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("roleids")))) {
-					SysUserRole sysUserRole = new SysUserRole();
-					sysUserRole.setRoleid(Integer.parseInt(String.valueOf(argsMap.get("roleids"))));
-					sysUserRole.setUserid(sysUser.getId());
-					retUr = sysUserRoleService.insert(sysUserRole);
-				}
+				int retUr = this.insertUserRole(argsMap, sysUser);
 				if (ret > 0 && retUr > 0) {
 					code = 0;
 					msg = "添加操作成功!";
@@ -307,6 +318,24 @@ public class SysUserController {
 		// Result result = new Result(code, resultMap, msg);
 		// return JsonUtil.obj2JsonStr(result);
 		return new Result(0, ret);
+	}
+	
+	/**
+	 * 添加用户角色
+	 * @param argsMap
+	 * @param sysUser
+	 * @return
+	 */
+	public int insertUserRole(Map<String, Object> argsMap, SysUser sysUser) {
+		int retUr = 0;
+		if (argsMap.get("roleids") instanceof String
+				&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("roleids")))) {
+			SysUserRole sysUserRole = new SysUserRole();
+			sysUserRole.setRoleid(Integer.parseInt(String.valueOf(argsMap.get("roleids"))));
+			sysUserRole.setUserid(sysUser.getId());
+			retUr = sysUserRoleService.insert(sysUserRole);
+		}
+		return retUr;
 	}
 
 	/**

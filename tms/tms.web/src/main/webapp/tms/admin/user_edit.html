@@ -80,10 +80,10 @@
             
             <div class="col-xs-12 col-sm-6">
                 <div class="row">
-                    <label class="label col col-4 text-align-right  txt-color-red ">角色</label>
+                    <label class="label col col-4 text-align-right  txt-color-red ">所属机构</label>
                     <section class="col col-8">
                         <div class="form-group">
-                            <input type="hidden" class="select2" id="roleids" name="roleids" data-placeholder="请选择角色" style="width:100%" value=""/>
+                            <input type="hidden" class="select2" id="deptid" name="deptid" data-placeholder="请选择机构" style="width:100%" value=""/>
                         </div>
                     </section>
                 </div>
@@ -91,10 +91,10 @@
             
             <div class="col-xs-12 col-sm-6">
                 <div class="row">
-                    <label class="label col col-4 text-align-right  txt-color-red ">所属机构</label>
+                    <label class="label col col-4 text-align-right  txt-color-red ">角色</label>
                     <section class="col col-8">
                         <div class="form-group">
-                            <input type="hidden" class="select2" id="deptid" name="deptid" data-placeholder="请选择机构" style="width:100%" value=""/>
+                            <input type="hidden" class="select2" id="roleids" name="roleids" data-placeholder="请先选机构再选择角色" style="width:100%" value=""/>
                         </div>
                     </section>
                 </div>
@@ -119,8 +119,8 @@
                     <section class="col col-8">
                         <label class="select">
                             <select id="state" name="state">
-	                            <option value="0">可用</option>
-	                            <option value="1">禁用</option>
+	                            <option value="0">禁用</option>
+	                            <option value="1">可用</option>
                             </select>
                         </label>
                     </section>
@@ -133,6 +133,17 @@
                     <section class="col col-8">
                         <label class="input">
                             <input type="text" id="phone" name="phone" placeholder="">
+                        </label>
+                    </section>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-6 ">
+                <div class="row">
+                    <label class="label col col-4 text-align-right ">备注</label>
+                    <section class="col col-8">
+                        <label class="input">
+                            <input type="text" id="name" name="name" placeholder="">
                         </label>
                     </section>
                 </div>

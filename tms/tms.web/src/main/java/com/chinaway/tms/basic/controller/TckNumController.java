@@ -17,7 +17,6 @@ import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.VehicleModel;
 import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.basic.service.OrdersService;
-import com.chinaway.tms.basic.service.OrdersWaybillService;
 import com.chinaway.tms.basic.service.VehicleModelService;
 import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.utils.MyBeanUtil;
@@ -33,9 +32,6 @@ public class TckNumController {
 	
 	@Autowired
 	private OrdersService ordersService;
-	
-	@Autowired
-	private OrdersWaybillService ordersWaybillService;
 	
 	@Autowired
 	private VehicleModelService vehicleModelService;

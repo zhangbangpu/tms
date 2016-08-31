@@ -1,5 +1,6 @@
 package com.chinaway.tms.admin.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -125,13 +126,43 @@ public class SysRoleController {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
-		
+
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		List<SysRole> sysRoleList = sysRoleService.queryRoleByDeptid(argsMap);
+		List<SysRole> sysRoleList = new ArrayList<SysRole>();
+		sysRoleList = sysRoleService.queryRoleByDeptid(argsMap);
+
+		if (null == sysRoleList || sysRoleList.size() <= 0) {
+			sysRoleList = sysRoleService.queAllRoleByCtn(null);
+		}
+
 		return new Result(0, sysRoleList);
 	}
 	
 	/**
+	 * 根据名称查询部门信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param roleInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/getRoleByName")
+	@ResponseBody
+	public Result getRoleByName(HttpServletRequest request) {
+		if (!LoginController.checkLogin(request)) {
+			return new Result(2, "");
+		}
+		
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		List<SysRole> sysRoleList = new ArrayList<SysRole>();
+		if(null != argsMap && null != argsMap.get("name")){
+			sysRoleList = sysRoleService.selectRoleByName(argsMap);
+		}
+		
+		return new Result(0, sysRoleList);
+	}
+	
+	/**
+	 * 
 	 * 根据条件查询所有角色信息<br>
 	 * 返回用户的json串
 	 * 
