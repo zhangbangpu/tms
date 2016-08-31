@@ -90,4 +90,9 @@ public class SysRoleServiceImpl extends AbstractService<SysRole, Integer> implem
 		String idsArr[] = ids.split(",");
 		return sysRoleMapper.deleteByIds(idsArr);
 	}
+
+	@Override
+	public List<SysRole> selectRoleByName(Map<String, Object> argsMap) {
+		return sysRoleMapper.selectRoleByName(argsMap);
+	}
 }

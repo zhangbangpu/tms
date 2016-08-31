@@ -4,9 +4,16 @@ import java.io.Serializable;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+/**
+ * 菜单
+ * @author zhang
+ *
+ */
 public class SysMenu implements Serializable {
 	
-		private Integer id;  //   主键	private String name;  //   菜单名称	private Integer pid;  //   父id	private String levels;  //   层级
+	private static final long serialVersionUID = 7588863001279734177L;
+	
+	private Integer id;  //   主键	private String name;  //   菜单名称	private Integer pid;  //   父id	private String levels;  //   层级
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date createtime;  //   创建时间	private String requesturl;  //  请求路径	private String menutype;  //  菜单类型	private Integer sotid;  //  排序号
 	private String clazz;  //  样式
 	private String title;  //  标题

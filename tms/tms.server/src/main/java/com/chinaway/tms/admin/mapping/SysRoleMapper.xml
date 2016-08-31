@@ -86,6 +86,14 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
+	<!-- 根据角色名称查询所有角色(不分页) -->
+	<select id="selectRoleByName" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Example_Where_Clause" />
+	</select>
+	
 	<!-- 根据部门id 连表查询所有角色(不分页) -->
 	<select id="queryRoleByDeptid" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select

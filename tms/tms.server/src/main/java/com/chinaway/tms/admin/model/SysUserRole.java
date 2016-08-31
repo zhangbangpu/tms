@@ -2,6 +2,11 @@ package com.chinaway.tms.admin.model;
 
 import java.io.Serializable;
 
+/**
+ * 用户角色bean
+ * @author zhang
+ *
+ */
 public class SysUserRole implements Serializable {
 		private static final long serialVersionUID = 1579467190398275039L;
 	

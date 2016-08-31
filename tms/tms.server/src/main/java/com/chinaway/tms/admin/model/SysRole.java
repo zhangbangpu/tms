@@ -5,7 +5,14 @@ import java.util.Date;
 import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 
+/**
+ * 角色
+ * @author zhang
+ *
+ */
 public class SysRole implements Serializable {
+	
+	private static final long serialVersionUID = -5201450267293543355L;
 	
 	private Integer id;//   主键	private String name;//   名称	private String description;//   描述	private String type;//   角色类型
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")

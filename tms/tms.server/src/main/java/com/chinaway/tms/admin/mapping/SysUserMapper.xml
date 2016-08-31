@@ -29,12 +29,9 @@
 		a.id,a.loginname,a.realname,a.password,a.type,a.name,a.intro,a.certificate,a.corporation,a.corporationim,a.phone,a.state,a.email,a.createtime,a.codeid,a.deptid,b.name as deptname
 	</sql>
 	
+	<!-- 连表查询用户信息 -->
 	<sql id="Base_Column_lb_List">
 		a.id,a.loginname,a.realname,a.password,a.type,a.name,a.intro,a.certificate,a.corporation,a.corporationim,a.phone,a.state,a.email,a.createtime,a.codeid,a.deptid,c.name as rolename
-	</sql>
-	
-	<sql id="Base_Column_Menu_List">
-		c.id
 	</sql>
 
 	<!-- 动态查询条件 -->
@@ -95,10 +92,6 @@
 	<!-- 动态查询条件 连role表 -->
 	<sql id="lb_Where_Clause">
 		where 1=1
-		and 
-		    a.id = b.userid
-		and 
-		    b.roleid = c.id
 		<trim suffixOverrides=",">
 			<if test="id != null and id != '' ">
 				and a.id = #{id}
@@ -146,7 +139,7 @@
 				and deptid = #{deptid}
 			</if>
 			<if test="email != null and email != '' ">
-				and email = #{email}
+				and a.email like CONCAT('%',#{email},'%')
 			</if>
 		</trim>
 	</sql>
@@ -154,9 +147,16 @@
 	<!-- 根据id查询 -->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
-		<include refid="Base_Column_dept_List" />
-		from sys_user a,sys_dept b where a.deptid = b.deptid and a.id = #{id}
+		<include refid="Base_Column_List" />
+		from sys_user a where a.id = #{id}
 	</select>
+	
+	<!-- 根据id查询用户和部门信息 -->
+<!-- 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer"> -->
+<!-- 		select -->
+<!-- 		<include refid="Base_Column_dept_List" /> -->
+<!-- 		from sys_user a,sys_dept b where a.deptid = b.deptid and a.id = #{id} -->
+<!-- 	</select> -->
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap"
@@ -171,7 +171,9 @@
 	<select id="selectAllUser4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_lb_List" />
-		from sys_user a,sys_user_role b, sys_role c
+		from
+		sys_user a left join sys_user_role b on a.id = b.userid
+		left join sys_role c on b.roleid = c.id
 		<include refid="lb_Where_Clause" />
 		order by a.createtime desc
 	</select>

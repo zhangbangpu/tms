@@ -2,6 +2,11 @@ package com.chinaway.tms.admin.model;
 
 import java.io.Serializable;
 
+/**
+ * 角色菜单关联
+ * @author zhang
+ *
+ */
 public class SysRoleMenu implements Serializable {
 
 	private static final long serialVersionUID = -7004789906044546976L;

@@ -43,4 +43,12 @@ public interface SysRoleService extends BaseService<SysRole, Integer> {
 	 * @return
 	 */
 	int deleteByIds(String ids);
+
+	/**
+	 * 获取角色根据名称
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysRole> selectRoleByName(Map<String, Object> argsMap);
+
 }

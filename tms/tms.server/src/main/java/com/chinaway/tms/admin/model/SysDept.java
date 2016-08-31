@@ -4,9 +4,16 @@ import java.io.Serializable;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+/**
+ * 部门bean
+ * @author zhang
+ *
+ */
 public class SysDept implements Serializable {
 	
-		private Integer id;//   主键	private String deptid;//   部门id	private String name;//   部门名称	private Integer pid;//   父id	private String levels;//   层级
+	private static final long serialVersionUID = -6994920823395414976L;
+	
+	private Integer id;//   主键	private String deptid;//   部门id	private String name;//   部门名称	private Integer pid;//   父id	private String levels;//   层级
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date createtime;//   创建时间	private String description;//   描述	private Integer sotid;//   排序号	private String state;//   节点状态，'open' 或 'closed'	private String isenable;//   是否可用状态
 	private String customerid;//   自定义机构编号
 	private String contact;//   联系人 

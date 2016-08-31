@@ -45,4 +45,11 @@ public interface SysRoleMapper extends BaseMapper<SysRole, Integer> {
 	 */
 	int deleteByIds(@Param(value="idItem")String[] idsArray);
 
+	/**
+	 * 查询角色根据名称
+	 * @param argsMap
+	 * @return
+	 */
+	List<SysRole> selectRoleByName(Map<String, Object> argsMap);
+
 }
