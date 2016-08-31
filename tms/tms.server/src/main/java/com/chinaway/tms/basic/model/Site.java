@@ -6,8 +6,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+/**
+ * 站点bean
+ * @author zhang
+ *
+ */
 public class Site implements Serializable {
-		private Integer id;//   	private String name;//   name	private String code;//   站点编码	private String area;//   范围	private String deptname;//   所属机构	private String types;//   站点类型	private String isprivate;//   
+		private static final long serialVersionUID = -7317870487305179544L;
+	
+	private Integer id;//   	private String name;//   name	private String code;//   站点编码	private String area;//   范围	private String deptname;//   所属机构	private String types;//   站点类型	private String isprivate;//   
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date updatetime;//   更新时间	private String province;//   省份	private String city;//   城市	private String address;//   地址
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date createtime;//   注册时间
 	private Integer wlcompany;//   承运商id

@@ -5,7 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 订单详情
+ * @author zhang
+ *
+ */
 public class OrderItem implements Serializable {
+	
+	private static final long serialVersionUID = 2740752498555850147L;
 	
 	private Integer id;//   	private Integer orderid=0;//   订单编号	private Integer goodscode=0;//   商品编号	private String goodsname="1";//   商品名称
 	private List<Cpmd> goods= new ArrayList<Cpmd>();  //id

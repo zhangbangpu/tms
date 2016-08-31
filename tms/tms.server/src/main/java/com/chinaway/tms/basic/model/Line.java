@@ -6,6 +6,11 @@ import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.chinaway.tms.utils.json.JsonUtil;
 
+/**
+ * 班线bean
+ * @author zhang
+ *
+ */
 public class Line implements Serializable {
 	
 	private static final long serialVersionUID = 7009433621776630334L;

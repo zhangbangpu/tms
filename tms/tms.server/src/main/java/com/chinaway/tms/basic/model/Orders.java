@@ -2,7 +2,6 @@ package com.chinaway.tms.basic.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +74,6 @@ public class Orders implements Serializable {
 		this.baseInfo = baseInfo;
 	}
 	public List<Map<String, Object>> getDispatchInfos() {
-		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("started", true);
 		map.put("name", "1");
