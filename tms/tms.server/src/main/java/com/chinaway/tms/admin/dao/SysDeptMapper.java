@@ -39,4 +39,10 @@ public interface SysDeptMapper extends BaseMapper<SysDept, Integer> {
 	 */
 	int deleteByIds(@Param(value="idItem")String[] idItem);
 
+	/**
+	 * 查询最大id
+	 * @return
+	 */
+	int selectMaxId();
+
 }

@@ -81,4 +81,9 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 		return sysDeptMapper.deleteByIds(idsArray);
 	}
 
+	@Override
+	public int selectMaxId() {
+		return sysDeptMapper.selectMaxId();
+	}
+	
 }

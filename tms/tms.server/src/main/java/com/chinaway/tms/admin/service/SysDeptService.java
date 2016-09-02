@@ -36,4 +36,10 @@ public interface SysDeptService extends BaseService<SysDept, Integer> {
 	 * @return
 	 */
 	int deleteByIds(String ids);
+
+	/**
+	 * 获取部门最后记录id
+	 * @return
+	 */
+	int selectMaxId();
 }

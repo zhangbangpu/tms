@@ -25,9 +25,9 @@
 <!-- 	<sql id="Base_Column_Menu_List"> -->
 <!-- 		c.id,c.name,c.pid,c.levels,c.createtime,c.requesturl,c.menutype,c.sotid,c.type,c.subsystem,c.target -->
 <!-- 	</sql> -->
-	
+	<!-- c.menutype,暂时不添加,调试问题 -->
 	<sql id="login_Menu_List">
-		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.menutype,c.type as type,c.clazz as clazz,c.title as title,c.img as img
+		c.id as id,c.pid as parentId,c.name as name,c.requesturl as resUrl,c.type as type,c.clazz as clazz,c.title as title,c.img as img
 	</sql>
 	
 	<!-- 动态查询条件 -->
@@ -79,7 +79,7 @@
 		<include refid="Base_Column_List" />
 		from sys_menu where id = #{id}
 	</select>
-
+	
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap"
 		parameterType="java.util.Map">

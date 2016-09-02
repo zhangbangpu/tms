@@ -92,6 +92,11 @@
 		from sys_dept where id = #{id}
 	</select>
 
+	<!-- 查询max id  -->
+	<select id="selectMaxId"  resultType="java.lang.Integer" >
+		select max(id) from sys_dept 
+	</select>
+	
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
@@ -128,8 +133,8 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.admin.model.SysDept">
 		insert into
-		sys_dept(deptid,name,pid,levels,createtime,description,sotid,state,isenable)
-		values(#{deptid},#{name},#{pid},#{levels},#{createtime},#{description},#{sotid},#{state},#{isenable})
+		sys_dept(deptid,name,pid,levels,createtime,description,sotid,state,isenable,customerid,contact,address,tel)
+		values(#{deptid},#{name},#{pid},#{levels},#{createtime},#{description},#{sotid},#{state},#{isenable},#{customerid},#{contact},#{address},#{tel})
 	</insert>
 
 	<!-- 根据id，修改记录 -->

@@ -18,7 +18,7 @@ public class SysMenu implements Serializable {
 	private String clazz;  //  样式
 	private String title;  //  标题
 	private String img;  //  图片
-	private String type;  //  资源类型
+	private int type;  //  资源类型
 	private String subsystem;  //  连接地址
 	private String target;  //  打开窗口
 	private boolean isChecked = false;  //   菜单是否被选中
@@ -41,10 +41,10 @@ public class SysMenu implements Serializable {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public String getType() {
+	public int getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 	public String getSubsystem() {
