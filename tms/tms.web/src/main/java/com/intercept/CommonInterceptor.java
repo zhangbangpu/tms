@@ -1,5 +1,7 @@
 package com.intercept;
 
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +53,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 				if (null == resUrl || StringUtils.isEmpty(String.valueOf(resUrl)) || "#".equals(String.valueOf(resUrl))) {
 					continue;
 				}
-				String startUri = requestUri.substring(0, requestUri.lastIndexOf("."));
+				String startUri = URLDecoder.decode(requestUri.substring(0, requestUri.lastIndexOf(".")), "UTF-8");
 				String uriFormDb = String.valueOf(resUrl).replace("#", "/");
 				String startUriFormDb = uriFormDb.substring(0, uriFormDb.lastIndexOf("."));
 				

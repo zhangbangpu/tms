@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -232,6 +231,9 @@ public class SysMenuController {
 		int ret = 0;
 		try {
 			sysMenu.setCreatetime(new Date());
+			if(null == sysMenu.getPid()){
+				sysMenu.setPid(0);
+			}
 			if (sysMenu.getId() != null) {
 				ret = sysMenuService.updateSelective(sysMenu);
 			} else {
@@ -342,30 +344,30 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "/updateMenu")
 	@ResponseBody
-	public Result updateMenu(HttpServletRequest request, @RequestParam(value="sysMenu") String sysMenu) {
+	public Result updateMenu(HttpServletRequest request, SysMenu menu) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
 		
-		SysMenu menu = new SysMenu();
+//		SysMenu menu = new SysMenu();
 //		menu = (SysMenu)JsonUtil.jsonStr2Obj(sysMenu, SysMenu.class);
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		menu.setCreatetime(new Date());
-		menu.setImg(String.valueOf(argsMap.get("img")));
-		menu.setLevels(String.valueOf(argsMap.get("levels")));
-		menu.setMenutype(String.valueOf(argsMap.get("menutype")));
-		menu.setName(String.valueOf(argsMap.get("name")));
-		if(null != String.valueOf(argsMap.get("pid"))){
-			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
-		}
-		menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
-		if(null != String.valueOf(argsMap.get("sotid"))){
-			menu.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
-		}
-		menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
-		menu.setTarget(String.valueOf(argsMap.get("target")));
-		menu.setTitle(String.valueOf(argsMap.get("title")));
-		menu.setType(String.valueOf(argsMap.get("type")));
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		menu.setCreatetime(new Date());
+//		menu.setImg(String.valueOf(argsMap.get("img")));
+//		menu.setLevels(String.valueOf(argsMap.get("levels")));
+//		menu.setMenutype(String.valueOf(argsMap.get("menutype")));
+//		menu.setName(String.valueOf(argsMap.get("name")));
+//		if(null != String.valueOf(argsMap.get("pid"))){
+//			menu.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+//		}
+//		menu.setRequesturl(String.valueOf(argsMap.get("requesturl")));
+//		if(null != String.valueOf(argsMap.get("sotid"))){
+//			menu.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
+//		}
+//		menu.setSubsystem(String.valueOf(argsMap.get("subsystem")));
+//		menu.setTarget(String.valueOf(argsMap.get("target")));
+//		menu.setTitle(String.valueOf(argsMap.get("title")));
+//		menu.setType(String.valueOf(argsMap.get("type")));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;

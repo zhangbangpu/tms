@@ -5,16 +5,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.model.SysRole;
 import com.chinaway.tms.admin.model.SysRoleMenu;
@@ -203,10 +200,10 @@ public class SysRoleController {
 
 		SysRole sysRole = new SysRole();
 		try {
+			List<SysMenu> allMenuList = (List<SysMenu>) sysMenuService.selectAll4Page(new HashMap<String, Object>());
 			if (!StringUtils.isEmpty(id)) {
 				sysRole = sysRoleService.selectById(Integer.parseInt(id));
 				List<Map<String, Object>> sysMenuList = sysMenuService.queryMenuByRoleId(Integer.parseInt(id));
-				List<SysMenu> allMenuList = (List<SysMenu>)sysMenuService.selectAll4Page(new HashMap<String, Object>());
 				for (SysMenu sysMenu : allMenuList) {
 					for (Map<String, Object> map : sysMenuList) {
 						if (sysMenu.getId().equals(map.get("id"))) {
@@ -214,8 +211,8 @@ public class SysRoleController {
 						}
 					}
 				}
-				sysRole.setMenuList(allMenuList);
 			}
+			sysRole.setMenuList(allMenuList);
 			
 			if (null != sysRole) {
 				code = 0;

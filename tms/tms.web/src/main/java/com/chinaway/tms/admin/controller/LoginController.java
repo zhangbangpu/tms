@@ -66,7 +66,7 @@ public class LoginController {
 				request.getSession().setAttribute("rolename", sysRole.getName());
 				List<Map<String, Object>> sysMenuMap = sysMenuService.queryMenuByRoleId(sysRole.getId());
 				for (Map<String, Object> map : sysMenuMap) {
-					if ("menu".equals(map.get("menutype")) && !"#".equals(map.get("resUrl"))) {
+					if (null != map.get("menutype") && "menu".equals(map.get("menutype")) && !"#".equals(map.get("resUrl"))) {
 						resultMap.put("defaultIndex", map.get("resUrl"));
 						break;
 					}
