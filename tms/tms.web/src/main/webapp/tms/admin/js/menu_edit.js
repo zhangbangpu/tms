@@ -59,10 +59,13 @@ function runFormValidation() {
 			type:{
 				required : true
 			},
+			pid:{
+				number: true
+			},
  
-			target:{
-				required : true
-			}
+//			target:{
+//				required : true
+//			}
 //			,
 // 			orderby:{
 //				number: true,

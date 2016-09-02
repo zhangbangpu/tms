@@ -108,7 +108,7 @@ function runFormValidation() {
         rules: {
             name: {
                 required: true
-            },
+            }
         },
         // Messages for form validation
         messages: {

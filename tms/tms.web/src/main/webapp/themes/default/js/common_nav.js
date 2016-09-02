@@ -1,11 +1,11 @@
 $(function() {
-//	 var data = eval("[{'id':1,'parentId':0,'name':'Dashboard','resUrl':'index.html','clazz':'menu-item-parent','type':0,'title':'Dashboard','img':'fa fa-lg fa-fw fa-home'}," +
-//	 "{'id':2,'parentId':0,'name':'Inbox','resUrl':'inbox.html','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-inbox'}," +
-//	 "{'id':3,'parentId':0,'name':'Graphs','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-bar-chart-o'}," +
-//	 "{'id':4,'parentId':0,'name':'Tables','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
+//	 var data = eval("[{'id':3,'parentId':0,'name':'Graphs','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-bar-chart-o'}," +
 //	 "{'id':6,'parentId':3, 'name':'Flot Chart','resUrl':'flot.html','clazz':'','type':1,'title':'','img':''}," +
-//	 "{'id':7,'parentId':3, 'name':'Morris Charts','resUrl':'morris.html','clazz':'','type':1,'title':'','img':''}," +
-//	 "{'id':8,'parentId':6, 'name':'Inline Charts','resUrl':'inline-charts.html','clazz':'','type':1,'title':'','img':''},"	 +
+//	 "{'id':1,'parentId':0,'name':'Dashboard','resUrl':'index.html','clazz':'menu-item-parent','type':0,'title':'Dashboard','img':'fa fa-lg fa-fw fa-home'}," +
+//	 "{'id':4,'parentId':0,'name':'Tables','resUrl':'#','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
+//	 "{'id':2,'parentId':0,'name':'Inbox','resUrl':'inbox.html','clazz':'menu-item-parent','type':0,'title':'','img':'fa fa-lg fa-fw fa-inbox'}," +
+//	 "{'id':7,'parentId':0, 'name':'Morris Charts','resUrl':'morris.html','clazz':'','type':1,'title':'','img':''}," +
+//	 "{'id':8,'parentId':4, 'name':'Inline Charts','resUrl':'inline-charts.html','clazz':'','type':1,'title':'','img':''},"	 +
 //	 "{'id':9,'parentId':4, 'name':'Normal Tables','resUrl':'table.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
 //	 "{'id':10,'parentId':4, 'name':'Data Tables','resUrl':'datatables2.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table'}," +
 //	 "{'id':10,'parentId':4, 'name':'容器','resUrl':'/container/index.html','clazz':'menu-item-parent','type':1,'title':'','img':'fa fa-lg fa-fw fa-table','module':'container','method':'index'}," +
@@ -22,15 +22,14 @@ $(function() {
         if (r != null) return unescape(r[2]); return null;
     }
 	
-	var username = $.getUrlParam('username');
-	$("#show-shortcut").html("<a href='javascript:void(0);' id='show-shortcut'>"+username+"</a>");
-	
-	console.log(username);
+//	var username = $.getUrlParam('username');
+//	$("#show-shortcut").html("<a href='javascript:void(0);' id='show-shortcut'>"+username+"</a>");
 	
 	$ips.load("login","loginGetMenuList",{id:1},function(data){
 		if(data.code == 2){
 			window.location.href='login.html';
 		}
+	    console.log(data[1]);
 		var menu = resourceMenu(data);
 		$("nav").html(ulLi(menu));
 	});
@@ -127,7 +126,7 @@ function ulLi(data, children) {
 
 	for (var i = 0; i < data.length; i++) {
 		var value = data[i];
-		if(value.menutype=="menu"){
+//		if(value.menutype=="menu"){
 			if (value.type == 0) {
 				html += '<li><a href="' + value.resUrl + '" title="' + value.name
 				+ '"><i class="' + value.img + '"></i> <span class="'
@@ -148,7 +147,7 @@ function ulLi(data, children) {
 				html += ulLi(value.children, true);
 			}
 			html += '</li>';
-		}
+//		}
 	}
 	html += '</ul>';
 	// console.log(html);
