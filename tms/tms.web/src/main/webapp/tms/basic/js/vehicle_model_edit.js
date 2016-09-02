@@ -34,15 +34,6 @@ $(function(){
         orglist();
     }
 	
-	// 保存
-	$("#btnSubmit").click(function(){
-		return classlinepriceSave(false);
-	});
-	
-	// 保存并新建
-	$("#btnSubmitNew").click(function(){
-		return classlinepriceSave(true);
-	});
 })
 
  
@@ -51,6 +42,9 @@ function runFormValidation() {
 	var $checkoutForm = $('#editfrom').validate({
 		// Rules for form validation
 		rules : {
+			name: {
+                required: true
+            }
 		},
 		// Messages for form validation
 		messages : {
@@ -63,21 +57,21 @@ function runFormValidation() {
 	
 	// 保存
 	$("#btnSubmit").click(function(){
-		return classlinepriceSave(false);
+		return vehicleModel(false);
 	});
 	
 	// 保存并新建
 	$("#btnSubmitNew").click(function(){
-		return classlinepriceSave(true);
+		return vehicleModel(true);
 	});
 }
 	
-function classlinepriceSave(newed) {
+function vehicleModel(newed) {
 //    alert($checkoutForm);
 	//form验证 对应runFormValidation方法里面
-//    if (!$('#editfrom').validate($checkoutForm).form()) {
-//        return false;
-//    }
+    if (!$('#editfrom').validate().form()) {
+        return false;
+    }
     
     var pararm = $("#editfrom").serialize();
 	var color = $("#color").val();

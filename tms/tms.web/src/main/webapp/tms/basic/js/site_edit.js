@@ -34,50 +34,43 @@ $(function(){
         orglist();
     }
 	
-	// 保存
-	$("#btnSubmit").click(function(){
-		return classlinepriceSave(false);
-	});
-	
-	// 保存并新建
-	$("#btnSubmitNew").click(function(){
-		return classlinepriceSave(true);
-	});
 })
 
  
 // Registration validation script
 function runFormValidation() {
-	var $checkoutForm = $('#editfrom').validate({
-		// Rules for form validation
-		rules : {
-		},
-		// Messages for form validation
-		messages : {
-		},
-		// Do not change code below
-		errorPlacement : function(error, element) {
-			error.insertAfter(element.parent());
-		}
-	});
+    var $checkoutForm = $('#editfrom').validate({
+        // Rules for form validation
+        rules: {
+            name: {
+                required: true
+            }
+        },
+        // Messages for form validation
+        messages: {
+        },
+        // Do not change code below
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+	
 	
 	// 保存
 	$("#btnSubmit").click(function(){
-		return classlinepriceSave(false);
+		return siteSave(false);
 	});
 	
 	// 保存并新建
 	$("#btnSubmitNew").click(function(){
-		return classlinepriceSave(true);
+		return siteSave(true);
 	});
 }
 	
-function classlinepriceSave(newed) {
-//    alert($checkoutForm);
-	//form验证 对应runFormValidation方法里面
-//    if (!$('#editfrom').validate($checkoutForm).form()) {
-//        return false;
-//    }
+function siteSave(newed) {
+    if (!$('#editfrom').validate().form()) {
+        return false;
+    }
     
     var pararm = $("#editfrom").serialize();
 	var color = $("#color").val();
@@ -87,7 +80,9 @@ function classlinepriceSave(newed) {
         privacy = 0;
     }
     pararm += "&privacy="+privacy;
-	$ips.load("site", "addSite", pararm, function(result){
+    
+	
+    $ips.load("site", "addSite", pararm, function(result){
 //		$ips.unLockPage();
 		console.log(result);
 		if(result) {
