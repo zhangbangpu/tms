@@ -137,7 +137,7 @@ public class TckNumController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "操作站点失败!";
+		String msg = "生成运单失败!";
 
 		int ret = 0;
 		try {
@@ -171,17 +171,20 @@ public class TckNumController {
 			}
 			if (ret > 0) {
 				code = 0;
-				msg = "操作站点成功!";
+				msg = "生成运单成功!";
 			}
+			//
+			
 		} catch (Exception e) {
 			e.getStackTrace();
+			msg = "生成运单出现异常!";
 		}
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return new Result(0, msg);
 	}
 	
 	

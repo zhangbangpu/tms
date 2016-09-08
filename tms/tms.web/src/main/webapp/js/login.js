@@ -70,10 +70,9 @@ $('#form_button').click(function() {
     var pararm = $('#login-form').serialize();
     $ips.load('login', 'login', pararm, function(result) {
     	console.log(result);
-    	console.log(typeof result);
         if (result.code == 0) {
-        	console.log(result.defaultIndex);
-        	window.location.href="index.html?username="+result.username + result.defaultIndex;
+        	window.location.href="index.html?username="+result.username;
+//        	window.location.href="index.html?username="+result.username + result.defaultIndex;
 //        	window.location.href="/jsp/index.jsp#tms/basic/site_list.html";
         } else {
             $('.padding-top-10:first').animate({right: '10px'},80);

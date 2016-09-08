@@ -10,7 +10,7 @@ $(function(){
         editid = param.id;
         
         var isedit = $("#isedit").val();
-        $ips.load("orders", "queryOneById", {'id': param.id}, function(data) {
+        $ips.load("site", "queryOneById", {'id': param.id}, function(data) {
             if (data) {
                 var data1 = new Array();
                 chooseId = data.orgcode;
@@ -87,7 +87,7 @@ function classlinepriceSave(newed) {
         privacy = 0;
     }
     pararm += "&privacy="+privacy;
-	$ips.load("orders", "addOrders", pararm, function(result){
+	$ips.load("site", "addSite", pararm, function(result){
 //		$ips.unLockPage();
 		console.log(result);
 		if(result) {
@@ -95,7 +95,7 @@ function classlinepriceSave(newed) {
 			if (newed) { //继续标注
 				$('#editfrom')[0].reset();
 			} else{
-				$ips.locate("tms/basic","orders_list");
+				$ips.locate("tms/basic","site_list");
 			}
 		}else {
 			$ips.error("保存站点表失败。" + result);

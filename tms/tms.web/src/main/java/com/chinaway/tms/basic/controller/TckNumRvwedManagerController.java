@@ -224,6 +224,7 @@ public class TckNumRvwedManagerController {
 	
 	/**
 	 * 修改车次审核信息<br>
+	 * 审核的内部操作在service层
 	 * 返回用户的json串
 	 * 
 	 * @param userInfo
@@ -243,13 +244,14 @@ public class TckNumRvwedManagerController {
 		int ret = 0;
 		try {
 			ret = waybillService.updateWaybill(waybill);
-
 			if (ret > 0) {
 				code = 0;
 				msg = "车次审核成功!";
 			}
+			
 		} catch (Exception e) {
 			e.getStackTrace();
+			msg = "车次审核异常!";
 		}
 
 		resultMap.put("code", code);
@@ -258,5 +260,5 @@ public class TckNumRvwedManagerController {
 
 		return result;
 	}
-	
+
 }

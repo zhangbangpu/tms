@@ -3,7 +3,11 @@ package com.chinaway.tms.ws.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -11,6 +15,9 @@ import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.MyConstant;
 import com.chinaway.tms.utils.json.JsonUtil;
+import com.chinaway.tms.utils.lang.DateUtil;
+import com.chinaway.tms.utils.lang.MathUtil;
+import com.chinaway.tms.utils.lang.StringUtil;
 import com.chinaway.tms.vo.Result;
 
 /**
@@ -18,10 +25,13 @@ import com.chinaway.tms.vo.Result;
  * @author shu
  *
  */
+@Controller
 public class ToWMSController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ToWMSController.class);
+	
 	@Autowired
 	private OrdersService ordersService ;
-	
 	
 	/**
 	 * 新增订单及出库单
@@ -30,26 +40,36 @@ public class ToWMSController {
 	 */
 	@RequestMapping(value="ws/addOrder")
 	@ResponseBody
-	public Result addOrder2(@RequestParam("orderInfo") String orderInfo){
+	public Result addOrder(@RequestParam("orderInfo") String orderInfo){
+		LOGGER.info("传入的参数(orderInfo):" + orderInfo);
 		int code = 1;
 		String msg = "";
 		if(orderInfo != ""){
 			Orders order = JsonUtil.jsonStr2Obj(orderInfo, Orders.class);
 			try{
-				int maxId = ordersService.selectMaxId();
-				order.setCode("tms" + maxId );
-				ordersService.insert(order);
-				code = 0;
-				msg = "新增订单成功";
+//				int maxId = ordersService.selectMaxId();
+//				order.setCode("tms" + maxId );
+				//设置有标识的主键
+				order.setCode("tms" + MathUtil.random() );
+				int count = ordersService.insert(order);
+				if(count > 0){
+					code = 0;
+					msg = "新增订单成功";
+				}
+				
 			}catch(Exception e){
 				e.printStackTrace();
-				msg = "新增订单失败";
+				msg = "新增订单出异常";
 			}
 		}else{
 			code = 2;
 			msg = "参数不能为空";
 		}
-		return new Result(code,msg);
+		
+		Result result = new Result(code,msg);
+		LOGGER.info("addOrder传出的参数:" + result);
+		
+		return result;
 	}
 	
 	/**
@@ -60,6 +80,7 @@ public class ToWMSController {
 	@RequestMapping(value="ws/deleteOrder")
 	@ResponseBody
 	public Result deleteOrder(@RequestParam("fromcode") String fromcode){
+		LOGGER.info("传入的参数(fromcode):" + fromcode);
 		int code = 1;
 		String msg = "";
 		try{
@@ -87,6 +108,10 @@ public class ToWMSController {
 			e.printStackTrace();
 			msg = "删除失败,出现异常";
 		}
-		return new Result(code,msg);
+		
+		Result result = new Result(code,msg);
+		LOGGER.info("deleteOrder传出的参数:" + result);
+		
+		return result;
 	}
 }

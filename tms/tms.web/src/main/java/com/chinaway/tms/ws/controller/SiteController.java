@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.basic.model.Site;
 import com.chinaway.tms.basic.service.SiteService;
 import com.chinaway.tms.utils.json.JsonUtil;
+import com.chinaway.tms.vo.Result;
 
 @Controller
 public class SiteController {
@@ -31,26 +32,32 @@ public class SiteController {
 	 */
     @RequestMapping(value = "/ws/addSite")
 	@ResponseBody
-	public String addSite(@RequestParam("siteInfo") String siteInfo){
+	public Result addSite(@RequestParam("siteInfo") String siteInfo){
     	
     	LOGGER.info("传入的参数(siteInfo):" + siteInfo);
-    	
-    	Site site = JsonUtil.jsonStr2Obj(siteInfo, Site.class);
-    	Map<String, String> argsMap = new HashMap<String, String>();
-    	try {
-    		siteService.insert(site);
-    		argsMap.put("status", "true");
-			argsMap.put("msg", "add Site success!");
-		} catch (Exception e) {
-			argsMap.put("status", "false");
-			argsMap.put("msg", "add Site failed!");
+    	int code = 1;
+		String msg = "";
+		if(siteInfo != ""){
+			try {
+				Site site = JsonUtil.jsonStr2Obj(siteInfo, Site.class);
+				int count = siteService.insert(site);
+				if(count > 0){
+					code = 0;
+					msg = "新增站点成功";
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				msg = "新增站点出异常";
+			}
+		}else{
+			code = 2;
+			msg = "参数不能为空";
 		}
-    	
-		String ret = JsonUtil.obj2JsonStr(argsMap);
 		
-		LOGGER.info("addSite传出的参数:" + ret);
+		Result result = new Result(code,msg);
+		LOGGER.info("addSite传出的参数:" + result);
 
-		return ret;
+		return result;
 	}
     
 }

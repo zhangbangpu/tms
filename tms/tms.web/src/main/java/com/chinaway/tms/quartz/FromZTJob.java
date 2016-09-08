@@ -20,7 +20,6 @@ import com.chinaway.tms.utils.http.HttpClientUtils;
  * @author shu
  *
  */
-@Component
 public class FromZTJob {
 
 	@Autowired
@@ -146,8 +145,5 @@ public class FromZTJob {
 			}
 		}
 	}
-	
-	
-	
 	
 }

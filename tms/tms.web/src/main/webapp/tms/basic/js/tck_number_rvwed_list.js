@@ -61,6 +61,9 @@ $("#exportbtn").click(function(){
     });
 });
 
+/**
+ * 审核通过
+ */
 $("#reviewedbtn").click(function(){
 	
 	var ids = getRowIds(true);
@@ -84,6 +87,9 @@ $("#reviewedbtn").click(function(){
 	});
 });
 
+/**
+ * 审核不通过
+ */
 $("#auditDismissedbtn").click(function(){
 	
 	var ids = getRowIds(true);

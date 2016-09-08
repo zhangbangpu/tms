@@ -8,12 +8,12 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
 	<!--要调用的工作 -->
-	<bean id="myJob" class="com.chinaway.tms.quartz.AutoGenerateWaybill"></bean>
+	<bean id="waybillJob" class="com.chinaway.tms.quartz.AutoGenerateWaybill"></bean>
 	
 	<!--定义调用对象和调用对象的方法-->
 	<bean id="myDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<!--调用的类-->
-		<property name="targetObject" ref="myJob"></property>
+		<property name="targetObject" ref="waybillJob"></property>
 		<!--调用类中的方法-->
 		<property name="targetMethod" value="execute"></property>
 		<!--并发设置-->
@@ -27,12 +27,49 @@
 		<property name="jobDetail" ref="myDetail"></property>
 		<!-- cron表达式-->
 		<property name="cronExpression">
-			<value>0 */5 * * * ?</value><!-- 每分钟触发 -->
- 			<!--<value>0/10 * * * * ?</value>  每5秒触发 -->
+			<value>0 */10 * * * ?</value><!-- 每10分钟触发 -->
+ 			<!--<value>0/5 * * * * ?</value>  每5秒触发 -->
 		</property>
 	</bean>
-	<!-- 暂时关闭定时任务 -->
-	<!-- 调度程序     -->
+	
+	<!--要调用的工作 -->
+	<bean id="fromZTJob" class="com.chinaway.tms.quartz.FromZTJob"></bean>
+	
+	<!--定义调用对象和调用对象的方法-->
+	<bean id="myDetail2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!--调用的类-->
+		<property name="targetObject" ref="fromZTJob"></property>
+		<!--调用类中的方法-->
+		<property name="targetMethod" value="quartMethod"></property>
+		<!--并发设置-->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!--定义触发时间-->
+	<!-- <bean id="myTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> spring3.x 的配置-->
+	<!-- spring4.x + quartz2.x 的配置,就是将CronTriggerBean改为CronTriggerFactoryBean -->
+	<bean id="myTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean ">
+		<property name="jobDetail" ref="myDetail2"></property>
+		<!-- cron表达式-->
+		<property name="cronExpression">
+			<value>0 0 1 * * ?</value><!-- 每天凌晨1点执行一次 -->
+			<!-- <value>0 */1 * * * ?</value>  每分钟触发 -->
+ 			<!--<value>0/5 * * * * ?</value> 每5秒触发 -->
+		</property>
+	</bean>
+	
+	<!-- 调度程序-多个 -->
+	<bean id="myScheduler2" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="myTrigger"></ref>
+                <ref bean="myTrigger2"></ref>
+            </list>
+        </property>
+        <property name="autoStartup" value="true"></property>
+    </bean>
+    
+	<!-- 调度程序  (单个)
 	<bean id="myScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
@@ -41,17 +78,5 @@
         </property>
         <property name="autoStartup" value="true"></property>
     </bean>
-
-    
-	<!-- 调度程序-多个
-	<bean id="myScheduler2" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="myTrigger"></ref>
-                <ref bean="myTriggersB"></ref> 
-            </list>
-        </property>
-        <property name="autoStartup" value="true"></property>
-    </bean> -->
- 
+	  -->
 </beans>
