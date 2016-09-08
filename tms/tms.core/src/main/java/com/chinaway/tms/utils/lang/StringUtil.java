@@ -20,9 +20,12 @@ public class StringUtil {
 	public static String getUUId32() {
 		// java.util.UUID 是jdk 提供的类
 		String str = java.util.UUID.randomUUID().toString();
-		String uuids = str.substring(0, 8) + str.substring(9, 13)
-				+ str.substring(14, 18) + str.substring(19, 23)
-				+ str.substring(24);
+//		String uuids = str.substring(0, 8) + str.substring(9, 13)
+//				+ str.substring(14, 18) + str.substring(19, 23)
+//				+ str.substring(24);
+		//方法二：与截取字符串的速度差不多
+		String uuids = str.replace("-", "");
+		
 		return uuids;
 	}
 	
@@ -43,6 +46,7 @@ public class StringUtil {
 		return resultStr;
 	}
 
+	
 	/**
 	 * 文件重命名，组成格式：当前日期（yyyyMMddHHmmss）+ 4位随机数
 	 * null表示重命名失败，无后缀
@@ -52,7 +56,7 @@ public class StringUtil {
 	 */
 	public static String getNewFilename(String oldFilename) {
 //		String suffix = oldFilename.substring(oldFilename.lastIndexOf("."));
-		String name = DateUtil.todayStr() + MathUtil.random(1000,9999);
+		String name = MathUtil.random();
 		String suffix = getSuffix(oldFilename);
 		if(suffix != null){
 			return name + "." +suffix;

@@ -29,6 +29,15 @@ public class MathUtil {
 	public static int random(int start,int end){
 		return (int) (Math.random() * (end - start + 1)) + start;
 	}
-	
-	
+
+	/**
+	 * 返回18位随机数, 组成格式：当前日期（yyyyMMddHHmmss）+ 4位随机数
+	 * 
+	 * @Title: getNewFilename
+	 * @param @param oldFilename
+	 * @return String    返回类型
+	 */
+	public static String random() {
+		return DateUtil.todayStr() + MathUtil.random(1000,9999);
+	}
 }
