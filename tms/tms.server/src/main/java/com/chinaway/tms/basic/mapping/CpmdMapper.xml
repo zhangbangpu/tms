@@ -155,11 +155,17 @@
 	</select>
 	
 	<!-- 根据订单id查询商品列表 -->
-	<select id="selectCpmdByOrdersId" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectCpmdByOrdersId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="orders_Column_List" />
 		from cpmd a,order_item b,orders c
-		<include refid="lb_Where_Clause" />
+		where a.id = b.goodscode
+		and b.orderid = c.id
+		<trim suffixOverrides="," >
+			<if test="orderid != null and orderid != '' ">
+			    and b.orderid = #{orderid}
+			</if>
+		</trim>
 	</select>
    
 	<!-- 插入记录 -->

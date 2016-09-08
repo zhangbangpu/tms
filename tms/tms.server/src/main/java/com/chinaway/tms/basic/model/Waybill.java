@@ -13,7 +13,7 @@ public class Waybill implements Serializable {
 	private static final long serialVersionUID = -5499181670910811369L;
 	
 	private Integer id;//   	private String code;//   运单编号	private String fromcode;//   来源编号	private String orderfrom;//   订单来源：sap，wms
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date createtime;//   创建时间	private String deptname;//   所属机构	private String subcontractor;//   转包承运商	private Double amount;//   货品数量	private String unit;//   货品单位	private Double weight;//   货品总重量(kg)	private Double volume;//   货品总体积(m³)	private String fhaddress;//   发货地址	private String shaddress;//   收货地址	private java.util.Date requstarttime;//   要求发货时间	private java.util.Date requendtime;//   要求收货时间	private String state = "0";//   当前执行阶段 默认 0 初始	private Integer exceptcount;//   异常事件数	private Double c_weight;//   匹配车型重量(kg)	private Double c_volume;//   匹配车型体积(m³)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date createtime;//   创建时间	private String deptname;//   所属机构	private String subcontractor;//   转包承运商	private Double amount;//   货品数量	private String unit;//   货品单位	private Double weight;//   货品总重量(kg)	private Double volume;//   货品总体积(m³)	private String fhaddress;//   发货地址	private String shaddress;//   收货地址	private java.util.Date requstarttime;//   要求发货时间	private java.util.Date requendtime;//   要求收货时间	private String state;//   当前执行阶段 默认 0 初始	private Integer exceptcount;//   异常事件数	private Double c_weight;//   匹配车型重量(kg)	private Double c_volume;//   匹配车型体积(m³)
 	private String ordersid;//   订单id
 	private String wlcompany;//   承运商
 	private String vehiclemodel;//   车型

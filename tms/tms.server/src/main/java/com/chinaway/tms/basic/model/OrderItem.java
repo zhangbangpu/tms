@@ -14,35 +14,35 @@ public class OrderItem implements Serializable {
 	
 	private static final long serialVersionUID = 2740752498555850147L;
 	
-	private Integer id;//   	private Integer orderid=0;//   订单编号	private Integer goodscode=0;//   商品编号	private String goodsname="1";//   商品名称
+	private Integer id;//   	private Integer orderid;//   订单编号	private String goodscode;//   商品编号	private String goodsname;//   商品名称
 	private List<Cpmd> goods= new ArrayList<Cpmd>();  //id
-	private String orderno="1";  //   订单号
-	private String number="1";  //   总件数
-	private String sdatetime="1";  //   要求发货时间
-	private String wmsno="1";  //   ERP/WMS单号
-	private String entity="1";  //   货品单位
-	private String rcompany="1";  //   收货单位
-	private Date createtime = new Date();  //创建时间
-	private String weight="1";  //   货品总重(Kg)
-	private String rlocation="1";  //   收货地址
-	private String orgcodeName="1";  //   所属机构
-	private String volume="1";  //   货品总体积(m3)
-	private String rsitename="1";  //   收货站点
-	private String fromorgcodeName="1";  //   来源机构
-	private String scompany="1";  //   发货单位
-	private String rname="1";  //   收货人
-	private String toorgcodeName="1";  //   转包承运商
-	private String slocation="1";  //   发货地址
-	private String rphone="1";  //   收货人电话
-	private Date assigntime=new Date();  //   转包时间
-	private Date ssitename=new Date();  //   发货站点
-	private Date rdatetime=new Date();  //   要求收货时间
-	private String departureslist="1";  //   实施模式
-	private String sname="1";  //   sname
-	private String events="1";  //   events
-	private String classname="1";  //   线路名称
-	private String sphone="1";  //   发货人电话
-		public Integer getId() {	    return this.id;	}	public void setId(Integer id) {	    this.id=id;	}	public Integer getOrderid() {	    return this.orderid;	}	public void setOrderid(Integer orderid) {	    this.orderid=orderid;	}	public Integer getGoodscode() {	    return this.goodscode;	}	public void setGoodscode(Integer goodscode) {	    this.goodscode=goodscode;	}	public String getGoodsname() {	    return this.goodsname;	}	public void setGoodsname(String goodsname) {	    this.goodsname=goodsname;	}
+	private String orderno;  //   订单号
+	private String number;  //   总件数
+	private String sdatetime;  //   要求发货时间
+	private String wmsno;  //   ERP/WMS单号
+	private String entity;  //   货品单位
+	private String rcompany;  //   收货单位
+	private Date createtime;  //创建时间
+	private String weight;  //   货品总重(Kg)
+	private String rlocation;  //   收货地址
+	private String orgcodeName;  //   所属机构
+	private String volume;  //   货品总体积(m3)
+	private String rsitename;  //   收货站点
+	private String fromorgcodeName;  //   来源机构
+	private String scompany;  //   发货单位
+	private String rname;  //   收货人
+	private String toorgcodeName;  //   转包承运商
+	private String slocation;  //   发货地址
+	private String rphone;  //   收货人电话
+	private Date assigntime;  //   转包时间
+	private Date ssitename;  //   发货站点
+	private Date rdatetime;  //   要求收货时间
+	private String departureslist;  //   实施模式
+	private String sname;  //   sname
+	private String events;  //   events
+	private String classname;  //   线路名称
+	private String sphone;  //   发货人电话
+		public Integer getId() {	    return this.id;	}	public void setId(Integer id) {	    this.id=id;	}	public Integer getOrderid() {	    return this.orderid;	}	public void setOrderid(Integer orderid) {	    this.orderid=orderid;	}	public String getGoodscode() {	    return this.goodscode;	}	public void setGoodscode(String goodscode) {	    this.goodscode=goodscode;	}	public String getGoodsname() {	    return this.goodsname;	}	public void setGoodsname(String goodsname) {	    this.goodsname=goodsname;	}
 	public List<Cpmd> getGoods() {
 		return goods;
 	}

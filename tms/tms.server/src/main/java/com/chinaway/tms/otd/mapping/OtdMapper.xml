@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.otd.dao.OtdMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.otd.model.Otd" >
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="status" property="status"/>
+		<result column="type" property="type"/>
+		<result column="hours" property="hours"/>
+		<result column="minute" property="minute"/>
+		<result column="seconds" property="seconds"/>
+		<result column="tims" property="tims"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,name,status,type,hours,minute,seconds,tims
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+		    and name = #{name}
+		</if>
+		<if test="status != null and status != '' ">
+		    and status = #{status}
+		</if>
+		<if test="type != null and type != '' ">
+		    and type = #{type}
+		</if>
+		<if test="hours != null and hours != '' ">
+		    and hours = #{hours}
+		</if>
+		<if test="minute != null and minute != '' ">
+		    and minute = #{minute}
+		</if>
+		<if test="seconds != null and seconds != '' ">
+		    and seconds = #{seconds}
+		</if>
+		<if test="tims != null and tims != '' ">
+		    and tims = #{tims}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from otd where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from otd
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.otd.model.Otd" >
+	  insert into otd(id,name,status,type,hours,minute,seconds,tims)
+ values(#{id},#{name},#{status},#{type},#{hours},#{minute},#{seconds},#{tims})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.otd.model.Otd" >
+	  update otd set name=#{name},status=#{status},type=#{type},hours=#{hours},minute=#{minute},seconds=#{seconds},tims=#{tims} where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.otd.model.Otd" >
+		update otd set 
+	<trim  suffixOverrides="," >
+	<if test="name != null  and name != '' ">
+		name=#{name},
+	</if>
+	<if test="status != null  and status != '' ">
+		status=#{status},
+	</if>
+	<if test="type != null  and type != '' ">
+		type=#{type},
+	</if>
+	<if test="hours != null  ">
+		hours=#{hours},
+	</if>
+	<if test="minute != null  ">
+		minute=#{minute},
+	</if>
+	<if test="seconds != null  ">
+		seconds=#{seconds},
+	</if>
+	<if test="tims != null  ">
+		tims=#{tims},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.otd.model.Otd" >
+		delete 	 from otd where id = #{id}
+	</delete>
+  	
+</mapper>

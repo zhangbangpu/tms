@@ -17,9 +17,9 @@ public interface CpmdService extends BaseService<Cpmd, Integer> {
 
 	/**
 	 * 连表查询商品根据订单id
-	 * @param id
+	 * @param orderId
 	 * @return
 	 */
-	List<Cpmd> selectCpmdByOrdersId(Integer id);
+	List<Cpmd> selectCpmdByOrdersId(Integer orderId);
 	
 }

@@ -6,10 +6,13 @@
 		<result column="orderid" property="orderid"/>
 		<result column="goodscode" property="goodscode"/>
 		<result column="goodsname" property="goodsname"/>
+		<result column="number" property="number"/>
+		<result column="weight" property="weight"/>
+		<result column="volume" property="volume"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
-		 id,orderid,goodscode,goodsname
+		 id,orderid,goodscode,goodsname,number,weight,volume
 	</sql>
    
 	<!-- 动态查询条件 -->
@@ -27,6 +30,15 @@
 		</if>
 		<if test="goodsname != null and goodsname != '' ">
 		    and goodsname = #{goodsname}
+		</if>
+		<if test="number != null and number != '' ">
+		    and number = #{number}
+		</if>
+		<if test="weight != null and weight != '' ">
+		    and weight = #{weight}
+		</if>
+		<if test="volume != null and volume != '' ">
+		    and volume = #{volume}
 		</if>
 	
 	</trim>
@@ -47,6 +59,15 @@
 			</if>
 			<if test="goodsname != null and goodsname != '' ">
 			    and goodsname = #{goodsname}
+			</if>
+			<if test="number != null and number != '' ">
+			    and number = #{number}
+			</if>
+			<if test="weight != null and weight != '' ">
+			    and weight = #{weight}
+			</if>
+			<if test="volume != null and volume != '' ">
+			    and volume = #{volume}
 			</if>
 		</trim>
 	</sql>
@@ -75,13 +96,15 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.OrderItem" >
-	    insert into order_item(orderid,goodscode,goodsname)
- 		values(#{orderid},#{goodscode},#{goodsname})
+	    insert into order_item(orderid,goodscode,goodsname,number,weight,volume)
+ 		values(#{orderid},#{goodscode},#{goodsname},#{number},#{weight},#{volume})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
 	 <update id="update" parameterType="com.chinaway.tms.basic.model.OrderItem" >
-	  update order_item set orderid=#{orderid},goodscode=#{goodscode},goodsname=#{goodsname} where id=#{id}
+	  update order_item set orderid=#{orderid},goodscode=#{goodscode},goodsname=#{goodsname}
+	  		,number=#{number},weight=#{weight},volume=#{volume}
+	  where id=#{id}
 	 </update>
  
 	 <!-- 动态修改记录，只修改只不为空的字段 -->
@@ -94,8 +117,17 @@
 	<if test="goodscode != null  ">
 		goodscode=#{goodscode},
 	</if>
-	<if test="goodsname != null  and goodsname != '' ">
+	<if test="goodsname != null and goodsname != '' ">
 		goodsname=#{goodsname},
+	</if>
+	<if test="number != null and number != '' ">
+	    number = #{number}
+	</if>
+	<if test="weight != null and weight != '' ">
+	    weight = #{weight}
+	</if>
+	<if test="volume != null and volume != '' ">
+	    volume = #{volume}
 	</if>
 	</trim> where id=#{id}
 	</update>

@@ -30,14 +30,14 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	 * @param orders 
 	 * @return
 	 */
-	Integer insertWaybill(Waybill waybill, List<Orders> ordersList);
+	Integer insertWaybill(Waybill waybill, List<Orders> ordersList) throws Exception;
 
 	/**
 	 * 修改运单(运单审核)
 	 * @param waybill
 	 * @return
 	 */
-	int updateWaybill(Waybill waybill);
+	int updateWaybill(Waybill waybill) throws Exception;
 
 	/**
 	 * 查询最后一条记录id
