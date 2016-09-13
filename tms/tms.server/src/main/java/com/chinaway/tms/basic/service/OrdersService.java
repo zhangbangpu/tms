@@ -76,5 +76,13 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @return
 	 */
 	Orders selectDetailById(Integer i);
+
+	/**
+	 * 新增订单和明细
+	 * @param order
+	 * @param goodsList
+	 * @return
+	 */
+	int insertOrder(Orders order, List<Map<String, Object>> goodsList);
 	
 }

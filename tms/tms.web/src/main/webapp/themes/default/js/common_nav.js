@@ -22,8 +22,8 @@ $(function() {
         if (r != null) return unescape(r[2]); return null;
     }
 	
-//	var username = $.getUrlParam('username');
-//	$("#show-shortcut").html("<a href='javascript:void(0);' id='show-shortcut'>"+username+"</a>");
+	var username = $.getUrlParam('username');
+	$("#show-shortcut").html("<a href='javascript:void(0);' id='show-shortcut'>"+username+"</a>");
 	
 	$ips.load("login","loginGetMenuList",{id:1},function(data){
 		if(data.code == 2){

@@ -4,45 +4,33 @@ loadScript("js/plugin/jquery-form/jquery-form.min.js", runFormValidation);
 var editid;
 
 $(function(){
-    //编辑
-    var param = $ips.getUrlParams();
-    if (param.id) {
-        editid = param.id;
-        
-        var isedit = $("#isedit").val();
-        $ips.load("site", "queryOneById", {'id': param.id}, function(data) {
-            if (data) {
-                var data1 = new Array();
-                chooseId = data.orgcode;
-                $.each(data, function(i, v) {
-                    if (v != "" && v != null) {
-                        data1[i] = v;
-                    }
-                    if (v == "0000-00-00" || v == "0000-00-00 00-00-00") {
-                        data1[i] = "";
-                    }
-                });
-                $ips.fillFormInput("editfrom", data1);
-//                //img handle
-//                $('#showdriverimage').attr('src',data1['driverimage']);
-//                $('#driverimageattach_tip').css('display','block');
-            }
-			orglist();
-        });
-    } else {
-        editid = '';
-        orglist();
-    }
+	//加载数据
+    $ips.load("otd", "queryAll", null, function(data) {
+    	console.info(data);
+        if (data) {
+        	for (var i = 0, max = data.length; i < max; i++) {
+//				console.info(data[i]);
+        		var result = data[i];
+        		$('#id'+(i+1)).val(result.id);
+        		$('#name'+(i+1)).val(result.name);
+        		$('#status'+(i+1)).val(result.status);
+        		$('#hours'+(i+1)).val(result.hours);
+        		$('#minute'+(i+1)).val(result.minute);
+        		$('#seconds'+(i+1)).val(result.seconds);
+			}
+        }
+    });
 	
+    $("#status1").change(function(data){
+    	console.info("status1:"+data);
+    });
+    
+    
 	// 保存
 	$("#btnSubmit").click(function(){
 		return classlinepriceSave(false);
 	});
 	
-	// 保存并新建
-	$("#btnSubmitNew").click(function(){
-		return classlinepriceSave(true);
-	});
 })
 
  
@@ -80,23 +68,31 @@ function classlinepriceSave(newed) {
 //    }
     
     var pararm = $("#editfrom").serialize();
-	var color = $("#color").val();
-	pararm += "&color=#"+color;
-    var privacy = 1;
-    if($("#privacy").is(':checked')){
-        privacy = 0;
-    }
-    pararm += "&privacy="+privacy;
-	$ips.load("site", "addSite", pararm, function(result){
+//	var color = $("#color").val();
+//	pararm += "&color=#"+color;
+//    var privacy = 1;
+//    if($("#privacy").is(':checked')){
+//        privacy = 0;
+//    }
+//    pararm += "&privacy="+privacy;
+//	//这样后端还是需要处理
+//	var params = $("#editfrom").serializeArray();
+//	var jsonParams = '{';
+//		$.each(params, function(i, item) {
+//            jsonParams += '"'+item.name+'":"'+item.value+'",'
+//        });
+//		jsonParams = jsonParams.substring(0,jsonParams.length-1) + '}';
+//	console.log(jsonParams);
+	$ips.load("otd", "update", pararm, function(result){
 //		$ips.unLockPage();
 		console.log(result);
 		if(result) {
 			$ips.succeed("保存站点成功。");
-			if (newed) { //继续标注
-				$('#editfrom')[0].reset();
-			} else{
-				$ips.locate("tms/basic","site_list");
-			}
+//			if (newed) { //继续标注
+//				$('#editfrom')[0].reset();
+//			} else{
+//				$ips.locate("tms/basic","site_list");
+//			}
 		}else {
 			$ips.error("保存站点表失败。" + result);
 		}

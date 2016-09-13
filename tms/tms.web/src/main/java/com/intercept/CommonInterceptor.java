@@ -43,47 +43,47 @@ public class CommonInterceptor implements HandlerInterceptor {
             response.getWriter().close();
             return false;  
         }else{
-        	if("index.html".equals(requestUri)){
-        		return true;
-        	}
-        	List<Map<String, Object>> sysMenuMap = (List<Map<String, Object>>) request.getSession().getAttribute("sysMenu");
-            boolean isValied = false;
-            for(Map<String,Object> map :sysMenuMap){
-				Object resUrl = map.get("resUrl");
-				if (null == resUrl || StringUtils.isEmpty(String.valueOf(resUrl)) || "#".equals(String.valueOf(resUrl))) {
-					continue;
-				}
-				String startUri = URLDecoder.decode(requestUri.substring(0, requestUri.lastIndexOf(".")), "UTF-8");
-				String uriFormDb = String.valueOf(resUrl).replace("#", "/");
-				String startUriFormDb = uriFormDb.substring(0, uriFormDb.lastIndexOf("."));
-				
-				if (startUri.indexOf(startUriFormDb) != -1) {
-					isValied = true;
-				}
-            }
-            
-            // 没有访问该地址的权限
-            if(!isValied){
-            	response.getWriter().println("<script>window.location.href='/noPermission.html';</script>");
-            	response.getWriter().flush();
-                response.getWriter().close();
-                return false;
-            }else
+//        	if("index.html".equals(requestUri)){
+//        		return true;
+//        	}
+//        	List<Map<String, Object>> sysMenuMap = (List<Map<String, Object>>) request.getSession().getAttribute("sysMenu");
+//            boolean isValied = false;
+//            for(Map<String,Object> map :sysMenuMap){
+//				Object resUrl = map.get("resUrl");
+//				if (null == resUrl || StringUtils.isEmpty(String.valueOf(resUrl)) || "#".equals(String.valueOf(resUrl))) {
+//					continue;
+//				}
+//				String startUri = URLDecoder.decode(requestUri.substring(0, requestUri.lastIndexOf(".")), "UTF-8");
+//				String uriFormDb = String.valueOf(resUrl).replace("#", "/");
+//				String startUriFormDb = uriFormDb.substring(0, uriFormDb.lastIndexOf("."));
+//				
+//				if (startUri.indexOf(startUriFormDb) != -1) {
+//					isValied = true;
+//				}
+//            }
+//            
+//            // 没有访问该地址的权限
+//            if(!isValied){
+//            	response.getWriter().println("<script>window.location.href='/noPermission.html';</script>");
+//            	response.getWriter().flush();
+//                response.getWriter().close();
+//                return false;
+//            }else
         	return true;  
         }
     }  
   
     @Override  
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {  
-    	log.info("==============执行顺序: 2、postHandle================");    
-        if(modelAndView != null){  //加入当前时间    
-            modelAndView.addObject("var", "测试postHandle");    
-        }    
+//    	log.info("==============执行顺序: 2、postHandle================");    
+//        if(modelAndView != null){  //加入当前时间    
+//            modelAndView.addObject("var", "测试postHandle");    
+//        }    
     }  
   
     @Override  
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse response, Object o, Exception e) throws Exception {  
-    	log.info("==============执行顺序: 3、afterCompletion================");
+//    	log.info("==============执行顺序: 3、afterCompletion================");
     }  
   
   

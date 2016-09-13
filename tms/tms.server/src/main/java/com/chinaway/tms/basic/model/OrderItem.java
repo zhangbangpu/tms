@@ -17,7 +17,7 @@ public class OrderItem implements Serializable {
 	private Integer id;//   	private Integer orderid;//   订单编号	private String goodscode;//   商品编号	private String goodsname;//   商品名称
 	private List<Cpmd> goods= new ArrayList<Cpmd>();  //id
 	private String orderno;  //   订单号
-	private String number;  //   总件数
+	private double number;  //   总件数
 	private String sdatetime;  //   要求发货时间
 	private String wmsno;  //   ERP/WMS单号
 	private String entity;  //   货品单位
@@ -55,10 +55,10 @@ public class OrderItem implements Serializable {
 	public void setOrderno(String orderno) {
 		this.orderno = orderno;
 	}
-	public String getNumber() {
+	public double getNumber() {
 		return number;
 	}
-	public void setNumber(String number) {
+	public void setNumber(double number) {
 		this.number = number;
 	}
 	public String getSdatetime() {

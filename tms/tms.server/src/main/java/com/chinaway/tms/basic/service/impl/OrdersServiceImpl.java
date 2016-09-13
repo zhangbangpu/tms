@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.chinaway.tms.basic.dao.OrderItemMapper;
 import com.chinaway.tms.basic.dao.OrdersMapper;
 import com.chinaway.tms.basic.dao.SiteMapper;
 import com.chinaway.tms.basic.dao.VehicleModelMapper;
@@ -35,6 +36,8 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 
 	@Autowired
 	private OrdersMapper orderMapper;
+	@Autowired
+	private OrderItemMapper orderItemMapper;
 
 	@Autowired
 	private SiteMapper siteMapper;
@@ -297,6 +300,26 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		orders.getDispatchInfos();
 		orders.getSteps();
 		return orders;
+	}
+
+	@Override
+	@Transactional
+	public int insertOrder(Orders order, List<Map<String, Object>> goodsList) {
+		int count1 = orderMapper.insert(order);
+		
+		OrderItem orderItem = null;
+		for (Map<String, Object> map : goodsList) {
+			orderItem = new OrderItem();
+			String goodsid = map.get("goodsid").toString();
+			String amount = map.get("amount").toString();
+			String unit = map.get("unit").toString();
+			orderItem.setGoodscode(goodsid);
+			orderItem.setNumber(Double.parseDouble(amount));
+//			orderItem.setunit
+			
+			orderItemMapper.insert(orderItem);
+		}
+		return count1;
 	}
 	
 }

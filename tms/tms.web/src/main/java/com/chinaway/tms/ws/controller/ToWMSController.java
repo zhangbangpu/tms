@@ -46,24 +46,43 @@ public class ToWMSController {
 		String msg = "";
 		if(orderInfo != ""){
 			Orders order = JsonUtil.jsonStr2Obj(orderInfo, Orders.class);
-			try{
-//				int maxId = ordersService.selectMaxId();
-//				order.setCode("tms" + maxId );
-				//设置有标识的主键
-				order.setCode("tms" + MathUtil.random() );
-				int count = ordersService.insert(order);
-				if(count > 0){
-					code = 0;
-					msg = "新增订单成功";
+			Map<String, Object> map = JsonUtil.jsonStr2Map(orderInfo);
+			List<Map<String, Object>> goodsList = (List<Map<String, Object>>) map.get("goods");
+			//检查goods参数
+			if(goodsList != null){
+				if(goodsList.size()>0){
+					try{
+		//				int maxId = ordersService.selectMaxId();
+		//				order.setCode("tms" + maxId );
+						//设置有标识的主键
+						order.setCode("tms" + MathUtil.random() );
+						order.setState("0");
+						if("wms".equalsIgnoreCase(order.getOrderfrom())){
+							order.setStatus("0");
+						}else{
+							order.setStatus("1");
+						}
+						
+						int count = ordersService.insertOrder(order, goodsList);
+						if(count > 0){
+							code = 0;
+							msg = "新增订单成功";
+						}
+						
+					}catch(Exception e){
+						e.printStackTrace();
+						msg = "新增订单出异常";
+					}
+					
+				}else{
+					msg = "goods参数明细不能为空";
 				}
-				
-			}catch(Exception e){
-				e.printStackTrace();
-				msg = "新增订单出异常";
+			}else{
+				msg = "未传入goods参数";
 			}
 		}else{
-			code = 2;
-			msg = "参数不能为空";
+//			code = 2;
+			msg = "未传入orderInfo参数";
 		}
 		
 		Result result = new Result(code,msg);
@@ -74,24 +93,26 @@ public class ToWMSController {
 	
 	/**
 	 * 删除订单
-	 * @param id
+	 * @param fromcode
+	 * @param deptname
 	 * @return
 	 */
 	@RequestMapping(value="ws/deleteOrder")
 	@ResponseBody
-	public Result deleteOrder(@RequestParam("fromcode") String fromcode){
-		LOGGER.info("传入的参数(fromcode):" + fromcode);
+	public Result deleteOrder(@RequestParam("fromcode") String fromcode, @RequestParam("deptname") String deptname){
+		LOGGER.info("传入的参数(fromcode):" + fromcode + ", (deptname):" + deptname);
 		int code = 1;
 		String msg = "";
 		try{
 			Map<String,Object> argsMap = new HashMap<>();
 			argsMap.put("fromcode", fromcode);
-			List<Orders> list = ordersService.selectAll4Page(argsMap);
+			argsMap.put("deptname", deptname);
+			List<Orders> list = ordersService.selectAllOrdersByCtn(argsMap);
 			if(list.size() > 0){
 				for (Orders order : list) {
 					String state = order.getState();
 					if (state.equals(MyConstant.ORDER_START)){
-						code = 3;
+//						code = 3;
 						msg = "已生成运单，请走退货渠道";
 					}else{
 						ordersService.deleteById(order.getId());
@@ -100,7 +121,7 @@ public class ToWMSController {
 					}
 				}
 			}else{
-				code = 2;
+//				code = 2;
 				msg = "没有该订单";
 			}
 

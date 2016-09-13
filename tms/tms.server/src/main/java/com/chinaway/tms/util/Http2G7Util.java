@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.chinaway.tms.utils.http.HttpClientUtils;
-import com.chinaway.tms.ws.service.impl.PushServiceImpl;
 
 /**
  * 专门访问g7环境接口工具类

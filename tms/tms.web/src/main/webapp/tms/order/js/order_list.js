@@ -11,20 +11,20 @@ function genSearchParams(){
 	return searchParams;
 }
 
-function ordersDelete(id) {
-    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
-        if (btn == "确定") {
-            $ips.load("orders", "deleteById", "ids=" + id, function(result){
-                if(result.code == 0) {
-            		 $ips.succeed("删除成功。");
-            		 $('#tblMain').grid("fnDraw");
-            	 } else {
-            		 $ips.error("删除失败！" + result);
-            	 }
-            });
-		}
-    });
-}
+//function ordersDelete(id) {
+//    $ips.confirm("您确定要删除这条记录吗?",function(btn) {
+//        if (btn == "确定") {
+//            $ips.load("orders", "deleteById", "ids=" + id, function(result){
+//                if(result.code == 0) {
+//            		 $ips.succeed("删除成功。");
+//            		 $('#tblMain').grid("fnDraw");
+//            	 } else {
+//            		 $ips.error("删除失败！" + result);
+//            	 }
+//            });
+//		}
+//    });
+//}
 
 //function orderDetail(id) {
 //    if (id == null) {
@@ -88,8 +88,10 @@ $("#deletebtn").click(function(){
     });
 });
 
-var waybillRow = $('#generateWaybillbtn').closest('div');
-$("#generateWaybill").bind('click', function() {
+var waybillRow = $('#btn_depature').closest('div');
+//
+$("#btn_depature").bind('click', function() {
+//	$("#generateWaybill").bind('click', function() {
 	var ids = getRowIds(false);
 	if ($('#wlcompany').val() == '' || $('#wlcompany').val() == '') {
 		$ips.error('承运商不能为空');

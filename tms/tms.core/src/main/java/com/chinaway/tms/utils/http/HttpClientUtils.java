@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -77,27 +78,60 @@ public class HttpClientUtils {
      * @param method
      * @return
      */
+//    public static HttpUriRequest getRequestMethod(Map<String, Object> map, String url, String method) {
+//        List<NameValuePair> params = new ArrayList<NameValuePair>();
+//        Set<Map.Entry<String, Object>> entrySet = map.entrySet();
+//        for (Map.Entry<String, Object> e : entrySet) {
+//            String name = e.getKey();
+//            String value = e.getValue().toString();
+//            NameValuePair pair = new BasicNameValuePair(name, value);
+//            params.add(pair);
+//        }
+//        HttpUriRequest reqMethod = null;
+//        if ("post".equals(method)) {
+//            reqMethod = RequestBuilder.post().setUri(url)
+//                    .addParameters(params.toArray(new BasicNameValuePair[params.size()]))
+//                    .setConfig(requestConfig).build();
+//            //reqMethod.setHeader("Content-Length", "10240");
+//        } else if ("get".equals(method)) {
+//            reqMethod = RequestBuilder.get().setUri(url)
+//                    .addParameters(params.toArray(new BasicNameValuePair[params.size()]))
+//                    .setConfig(requestConfig).build();
+//        }
+//        return reqMethod;
+//    }
+    /**
+     * 
+     * @param map
+     * @param url
+     * @param method
+     * @return
+     */
     public static HttpUriRequest getRequestMethod(Map<String, Object> map, String url, String method) {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        Set<Map.Entry<String, Object>> entrySet = map.entrySet();
-        for (Map.Entry<String, Object> e : entrySet) {
-            String name = e.getKey();
-            String value = e.getValue().toString();
-            NameValuePair pair = new BasicNameValuePair(name, value);
-            params.add(pair);
-        }
-        HttpUriRequest reqMethod = null;
-        if ("post".equals(method)) {
-            reqMethod = RequestBuilder.post().setUri(url)
-                    .addParameters(params.toArray(new BasicNameValuePair[params.size()]))
-                    .setConfig(requestConfig).build();
-            //reqMethod.setHeader("Content-Length", "10240");
-        } else if ("get".equals(method)) {
-            reqMethod = RequestBuilder.get().setUri(url)
-                    .addParameters(params.toArray(new BasicNameValuePair[params.size()]))
-                    .setConfig(requestConfig).build();
-        }
-        return reqMethod;
+    	List<NameValuePair> params = new ArrayList<NameValuePair>();
+    	Set<Map.Entry<String, Object>> entrySet = map.entrySet();
+    	for (Map.Entry<String, Object> e : entrySet) {
+    		String name = e.getKey();
+    		String value = e.getValue().toString();
+    		NameValuePair pair = new BasicNameValuePair(name, value);
+    		params.add(pair);
+    	}
+    	HttpUriRequest reqMethod = null;
+    	if ("post".equals(method)) {
+    		reqMethod = RequestBuilder.post().setUri(url)
+    				.addParameters(params.toArray(new BasicNameValuePair[params.size()]))
+//    				.setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+    				.setConfig(requestConfig).build();
+//    		reqMethod.setHeader("Content-Length", "10240");
+//    		Map<String, Object> header = new HashMap<>();
+//    		reqMethod.setHeader(header);
+    	} else if ("get".equals(method)) {
+    		reqMethod = RequestBuilder.get().setUri(url)
+    				.addParameters(params.toArray(new BasicNameValuePair[params.size()]))
+//    				.setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+    				.setConfig(requestConfig).build();
+    	}
+    	return reqMethod;
     }
  
     /**
@@ -150,10 +184,10 @@ public class HttpClientUtils {
     
     /**
      * 获得返回结果
-     * @param map
-     * @param string
-     * @param string2
-     * @param string3
+     * @param map 参数
+     * @param urlRoot 路径
+     * @param url 方法名
+     * @param method 请求方式
      * @return
      */
 	public static Map<String, Object> getResult(Map<String, Object> map, String urlRoot, String url, String method) throws Exception {
