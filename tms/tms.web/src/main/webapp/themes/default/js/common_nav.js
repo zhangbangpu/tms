@@ -29,7 +29,7 @@ $(function() {
 		if(data.code == 2){
 			window.location.href='login.html';
 		}
-	    console.log(data[1]);
+//	    console.log(data[1]);
 		var menu = resourceMenu(data);
 		$("nav").html(ulLi(menu));
 	});

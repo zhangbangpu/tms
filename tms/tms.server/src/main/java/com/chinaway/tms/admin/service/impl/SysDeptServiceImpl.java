@@ -1,5 +1,7 @@
 package com.chinaway.tms.admin.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,4 +88,25 @@ public class SysDeptServiceImpl extends AbstractService<SysDept, Integer> implem
 		return sysDeptMapper.selectMaxId();
 	}
 	
+	@Override
+	public List<SysDept> selectChildsByDeptid(String deptid) {
+		List<SysDept> list = getChilds(deptid);
+		
+		return list;
+	}
+	
+	private List<SysDept> getChilds(String deptid) {
+		List<SysDept> dgList = new ArrayList<>();
+//		List<SysDept> list = sysDeptMapper.selectByDeptid(deptid);
+		Map<String, Object> argsMap = new HashMap<>();
+		argsMap.put("pid", deptid);
+		List<SysDept> childList = sysDeptMapper.selectDeptByCtn(argsMap);
+		if (childList.size() > 0) {
+			for (SysDept sysDept : childList) {
+				dgList.add(sysDept);
+				dgList.addAll(getChilds(sysDept.getDeptid()));
+			}
+		}
+		return dgList;
+	}
 }

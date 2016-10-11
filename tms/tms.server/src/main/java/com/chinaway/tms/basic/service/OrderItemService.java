@@ -14,4 +14,10 @@ public interface OrderItemService extends BaseService<OrderItem, Integer> {
 	 */
 	List<OrderItem> selectAllOrderItemByCtn(Map<String, Object> argsMap);
 	
+	/**
+	 * 根据orderid查询 订单物品
+	 * @param orderid
+	 * @return
+	 */
+	List<OrderItem> selectByOrderId(int orderid);
 }

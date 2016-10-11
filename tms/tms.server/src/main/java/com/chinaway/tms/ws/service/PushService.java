@@ -1,5 +1,11 @@
 package com.chinaway.tms.ws.service;
 
+import java.util.List;
+import java.util.Map;
+
+import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.basic.model.Waybill;
+
 /**
  * 专门的推送接口
  * @author shu
@@ -31,5 +37,19 @@ public interface PushService {
 	 * @param depParam 运单参数
 	 */
 	public boolean addOrderAndDep(String orderParam, String depParam) throws Exception;
+	
+	/**
+	 * 查询订单
+	 * @param param
+	 * @return
+	 */
+	public List<Orders> selectAllOrders(Map<String, Object> paramMap) throws Exception ;
+	
+	/**
+	 * 查询运单（车次）
+	 * @param param
+	 * @return
+	 */
+	public List<Waybill> selectAllDeparture(Map<String, Object> paramMap) throws Exception ;
 	
 }

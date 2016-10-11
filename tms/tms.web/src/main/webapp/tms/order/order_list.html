@@ -41,22 +41,20 @@
 					  <div class="row margin-top-10 margin-bottom-10" style="margin:0">
 					  	  <!-- 左侧按钮 -->
                           <div class="col-xs-8 col-sm-8">
-                              <!-- <div class="btn-group">
-                                  <a class="btn btn-default" id='deletebtn' data-button-resource="048625502851586667FA938190987180">删除</a>
-                              </div>
-                              <div class="btn-group">
-                                  <a class="btn btn-default" id='generateWaybillbtn' data-button-resource="048625502851586667FA938190987180">生成运单</a>
-                              </div> -->
-							<a id="btn_splitOrder" href="javascript:void(0);" class="btn btn-default btn-sm btn-status" type="button">运力拆单</a>
-	                        <a id="btn_depature" href="javascript:void(0);" class="btn btn-default btn-sm" type="button">生成车次</a>
-	                        <a id="deletebtn" href="javascript:void(0);" class="btn btn-default btn-sm btn-status" type="button">删除订单</a>
+                          	<div class="btn-group">
+								<a id="btn_splitOrder" href="javascript:void(0);" class="btn btn-default btn-sm btn-status" type="button">运力拆单</a>
+                          	</div>
+                          	<div class="btn-group">
+		                        <a id="btn_depature_init" href="javascript:void(0);" class="btn btn-default btn-sm" type="button">生成车次</a>
+                          	</div>
+                          	<div class="btn-group">
+		                        <a id="deletebtn" href="javascript:void(0);" class="btn btn-default btn-sm btn-status" type="button">删除订单</a>
+                          	</div>
 						</div>
-						
-						<div style="height:100%;overflow:auto;">
-							<table id="tblMain" class="table table-striped table-bordered table-hover">
-							</table>
-						</div>
-	
+					</div>
+					<div style="height:100%;overflow:auto;">
+						<table id="tblMain" class="table table-striped table-bordered table-hover">
+						</table>
 					</div>
 					<!-- end widget content -->
 	
@@ -76,7 +74,7 @@
 <!-- end widget grid -->
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="departureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -89,7 +87,7 @@
                 <input type="hidden" name="orderid" id="orderid">
                 <div class="modal-body smart-form">             
                     <div class="row">
-                        <label for="passeword" class="label col col-3 text-align-right">承运商</label>
+                        <label for="wlcompany" class="label col col-3 text-align-right">承运商</label>
                         <section class="col col-6">
                             <label class="input">
                                 <input type="text" id="wlcompany" class="form-control" placeholder="输入承运商名称" name="wlcompany" required>
@@ -98,7 +96,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="passeword_again" class="label col col-3 text-align-right">车型</label>
+                        <label for="vehiclemodel" class="label col col-3 text-align-right">车型</label>
                         <section class="col col-6">
                             <label class="input">
                                 <input type="text" id="vehiclemodel" class="form-control" placeholder="请输入车型" name="vehiclemodel" required>
@@ -108,7 +106,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-primary btn-sm" id="generateWaybill">
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn_depature">
                         <span class="glyphicon glyphicon-floppy-disk"></span> 确认
                     </button>
                 </div>
@@ -117,5 +115,54 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- end widget grid -->
+
+<!-- 运单拆单开始 -->
+<div class="modal fade" id="splitOrderModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="splitClose" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h3 class="modal-title">运力拆单</h3>
+            </div>
+            <!-- 运单拆单 -->
+            <div class="modal-body">
+                <div id="goods_detail">
+                    <b>货品详情:</b>
+                    <span class="btn-sm bg-color-greenLight txt-color-white label-inline text-left">
+                                &nbsp;货品单位: <code id="unit"></code>&nbsp;&nbsp;&nbsp;
+                                货品总量: <code id="goodsNum"></code>&nbsp;&nbsp;&nbsp;
+                                货品总重: <code id="goodsWeight"></code>&nbsp吨&nbsp;&nbsp;&nbsp;
+                                货品总体积: <code id="goodsVolume"></code>&nbsp立方
+                    </span>
+                    <hr>
+                    <section>
+                        <table id="goodsTable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <div id="splitOrderList">
+                    <b>子订单分解:</b>
+                    <a id="btnAaddChildOrder" href="javascript:void(0);" class="btn btn-default btn-sm" type="button">增加子订单</a>
+                    <a id="btnDelChildOrder" href="javascript:void(0);" class="btn btn-default btn-sm" type="button">删除子订单</a>
+                    <hr>
+
+                    <div class="panel panel-default" id="childOrderList">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 运单拆单结束 -->
+
 
 <script src="tms/order/js/order_list.js"></script>

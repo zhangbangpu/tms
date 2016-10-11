@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,5 +37,7 @@ public interface WaybillMapper extends BaseMapper<Waybill, Integer> {
 	 * @return
 	 */
 	List<Waybill> selectByIds(@Param(value="array")String[] idArry);
+
+	Date selectMaxUpdateTime();
 	
 }

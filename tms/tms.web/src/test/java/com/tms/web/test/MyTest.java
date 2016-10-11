@@ -1,6 +1,7 @@
 package com.tms.web.test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,22 @@ import com.chinaway.tms.utils.lang.StringUtil;
 //	4、单个订单详情查询接口byNo-order.order.getOrderInfoByNo
 public class MyTest {
 	
+	@Test
+	public void test3() throws Exception {
+		List<String> list = new ArrayList<>();
+		List<String> list2 = new ArrayList<>();
+		List<String> list3 = new ArrayList<>();
+		list2.add("2-111");
+		list2.add("2-112");
 		
+		list3.add("3-111");
+		list3.add("3-112");
+		
+		list.addAll(list2);
+		list.addAll(list3);
+		System.out.println(list);
+	}
+	
 	@Test
 	public void test2() throws Exception {
 		//http://10.4.100.152:8080/1919wms-2.0/scpwms/tmsInterface?stowageNumber=ST16020200007&status=600

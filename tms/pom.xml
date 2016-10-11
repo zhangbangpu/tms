@@ -24,6 +24,7 @@
 		<!-- <jackson.version>2.6.3</jackson.version> -->
 		<fastjson.version>1.2.7</fastjson.version>
 		<quartz.version>2.2.2</quartz.version>
+		<cxf.version>3.1.7</cxf.version>
 		<poi.version>3.12</poi.version>
 		<jxl.version>2.6.12</jxl.version>
 		<redisson.version>2.2.13</redisson.version>
@@ -62,6 +63,18 @@
 			    <version>${freemarker.version}</version>
 			</dependency>
 	
+			<!-- 添加cxf（soap webservice） -->
+			<dependency>
+			    <groupId>org.apache.cxf</groupId>
+			    <artifactId>cxf-rt-frontend-jaxws</artifactId>
+			    <version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.cxf</groupId>
+			    <artifactId>cxf-rt-transports-http</artifactId>
+			    <version>${cxf.version}</version>
+			</dependency>
+				
 		  	<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>

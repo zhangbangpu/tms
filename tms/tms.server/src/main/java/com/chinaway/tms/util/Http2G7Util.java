@@ -56,7 +56,8 @@ public class Http2G7Util {
 	 * @throws Exception
 	 */
 	public static Map<String, Object> post(String param, String app_secret, String app_key, String method, String  url) throws Exception {
-    	//post请求的参数
+		LOGGER.info("调用g7接口："+ method +",参数：" + param);
+		//post请求的参数
     	Map<String, Object> map = new HashMap<>();
 //    	String param ="[{\"orgcode\":\"20016C\",\"roleids\":\"aa\",\"username\":\"aa\",\"realname\":\"aa\",\"passwd\":\"aa\",\"telephone\":\"aa\",\"mobile\":\"aa\",\"email\":\"aa\"}]";
     	

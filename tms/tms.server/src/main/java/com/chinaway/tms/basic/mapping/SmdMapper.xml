@@ -112,6 +112,11 @@
 	</trim>
 	</sql>
  
+ 	<!-- 查询最新的更新时间  -->
+	<select id="selectMaxUpdateTime"  resultType="java.lang.String">
+		select max(updatetime) from smd
+	</select>
+	
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select <include refid="Base_Column_List" /> 

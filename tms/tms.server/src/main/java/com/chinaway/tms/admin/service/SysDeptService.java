@@ -42,4 +42,11 @@ public interface SysDeptService extends BaseService<SysDept, Integer> {
 	 * @return
 	 */
 	int selectMaxId();
+
+	/**
+	 * 获得deptid 下所有子节点
+	 * @param deptid
+	 * @return
+	 */
+	List<SysDept> selectChildsByDeptid(String deptid);
 }

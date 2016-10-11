@@ -1,31 +1,28 @@
 
-//$("#parentid").select2({
-//    placeholder: '请选择机构',
-//    minimumInputLength: 1,
-//    multiple: false,
-//    allowClear: true,
-//    selectOnBlur: true,
-//    //数据加载
-//    query: function(query) {
-//        $ips.load('org', 'getOrgByName', {keyword: query.term}, function(e) {
-//            var _pre_data = [];
-//            $.each(e, function(k, v) {
-//                _pre_data.push({id: v.id, text: v.name});
-//            });
-//            var data = {results: _pre_data};
-//            query.callback(data);
-//        });
-//    },
-//    initSelection: function(element, callback) {
-//        //console.log($(element).val());
-//    },
-//}).on('change', function(e) {
-//    if ($("#parentid").select2('val') == '') {
-//        $('#authcode-row').show();
-//    } else {
-//        $('#authcode-row').hide();
-//    }
-//});
+$("#pid").select2({
+        placeholder: '请选择机构',
+        //minimumInputLength: 0,
+        multiple: false,
+        allowClear: true,
+        //数据加载
+        query: function (query) {
+            $ips.load('sysDept', 'queryDeptByCondition', {
+                name: query.term 
+            }, function (e) {
+                var _pre_data = [];
+                $.each(e, function (k, v) {
+                	_pre_data.push({
+                		id: v.deptid,
+                		text: v.name
+                	});
+                });
+                var data = {
+                    results: _pre_data
+                };
+                query.callback(data);
+            });
+        }
+    });
 
 var isupdate = updateid = 0;
 var parms = $ips.getUrlParams();

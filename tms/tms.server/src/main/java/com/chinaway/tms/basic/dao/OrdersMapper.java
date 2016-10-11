@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,5 +30,8 @@ public interface OrdersMapper extends BaseMapper<Orders, Integer> {
 	 * @return
 	 */
 	List<Orders> selectByIds(@Param(value="array")String[] idArry);
+
+	
+	Date selectMaxUpdateTime();
 	
 }

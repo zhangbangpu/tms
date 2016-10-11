@@ -58,5 +58,11 @@ public class OrderItemServiceImpl extends AbstractService<OrderItem, Integer> im
 		}
 	}
 
+	@Override
+	public List<OrderItem> selectByOrderId(int orderid) {
+		
+		return orderItemMapper.selectByOrderId(orderid);
+	}
+
 
 }

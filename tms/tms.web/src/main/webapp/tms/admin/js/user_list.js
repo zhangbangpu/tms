@@ -95,11 +95,11 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					                   '<li class="divider"></li>' +
 					                   '<li><a href="javascript:void(0);" data-button-resource="B8E2AAE664980C89BB68369D36C052F4" onclick="userDelete(\'' + item.id + '\')">删除</a></li>' +
 					                '</ul></div>';
-					     if('1' == item.status ){
+					     /*if('1' == item.status ){
 					    	 item.statusName = '禁用';
 					     }else{
 					    	 item.statusName = '可用';
-					     }
+					     }*/
 				});
 			});
 		}

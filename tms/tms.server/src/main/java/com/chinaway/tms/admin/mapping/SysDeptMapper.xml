@@ -85,6 +85,13 @@
 		</trim>
 	</sql>
 
+	<!-- 根据pid查询 -->
+	<select id="selectByDeptid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_dept where deptid = #{deptid}
+	</select>
+
 	<!-- 根据id查询 -->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select

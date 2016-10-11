@@ -133,21 +133,20 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					<span></span>\
 				</label>';
 				}
-            },{
+            /*},{
                 sTitle: "操作",
                 sName: "id",
                 sWidth: "25px",
                 sClass: "center",
                 bSortable: false,
                 mRender:function(data, type, full){
-//                	console.log(data);
                 	return '<div class="btn-group">\
 					<button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">\
 						<i class="fa fa-pencil"></i>\
 						<i class="fa fa-caret-down"></i>\
 					</button>\
 	            </div>';
-				}
+				}*/
             },
                 {sTitle: "车次编号", sName: "code"},
                 {sTitle: "创建时间", sName: "createtime"},

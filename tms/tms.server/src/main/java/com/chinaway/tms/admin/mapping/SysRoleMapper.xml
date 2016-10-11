@@ -15,7 +15,7 @@
 	</sql>
 	
 	<sql id="Base_Column_role_List">
-		c.id
+		c.id,c.name
 	</sql>
 	
 	<sql id="Base_Column_dept_Role_List">

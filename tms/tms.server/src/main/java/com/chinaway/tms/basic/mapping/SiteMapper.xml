@@ -136,6 +136,7 @@
 		<include refid="Base_Column_List" />
 		from site
 		<include refid="mf_Where_Clause"/>
+		order by updatetime desc
 	</select>
 	
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
@@ -144,6 +145,7 @@
 		<include refid="Base_Column_List" />
 		from site
 		<include refid="mf_Where_Clause" />
+		order by updatetime desc
 	</select>
 	
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->

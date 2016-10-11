@@ -133,7 +133,7 @@ public class CpmdManagerController {
 		int ret = 0;
 		try {
 			
-			cpmd.setUpdatetime(new Date());
+			cpmd.setUpdatetime(new Date().toLocaleString());
 			if (cpmd.getId() != null) {
 				ret = cpmdService.updateSelective(cpmd);
 			}else{

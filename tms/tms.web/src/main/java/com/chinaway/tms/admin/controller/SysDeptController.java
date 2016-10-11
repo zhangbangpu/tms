@@ -62,44 +62,25 @@ public class SysDeptController {
 		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-//		SysDept dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
-//		
-//		Map<String, Object> argsMap = new HashMap<String, Object>();
-//		argsMap.put("pageNo", pageNo);
-//		argsMap.put("pageSize", pageSize);
-//		if(null != dept){
-//			argsMap.put("name", dept.getName());
-//			argsMap.put(key, sysDept.);
-//			argsMap.put(key, value);
-//			argsMap.put(key, value);
-//		}
 		
-//		Map<String, Object> resultMap = new HashMap<>();
-//		int code = 1;
-//		String msg = "根据条件查询部门操作失败!";
-//		
-//		int ret = 0;
-//		try {
-			PageBean<SysDept> sysDeptPgBn = sysDeptService.selectDept2PageBean(argsMap);
-//			if (null != sysDeptPgBn) {
-//				ret = sysDeptPgBn.getResult().size();
-//			}
-//
-//			if (ret > 0) {
-//				code = 0;
-//				msg = "根据条件查询部门操作成功!";
-//				resultMap.put("sysDeptList", sysDeptPgBn.getResult());
-//			}
-//
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
-//
-//		resultMap.put("code", code);
-//		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "根据条件查询部门操作失败!";
+		List<SysDept> sysDeptList = null;
+		try {
+			sysDeptList = sysDeptService.selectDeptByCtn(argsMap);
 
-		return new Result(0, sysDeptPgBn);
+			if (sysDeptList.size() > 0) {
+				code = 0;
+				msg = "根据条件查询部门操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		Result result = new Result(code, sysDeptList, msg);
+
+		return result;
 	}
 	
 	/**
@@ -140,32 +121,32 @@ public class SysDeptController {
 		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-//		Map<String, Object> resultMap = new HashMap<>();
-//		int code = 1;
-//		String msg = "查询所有部门操作失败!";
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "查询所有部门操作失败!";
 //		Map<String, Object> argsMap = new HashMap<String, Object>();
-//		int ret = 0;
-//		try {
+		int ret = 0;
+		try {
 			List<SysDept> sysDeptList = sysDeptService.selectDeptByCtn(argsMap);
-//			if(null != sysDeptList){
-//				ret = sysDeptList.size();
-//			}
-//			
-//			if (ret > 0) {
-//				code = 0;
-//				msg = "查询所有部门操作成功!";
-//				resultMap.put("sysDeptList", sysDeptList);
-//			}
-//
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
-//
-//		resultMap.put("code", code);
-//		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+			if(null != sysDeptList){
+				ret = sysDeptList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有部门操作成功!";
+				resultMap.put("sysDeptList", sysDeptList);
+			}
 
-		return new Result(0, sysDeptList);
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+
+		return result;
 	}
 	
 	/**
@@ -392,31 +373,30 @@ public class SysDeptController {
 	 */
 	@RequestMapping(value = "/updateDept")
 	@ResponseBody
-	public Result updateDept(HttpServletRequest request, @RequestParam(value="sysDept") String sysDept) {
+	public Result updateDept(HttpServletRequest request,SysDept sysDept) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
-		SysDept dept = new SysDept();
-//		dept = (SysDept)JsonUtil.jsonStr2Obj(sysDept, SysDept.class);
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		dept.setAddress(String.valueOf(argsMap.get("address")));
-		dept.setContact(String.valueOf(argsMap.get("contact")));
-		dept.setCreatetime(new Date());
-		dept.setCustomerid(String.valueOf(argsMap.get("customerid")));
-		dept.setDeptid(String.valueOf(argsMap.get("deptid")));
-		dept.setDescription(String.valueOf(argsMap.get("description")));
-		dept.setIsenable(String.valueOf(argsMap.get("isenable")));
-		dept.setLevels(String.valueOf(argsMap.get("levels")));
-		dept.setName(String.valueOf(argsMap.get("name")));
-		if(null != String.valueOf(argsMap.get("pid"))){
-			dept.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
-		}
-		dept.setRemark(String.valueOf(argsMap.get("remark")));
-		if(null != String.valueOf(argsMap.get("sotid"))){
-			dept.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
-		}
-		dept.setState(String.valueOf(argsMap.get("state")));
-		dept.setTel(String.valueOf(argsMap.get("tel")));
+//		SysDept dept = new SysDept();
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		dept.setAddress(String.valueOf(argsMap.get("address")));
+//		dept.setContact(String.valueOf(argsMap.get("contact")));
+//		dept.setCreatetime(new Date());
+//		dept.setCustomerid(String.valueOf(argsMap.get("customerid")));
+//		dept.setDeptid(String.valueOf(argsMap.get("deptid")));
+//		dept.setDescription(String.valueOf(argsMap.get("description")));
+//		dept.setIsenable(String.valueOf(argsMap.get("isenable")));
+//		dept.setLevels(String.valueOf(argsMap.get("levels")));
+//		dept.setName(String.valueOf(argsMap.get("name")));
+//		if(null != String.valueOf(argsMap.get("pid"))){
+//			dept.setPid(Integer.parseInt(String.valueOf(argsMap.get("pid"))));
+//		}
+//		dept.setRemark(String.valueOf(argsMap.get("remark")));
+//		if(null != String.valueOf(argsMap.get("sotid"))){
+//			dept.setSotid(Integer.parseInt(String.valueOf(argsMap.get("sotid"))));
+//		}
+//		dept.setState(String.valueOf(argsMap.get("state")));
+//		dept.setTel(String.valueOf(argsMap.get("tel")));
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
@@ -424,7 +404,7 @@ public class SysDeptController {
 
 		int ret = 0;
 		try {
-			ret = sysDeptService.update(dept);
+			ret = sysDeptService.update(sysDept);
 
 			if (ret > 0) {
 				code = 0;
@@ -438,7 +418,7 @@ public class SysDeptController {
 		resultMap.put("msg", msg);
 //		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, ret);
+		return new Result(code, ret);
 	}
 	
 }

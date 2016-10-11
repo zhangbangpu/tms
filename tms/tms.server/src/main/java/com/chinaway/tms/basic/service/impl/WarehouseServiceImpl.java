@@ -51,4 +51,10 @@ public class WarehouseServiceImpl extends AbstractService<Warehouse, Integer> im
 			return 0;
 		}
 	}
+
+	@Override
+	public String selectMaxUpdateTime() {
+		
+		return warehouseMapper.selectMaxUpdateTime();
+	}
 }

@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -84,5 +85,7 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @return
 	 */
 	int insertOrder(Orders order, List<Map<String, Object>> goodsList);
+
+	Date selectMaxUpdateTime();
 	
 }

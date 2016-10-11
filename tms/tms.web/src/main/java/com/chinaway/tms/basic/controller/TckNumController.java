@@ -1,5 +1,7 @@
 package com.chinaway.tms.basic.controller;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,8 @@ import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.basic.service.VehicleModelService;
 import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.utils.MyBeanUtil;
+import com.chinaway.tms.utils.lang.BigDecimalUtil;
+import com.chinaway.tms.utils.lang.MathUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 
@@ -125,10 +129,9 @@ public class TckNumController {
 	}
 	
 	/**
-	 * 添加站点信息<br>
-	 * 返回站点的json串
-	 * @param username
-	 * @param password
+	 * 手动新增运单
+	 * @param request
+	 * @param waybill
 	 * @return
 	 */
 	@RequestMapping(value = "/addTckNum")
@@ -147,24 +150,33 @@ public class TckNumController {
 			}else{
 				if(null != waybill.getOrdersid()){
 					List<Orders> ordersList = ordersService.selectByIds(waybill.getOrdersid());
-					Map<String, Object> map = new HashMap<String,Object>();
-					map.put("wlcompany", waybill.getWlcompany());
-					map.put("name", waybill.getVehiclemodel());
-					List<VehicleModel> vehicleModelList = vehicleModelService.selectAllVehicleModelByCtn(map);
-					if(null != vehicleModelList && vehicleModelList.size() > 0){
-						Orders ordersNew = new Orders();
-						double totalVolume = 0d;
-						double totalWeight = 0d;
-						for(Orders orders: ordersList){
-							totalVolume += orders.getVolume();
-							totalWeight += orders.getWeight();
-							ordersNew = orders;
-						}
-						ordersNew.setVolume(totalVolume);
-						ordersNew.setWeight(totalWeight);
-						waybill = ordersService.setWaybill(ordersNew, vehicleModelList.get(0));
+					Orders ordersNew = new Orders();
+					double totalVolume = 0;
+					double totalWeight = 0;
+					for(Orders orders: ordersList){
+						//更新订单，主要是承运商
+						orders.setSubcontractor(waybill.getWlcompany());
+						ordersService.updateSelective(orders);
+						//计算总重量和总体积
+						totalVolume = BigDecimalUtil.add(totalVolume+"", orders.getVolume().toString()).doubleValue();
+						totalWeight = BigDecimalUtil.add(totalWeight+"", orders.getWeight().toString()).doubleValue();
+						ordersNew = orders;
 					}
+					waybill.setVolume(totalVolume);
+					waybill.setWeight(totalWeight);
 					
+//					Map<String, Object> map = new HashMap<String,Object>();
+//					map.put("wlcompany", waybill.getWlcompany());
+//					map.put("name", waybill.getVehiclemodel());
+//					List<VehicleModel> vehicleModelList = vehicleModelService.selectAllVehicleModelByCtn(map);
+//					if(null != vehicleModelList && vehicleModelList.size() > 0){
+//						//不科学的地方，给waybill 赋值
+//						waybill = ordersService.setWaybill(ordersNew, vehicleModelList.get(0));
+//					}
+					String name = waybill.getVehiclemodel();//之前是文本框，现在改为下拉框，参数名未改
+					VehicleModel v = vehicleModelService.selectById(Integer.parseInt(name));
+					//不科学的地方，给waybill 赋值
+					waybill = ordersService.setWaybill(ordersNew, v);
 					ret = waybillService.insertWaybill(waybill, ordersList);
 
 				}
@@ -182,9 +194,9 @@ public class TckNumController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, msg);
+		return result;
 	}
 	
 	

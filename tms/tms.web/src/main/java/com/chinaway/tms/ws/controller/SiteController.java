@@ -16,6 +16,7 @@ import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
 @Controller
+@Deprecated
 public class SiteController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SiteController.class);

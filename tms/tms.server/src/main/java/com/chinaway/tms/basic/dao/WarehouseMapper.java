@@ -4,5 +4,9 @@ import com.chinaway.tms.basic.model.Warehouse;
 import com.chinaway.tms.core.BaseMapper;
 
 public interface WarehouseMapper extends BaseMapper<Warehouse, Integer> {
-	
+	/**
+	 * 查询最新的更新时间
+	 * @return
+	 */
+	String selectMaxUpdateTime();
 }

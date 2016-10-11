@@ -61,9 +61,12 @@ public class MyBeanUtil{
   
                 if (map.containsKey(key)) {  
                     Object value = map.get(key);
-                    // 得到property对应的setter方法  
-                    Method setter = property.getWriteMethod();  
-                    setter.invoke(obj, value);  
+                    if (value != null) {
+                    	String type = value.getClass().getName();//java.lang.String java.lang.Integer
+	                    // 得到property对应的setter方法  
+	                    Method setter = property.getWriteMethod();
+                    	setter.invoke(obj, value);
+					}
                 }  
             }
         } catch (Exception e) {  

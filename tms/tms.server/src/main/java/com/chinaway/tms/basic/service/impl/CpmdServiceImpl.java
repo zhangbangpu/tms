@@ -61,4 +61,10 @@ public class CpmdServiceImpl extends AbstractService<Cpmd, Integer> implements C
 		return cpmdMapper.selectCpmdByOrdersId(id);
 	}
 
+	@Override
+	public String selectMaxUpdateTime() {
+		
+		return cpmdMapper.selectMaxUpdateTime();
+	}
+
 }

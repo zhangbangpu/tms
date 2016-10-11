@@ -51,4 +51,10 @@ public class SmdServiceImpl extends AbstractService<Smd, Integer> implements Smd
 			return 0;
 		}
 	}
+
+	@Override
+	public String selectMaxUpdateTime() {
+		
+		return smdMapper.selectMaxUpdateTime();
+	}
 }

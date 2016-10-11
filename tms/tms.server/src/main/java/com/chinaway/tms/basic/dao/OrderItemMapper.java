@@ -14,5 +14,12 @@ public interface OrderItemMapper extends BaseMapper<OrderItem, Integer> {
 	 * @return
 	 */
 	List<OrderItem> selectAllOrderItemByCtn(Map<String, Object> argsMap);
+
+	/**
+	 * 根据orderid查询 订单物品
+	 * @param orderid
+	 * @return
+	 */
+	List<OrderItem> selectByOrderId(int orderid);
 	
 }

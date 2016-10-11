@@ -9,10 +9,11 @@
 		<result column="number" property="number"/>
 		<result column="weight" property="weight"/>
 		<result column="volume" property="volume"/>
+		<result column="unit" property="unit"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
-		 id,orderid,goodscode,goodsname,number,weight,volume
+		 id,orderid,goodscode,goodsname,number,weight,volume,unit
 	</sql>
    
 	<!-- 动态查询条件 -->
@@ -72,6 +73,13 @@
 		</trim>
 	</sql>
  
+	<!-- 根据orderid查询  -->
+	<select id="selectByOrderId"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+		from order_item 
+		where orderid = #{orderid}
+	</select>
+ 
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select <include refid="Base_Column_List" /> 
@@ -96,14 +104,14 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.OrderItem" >
-	    insert into order_item(orderid,goodscode,goodsname,number,weight,volume)
- 		values(#{orderid},#{goodscode},#{goodsname},#{number},#{weight},#{volume})
+	    insert into order_item(orderid,goodscode,goodsname,number,weight,volume,unit)
+ 		values(#{orderid},#{goodscode},#{goodsname},#{number},#{weight},#{volume},#{unit})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
 	 <update id="update" parameterType="com.chinaway.tms.basic.model.OrderItem" >
 	  update order_item set orderid=#{orderid},goodscode=#{goodscode},goodsname=#{goodsname}
-	  		,number=#{number},weight=#{weight},volume=#{volume}
+	  		,number=#{number},weight=#{weight},volume=#{volume},unit=#{unit}
 	  where id=#{id}
 	 </update>
  
@@ -128,6 +136,9 @@
 	</if>
 	<if test="volume != null and volume != '' ">
 	    volume = #{volume}
+	</if>
+	<if test="unit != null and unit != '' ">
+	    unit = #{unit}
 	</if>
 	</trim> where id=#{id}
 	</update>

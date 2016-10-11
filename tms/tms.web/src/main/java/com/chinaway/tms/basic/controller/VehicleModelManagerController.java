@@ -40,32 +40,25 @@ public class VehicleModelManagerController {
 	@RequestMapping(value = "/selectAllVehicleModelByCtn")
 	@ResponseBody
 	public Result selectAllVehicleModelByCtn(HttpServletRequest request) {
-//		Map<String, Object> resultMap = new HashMap<>();
-//		int code = 1;
-//		String msg = "查询所有站点操作失败!";
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-//		int ret = 0;
-//		try {
-			List<VehicleModel> vehicleModeltList = vehicleModelService.selectAllVehicleModelByCtn(argsMap);
-//			if(null != vehicleModeltList){
-//				ret = vehicleModeltList.size();
-//			}
-//			
-//			if (ret > 0) {
-//				code = 0;
-//				msg = "查询所有站点操作成功!";
-//				resultMap.put("vehicleModeltList", vehicleModeltList);
-//			}
-//
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
+		int code = 1;
+		String msg = "查询所有车型,操作失败!";
+//		Map<String, Object> argsMap = new HashMap<String, Object>();
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		List<VehicleModel> list = null;
+		try {
+			list = vehicleModelService.selectAllVehicleModelByCtn(argsMap);
+			
+			if (list.size() > 0) {
+				code = 0;
+				msg = "查询所有车型,操作成功!";
+			}
 
-//		resultMap.put("code", code);
-//		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		} catch (Exception e) {
+			e.getStackTrace();
+			msg = "查询所有车型,出现异常!";
+		}
 
-		return new Result(0, vehicleModeltList);
+		return new Result(code, list, msg);
 	}
 	
 	/**

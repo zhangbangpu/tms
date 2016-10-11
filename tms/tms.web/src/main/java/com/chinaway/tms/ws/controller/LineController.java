@@ -18,6 +18,7 @@ import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.json.JsonUtil;
 
 @Controller
+@Deprecated
 public class LineController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LineController.class);

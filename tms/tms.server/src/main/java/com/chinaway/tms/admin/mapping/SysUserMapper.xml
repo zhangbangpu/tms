@@ -54,7 +54,7 @@
 				and type = #{type}
 			</if>
 			<if test="name != null and name != '' ">
-				and name = #{name}
+				and name like CONCAT('%',#{name},'%')
 			</if>
 			<if test="intro != null and intro != '' ">
 				and intro = #{intro}
@@ -197,15 +197,16 @@
 	<!-- 插入记录 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.admin.model.SysUser">
 		insert into
-		sys_user(loginname,password,realname,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid,email)
-		values(#{loginname},#{password},#{realname},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid},#{email})
+		sys_user(loginname,password,realname,type,name,intro,certificate,corporation,corporationim,phone,state,createtime,codeid,deptid,email)
+		values(#{loginname},#{password},#{realname},#{type},#{name},#{intro},#{certificate},#{corporation},#{corporationim},#{phone},#{state},#{createtime},#{codeid},#{deptid},#{email})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="com.chinaway.tms.admin.model.SysUser">
 		update sys_user set
-		loginname=#{loginname},password=#{password},realname=#{realname},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state},codeid=#{codeid}
-		where id=#{id}
+		loginname=#{loginname},password=#{password},realname=#{realname},type=#{type},name=#{name},intro=#{intro},certificate=#{certificate},corporation=#{corporation},corporationim=#{corporationim},phone=#{phone},state=#{state},
+		codeid=#{codeid},deptid=#{deptid},email=#{email}
+		where loginname=#{loginname}
 	</update>
 
 	<!-- 动态修改记录，只修改只不为空的字段 -->

@@ -29,6 +29,7 @@ import com.chinaway.tms.basic.service.OrdersWaybillService;
 import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.core.AbstractService;
 import com.chinaway.tms.core.BaseMapper;
+import com.chinaway.tms.utils.lang.MathUtil;
 import com.chinaway.tms.utils.page.PageBean;
 
 @Service
@@ -262,11 +263,12 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	
 	public Waybill setWaybill(Orders order, VehicleModel vehicleModel) throws Exception {
 		Waybill waybill = new Waybill();
-		int maxId = waybillService.selectMaxId();
+//		int maxId = waybillService.selectMaxId();
+//		waybill.setCode("tms" + maxId );
 		waybill.setAmount(order.getAmount());
 		waybill.setC_volume(vehicleModel.getVolum());
 		waybill.setC_weight(vehicleModel.getWeight());
-		waybill.setCode("tms" + maxId );
+		waybill.setCode("tms" + MathUtil.random());
 		waybill.setDeptname(order.getDeptname());
 		waybill.setExceptcount(order.getExceptcount());
 		waybill.setFhaddress(order.getFhaddress());
@@ -277,9 +279,9 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		waybill.setShaddress(order.getShaddress());
 		waybill.setState("0");// 阶段初始为 0
 		waybill.setSubcontractor(vehicleModel.getWlcompany());
-		waybill.setUnit(order.getUnit());
-		waybill.setVolume(order.getVolume());
-		waybill.setWeight(order.getWeight());
+//		waybill.setUnit(order.getUnit());
+//		waybill.setVolume(order.getVolume());
+//		waybill.setWeight(order.getWeight());
 		waybill.setCreatetime(new Date());
 		return waybill;
 	}
@@ -305,21 +307,46 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	@Override
 	@Transactional
 	public int insertOrder(Orders order, List<Map<String, Object>> goodsList) {
-		int count1 = orderMapper.insert(order);
+		int count = orderMapper.insert(order);
 		
 		OrderItem orderItem = null;
-		for (Map<String, Object> map : goodsList) {
-			orderItem = new OrderItem();
-			String goodsid = map.get("goodsid").toString();
-			String amount = map.get("amount").toString();
-			String unit = map.get("unit").toString();
-			orderItem.setGoodscode(goodsid);
-			orderItem.setNumber(Double.parseDouble(amount));
-//			orderItem.setunit
-			
-			orderItemMapper.insert(orderItem);
+		if("wms".equalsIgnoreCase(order.getOrderfrom())){
+			for (Map<String, Object> map : goodsList) {
+				orderItem = new OrderItem();
+				String goodsid = map.get("goodsid").toString();
+				String amount = map.get("amount").toString();
+				String unit = map.get("unit").toString();
+				
+				orderItem.setOrderid(order.getId());
+				orderItem.setGoodscode(goodsid);
+				orderItem.setNumber(Double.parseDouble(amount));
+				orderItem.setUnit(unit);
+				
+				orderItemMapper.insert(orderItem);
+			}
+		}else{
+			for (Map<String, Object> map : goodsList) {
+				orderItem = new OrderItem();
+				String goodsid = map.get("GOODSID").toString();
+				String amount = map.get("AMOUNT").toString();
+				String unit = map.get("UNIT").toString();
+				
+				orderItem.setOrderid(order.getId());
+				orderItem.setGoodscode(goodsid);
+				orderItem.setNumber(Double.parseDouble(amount));
+				orderItem.setUnit(unit);
+				
+				orderItemMapper.insert(orderItem);
+			}
 		}
-		return count1;
+		
+		return count;
+	}
+
+	@Override
+	public Date selectMaxUpdateTime() {
+		
+		return orderMapper.selectMaxUpdateTime();
 	}
 	
 }

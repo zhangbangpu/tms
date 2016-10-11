@@ -271,7 +271,8 @@ public class MyTest {
     			+ "\"updatetimeGe\" : \"2016-08-30 00:19:49\","
 //    			+ "\"updateimeLt\": \"2016-08-30 01:19:49\","
 //    			+ " \"departurenoIn\": [\"wxg2016051901\"],"
-    			+ "\"fields\": [ \"departureno\",\"begintime\",\"fromorgcode\",\"fromtime\",\"carnum\",\"carriagetype\",\"driverphone\"]"
+    			+ "\"fields\": [ \"departureno\",\"begintime\",\"carnum\",\"carriagetype\",\"drivername\",\"driverphone\","
+    			+ "\"starttime\",\"endtime\",\"garrivetime\",\"gstarttime\",\"type\",\"status\"]"
     			+ "}";
     	
     	String app_secret = "fce6dc5652df05b2a7ae287337702eb6";

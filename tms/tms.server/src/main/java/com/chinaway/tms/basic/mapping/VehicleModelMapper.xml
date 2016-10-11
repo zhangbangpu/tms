@@ -32,6 +32,9 @@
 		<if test="wlcompany != null and wlcompany != '' ">
 		    and wlcompany = #{wlcompany}
 		</if>
+		<if test="keyword != null and keyword != '' ">
+		    and weight like CONCAT('%',#{keyword},'%') or volum like CONCAT('%',#{keyword},'%')
+		</if>
 	
 	</trim>
 	</sql>

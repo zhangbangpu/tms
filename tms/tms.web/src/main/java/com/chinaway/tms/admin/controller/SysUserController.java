@@ -77,6 +77,7 @@ public class SysUserController {
 		}
 
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		argsMap.put("state", "1");
 		// SysUser user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
 		// Map<String, Object> argsMap = new HashMap<String, Object>();
 		// argsMap.put("pageNo", pageNo);
@@ -130,33 +131,25 @@ public class SysUserController {
 			return new Result(2, "");
 		}
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		// Map<String, Object> resultMap = new HashMap<>();
-		// int code = 1;
-		// String msg = "查询所有用户操作失败!";
-		// Map<String, Object> argsMap = new HashMap<String, Object>();
-		// int ret = 0;
-		// try {
-		List<SysUser> sysUserList = sysUserService.queAllUserByCtn(argsMap);
-		// if(null != sysUserList){
-		// ret = sysUserList.size();
-		// }
-		//
-		// if (ret > 0) {
-		// code = 0;
-		// msg = "查询所有用户操作成功!";
-		// resultMap.put("sysUserList", sysUserList);
-		// }
-		//
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		//
-		// resultMap.put("code", code);
-		// resultMap.put("msg", msg);
-		// Result result = new Result(code, resultMap, msg);
+		int code = 1;
+		String msg = "查询所有用户操作失败!";
+		List<SysUser> sysUserList = null;
+		try {
+			sysUserList = sysUserService.queAllUserByCtn(argsMap);
 
-		// return JsonUtil.obj2JsonStr(result);
-		return new Result(0, sysUserList);
+			if (sysUserList.size() > 0) {
+				code = 0;
+				msg = "查询所有用户操作成功!";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "查询所有用户操作出现异常!";
+		}
+
+		Result result = new Result(code, sysUserList, msg);
+
+		return result;
 	}
 
 	/**
@@ -172,9 +165,10 @@ public class SysUserController {
 			return new Result(2, "");
 		}
 
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-
-		String id = String.valueOf(argsMap.get("id"));
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		String id = String.valueOf(argsMap.get("id"));
+		String id = request.getParameter("id");
+		
 		int code = 1;
 		String msg = "根据id查询用戶操作失败!";
 		SysUser sysUser = new SysUser();
@@ -191,13 +185,14 @@ public class SysUserController {
 				if (null != sysDeptList && sysDeptList.size() > 0) {
 					sysUser.setDeptname(sysDeptList.get(0).getName());
 				}
-			}
-			
-			List<SysRole> sysRoleList = sysRoleService.queAllRoleByCtn(null);
-			if (null != sysUser) {
-				sysUser.setRoleList(sysRoleList);
 				code = 0;
 				msg = "根据id查询用戶操作成功!";
+			}
+			SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
+//			List<SysRole> sysRoleList = sysRoleService.queAllRoleByCtn(null);
+			if (null != sysRole) {
+				sysUser.setRoleid(sysRole.getId()+"");
+				sysUser.setRolename(sysRole.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -218,67 +213,11 @@ public class SysUserController {
 	@RequestMapping(value = "/addUser")
 	@ResponseBody
 	public Result addUser(HttpServletRequest request,SysUser sysUser) {
-		// public Result addUser(HttpServletRequest request,
-		// @RequestParam(value="sysUser") String sysUser) {
 		if (!LoginController.checkLogin(request)) {
 			return new Result(2, "");
 		}
 
-//		SysUser user = new SysUser();
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		// user = (SysUser)JsonUtil.jsonStr2Obj(sysUser, SysUser.class);
-//		if (argsMap.get("roleId") instanceof String && StringUtils.isNotEmpty(String.valueOf(argsMap.get("id")))) {
-//			user.setId(Integer.parseInt(String.valueOf(argsMap.get("id"))));
-//		}
-//		if (null != argsMap.get("certificate")) {
-//			user.setCertificate(String.valueOf(argsMap.get("certificate")));
-//		}
-//		if (null != argsMap.get("codeid")) {
-//			user.setCodeid(Integer.parseInt(String.valueOf(argsMap.get("codeid"))));
-//		}
-//		if (null != argsMap.get("corporation")) {
-//			user.setCorporation(String.valueOf(argsMap.get("corporation")));
-//		}
-//		if (null != argsMap.get("corporationim")) {
-//			user.setCorporationim(String.valueOf(argsMap.get("corporationim")));
-//		}
-//		if (null != argsMap.get("deptid")) {
-//			user.setDeptid(String.valueOf(argsMap.get("deptid")));
-//		}
-//		if (null != argsMap.get("deptname")) {
-//			user.setDeptname(String.valueOf(argsMap.get("deptname")));
-//		}
-//		if (null != argsMap.get("email")) {
-//			user.setEmail(String.valueOf(argsMap.get("email")));
-//		}
-//		if (null != argsMap.get("intro")) {
-//			user.setIntro(String.valueOf(argsMap.get("intro")));
-//		}
-//		if (null != argsMap.get("loginname")) {
-//			user.setLoginname(String.valueOf(argsMap.get("loginname")));
-//		}
-//		if (null != argsMap.get("name")) {
-//			user.setName(String.valueOf(argsMap.get("name")));
-//		}
-//		if (null != argsMap.get("password")) {
-//			user.setPassword(String.valueOf(argsMap.get("password")));
-//		}
-//		if (null != argsMap.get("phone")) {
-//			user.setPhone(String.valueOf(argsMap.get("phone")));
-//		}
-//		if (null != argsMap.get("realname")) {
-//			user.setRealname(String.valueOf(argsMap.get("realname")));
-//		}
-//		if (null != argsMap.get("rolename")) {
-//			user.setRolename(String.valueOf(argsMap.get("rolename")));
-//		}
-//		if (null != argsMap.get("state")) {
-//			user.setState(String.valueOf(argsMap.get("state")));
-//		}
-//		if (null != argsMap.get("type")) {
-//			user.setType(String.valueOf(argsMap.get("type")));
-//		}
-
+		String roleids = request.getParameter("roleids");
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
 		String msg = "添加操作失败!";
@@ -288,7 +227,9 @@ public class SysUserController {
 			sysUser.setCreatetime(new Date());
 			if (sysUser.getId() != null) {
 				ret = sysUserService.updateSelective(sysUser);
-				int retUr = this.insertUserRole(argsMap, sysUser);
+				//更新时，先删除，然后新增
+				sysUserRoleService.deleteById(sysUser.getId());
+				int retUr = this.insertUserRole(roleids, sysUser);
 				if (ret > 0 && retUr > 0) {
 					code = 0;
 					msg = "修改操作成功!";
@@ -296,13 +237,14 @@ public class SysUserController {
 
 			} else {
 				sysUser.setCreatetime(new Date());
-				resultMap.put("name", sysUser.getName());
-				SysUser sysUserNew = sysUserService.queOneUserByCtn(resultMap);
-				if (null != sysUserNew) {
-					ret = sysUserService.insert(sysUser);
-				}
+//				resultMap.put("name", sysUser.getName());
+//				SysUser sysUserNew = sysUserService.queOneUserByCtn(resultMap);
+//				if (null != sysUserNew) {
+//					ret = sysUserService.insert(sysUser);
+//				}
+				ret = sysUserService.insert(sysUser);
 				
-				int retUr = this.insertUserRole(argsMap, sysUser);
+				int retUr = this.insertUserRole(roleids, sysUser);
 				if (ret > 0 && retUr > 0) {
 					code = 0;
 					msg = "添加操作成功!";
@@ -326,12 +268,11 @@ public class SysUserController {
 	 * @param sysUser
 	 * @return
 	 */
-	public int insertUserRole(Map<String, Object> argsMap, SysUser sysUser) {
+	public int insertUserRole(String roleids, SysUser sysUser) {
 		int retUr = 0;
-		if (argsMap.get("roleids") instanceof String
-				&& StringUtils.isNotEmpty(String.valueOf(argsMap.get("roleids")))) {
+		if (StringUtils.isNotEmpty(roleids)) {
 			SysUserRole sysUserRole = new SysUserRole();
-			sysUserRole.setRoleid(Integer.parseInt(String.valueOf(argsMap.get("roleids"))));
+			sysUserRole.setRoleid(Integer.parseInt(roleids));
 			sysUserRole.setUserid(sysUser.getId());
 			retUr = sysUserRoleService.insert(sysUserRole);
 		}

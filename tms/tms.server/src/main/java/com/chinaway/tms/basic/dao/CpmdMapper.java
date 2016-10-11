@@ -23,4 +23,9 @@ public interface CpmdMapper extends BaseMapper<Cpmd, Integer> {
 	 */
 	List<Cpmd> selectCpmdByOrdersId(@Param(value="orderid")Integer orderid);
 	
+	/**
+	 * 查询最新的更新时间
+	 * @return
+	 */
+	String selectMaxUpdateTime();
 }

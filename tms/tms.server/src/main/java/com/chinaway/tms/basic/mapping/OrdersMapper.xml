@@ -97,7 +97,11 @@
 	
 	<!-- 动态查询条件 -->
 	<sql id="mf_Where_Clause">
-		where 1=1
+		where 1=1 and deptname in 
+		<foreach item="idItem" index="index" collection="deptids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+		
 		<trim suffixOverrides="," >
 			<if test="id != null and id != '' ">
 			    and id = #{id}
@@ -113,9 +117,6 @@
 			</if>
 			<if test="createtime != null and createtime != '' ">
 			    and createtime = #{createtime}
-			</if>
-			<if test="deptname != null and deptname != '' ">
-			    and deptname = #{deptname}
 			</if>
 			<if test="subcontractor != null and subcontractor != '' ">
 			    and subcontractor = #{subcontractor}
@@ -184,6 +185,11 @@
 	<select id="selectMaxId"  resultType="java.lang.Integer" >
 		select max(id) from orders 
 	</select>
+ 
+	<!-- 查询max UpdateTime -->
+	<select id="selectMaxUpdateTime"  resultType="java.util.Date" >
+		select max(updatetime) updatetime from orders
+	</select>
 
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -191,6 +197,7 @@
 		<include refid="Base_Column_List" />
 		from orders
 		<include refid="mf_Where_Clause"/>
+		order by status desc
 	</select>
 	
 	<!-- 条件查询所有-->
@@ -199,10 +206,11 @@
 		<include refid="Base_Column_List" />
 		from orders
 		<include refid="Example_Where_Clause"/>
+		order by status desc
 	</select>
    
-	<!-- 插入记录 -->
-	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Orders" >
+	<!-- 插入记录,返回的注解id，需要通过参数对象获取，如order。getId() -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Orders" useGeneratedKeys="true" keyProperty="id">
 	    insert into orders(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status,updatetime,pid)
         values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{status},#{updatetime},#{pid})
 	</insert>
@@ -273,7 +281,7 @@
 			<if test="pid != null">
 			    pid = #{pid},
 			</if>
-		</trim> where id=#{id}
+		</trim> where code=#{code}
 	</update>
 
 	<!-- 删除记录 -->

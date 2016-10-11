@@ -123,7 +123,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
             },
             {sTitle: "车次编号", sName: "code"},
             {sTitle: "创建时间", sName: "createtime"},
-            {sTitle: "车次类型", sName: "orderfrom"},
+//           {sTitle: "车次类型", sName: "orderfrom"},
 //            {sTitle: "任务状态", sName: "state"},
             {sTitle: "状态", sName: "state", 
             	mRender:function(data, type, full){
@@ -131,7 +131,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
             			return "审核不通过";
             		}else if(data == 0){
             			return "初始";
-            		}else if(data == 0){
+            		}else if(data == 1){
             			return "审核通过";
             		}else{
             			return "运单在途";

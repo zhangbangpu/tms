@@ -71,7 +71,7 @@ $('#form_button').click(function() {
     $ips.load('login', 'login', pararm, function(result) {
     	console.log(result);
         if (result.code == 0) {
-        	window.location.href="index.html?username="+result.username;
+        	window.location.href="index.html?username="+result.username+"#home.html";
 //        	window.location.href="index.html?username="+result.username + result.defaultIndex;
 //        	window.location.href="/jsp/index.jsp#tms/basic/site_list.html";
         } else {

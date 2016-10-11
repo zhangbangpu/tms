@@ -130,7 +130,61 @@ function IsDate(str) {
 	    return true;
  }
 
+//加载 机构下拉框数据
 function orglist() {
+	
+    $("#orgname").select2({
+        placeholder: '请选择机构',
+        //minimumInputLength: 0,
+        multiple: false,
+        allowClear: true,
+        //数据加载
+        query: function (query) {
+            $ips.load('sysDept', 'queryDeptByCondition', {
+                name: query.term 
+            }, function (e) {
+                var _pre_data = [];
+                $.each(e, function (k, v) {
+                	_pre_data.push({
+                		id: v.id,
+                		text: v.name
+                	});
+                });
+                var data = {
+                    results: _pre_data
+                };
+                query.callback(data);
+            });
+        }
+    });
+    
+	//加载 承运商下拉框数据
+    $("#wlcompany").select2({
+        placeholder: '请选择承运商',
+        //minimumInputLength: 0,
+        multiple: false,
+        allowClear: true,
+        //数据加载
+        query: function (query) {
+            $ips.load('sysUser', 'queAllUserByCtn', {
+            	type: 2,
+                name: query.term 
+            }, function (e) {
+                var _pre_data = [];
+                $.each(e, function (k, v) {
+                	_pre_data.push({
+                		id: v.id,
+                		text: v.name
+                	});
+                });
+                var data = {
+                    results: _pre_data
+                };
+                query.callback(data);
+            });
+        }
+    });
+	
 //	loadScript("/js/hui/jquery.hui.tree.js?v=1.1", function() {
 //		$('#orgname').tree({
 //			type: 'fiter',

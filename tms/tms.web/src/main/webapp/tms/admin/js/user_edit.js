@@ -110,7 +110,7 @@ var parms = $ips.getUrlParams();
 if (parms["id"]) {
 	var entity = $ips.load("sysUser", "queryOneById", "id=" + parms["id"]);
 	if (!entity.id) {
-		window.setTimeout("window.location.hash = '#index.html'", 2000);
+		window.setTimeout("window.location.hash = '#home.html'", 2000);
 	}
 	if (entity) {
 		$ips.fillFormInput('frmInfo', entity);
@@ -118,17 +118,17 @@ if (parms["id"]) {
         	$("#deptid").select2('data', {id : entity.deptid, text : entity.deptname}).val(entity.deptid);
         }
 		$("#state").select2('data', {id : entity.state, text : getStateName(entity.state)}).val(entity.state);
-		var roles = $ips.load('sysRole', 'getRoleByDeptid', {deptid : $('#deptid').val()});
-//		roles = entity.roleList;
-		var initRoles = [];
-		$.each(roles, function(k, v) {
-            initRoles.push({
-                id : v.id,
-                text : v.name
-            });
-        });
-		$("#roleids").select2({data : initRoles});
-		$('#roleids').select2('val', entity.roleids);
+		$("#roleids").select2('data', {id : entity.roleid, text : entity.rolename}).val(entity.roleid);
+//		var roles = $ips.load('sysRole', 'getRoleByDeptid', {deptid : $('#deptid').val()});
+//		var initRoles = [];
+//		$.each(roles, function(k, v) {
+//            initRoles.push({
+//                id : v.id,
+//                text : v.name
+//            });
+//        });
+//		$("#roleids").select2({data : initRoles});
+//		$('#roleids').select2('val', entity.roleids);
 		$('input[name=username]').attr("readonly", "readonly");
 		$('#userpic').hide();
 		var userpicRow = $('#userpic').closest('label');
@@ -283,7 +283,7 @@ function runFormValidation() {
 //获取状态名称
 function getStateName(str) {
     switch (str) {
-        case "0" :
+        case "2" :
             var name = '禁用';
             break;
         case "1" :

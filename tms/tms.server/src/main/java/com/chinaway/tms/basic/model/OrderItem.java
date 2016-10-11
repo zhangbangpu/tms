@@ -15,18 +15,20 @@ public class OrderItem implements Serializable {
 	private static final long serialVersionUID = 2740752498555850147L;
 	
 	private Integer id;//   	private Integer orderid;//   订单编号	private String goodscode;//   商品编号	private String goodsname;//   商品名称
+	private double number;  //   总件数
+	private String weight;  //   货品总重(Kg)
+	private String volume;  //   货品总体积(m3)
+	private String unit;	//货品数量单位
+	
 	private List<Cpmd> goods= new ArrayList<Cpmd>();  //id
 	private String orderno;  //   订单号
-	private double number;  //   总件数
 	private String sdatetime;  //   要求发货时间
 	private String wmsno;  //   ERP/WMS单号
 	private String entity;  //   货品单位
 	private String rcompany;  //   收货单位
 	private Date createtime;  //创建时间
-	private String weight;  //   货品总重(Kg)
 	private String rlocation;  //   收货地址
 	private String orgcodeName;  //   所属机构
-	private String volume;  //   货品总体积(m3)
 	private String rsitename;  //   收货站点
 	private String fromorgcodeName;  //   来源机构
 	private String scompany;  //   发货单位
@@ -42,7 +44,13 @@ public class OrderItem implements Serializable {
 	private String events;  //   events
 	private String classname;  //   线路名称
 	private String sphone;  //   发货人电话
-		public Integer getId() {	    return this.id;	}	public void setId(Integer id) {	    this.id=id;	}	public Integer getOrderid() {	    return this.orderid;	}	public void setOrderid(Integer orderid) {	    this.orderid=orderid;	}	public String getGoodscode() {	    return this.goodscode;	}	public void setGoodscode(String goodscode) {	    this.goodscode=goodscode;	}	public String getGoodsname() {	    return this.goodsname;	}	public void setGoodsname(String goodsname) {	    this.goodsname=goodsname;	}
+		public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	public Integer getId() {	    return this.id;	}	public void setId(Integer id) {	    this.id=id;	}	public Integer getOrderid() {	    return this.orderid;	}	public void setOrderid(Integer orderid) {	    this.orderid=orderid;	}	public String getGoodscode() {	    return this.goodscode;	}	public void setGoodscode(String goodscode) {	    this.goodscode=goodscode;	}	public String getGoodsname() {	    return this.goodsname;	}	public void setGoodsname(String goodsname) {	    this.goodsname=goodsname;	}
 	public List<Cpmd> getGoods() {
 		return goods;
 	}

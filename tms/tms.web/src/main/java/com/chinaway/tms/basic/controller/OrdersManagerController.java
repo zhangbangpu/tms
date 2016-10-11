@@ -3,8 +3,10 @@ package com.chinaway.tms.basic.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.controller.LoginController;
-import com.chinaway.tms.basic.model.Cpmd;
+import com.chinaway.tms.admin.model.SysDept;
+import com.chinaway.tms.admin.model.SysUser;
+import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.basic.model.OrderItem;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.service.CpmdService;
+import com.chinaway.tms.basic.service.OrderItemService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
@@ -30,6 +35,10 @@ public class OrdersManagerController {
 	
 	@Autowired
 	private OrdersService ordersService;
+	@Autowired
+	private OrderItemService orderItemService;
+	@Autowired
+	private SysDeptService sysDeptService;
 	
 	@Autowired
 	private CpmdService cpmdService;
@@ -70,7 +79,6 @@ public class OrdersManagerController {
 		Result result = new Result(code, resultMap, msg);
 		
 		return result;
-//		return new Result(0, ordersList);
 	}
 	
 	/**
@@ -155,12 +163,34 @@ public class OrdersManagerController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectOrders2PageBean(HttpServletRequest request) {
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		//查询订单状态为自动的
-		PageBean<Orders> pageBean = ordersService.select2PageBean(argsMap);
-		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
-		//return JsonUtil.obj2JsonStr(resultJson);
-		return new Result(0, pageBean);
+		int code = 1;
+		String msg = "查询订单操作失败!";
+
+		PageBean<Orders> pageBean = null;
+		try {
+			Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+			
+			SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+			String deptid = sysUser.getDeptid();
+			List<SysDept> deptList = sysDeptService.selectChildsByDeptid(deptid);
+			
+			Set<String> deptidSet = new HashSet<>();
+			deptidSet.add(deptid);//加上本身
+			for (SysDept sysDept : deptList) {
+				//子节点
+				deptidSet.add(sysDept.getDeptid());
+			}
+			//不同角色看到的订单不同，通过deptname来筛选
+			argsMap.put("deptids",deptidSet);
+			
+			pageBean = ordersService.select2PageBean(argsMap);
+			code = 0;
+			msg = "查询订单操作成功!";
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "查询订单出现异常!";
+		}
+		return new Result(code, pageBean, msg);
 	}
 	
 	/**
@@ -173,28 +203,68 @@ public class OrdersManagerController {
 	@RequestMapping(value = "/queryOneById")
 	@ResponseBody
 	public Result queryOneById(HttpServletRequest request) {
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		String id = String.valueOf(argsMap.get("id"));
-//		int code = 1;
-//		String msg = "根据id查询部门操作失败!";
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		String id = String.valueOf(argsMap.get("id"));
+		String id = request.getParameter("id");
+		int code = 1;
+		String msg = "根据id查询订单操作失败!";
 //
 		Orders orders = null;
-//		try {
+		try {
 			orders = ordersService.selectById(id == "" ? 0 : Integer.parseInt(id));
-//
-//			if (null != orders) {
-//				code = 0;
-//				msg = "根据id查询订单操作成功!";
-//			}
-//
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
 
-//		Result result = new Result(code, orders, msg);
+			if (null != orders) {
+				code = 0;
+				msg = "根据id查询订单操作成功!";
+			}
 
-//		return result;
-		return new Result(0, orders);
+		} catch (Exception e) {
+			e.getStackTrace();
+			msg = "根据id查询出现异常!";
+		}
+
+		Result result = new Result(code, orders, msg);
+
+		return result;
+	}
+	
+	/**
+	 * 根据条件查询单个订单信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param ordersInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryOrderAndItemById")
+	@ResponseBody
+	public Result queryOrderAndItemById(HttpServletRequest request) {
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		String id = String.valueOf(argsMap.get("id"));
+		String id = request.getParameter("id");
+		int code = 1;
+		String msg = "根据id查询订单操作失败!";
+//
+		Orders orders = null;
+		try {
+			orders = ordersService.selectById(id == "" ? 0 : Integer.parseInt(id));
+			if("0".equals(orders.getState())){
+				List<OrderItem> orderItemList = orderItemService.selectByOrderId(orders.getId());
+				orders.setOrderItemList(orderItemList);
+			}
+			
+			if (null != orders) {
+				code = 0;
+				msg = "根据id查询订单操作成功!";
+			}
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+			msg = "根据id查询出现异常!";
+		}
+		
+		Result result = new Result(code, orders, msg);
+		
+		return result;
 	}
 	
 	/**
@@ -207,8 +277,9 @@ public class OrdersManagerController {
 	@RequestMapping(value = "/queryOrdersDetail")
 	@ResponseBody
 	public Result queryOrdersDetail(HttpServletRequest request) {
-		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-		String id = String.valueOf(argsMap.get("id"));
+//		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+//		String id = String.valueOf(argsMap.get("id"));
+		String id = request.getParameter("id");
 		int code = 1;
 		String msg = "根据id查询订单详情!";
 
@@ -229,11 +300,11 @@ public class OrdersManagerController {
 
 		} catch (Exception e) {
 			e.getStackTrace();
+			msg = "根据id查询出现异常!";
 		}
 		
 		Result result = new Result(code, orders, msg);
 		
-//		return result;
 		return result;
 	}
 	
@@ -335,7 +406,7 @@ public class OrdersManagerController {
 	}
 	
 	/**
-	 * 删除部门信息<br>
+	 * 删除订单信息<br>
 	 * 返回用户的json串
 	 * 
 	 * @param userInfo

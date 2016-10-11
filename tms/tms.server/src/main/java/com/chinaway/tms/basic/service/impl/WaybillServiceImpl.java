@@ -1,6 +1,7 @@
 package com.chinaway.tms.basic.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -293,5 +294,11 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 ////		    			+ "\"endtime\" : \"2016-07-21 17:19:49\" "
 //		    		+ "}";
 		return depParam;
+	}
+
+	@Override
+	public Date selectMaxUpdateTime() {
+		
+		return waybillMapper.selectMaxUpdateTime();
 	}
 }

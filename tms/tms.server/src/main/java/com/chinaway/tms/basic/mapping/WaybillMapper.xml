@@ -21,6 +21,7 @@
 		<result column="exceptcount" property="exceptcount"/>
 		<result column="c_weight" property="c_weight"/>
 		<result column="c_volume" property="c_volume"/>
+		<result column="updatetime" property="updatetime"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
@@ -181,6 +182,7 @@
 		<include refid="Base_Column_List" />
 		from waybill
 		<include refid="mf_Where_Clause"/>
+		order by createtime desc
 	</select>
 	
 	<!-- 条件查询所有-->
@@ -189,6 +191,7 @@
 		<include refid="Base_Column_List" />
 		from waybill
 		<include refid="Example_Where_Clause"/>
+		order by createtime desc
 	</select>
 	
 	<!-- 条件查询所有-->
@@ -197,22 +200,30 @@
 		<include refid="Base_Column_List" />
 		from waybill
 		<include refid="Example_Where_Clause"/>
+		order by createtime desc
 	</select>
 	
 	<!-- 查询max id  -->
 	<select id="selectMaxId"  resultType="java.lang.Integer" >
 		select max(id) from waybill 
 	</select>
+	
+   <!-- 查询max UpdateTime -->
+	<select id="selectMaxUpdateTime"  resultType="java.util.Date" >
+		select max(updatetime) updatetime from waybill
+	</select>
    
 	<!-- 插入记录 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.basic.model.Waybill" >
-	    insert into waybill(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume)
-        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{c_weight},#{c_volume})
+	    insert into waybill(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume,updatetime)
+        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{c_weight},#{c_volume},#{updatetime})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
 	 <update id="update" parameterType="com.chinaway.tms.basic.model.Waybill" >
-	  update waybill set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount},c_weight=#{c_weight},c_volume=#{c_volume} where id=#{id}
+	  update waybill set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount},c_weight=#{c_weight},c_volume=#{c_volume}
+	  ,updatetime=#{updatetime} 
+	  where id=#{id}
 	 </update>
  
 	 <!-- 动态修改记录，只修改只不为空的字段 -->
@@ -272,6 +283,9 @@
 	</if>
 	<if test="c_volume != null  ">
 		c_volume=#{c_volume},
+	</if>
+	<if test="updatetime != null  ">
+		updatetime=#{updatetime},
 	</if>
 	</trim> where id=#{id}
 	</update>

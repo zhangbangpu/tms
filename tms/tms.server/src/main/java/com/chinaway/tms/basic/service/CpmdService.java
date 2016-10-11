@@ -22,4 +22,10 @@ public interface CpmdService extends BaseService<Cpmd, Integer> {
 	 */
 	List<Cpmd> selectCpmdByOrdersId(Integer orderId);
 	
+	/**
+	 * 查询最新的更新时间
+	 * @return
+	 */
+	String selectMaxUpdateTime();
+	
 }

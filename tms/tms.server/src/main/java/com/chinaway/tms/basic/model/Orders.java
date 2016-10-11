@@ -20,16 +20,45 @@ public class Orders implements Serializable {
 	private Integer id;//   	private String code;//   订单编号	private String fromcode;//   来源编号	private String orderfrom;//   订单来源：sap，wms	private java.util.Date createtime;//   创建时间	private String deptname;//   所属机构	private String subcontractor;//   转包承运商	private Double amount;//   货品数量	private String unit;//   货品单位	private Double weight;//   weight	private Double volume;//   货品总体积(m³)	private String fhaddress;//   发货地址	private String shaddress;//   收货地址	private String fhsitename;//   发货站点	private String shsitename;//   收货站点	private java.util.Date requstarttime;//   要求发货时间	private java.util.Date requendtime;//   要求收货时间	private String state;//   当前执行阶段	private Integer exceptcount;//   异常事件数
 	private String city;//   城市
 	private String status;//   状态 0自动  1手动
+	private String type;//   订单类型
+	private java.util.Date gstarttime;//   发车时间
+	private java.util.Date garrivetime;//   到达时间
+	
 	//可能对应多个
 //	private String cpmdCode;//    货品编号
 //	private String cpmdName;//    货品名称
 	private String updatetime;//  更新时间
 	private Integer pid;//    父id
 	private List<String> stateList = new ArrayList<String>();//    执行阶段列表
-	private OrderItem baseInfo = new OrderItem();
+	private OrderItem baseInfo;
 	private List<Map<String,Object>> dispatchInfos = new ArrayList<Map<String,Object>>();//  
 	private List<Map<String,Object>> steps = new ArrayList<Map<String,Object>>();
+	private List<OrderItem> orderItemList;
 	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public java.util.Date getGstarttime() {
+		return gstarttime;
+	}
+	public void setGstarttime(java.util.Date gstarttime) {
+		this.gstarttime = gstarttime;
+	}
+	public java.util.Date getGarrivetime() {
+		return garrivetime;
+	}
+	public void setGarrivetime(java.util.Date garrivetime) {
+		this.garrivetime = garrivetime;
+	}
+	public List<OrderItem> getOrderItemList() {
+		return orderItemList;
+	}
+	public void setOrderItemList(List<OrderItem> orderItemList) {
+		this.orderItemList = orderItemList;
+	}
 	public String getFhsitename() {
 		return fhsitename;
 	}

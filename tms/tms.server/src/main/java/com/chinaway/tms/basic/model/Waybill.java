@@ -17,7 +17,15 @@ public class Waybill implements Serializable {
 	private String ordersid;//   订单id
 	private String wlcompany;//   承运商
 	private String vehiclemodel;//   车型
-		public Integer getId() {	    return this.id;	}	public void setId(Integer id) {	    this.id=id;	}	public String getCode() {	    return this.code;	}	public void setCode(String code) {	    this.code=code;	}	public String getFromcode() {	    return this.fromcode;	}	public void setFromcode(String fromcode) {	    this.fromcode=fromcode;	}	public String getOrderfrom() {	    return this.orderfrom;	}	public void setOrderfrom(String orderfrom) {	    this.orderfrom=orderfrom;	}	public java.util.Date getCreatetime() {	    return this.createtime;	}	public void setCreatetime(java.util.Date createtime) {	    this.createtime=createtime;	}	public String getDeptname() {	    return this.deptname;	}	public void setDeptname(String deptname) {	    this.deptname=deptname;	}	public String getSubcontractor() {	    return this.subcontractor;	}	public void setSubcontractor(String subcontractor) {	    this.subcontractor=subcontractor;	}	public Double getAmount() {	    return this.amount;	}	public void setAmount(Double amount) {	    this.amount=amount;	}	public String getUnit() {	    return this.unit;	}	public void setUnit(String unit) {	    this.unit=unit;	}	public Double getWeight() {	    return this.weight;	}	public void setWeight(Double weight) {	    this.weight=weight;	}	public Double getVolume() {	    return this.volume;	}	public void setVolume(Double volume) {	    this.volume=volume;	}	public String getFhaddress() {	    return this.fhaddress;	}	public void setFhaddress(String fhaddress) {	    this.fhaddress=fhaddress;	}	public String getShaddress() {	    return this.shaddress;	}	public void setShaddress(String shaddress) {	    this.shaddress=shaddress;	}	public java.util.Date getRequstarttime() {	    return this.requstarttime;	}	public void setRequstarttime(java.util.Date requstarttime) {	    this.requstarttime=requstarttime;	}	public java.util.Date getRequendtime() {	    return this.requendtime;	}	public void setRequendtime(java.util.Date requendtime) {	    this.requendtime=requendtime;	}	public String getState() {	    return this.state;	}	public void setState(String state) {	    this.state=state;	}	public Integer getExceptcount() {	    return this.exceptcount;	}	public void setExceptcount(Integer exceptcount) {	    this.exceptcount=exceptcount;	}	public Double getC_weight() {	    return this.c_weight;	}	public void setC_weight(Double c_weight) {	    this.c_weight=c_weight;	}	public Double getC_volume() {	    return this.c_volume;	}	public void setC_volume(Double c_volume) {	    this.c_volume=c_volume;	}
+	private java.util.Date updatetime;//   更新时间
+	private java.util.Date gstarttime;//   发车时间
+	private java.util.Date garrivetime;//   到达时间
+	private String carnum;//   车牌号
+	private String carriagetype;//   车牌号
+	private String drivername;//   司机名称
+	private String driverphone;//   司机电话
+	
+	public Integer getId() {	    return this.id;	}	public void setId(Integer id) {	    this.id=id;	}	public String getCode() {	    return this.code;	}	public void setCode(String code) {	    this.code=code;	}	public String getFromcode() {	    return this.fromcode;	}	public void setFromcode(String fromcode) {	    this.fromcode=fromcode;	}	public String getOrderfrom() {	    return this.orderfrom;	}	public void setOrderfrom(String orderfrom) {	    this.orderfrom=orderfrom;	}	public java.util.Date getCreatetime() {	    return this.createtime;	}	public void setCreatetime(java.util.Date createtime) {	    this.createtime=createtime;	}	public String getDeptname() {	    return this.deptname;	}	public void setDeptname(String deptname) {	    this.deptname=deptname;	}	public String getSubcontractor() {	    return this.subcontractor;	}	public void setSubcontractor(String subcontractor) {	    this.subcontractor=subcontractor;	}	public Double getAmount() {	    return this.amount;	}	public void setAmount(Double amount) {	    this.amount=amount;	}	public String getUnit() {	    return this.unit;	}	public void setUnit(String unit) {	    this.unit=unit;	}	public Double getWeight() {	    return this.weight;	}	public void setWeight(Double weight) {	    this.weight=weight;	}	public Double getVolume() {	    return this.volume;	}	public void setVolume(Double volume) {	    this.volume=volume;	}	public String getFhaddress() {	    return this.fhaddress;	}	public void setFhaddress(String fhaddress) {	    this.fhaddress=fhaddress;	}	public String getShaddress() {	    return this.shaddress;	}	public void setShaddress(String shaddress) {	    this.shaddress=shaddress;	}	public java.util.Date getRequstarttime() {	    return this.requstarttime;	}	public void setRequstarttime(java.util.Date requstarttime) {	    this.requstarttime=requstarttime;	}	public java.util.Date getRequendtime() {	    return this.requendtime;	}	public void setRequendtime(java.util.Date requendtime) {	    this.requendtime=requendtime;	}	public String getState() {	    return this.state;	}	public void setState(String state) {	    this.state=state;	}	public Integer getExceptcount() {	    return this.exceptcount;	}	public void setExceptcount(Integer exceptcount) {	    this.exceptcount=exceptcount;	}	public Double getC_weight() {	    return this.c_weight;	}	public void setC_weight(Double c_weight) {	    this.c_weight=c_weight;	}	public Double getC_volume() {	    return this.c_volume;	}	public void setC_volume(Double c_volume) {	    this.c_volume=c_volume;	}
 	public String getOrdersid() {
 		return ordersid;
 	}
@@ -35,6 +43,48 @@ public class Waybill implements Serializable {
 	}
 	public void setVehiclemodel(String vehiclemodel) {
 		this.vehiclemodel = vehiclemodel;
+	}
+	public java.util.Date getUpdatetime() {
+		return updatetime;
+	}
+	public void setUpdatetime(java.util.Date updatetime) {
+		this.updatetime = updatetime;
+	}
+	public java.util.Date getGstarttime() {
+		return gstarttime;
+	}
+	public void setGstarttime(java.util.Date gstarttime) {
+		this.gstarttime = gstarttime;
+	}
+	public java.util.Date getGarrivetime() {
+		return garrivetime;
+	}
+	public void setGarrivetime(java.util.Date garrivetime) {
+		this.garrivetime = garrivetime;
+	}
+	public String getCarnum() {
+		return carnum;
+	}
+	public void setCarnum(String carnum) {
+		this.carnum = carnum;
+	}
+	public String getCarriagetype() {
+		return carriagetype;
+	}
+	public void setCarriagetype(String carriagetype) {
+		this.carriagetype = carriagetype;
+	}
+	public String getDrivername() {
+		return drivername;
+	}
+	public void setDrivername(String drivername) {
+		this.drivername = drivername;
+	}
+	public String getDriverphone() {
+		return driverphone;
+	}
+	public void setDriverphone(String driverphone) {
+		this.driverphone = driverphone;
 	}
 	
 }

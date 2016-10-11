@@ -45,4 +45,18 @@ public interface SysDeptMapper extends BaseMapper<SysDept, Integer> {
 	 */
 	int selectMaxId();
 
+	/**
+	 * 根据deptid查询
+	 * @param pid
+	 * @return
+	 */
+	List<SysDept> selectByDeptid(String deptid);
+	
+//	/**
+//	 * 根据pid查询
+//	 * @param pid
+//	 * @return
+//	 */
+//	List<SysDept> selectByPid(String pid);
+	
 }

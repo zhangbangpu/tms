@@ -1,5 +1,6 @@
 package com.chinaway.tms.basic.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,5 +52,7 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	 * @return
 	 */
 	List<Waybill> selectByIds(String ids);
+
+	Date selectMaxUpdateTime();
 	
 }

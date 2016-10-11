@@ -9,5 +9,11 @@ import com.chinaway.tms.core.BaseService;
  *
  */
 public interface SmdService extends BaseService<Smd, Integer> {
+
+	/**
+	 * 查询最新的更新时间
+	 * @return
+	 */
+	String selectMaxUpdateTime();
 	
 }
