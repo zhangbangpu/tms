@@ -1,19 +1,16 @@
 package com.tms.core.test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
 import com.chinaway.tms.utils.http.HttpClientUtils;
-import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.lang.DateUtil;
-import com.chinaway.tms.utils.lang.StringUtil;
 
 //	1、订单导入接口-order.order.createOrders
 //	2、订单生成车次接口-order.order.createDeparture
@@ -161,10 +158,13 @@ public class MyTest {
     	//post请求的参数
     	Map<String, Object> map = new HashMap<>();
     	String param ="{\"orgcode\": \"2000FJ\", \"pageNo\":1,\"pageSize\":20, "
-    			+ "\"updatetimeGe\" : \"2016-08-30 00:19:49\",\"updatetimeLt\": \"2016-08-30 11:19:49\","
+    			+ "\"updatetimeGe\" : \"2016-10-12 00:19:49\",\"updatetimeLt\": \"2016-10-14 11:19:49\","
 //    			+ " \"ordernoIn\": [\"wxg2016051901\"],"
-    			+ "\"fields\": [\"wmsno\",\"userorderno\",\"begintime\",\"scompany\",\"sprovince\",\"scity\",\"sdistricts\"]"
+    			+ " \"useHasNext\": true,"
+    			+ "\"fields\": [\"wmsno\",\"userorderno\",\"begintime\",\"scompany\",\"sprovince\",\"scity\",\"sdistricts\","
+    			+ "\"currentstatus\",\"currenttranstype\",\"events\",\"updatetime\"]"
     			+ "}";
+//    	paramMap.put("useHasNext", true);
     	
     	String app_secret = "fce6dc5652df05b2a7ae287337702eb6";
     	String app_key = "wine1919";
@@ -193,13 +193,23 @@ public class MyTest {
     public void order_detail() throws Exception {
     	//post请求的参数
     	Map<String, Object> map = new HashMap<>();
-    	String param ="{\"orgcode\": \"20016C\", "
-    			+ " \"orderno\": \"wxg2016083007\","
-    			+ "\"fields\": [\"wmsno\",\"userorderno\",\"begintime\",\"scompany\",\"sprovince\",\"scity\",\"sdistricts\"]"
+    	String param ="{\"orgcode\": \"200UHN\", "
+    			+ " \"orderno\": \"VIN09291\","
+//    			+ "\"fields\": [\"wmsno\",\"userorderno\",\"begintime\",\"scompany\",\"sprovince\",\"scity\",\"sdistricts\"]"
+    			+ "\"fields\": ["
+    				+ " \"userorderno\",\"begintime\",\"fromorgcode\",\"fromtime\", \"scompany\","
+    				+ " \"sprovince\",\"scity\",\"sdistricts\",\"slocation\",\"sname\",\"sphone\","
+    				+ " \"sdatetime\",\"ssitename\",\"rcompany\",\"rprovince\",\"rcity\",\"rdistricts\","
+    				+ " \"rlocation\",\"rname\",\"rphone\",\"rdatetime\",\"rsitename\",\"extendFields\",\"departures\","
+    				+ " \"departures.signdetail\",\"departures.zptstatuslist\",\"departures.zptevents\",\"departures.classlineevents\""
+    				+ "]"
     			+ "}";
     	
-    	String app_secret = "fce6dc5652df05b2a7ae287337702eb6";
-    	String app_key = "wine1919";
+//    	String app_secret = "fce6dc5652df05b2a7ae287337702eb6";
+//    	String app_key = "wine1919";
+    	String  urlRoot ="http://g7s.api.huoyunren.com/interface/index.php";
+		String app_secret = "33054ddd19b5ceef400bbfff2b8c9034";
+		String app_key = "yijiu_admin";
     	String method = "order.order.getOrderInfoByNo";
     	String timestamp = new Date().toLocaleString();
     	String sign = md5(app_secret, app_key, param, method, timestamp);
@@ -213,7 +223,7 @@ public class MyTest {
     	
     	//	wine1919 fce6dc5652df05b2a7ae287337702eb6
     	// http://g7s.api.huoyunren.com/interface/index.php?{method}=ucenter.user.createUser
-    	String  urlRoot ="http://test.api.g7s.chinawayltd.com/interface/index.php";
+//    	String  urlRoot ="http://test.api.g7s.chinawayltd.com/interface/index.php";
     	Map<String, Object> resultMap = HttpClientUtils.getResult(map, urlRoot, "", "post");
     	System.out.println(resultMap);
     	
@@ -267,16 +277,20 @@ public class MyTest {
     public void departure_select() throws Exception {
     	//post请求的参数
     	Map<String, Object> map = new HashMap<>();
-    	String param ="{\"orgcode\": \"2000FJ\", \"pageNo\":\"1\",\"pageSize\":\"20\", "
-    			+ "\"updatetimeGe\" : \"2016-08-30 00:19:49\","
+    	String param ="{\"orgcode\": \"200UHN\", \"pageNo\":\"1\",\"pageSize\":\"20\", "
+    			+ "\"updatetimeGe\" : \"2016-07-30 00:19:49\","
 //    			+ "\"updateimeLt\": \"2016-08-30 01:19:49\","
 //    			+ " \"departurenoIn\": [\"wxg2016051901\"],"
     			+ "\"fields\": [ \"departureno\",\"begintime\",\"carnum\",\"carriagetype\",\"drivername\",\"driverphone\","
     			+ "\"starttime\",\"endtime\",\"garrivetime\",\"gstarttime\",\"type\",\"status\"]"
     			+ "}";
     	
-    	String app_secret = "fce6dc5652df05b2a7ae287337702eb6";
-    	String app_key = "wine1919";
+    	String  urlRoot ="http://g7s.api.huoyunren.com/interface/index.php";
+//    	String  urlRoot ="http://test.api.g7s.chinawayltd.com/interface/index.php";
+//    	String app_secret = "fce6dc5652df05b2a7ae287337702eb6";
+//    	String app_key = "wine1919";
+    	 String app_secret = "33054ddd19b5ceef400bbfff2b8c9034";
+    	 String app_key = "yijiu_admin";
     	String method = "order.departure.getUpdateDepartureList";
     	String timestamp = new Date().toLocaleString();
     	String sign = md5(app_secret, app_key, param, method, timestamp);
@@ -288,11 +302,13 @@ public class MyTest {
     	map.put("timestamp", timestamp);
     	map.put("sign", sign);
     	
-    	String  urlRoot ="http://test.api.g7s.chinawayltd.com/interface/index.php";
     	Map<String, Object> resultMap = HttpClientUtils.getResult(map, urlRoot, "", "post");
     	System.out.println(resultMap);
     	
+//    	Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
     }
+    
+
     
     /**
      * 运单导入(订单生成车次)

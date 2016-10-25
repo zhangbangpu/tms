@@ -54,6 +54,7 @@ public class LoginController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			argsMap.put("loginname", argsMap.get("username"));
+			argsMap.put("state","1");
 //			argsMap.put("password", password);
 			
 			SysUser sysUser = sysUserService.queOneUserByCtn(argsMap);

@@ -96,10 +96,19 @@
 	
 	<!-- 条件查询所有 -->
 	<select id="selectAllOrderItemByCtn" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from order_item
-		<include refid="mf_Where_Clause"/>
+		select  oi.id,oi.orderid,oi.goodscode,c.maktx goodsname,oi.number,c.brgew * oi.number weight,c.volum * oi.number volume,c.meins unit
+		from order_item oi 
+		left join cpmd c on c.matnr = oi.goodscode 
+		where 1=1
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="orderid != null and orderid != '' ">
+		    and orderid like CONCAT('%',#{orderid},'%')
+		</if>
+		<if test="goodscode != null and goodscode != '' ">
+		    and goodscode = #{goodscode}
+		</if>
 	</select>
    
 	<!-- 插入记录 -->

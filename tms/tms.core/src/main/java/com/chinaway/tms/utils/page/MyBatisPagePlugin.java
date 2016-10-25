@@ -1,5 +1,6 @@
 package com.chinaway.tms.utils.page;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -136,6 +137,13 @@ public class MyBatisPagePlugin implements Interceptor{
 		try {
 			statement = connection.prepareStatement(countSql);
 			BoundSql countBS = new BoundSql(mappedStatement.getConfiguration(), countSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+			//支持 foreach 注意mybatis 版本在3.3.x以下
+			Field metaParamsField = ReflectUtil.getFieldByFieldName(boundSql, "metaParameters");
+            if (metaParamsField != null) {
+                MetaObject mo = (MetaObject) ReflectUtil.getValueByFieldName(boundSql, "metaParameters");
+                ReflectUtil.setValueByFieldName(countBS, "metaParameters", mo);
+            }
+			
 			setParameters(statement, mappedStatement, countBS, boundSql.getParameterObject());
 			rs = statement.executeQuery();
 			int totalCount = 0;
@@ -143,8 +151,11 @@ public class MyBatisPagePlugin implements Interceptor{
 				totalCount = rs.getInt(1);
 			}
 			pageBean.setTotalCount(totalCount);
+			
 		} catch (SQLException e) {
 			log.error("PagePlugin error get total count:",e);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}finally{
 			try {
 				rs.close();

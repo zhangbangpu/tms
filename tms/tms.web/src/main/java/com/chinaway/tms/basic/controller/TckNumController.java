@@ -1,6 +1,7 @@
 package com.chinaway.tms.basic.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.controller.LoginController;
+import com.chinaway.tms.basic.model.Cpmd;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.VehicleModel;
 import com.chinaway.tms.basic.model.Waybill;
+import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.basic.service.VehicleModelService;
 import com.chinaway.tms.basic.service.WaybillService;
@@ -33,12 +36,14 @@ public class TckNumController {
 	
 	@Autowired
 	private WaybillService waybillService;
-	
 	@Autowired
 	private OrdersService ordersService;
+	@Autowired
+	private CpmdService cpmdService;
 	
 	@Autowired
 	private VehicleModelService vehicleModelService;
+	
 	
 	/**
 	 * 根据条件查询所有站点信息<br>
@@ -177,6 +182,7 @@ public class TckNumController {
 					VehicleModel v = vehicleModelService.selectById(Integer.parseInt(name));
 					//不科学的地方，给waybill 赋值
 					waybill = ordersService.setWaybill(ordersNew, v);
+					waybill.setState("1");
 					ret = waybillService.insertWaybill(waybill, ordersList);
 
 				}
@@ -269,6 +275,47 @@ public class TckNumController {
 //		Result result = new Result(code, resultMap, msg);
 
 		return new Result(0, ret);
+	}
+	
+	/**
+	 * 审核运单信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryWaybillDetail")
+	@ResponseBody
+	public Result queryWaybillDetail(HttpServletRequest request) {
+		
+		int code = 1;
+		String msg = "查看运单明细失败!";
+		
+		Waybill waybill = null;
+		try {
+			String id = request.getParameter("id");
+			waybill = waybillService.selectById(Integer.parseInt(id));
+			List<Orders> orderList = ordersService.selectByWayId(Integer.parseInt(id));
+			waybill.setOrdersList(orderList);
+			List<Cpmd> cpmdsList = new ArrayList<>();
+			for (Orders orders : orderList) {
+				List<Cpmd> cpmds = cpmdService.selectCpmdByOrdersId(orders.getId());
+				cpmdsList.addAll(cpmds);
+			}
+			waybill.setGoodsList(cpmdsList);
+			
+			if (waybill != null) {
+				code = 0;
+				msg = "查看运单明细成功!";
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			msg = "出现异常";
+		}
+		
+		Result result = new Result(code, waybill, msg);
+		
+		return result;
 	}
 	
 }

@@ -27,8 +27,10 @@ import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.basic.service.OrdersWaybillService;
 import com.chinaway.tms.basic.service.WaybillService;
+import com.chinaway.tms.basic.vo.GoodsVo;
 import com.chinaway.tms.core.AbstractService;
 import com.chinaway.tms.core.BaseMapper;
+import com.chinaway.tms.utils.lang.BigDecimalUtil;
 import com.chinaway.tms.utils.lang.MathUtil;
 import com.chinaway.tms.utils.page.PageBean;
 
@@ -106,43 +108,57 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		map.put("state", "0");
 		map.put("status", "0");
 		List<Orders> orderList = orderMapper.selectAllOrdersByCtn(map);
-		List<Site> siteList = siteMapper.selectAllSiteByCtn(null);
+//		List<Site> siteList = siteMapper.selectAllSiteByCtn(null);
 
-		List<Integer> wlcompanyList = new ArrayList<Integer>();
+//		List<Integer> wlcompanyList = new ArrayList<Integer>();
+		Integer wlcompany = null;
 		Orders retOrder = new Orders();
 		Integer orderId;
+		Map<String, Object> argsMap = new HashMap<String, Object>();
 		for (Orders order : orderList) {
-			for (Site site : siteList) {
-				if (order.getShaddress().indexOf(site.getName()) != -1) {
-					wlcompanyList.add(site.getWlcompany());
-					orderId = order.getId();
-					retOrder.setId(orderId);
-					retOrder.setSubcontractor(String.valueOf(site.getWlcompany()));
-					map.put("id", orderId);
-					// 承运商信息同步到订单表
-					orderMapper.updateSelective(retOrder);
-				}
-			}
+			argsMap.put("code", order.getShaddress());
+			List<Site> siteList = siteMapper.selectAllSiteByCtn(argsMap);
+			wlcompany = siteList.get(0).getWlcompany();
+			orderId = order.getId();
+			retOrder.setId(orderId);
+			retOrder.setSubcontractor(String.valueOf(wlcompany));
+			map.put("id", orderId);
+			// 承运商信息同步到订单表
+			orderMapper.updateSelective(retOrder);
+			
+//			for (Site site : siteList) {
+//				if (order.getShaddress().indexOf(site.getName()) != -1) {
+//					wlcompanyList.add(site.getWlcompany());
+//					orderId = order.getId();
+//					retOrder.setId(orderId);
+//					retOrder.setSubcontractor(String.valueOf(site.getWlcompany()));
+//					map.put("id", orderId);
+//					// 承运商信息同步到订单表
+//					orderMapper.updateSelective(retOrder);
+//				}
+//			}
 		}
 
-		return wlcompanyList.get(0);
+		return wlcompany;
 	}
 
 	@Override
 	public List<Integer> queryWlcompanysByOrderId(Map<String, Object> map) {
 		List<Orders> orderList = orderMapper.selectAllOrdersByCtn(map);
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-		List<Site> siteList = siteMapper.selectAllSiteByCtn(argsMap);
 
 		List<Integer> wlcompanyList = new ArrayList<Integer>();
 
+		Map<String, Object> argsMap = new HashMap<String, Object>();
 		for (Orders order : orderList) {
-			for (Site site : siteList) {
-				if (!StringUtils.isEmpty(order.getShaddress()) && !StringUtils.isEmpty(site.getName())
-						&& null != site.getWlcompany() && order.getShaddress().indexOf(site.getName()) != -1) {
-					wlcompanyList.add(site.getWlcompany());
-				}
-			}
+			argsMap.put("code", order.getShaddress());
+			List<Site> siteList = siteMapper.selectAllSiteByCtn(argsMap);
+			wlcompanyList.add(siteList.get(0).getWlcompany());
+//			for (Site site : siteList) {
+//				if (!StringUtils.isEmpty(order.getShaddress()) && !StringUtils.isEmpty(site.getName())
+//						&& null != site.getWlcompany() && order.getShaddress().indexOf(site.getName()) != -1) {
+//					wlcompanyList.add(site.getWlcompany());
+//				}
+//			}
 		}
 
 		return wlcompanyList;
@@ -185,11 +201,11 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 					System.out.println("------------车型体积：" + vehicleModel.getVolum());
 					System.out.println("------------订单除以车型：" + order.getVolume()/vehicleModel.getVolum());
 	                //体积匹配不小于20%
-					if (machVehMod(order.getVolume(), vehicleModel.getVolum())) {
-	                	
-	                }else{
-	                	continue;
-	                }
+//					if (machVehMod(order.getVolume(), vehicleModel.getVolum())) {
+//	                	
+//	                }else{
+//	                	continue;
+//	                }
 					
 					// 重量匹配不小于20%
 					if (machVehMod(order.getWeight(), vehicleModel.getWeight())) {
@@ -234,16 +250,17 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	private boolean machVehMod(double orderParam, double vehModParam) {
 		String mach = String.valueOf((orderParam / vehModParam) * 100);
 		mach = mach.substring(0, mach.indexOf("."));
-		if (80 < Integer.parseInt(mach) && Integer.parseInt(mach) < 100) {
+		if (50 <= Integer.parseInt(mach) && Integer.parseInt(mach) <= 100) {
 			return true;
 		}
 		return false;
 	}
 	
 	public Waybill setWaybill(Orders order,Waybill record) throws Exception {
-		int maxId = waybillService.selectMaxId();
+//		int maxId = waybillService.selectMaxId();
+//		record.setCode("tms" + maxId );
+		record.setCode("TCK" + MathUtil.random());
 		record.setAmount(order.getAmount());
-		record.setCode("tms" + maxId );
 		record.setDeptname(order.getDeptname());
 		record.setExceptcount(order.getExceptcount());
 		record.setFhaddress(order.getFhaddress());
@@ -268,7 +285,7 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		waybill.setAmount(order.getAmount());
 		waybill.setC_volume(vehicleModel.getVolum());
 		waybill.setC_weight(vehicleModel.getWeight());
-		waybill.setCode("tms" + MathUtil.random());
+		waybill.setCode("TCK" + MathUtil.random());
 		waybill.setDeptname(order.getDeptname());
 		waybill.setExceptcount(order.getExceptcount());
 		waybill.setFhaddress(order.getFhaddress());
@@ -296,11 +313,27 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	public Orders selectDetailById(Integer id) {
 		Orders orders = orderMapper.selectById(id);
 		List<Cpmd> cpmdList = cpmdService.selectCpmdByOrdersId(id);
-		OrderItem orderItem = new OrderItem();
-		orderItem.setGoods(cpmdList);
-		orders.setBaseInfo(orderItem);
-		orders.getDispatchInfos();
-		orders.getSteps();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("orderid", orders.getId());//共用了外部的map
+		List<OrderItem> orderItemList = orderItemMapper.selectAllOrderItemByCtn(map);
+		List<GoodsVo> goods = new ArrayList<>();
+		GoodsVo goodsVo = null;
+		for (OrderItem orderItem : orderItemList) {
+			//订单明细表没有 商品的具体信息，只有商品编号,vo类 可存放
+			goodsVo = new GoodsVo();
+			goodsVo.setGoodsname(orderItem.getGoodsname());
+			goodsVo.setSku(orderItem.getGoodscode());
+			goodsVo.setNumber(orderItem.getNumber());
+			goodsVo.setVolume(orderItem.getVolume());
+			goodsVo.setWeight(orderItem.getWeight());
+			goodsVo.setUnit(orderItem.getUnit());
+			goods.add(goodsVo);
+		}
+		orders.setGoods(goods);
+		//数据写死了
+//		orders.getDispatchInfos();
+//		orders.getSteps();
 		return orders;
 	}
 
@@ -310,6 +343,8 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		int count = orderMapper.insert(order);
 		
 		OrderItem orderItem = null;
+		double totalVolume = 0;
+		double totalWeight = 0;
 		if("wms".equalsIgnoreCase(order.getOrderfrom())){
 			for (Map<String, Object> map : goodsList) {
 				orderItem = new OrderItem();
@@ -323,6 +358,14 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 				orderItem.setUnit(unit);
 				
 				orderItemMapper.insert(orderItem);
+				//计算数量和体积
+				Map<String, Object> cpmdMap = new HashMap<>();
+				cpmdMap.put("matnr", goodsid);
+				List<Cpmd> cpmdList = cpmdService.selectAll4Page(cpmdMap);
+				Cpmd cpmd = cpmdList.get(0);
+				totalVolume = BigDecimalUtil.add(totalVolume+"", BigDecimalUtil.multiply(cpmd.getVolum(), amount).toString()).doubleValue();//体积
+				totalWeight = BigDecimalUtil.add(totalWeight+"", BigDecimalUtil.multiply(cpmd.getBrgew(), amount).toString()).doubleValue();//毛重（重量）
+				
 			}
 		}else{
 			for (Map<String, Object> map : goodsList) {
@@ -340,6 +383,11 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 			}
 		}
 		
+		order.setWeight(totalWeight);
+		order.setVolume(totalVolume);
+		//先保存一些信息，然后更新订单的重量和体积
+		orderMapper.updateSelective(order);
+		
 		return count;
 	}
 
@@ -347,6 +395,12 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	public Date selectMaxUpdateTime() {
 		
 		return orderMapper.selectMaxUpdateTime();
+	}
+
+	@Override
+	public List<Orders> selectByWayId(int wayId) {
+		
+		return orderMapper.selectByWayId(wayId);
 	}
 	
 }

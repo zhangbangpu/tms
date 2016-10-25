@@ -55,7 +55,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 	       	{sTitle: "操作", sName: "idAction", sWidth: "25px", sClass: "center", bSortable: false},
 			{sTitle: "机构名称", sName: "name"},
 			{sTitle: "机构编码", sName: "deptid"},
-			{sTitle: "自定义机构编号", sName: "customerid"},
+			/*{sTitle: "自定义机构编号", sName: "customerid"},*/
 			{sTitle: "联系人", sName: "contact"},
 			{sTitle: "地址", sName: "address"},
 			{sTitle: "电话", sName: "tel"},

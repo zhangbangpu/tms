@@ -22,9 +22,10 @@ $(function () {
         // 填充货品
         createGoodLists(data.baseInfo.goods);
         // 生成时间段
-        createTimeLine(data.baseInfo, data.dispatchInfos, data.steps);
+        //createTimeLine(data.baseInfo, data.dispatchInfos, data.steps);
         // 获取事件
-        createEvent(data.steps);
+//        createEvent(data.steps);
+        createEvent(data.departures);
 
         //$ips.unLockPage();
 
@@ -67,11 +68,11 @@ function createGoodLists(goods) {
     if (goods) {
         $.each(goods, function (k, v) {
             goodsHtml += '<tr>';
-            goodsHtml += '    <td>' + v.maktx + '</td>';
-            goodsHtml += '    <td>' + v.meins + '</td>';
-            goodsHtml += '    <td>' + v.bstrf + '</td>';
-            goodsHtml += '    <td>' + v.ntgew + v.gewei + '</td>';
-            goodsHtml += '    <td>' + v.volum + v.voleh + '</td>';
+            goodsHtml += '    <td>' + v.goodsname + '</td>';
+            goodsHtml += '    <td>' + v.unit + '</td>';
+            goodsHtml += '    <td>' + v.number + '</td>';
+            goodsHtml += '    <td>' + v.weight + '</td>';
+            goodsHtml += '    <td>' + v.volume + '</td>';
             goodsHtml += '</tr>';
         })
     }
@@ -327,37 +328,33 @@ function createStepsHTML(steps){
       return { statusHtml: statusHtml, planHtml: planHtml, standHtml: standHtml};
 }
 
-function createEvent(steps) {
-    if (!steps) return;
-    var eventHtml = '';
-    $.each(steps, function (k, v) {
-        eventHtml += '<li class="">';
-        eventHtml += '        <a class="" href="#" style="">【' + v.aliasname + '阶段】</a>';
-        eventHtml += '<ul style="display: none;" class="">';
-        $.each(v.departures, function (dk, dv) {
-            eventHtml += '<li class="">';
-            eventHtml += '        <a class="" href="#"  style="">【' + dv.carnum + '、' + dv.drivername + '】</a>';
-            if (dv.gstarttime != '') {
-                eventHtml += '<span class="btn btn-xs pull-width80 btn-warning" style="margin-left: 50px;" href="javascript:;" title="播放" id="play_' + dv.carnum + dv.implementstep + '" onclick="' + 'reviewByCarnum(\'' + dv.carnum+dv.implementstep + '\')">';
-                eventHtml += '<i class="fa fa-play"></i>';
-                eventHtml += '</span>';
-            }
-            eventHtml += '<ul style="display: none;" class="">';
-            if(dv.monitorList){
-                $.each(dv.monitorList, function (mk, mv) {
-                	if ( mv.detail  != null ){
-                		eventHtml += createOneEvent(mv.type, mv.detail);
-                	}
-                });
-            }
-            eventHtml +='</ul>'
-            eventHtml += '</li>';
-        });
-        eventHtml += '</li>';
-        eventHtml += '</ul>';
-
-
-    })
+function createEvent(departures) {
+	var eventHtml = '';
+    if (departures.length == 0) {
+    	 eventHtml = '<li>没有事件</li>';
+    }else{
+    	$.each(departures, function (dk, dv) {
+    		eventHtml += '<li class="">';
+    		eventHtml += '        <a class="" href="#"  style="">【' + dv.carnum + '、' + dv.postman + ', 运输时间：' 
+    		+ dv.gstarttime  + '--' + dv.garrivetime+ '】</a>';
+//        if (dv.gstarttime != '') {
+//            eventHtml += '<span class="btn btn-xs pull-width80 btn-warning" style="margin-left: 50px;" href="javascript:;" title="播放" id="play_' + dv.carnum + dv.implementstep + '" onclick="' + 'reviewByCarnum(\'' + dv.carnum+dv.implementstep + '\')">';
+//            eventHtml += '<i class="fa fa-play"></i>';
+//            eventHtml += '</span>';
+//        }
+    		eventHtml += '<ul style="display: none;" class="">';
+    		if(dv.zptstatuslist){
+    			$.each(dv.zptstatuslist, function (mk, mv) {
+    				eventHtml += '<li class="">';
+    				eventHtml +=  mv.operationtime + ' ' + mv.statustext ;
+//            	eventHtml +=  getTypeName(type) + mk.operationtime + ' ' + mv.statustext ;
+    				eventHtml += '</li>';
+    			});
+    		}
+    		eventHtml +='</ul>'
+    			eventHtml += '</li>';
+    	});
+    }
     $('#eventContent').html(eventHtml);
 }
 

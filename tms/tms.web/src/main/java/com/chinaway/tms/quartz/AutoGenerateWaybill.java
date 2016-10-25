@@ -10,7 +10,7 @@ import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.service.OrdersService;
 
 /**
- * 定时调用生成运单
+ * 定时调用生成运单【暂时取消，变为按钮触发】
  * @author zhang
  *
  */
@@ -30,7 +30,7 @@ public class AutoGenerateWaybill {
 	}
 
 	/**
-	 * 定时生成运单 默认5分钟
+	 * 定时生成运单 默认10分钟
 	 */
 	public void execute() {
 		try {
@@ -48,6 +48,8 @@ public class AutoGenerateWaybill {
 //					logger.debug("orders=" + orders.getId());
 				}
 			}
+			
+			//有车型（车辆）的承运商才推给其运单
 
 		} catch (Exception e) {
 //			logger.error(e.getMessage());

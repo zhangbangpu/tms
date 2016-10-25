@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.MyConstant;
 import com.chinaway.tms.utils.json.JsonUtil;
@@ -113,7 +114,7 @@ public class ToWMSController {
 					String state = order.getState();
 					if (state.equals(MyConstant.ORDER_START)){
 //						code = 3;
-						msg = "已生成运单，请走退货渠道";
+						msg = "订单:" + fromcode + "已生成运单，请走退货渠道";
 					}else{
 						ordersService.deleteById(order.getId());
 						code = 0;
@@ -122,7 +123,7 @@ public class ToWMSController {
 				}
 			}else{
 //				code = 2;
-				msg = "没有该订单";
+				msg = "没有该订单:" + fromcode;
 			}
 
 		}catch(Exception e){

@@ -140,6 +140,7 @@ public class SiteManagerController {
 				site.setCreatetime(new Date());
 				ret = siteService.insert(site);
 			}
+			
 			if (ret > 0) {
 				code = 0;
 				msg = "操作站点成功!";

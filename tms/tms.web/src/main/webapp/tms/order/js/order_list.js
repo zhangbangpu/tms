@@ -6,10 +6,40 @@ $("#s_btn1").click(function() {
 	$('#tblMain').grid("fnPageChange", "first");
 });
 
+//搜索条件 回车 触发
+$('#frmSearch input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
+
 function genSearchParams(){
 	searchParams = $("#frmSearch").serializeArray();
 	return searchParams;
 }
+
+
+/**
+ * 开启自动调度
+ */
+$("#btn_auto_start").click(function(){
+    $ips.confirm("您确定要开启自动调度吗?",function(btn) {
+        if (btn == "确定") {
+            $ips.load("orders", "autoGenerateWaybill", {
+            	//无参数
+            }, function(result){
+            	console.log(result);
+            	var msg = result.message;
+                if(msg == '') {
+            		 $ips.succeed("自动生成运单成功!");
+            		 $('#tblMain').grid("fnDraw");
+            	 } else {
+            		 $ips.error(msg);
+            	 }
+            });
+		}
+    });
+});
 
 
 function ordersDelete(id) {
@@ -86,23 +116,33 @@ $("#deletebtn").click(function(){
 //var waybillRow = $('#btn_depature').closest('div');
 //
 $("#btn_depature_init").bind('click', function() {
-	var ids = getRowIds();
+	var ids = getRowIds(true);
     var length = ids.length;
     if (length < 1) {
         $ips.error('请至少选择一个订单');
         return;
     }
     
+    //检查订单状态和类型
+    $ips.load("orders", "checkOrders", "ids=" + ids, function(result){
+    	//{ids : ids} 参数异常
+        if(result.msg == '') {
+        	$('#departureModal').modal('show');
+    	 } else {
+    		 $ips.error(result);
+    		 return;
+    	 }
+    });
+    
     //加载 承运商下拉框数据
-    $("#wlcompany").select2({
+    $("#r_wlcompany").select2({
         placeholder: '请选择承运商',
-        minimumInputLength: 0,
-        //multiple: false,
+//        minimumInputLength: 2,
+        multiple: false,
         allowClear: true,
         //数据加载
         query: function (query) {
-            $ips.load('sysUser', 'queAllUserByCtn', {
-            	type: 2,
+            $ips.load('sysUser', 'queryWL2combo', {
                 name: query.term 
             }, function (e) {
                 var _pre_data = [];
@@ -120,16 +160,16 @@ $("#btn_depature_init").bind('click', function() {
         }
     });
     
-    $("#wlcompany").on('change',function(data){
-    	console.info(data);
-    	console.info('-----');
+    $("#r_wlcompany").on('change',function(data){
+//    	console.info(data);
+//    	console.info('-----');
     	var wlcompanyId = data.added.id
     	console.info(wlcompanyId);
     	
     	//加载 车型下拉框数据
     	$("#vehiclemodel").select2({
     		placeholder: '请选择车型',
-    		minimumInputLength: 0,
+//    		minimumInputLength: 2,
     		multiple: false,
     		allowClear: true,
     		//数据加载
@@ -157,8 +197,6 @@ $("#btn_depature_init").bind('click', function() {
     	});
     });
     
-    
-	$('#departureModal').modal('show');
 });
 
 
@@ -249,6 +287,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 				}
             },
                 {sTitle: "订单号", sName: "code"},
+                {sTitle: "订单来源编号", sName: "fromcode"},
                 {sTitle: "订单来源", sName: "orderfrom"},
                 {sTitle: "承运商", sName: "subcontractor"},
                 {sTitle: "货品名称", sName: "cpmdName"},
@@ -302,8 +341,8 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			searchParams = genSearchParams();
 			$ips.gridLoadData(sSource, aoData, fnCallback, "orders", "page", searchParams, function(data) {
-				console.log(typeof data);
-				console.log(data);
+//				console.log(typeof data);
+//				console.log(data);
 				var dataArray = new Array();
 				$.each(data.result, function(i, item) {
 					dataArray[item.id+""] = item;
@@ -377,10 +416,10 @@ $(function () {
     //创建子单按钮
     $('#btnAaddChildOrder').on('click', function () {
         var allowStep = [];
-        for (var i = 0, maxLen = StepConfig.length; i < maxLen; i++) {
-            if (forbiddenStep[StepConfig[i]])continue;
-            allowStep.push(StepConfig[i]);
-        }
+//        for (var i = 0, maxLen = StepConfig.length; i < maxLen; i++) {
+//            if (forbiddenStep[StepConfig[i]])continue;
+//            allowStep.push(StepConfig[i]);
+//        }
         var stepInfo = []
         var result = $ips.load('order', 'createSuborder', {'parentOrderid': CheckParentId, 'step': allowStep[0]});
         if (result) {

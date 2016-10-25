@@ -6,8 +6,14 @@ $("#s_btn1").click(function() {
 	$('#tblMain').grid("fnPageChange", "first");
 });
 
-function genSearchParams()
-{
+//搜索条件 回车 触发
+$('#frmSearch input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
+
+function genSearchParams(){
 	searchParams = $("#frmSearch").serializeArray();
 	return searchParams;
 }
@@ -115,8 +121,12 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					</button>\
 	                <ul class="dropdown-menu">\
 	                   <li>\
-	                   		<a href="javascript:void(0);" onclick="tckNumDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
+	                   		<a href="#tms/basic/tck_number_detail.html?id='+ data +'"  data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">运单详情</a>\
 	                   </li>\
+                   		<li class="divider"></li>\
+                   		<li>\
+	                   		<a href="javascript:void(0);" onclick="tckNumDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
+                   		</li>\
 	                </ul>\
 	            </div>';
 				}
@@ -138,7 +148,8 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
             		}
             	}
             },
-            {sTitle: "承运商", sName: "subcontractor"},
+            /*{sTitle: "承运商id", sName: "subcontractor" },*/
+            {sTitle: "承运商", sName: "wlcompany"},
             {sTitle: "出发地", sName: "fhaddress"},
             {sTitle: "到达地", sName: "shaddress"},
             {sTitle: "货品总数量", sName: "amount"},
@@ -150,8 +161,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			 searchParams = genSearchParams();
 			$ips.gridLoadData(sSource, aoData, fnCallback, "tckNum", "page", searchParams, function(data) {
-				console.log(typeof data);
-				console.log(data);
+
 				var dataArray = new Array();
 				$.each(data.result, function(i, item) {
 					dataArray[item.id+""] = item;

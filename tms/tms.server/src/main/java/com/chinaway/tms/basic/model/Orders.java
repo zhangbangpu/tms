@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.chinaway.tms.basic.vo.GoodsVo;
 
 /**
@@ -17,13 +18,28 @@ public class Orders implements Serializable {
 	
 	private static final long serialVersionUID = -7206999889938664252L;
 	
-	private Integer id;//   	private String code;//   订单编号	private String fromcode;//   来源编号	private String orderfrom;//   订单来源：sap，wms	private java.util.Date createtime;//   创建时间	private String deptname;//   所属机构	private String subcontractor;//   转包承运商	private Double amount;//   货品数量	private String unit;//   货品单位	private Double weight;//   weight	private Double volume;//   货品总体积(m³)	private String fhaddress;//   发货地址	private String shaddress;//   收货地址	private String fhsitename;//   发货站点	private String shsitename;//   收货站点	private java.util.Date requstarttime;//   要求发货时间	private java.util.Date requendtime;//   要求收货时间	private String state;//   当前执行阶段	private Integer exceptcount;//   异常事件数
+	private Integer id;//   	private String code;//   订单编号	private String fromcode;//   来源编号	private String orderfrom;//   订单来源：sap，wms
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date createtime;//   创建时间	private String deptname;//   所属机构	private String subcontractor;//   转包承运商	private Double amount;//   货品数量	private String unit;//   货品单位	private Double weight;//   weight	private Double volume;//   货品总体积(m³)	private String fhaddress;//   发货地址	private String shaddress;//   收货地址	private String fhsitename;//   发货站点	private String shsitename;//   收货站点
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date requstarttime;//   要求发货时间
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")	private java.util.Date requendtime;//   要求收货时间	private String state;//   当前执行阶段	private Integer exceptcount;//   异常事件数
 	private String city;//   城市
 	private String status;//   状态 0自动  1手动
 	private String type;//   订单类型
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private java.util.Date gstarttime;//   发车时间
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private java.util.Date garrivetime;//   到达时间
 	
+	//商品（查看详情使用）
+	private List<GoodsVo> goods = new ArrayList<>();
+	
+	public List<GoodsVo> getGoods() {
+		return goods;
+	}
+	public void setGoods(List<GoodsVo> goods) {
+		this.goods = goods;
+	}
+
 	//可能对应多个
 //	private String cpmdCode;//    货品编号
 //	private String cpmdName;//    货品名称

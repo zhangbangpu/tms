@@ -22,10 +22,14 @@
 		<result column="c_weight" property="c_weight"/>
 		<result column="c_volume" property="c_volume"/>
 		<result column="updatetime" property="updatetime"/>
+		<result column="wlcompany" property="wlcompany"/>
+		<result column="gstarttime" property="gstarttime"/>
+		<result column="garrivetime" property="garrivetime"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
-		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume
+		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume,
+		 wlcompany,updatetime,gstarttime,garrivetime
 	</sql>
    
 	<!-- 动态查询条件 -->
@@ -179,9 +183,20 @@
 	<!-- 条件查询所有(分页拦截的也是这个语句) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />
-		from waybill
-		<include refid="mf_Where_Clause"/>
+			w.id,w.code,w.fromcode,w.orderfrom,w.createtime,w.deptname,w.subcontractor,w.amount,w.unit,w.weight,w.volume,w.requstarttime,w.requendtime,w.state,w.exceptcount,w.c_weight,w.c_volume,
+		 	(select name from site where code = w.fhaddress) fhaddress,
+			(select name from site where code = w.shaddress) shaddress,
+		 	u.name wlcompany,w.updatetime,w.gstarttime,w.garrivetime
+		from waybill w
+		left join sys_user u on u.id = w.subcontractor
+		where 1=1 
+		<if test="code != null and code != '' ">
+		    and w.code like CONCAT('%',#{code},'%')
+		</if>
+		<if test="subcontractor != null and subcontractor != '' ">
+		    and u.name like CONCAT('%',#{subcontractor},'%')
+		</if>
+		
 		order by createtime desc
 	</select>
 	
@@ -215,8 +230,8 @@
    
 	<!-- 插入记录 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinaway.tms.basic.model.Waybill" >
-	    insert into waybill(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume,updatetime)
-        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{c_weight},#{c_volume},#{updatetime})
+	    insert into waybill(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,c_weight,c_volume,updatetime,wlcompany)
+        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{c_weight},#{c_volume},#{updatetime},#{wlcompany})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
@@ -287,7 +302,20 @@
 	<if test="updatetime != null  ">
 		updatetime=#{updatetime},
 	</if>
-	</trim> where id=#{id}
+	<if test="gstarttime != null  ">
+		gstarttime=#{gstarttime},
+	</if>
+	<if test="garrivetime != null  ">
+		garrivetime=#{garrivetime},
+	</if>
+	</trim> 
+		where 1=1 
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="code != null and code != '' ">
+		    and code = #{code}
+		</if>
 	</update>
 
 	<!-- 删除记录 -->

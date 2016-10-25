@@ -1,5 +1,6 @@
 package com.chinaway.tms.quartz;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,15 +71,24 @@ public class OrdersJob {
 		String updatetimeGe = "";
 		String updatetimeLt = "";
 		Date updatetime = ordersService.selectMaxUpdateTime();
-		if(updatetime == null){
-			updatetimeLt = new Date().toLocaleString();
-		}else{
-			updatetimeGe = updatetime.toLocaleString();
-			//设置20min后
+		
+		if(updatetime != null){
+			//有记录时间 -- 有记录时间+2
 			Calendar c = Calendar.getInstance();
 			c.setTime(updatetime);
-			c.add(Calendar.MINUTE, 20);
+			c.add(Calendar.SECOND, 1);
+			updatetimeGe = c.getTime().toLocaleString();
+			
+			c.add(Calendar.DAY_OF_MONTH, 2);
 			updatetimeLt = c.getTime().toLocaleString();
+		}else{
+			//设置2天前
+			Calendar c = Calendar.getInstance();
+			Date now = new Date();
+			c.setTime(now);
+			c.add(Calendar.DAY_OF_MONTH, -2);
+			updatetimeGe = c.getTime().toLocaleString();
+			updatetimeLt = now.toLocaleString();
 		}
 		
 		Map<String,Object> paramMap = new HashMap<>();
@@ -89,12 +99,18 @@ public class OrdersJob {
 		paramMap.put("useHasNext", true);
 		
 		List<Orders> list = pushService.selectAllOrders(paramMap);
-		
+		//更新状态后，其中Orders数据其实不完整
+		Map<String, Object> map =new HashMap<>();
+		Orders deOrders = null;
 		for (Orders orders : list) {
 			if ("3".equals(orders.getState())) {
-				orderWS(orders);
+				map.put("code", orders.getCode());
+				List<Orders> deList = ordersService.selectAll4Page(map);
+				if (deList.size() >0) {
+					deOrders = deList.get(0);
+					orderWS(deOrders);
+				}
 			}
-			ordersService.updateSelective(orders);
 		}
 		
 	}
@@ -146,15 +162,18 @@ public class OrdersJob {
 		String updatetimeGe = "";
 		String updatetimeLt = "";
 		Date updatetime = waybillService.selectMaxUpdateTime();
-		if(updatetime == null){
-			updatetimeLt = new Date().toLocaleString();
-		}else{
-			updatetimeGe = updatetime.toLocaleString();
-			//设置20min后
+		
+		if(updatetime != null){
 			Calendar c = Calendar.getInstance();
 			c.setTime(updatetime);
-			c.add(Calendar.MINUTE, 20);
-			updatetimeLt = c.getTime().toLocaleString();
+			c.add(Calendar.SECOND, 1);
+			updatetimeGe = c.getTime().toLocaleString();
+			
+			//不设置上限
+//			c.add(Calendar.DAY_OF_MONTH, 2);
+//			updatetimeLt = c.getTime().toLocaleString();
+		}else{
+			updatetimeLt = new Date().toLocaleString();
 		}
 		
 		Map<String,Object> paramMap = new HashMap<>();
@@ -165,33 +184,43 @@ public class OrdersJob {
 		paramMap.put("useHasNext", true);
 		
 		List<Waybill> list = pushService.selectAllDeparture(paramMap);
+		//更新状态后，其中Orders数据其实不完整
+		Map<String, Object> map =new HashMap<>();
+		Waybill deWaybill = null;
 		for (Waybill waybill : list) {
 			if ("2".equals(waybill.getState())) {
-				//推送给wms
-				dep2wmsWS(waybill);
+				map.put("code", waybill.getCode());
+				List<Waybill> deList = waybillService.selectAll4Page(map);
+				if (deList.size() >0) {
+					deWaybill = deList.get(0);
+					//开始运输 时运单 推送给wms （修改状态）
+					updateDep2wms(deWaybill);
+				}
 			}else if ("3".equals(waybill.getState())) {
-				//签收的处理（仓配平台）：费用、时效信息
-				billWS(waybill);
-				efficiencyWS(waybill);
+				map.put("code", waybill.getCode());
+				List<Waybill> deList = waybillService.selectAll4Page(map);
+				if (deList.size() >0) {
+					deWaybill = deList.get(0);
+					//签收的处理（仓配平台）：费用、时效信息
+					billWS(deWaybill);
+					efficiencyWS(deWaybill);
+				}
 			}
+			
 		}
 		
 	}
 
 	/**
-	 * 将运单信息推送给wms 接口
-	 * @throws Exception
+	 * 开始运输 时运单 推送给wms （修改状态）
+	 * @param waybill
 	 */
-	private void dep2wmsWS(Waybill waybill) throws Exception {
-		String param = "{\"carrierCode\":\"anxun\",\"carrierName\":\"安迅\",\"stowageNumber\":\"tms201609131153011865\",\"wh\":\"51\","
-				+ "\"details\":[{\"obdNumber\":\"OBSO16082700131\"}]}";
-		Map<String, Object> orderMap =new HashMap<>();
-		orderMap.put("carrierCode", "");
-		
+	private void updateDep2wms(Waybill waybill) throws Exception {
 		Map<String, Object> map =new HashMap<>();
-		map.put("orderInfo", JsonUtil.obj2JsonStr(orderMap));
-		LOGGER.info("调用wms平台接口, 参数：" + orderMap);
-		Map<String, Object> resultMap = HttpClientUtils.getResult(map, wmsPath, "", "post");
+		map.put("stowageNumber", waybill.getCode());
+		map.put("status", "2");
+		LOGGER.info("调用wms平台接口, 参数：" + map.toString());
+		Map<String, Object> resultMap = HttpClientUtils.getResult(map, wmsPath, "", "get");
 		LOGGER.info("调用仓配平台接口, 返回结果：" + resultMap);
 	}
 

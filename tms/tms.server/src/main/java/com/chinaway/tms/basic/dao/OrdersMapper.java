@@ -34,4 +34,11 @@ public interface OrdersMapper extends BaseMapper<Orders, Integer> {
 	
 	Date selectMaxUpdateTime();
 	
+	/**
+	 * 根据运单id 查询订单
+	 * @param ids
+	 * @return
+	 */
+	List<Orders> selectByWayId(int wayId);
+	
 }

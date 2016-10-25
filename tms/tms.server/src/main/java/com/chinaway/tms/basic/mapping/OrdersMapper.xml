@@ -92,16 +92,18 @@
 			<if test="pid != null and pid != '' ">
 			    and pid = #{pid}
 			</if>
+			<if test="deptids != null">
+			    and deptname in 
+				<foreach item="idItem" index="index" collection="deptids" open="(" separator="," close=")">
+					#{idItem}
+				</foreach>
+			</if>
 		</trim>
 	</sql>
 	
 	<!-- 动态查询条件 -->
 	<sql id="mf_Where_Clause">
-		where 1=1 and deptname in 
-		<foreach item="idItem" index="index" collection="deptids" open="(" separator="," close=")">
-			#{idItem}
-		</foreach>
-		
+		where 1=1 
 		<trim suffixOverrides="," >
 			<if test="id != null and id != '' ">
 			    and id = #{id}
@@ -110,7 +112,7 @@
 			    and code like CONCAT('%',#{code},'%')
 			</if>
 			<if test="fromcode != null and fromcode != '' ">
-			    and fromcode = #{fromcode}
+			    and fromcode like CONCAT('%',#{fromcode},'%')
 			</if>
 			<if test="orderfrom != null and orderfrom != '' ">
 			    and orderfrom = #{orderfrom}
@@ -160,8 +162,29 @@
 			<if test="pid != null and pid != '' ">
 			    and pid = #{pid}
 			</if>
+			<if test="deptids != null">
+			    and deptname in 
+				<foreach item="idItem" index="index" collection="deptids" open="(" separator="," close=")">
+					#{idItem}
+				</foreach>
+			</if>
 		</trim>
 	</sql>
+ 
+	<!-- 根据运单id 查询订单  -->
+	<select id="selectByWayId"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+			o.id, o.code, o.fromcode, o.orderfrom, o.createtime, o.amount, o.unit, o.weight, o.volume,
+		 	(select name from sys_dept where deptid = o.deptname) deptname,
+			(select name from sys_user where id = o.subcontractor) subcontractor,
+			(select name from site where code = o.fhaddress) fhaddress,
+			(select name from site where code = o.shaddress) shaddress,
+		 	o.requstarttime, o.requendtime, o.state, o.exceptcount, o.status, o.updatetime, o.pid
+		from orders o
+		left join orders_waybill ow on ow.ordersId = o.id
+		left join waybill w on w.id = ow.waybillId
+		where w.id = #{wayId}
+	</select>
  
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -191,13 +214,18 @@
 		select max(updatetime) updatetime from orders
 	</select>
 
-	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<!-- 条件查询所有(分页拦截的也是这个语句)(有联表单独修改了) -->
 	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />
+			id,code,fromcode,orderfrom,createtime,amount,unit,weight,volume,
+			(select name from sys_dept where deptid = deptname) deptname,
+			(select name from sys_user where id = subcontractor) subcontractor,
+			(select name from site where code = fhaddress) fhaddress,
+			(select name from site where code = shaddress) shaddress,
+			requstarttime,requendtime,state,exceptcount,status,updatetime,pid
 		from orders
 		<include refid="mf_Where_Clause"/>
-		order by status desc
+		order by state, requstarttime, status desc
 	</select>
 	
 	<!-- 条件查询所有-->
@@ -206,7 +234,7 @@
 		<include refid="Base_Column_List" />
 		from orders
 		<include refid="Example_Where_Clause"/>
-		order by status desc
+		order by state, requstarttime, shaddress
 	</select>
    
 	<!-- 插入记录,返回的注解id，需要通过参数对象获取，如order。getId() -->

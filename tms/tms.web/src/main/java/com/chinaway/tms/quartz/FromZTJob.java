@@ -1,5 +1,6 @@
 package com.chinaway.tms.quartz;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class FromZTJob {
 	CpmdService cpmdService;
 	
 	String urlRoot = "http://10.13.30.202/centerDocker/api/mdbWeb";
+//	String urlRoot = "http://10.13.30.214:8080/mdbWeb/api/mdbWeb";//本地测试
 	
 	public void quartMethod(){
 		//报错也继续执行
@@ -45,14 +47,14 @@ public class FromZTJob {
 			try {
 				selectAllSmd();
 				
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception e2) {
+				e2.printStackTrace();
 			}finally{
 				try {
 					selectAllCpmd();
 					
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception e3) {
+					e3.printStackTrace();
 				}
 			}
 		}
@@ -63,13 +65,18 @@ public class FromZTJob {
 	 * @throws Exception
 	 */
 	public void selectAllWarehouse() throws Exception{
-		
 		//get请求的参数
 		Map<String, Object> map = new HashMap<>();
 		
-		//http://10.13.30.202/centerDocker/api/mdbWeb/warehouse/findAll
-		List<Map<String, Object>> list = Http2ZTUtil.get(map, urlRoot, "/warehouse/findAll");
+		String maxUpdatetime = warehouseService.selectMaxUpdateTime();
+		if(null == maxUpdatetime || ("").equals(maxUpdatetime)){
+			map.put("updatetimeLt", "");//开始时间
+		}else{
+			map.put("updatetimeLt", maxUpdatetime);//开始时间
+		}
+		map.put("updatetimeGt", new Date().toLocaleString());//结束时间
 		
+		List<Map<String, Object>> list = Http2ZTUtil.get(map, urlRoot, "/warehouse/findWarehouseByUpdatetime");
 		Warehouse warehouse = null;
 		for (Map<String, Object> map2 : list) {
 			warehouse = new Warehouse();
@@ -84,13 +91,17 @@ public class FromZTJob {
 	 * @throws Exception
 	 */
 	public void selectAllSmd() throws Exception{
-		
 		//get请求的参数
 		Map<String, Object> map = new HashMap<>();
+		String maxUpdatetime = smdService.selectMaxUpdateTime();
+		if(null == maxUpdatetime || ("").equals(maxUpdatetime)){
+			map.put("updatetimeLt", "");//开始时间
+		}else{
+			map.put("updatetimeLt", maxUpdatetime);//开始时间
+		}
+		map.put("updatetimeGt", new Date().toLocaleString());//结束时间
 		
-		//http:// 10.13.30.202/centerDocker/api/mdbWeb/smd/findAll
-		List<Map<String, Object>> list = Http2ZTUtil.get(map, urlRoot, "/smd/findAll");
-		
+		List<Map<String, Object>> list = Http2ZTUtil.get(map, urlRoot, "/smd/findSmdByUpdatetime");
 		Smd smd = null;
 		for (Map<String, Object> map2 : list) {
 			smd = new Smd();
@@ -105,13 +116,17 @@ public class FromZTJob {
 	 * @throws Exception
 	 */
 	public void selectAllCpmd() throws Exception{
-		
 		//get请求的参数
 		Map<String, Object> map = new HashMap<>();
+		String maxUpdatetime = cpmdService.selectMaxUpdateTime();
+		if(null == maxUpdatetime || ("").equals(maxUpdatetime)){
+			map.put("updatetimeLt", "");//开始时间
+		}else{
+			map.put("updatetimeLt", maxUpdatetime);//开始时间
+		}
+		map.put("updatetimeGt", new Date().toLocaleString());//结束时间
 		
-		//http:// 10.13.30.202/centerDocker/api/mdbWeb/cpmd/findAll
-		List<Map<String, Object>> list = Http2ZTUtil.get(map, urlRoot, "/cpmd/findAll");
-		
+		List<Map<String, Object>> list = Http2ZTUtil.get(map, urlRoot, "/cpmd/findCpmdByUpdatetime");
 		Cpmd cpmd = null;
 		for (Map<String, Object> map2 : list) {
 			cpmd = new Cpmd();

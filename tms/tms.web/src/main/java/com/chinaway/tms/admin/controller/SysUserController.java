@@ -2,8 +2,11 @@ package com.chinaway.tms.admin.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -149,6 +152,53 @@ public class SysUserController {
 
 		Result result = new Result(code, sysUserList, msg);
 
+		return result;
+	}
+	
+	/**
+	 * 根据条件查询所有用户信息<br>
+	 * 返回用户的json串
+	 * 
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/queryWL2combo")
+	@ResponseBody
+	public Result queryWL2combo(HttpServletRequest request) {
+
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		int code = 1;
+		String msg = "查询所有用户操作失败!";
+		List<SysUser> sysUserList = null;
+		try {
+			SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+			String deptid = sysUser.getDeptid();
+			List<SysDept> deptList = sysDeptService.selectChildsByDeptid(deptid);
+			
+			Set<String> deptidSet = new HashSet<>();
+			deptidSet.add(deptid);//加上本身
+			for (SysDept sysDept : deptList) {
+				//子节点
+				deptidSet.add(sysDept.getDeptid());
+			}
+			//不同角色看到的订单不同，通过deptname来筛选
+			argsMap.put("deptids",deptidSet);
+			argsMap.put("type", "2");
+			
+			sysUserList = sysUserService.queAllUserByCtn(argsMap);
+			
+			if (sysUserList.size() > 0) {
+				code = 0;
+				msg = "查询所有用户操作成功!";
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "查询所有用户操作出现异常!";
+		}
+		
+		Result result = new Result(code, sysUserList, msg);
+		
 		return result;
 	}
 

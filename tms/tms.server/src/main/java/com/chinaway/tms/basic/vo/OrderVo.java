@@ -38,7 +38,7 @@ public class OrderVo {
 	private String extfield1;
 	private String extfield2;
 	
-	private List<GoodsVo> goods;
+	private List<GoodsVo> goods = new ArrayList<>();
 
 	public String getOrderno() {
 		return orderno;

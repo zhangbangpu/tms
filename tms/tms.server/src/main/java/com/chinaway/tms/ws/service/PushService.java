@@ -52,4 +52,11 @@ public interface PushService {
 	 */
 	public List<Waybill> selectAllDeparture(Map<String, Object> paramMap) throws Exception ;
 	
+	/**
+	 * 查询订单详情
+	 * @param param
+	 * @return
+	 */
+	public Map<String, Object> selectOrderDetail(Map<String, Object> paramMap) throws Exception ;
+	
 }

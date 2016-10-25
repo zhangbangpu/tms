@@ -1,31 +1,144 @@
 package com.test;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.chinaway.tms.basic.model.Cpmd;
 import com.chinaway.tms.basic.model.Warehouse;
+import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.basic.service.WarehouseService;
 import com.chinaway.tms.util.Http2ZTUtil;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.http.HttpClientUtils;
 import com.chinaway.tms.utils.json.JsonUtil;
+import com.chinaway.tms.utils.lang.DateUtil;
 
 public class MyTest {
 	
 	@Autowired
 	WarehouseService warehouseService;
 
+	@Test
+    public void departure_select() throws Exception {
+    	//post请求的参数
+    	Map<String, Object> map = new HashMap<>();
+//    	String param ="{\"orgcode\": \"200UHN\", \"pageNo\":\"1\",\"pageSize\":\"20\", "
+////    			+ "\"updatetimeGe\" : \"2016-07-30 00:19:49\","
+//    			+ "\"updateimeLt\": \"2016-10-30 01:19:49\","
+////    			+ " \"departurenoIn\": [\"wxg2016051901\"],"
+//    			+ "\"fields\": [\"departureno\",\"begintime\",\"updatetime\",\"carnum\",\"carriagetype\",\"drivername\",\"driverphone\","
+//    			+ "\"starttime\",\"endtime\",\"garrivetime\",\"gstarttime\",\"type\",\"status\"]"
+//    			+ "}";
+    	Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("updatetimeGe", "2016-10-18 01:19:49");
+//		paramMap.put("updatetimeLt", "2016-10-20 01:19:49");
+		paramMap.put("pageNo", 1);
+		paramMap.put("pageSize", 100);
+		paramMap.put("useHasNext", true);
+    	paramMap.put("orgcode", "200UHN");
+		paramMap.put("fields", new String[]{"departureno","begintime","updatetime","carnum","carriagetype","drivername","driverphone",
+				"starttime","endtime","garrivetime","gstarttime","type","status"});
+		String param = 	JsonUtil.obj2JsonStr(paramMap);
+		
+    	String  urlRoot ="http://g7s.api.huoyunren.com/interface/index.php";
+//    	String  urlRoot ="http://test.api.g7s.chinawayltd.com/interface/index.php";
+//    	String app_secret = "fce6dc5652df05b2a7ae287337702eb6";
+//    	String app_key = "wine1919";
+    	 String app_secret = "33054ddd19b5ceef400bbfff2b8c9034";
+    	 String app_key = "yijiu_admin";
+    	String method = "order.departure.getUpdateDepartureList";
+    	String timestamp = new Date().toLocaleString();
+    	String sign = md5(app_secret, app_key, param, method, timestamp);
+    	
+    	map.put("data", param);
+    	map.put("method", method);
+    	map.put("app_key", app_key);
+//        map.put("app_secret", app_secret);//只参与计算
+    	map.put("timestamp", timestamp);
+    	map.put("sign", sign);
+    	
+    	Map<String, Object> resultMap = HttpClientUtils.getResult(map, urlRoot, "", "post");
+    	System.out.println(resultMap);
+    	
+    	Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
+    	Object obj = dataMap.get("hasNext");
+//    	boolean hasNext = Boolean.parseBoolean(obj.toString());
+    	boolean hasNext = (boolean) dataMap.get("hasNext");
+    	System.out.println(hasNext);
+//    	Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
+//    	List<Waybill> list = getDepList(resultMap);
+//    	System.out.println(list);
+    }
+	
+    private String md5(String app_secret, String app_key, String data, String method, String timestamp){
+    	String md5 = DigestUtils.md5Hex(app_secret+"app_key"+app_key+"data"+data+"method"+method+"timestamp"+timestamp+app_secret);
+    	if(md5.length() !=32){
+    		md5 = DigestUtils.md5Hex("123");
+    	}
+//    	String resultStr = md5.toUpperCase();
+    	
+    	return md5.toUpperCase();
+    }
+    
+    private List<Waybill> getDepList(Map<String, Object> resultMap) {
+		List<Waybill> list = new ArrayList<>();
+		Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
+		if(dataMap != null){
+			List<Map<String, Object>> resultList = (List<Map<String, Object>>) dataMap.get("result");
+			Waybill waybill = null;
+			for (Map<String, Object> map : resultList) {
+				waybill = new Waybill();
+				waybill.setCode(map.get("departureno").toString());
+				waybill.setUpdatetime(DateUtil.strToDate(map.get("updatetime").toString()));
+//				waybill.setRequstarttime(DateUtil.strToDate(map.get("requstarttime").toString()));
+//				waybill.setRequendtime(DateUtil.strToDate(map.get("requendtime").toString()));
+				if(map.get("gstarttime") != null){
+					waybill.setGstarttime(DateUtil.strToDate(map.get("gstarttime").toString()));
+				}
+				if(map.get("garrivetime") != null){
+					waybill.setGarrivetime(DateUtil.strToDate(map.get("garrivetime").toString()));
+				}
+				waybill.setCarnum(map.get("carnum")+"");
+				waybill.setCarriagetype(map.get("carriagetype")+"");
+				waybill.setDrivername(map.get("drivername")+"");
+				waybill.setDriverphone(map.get("driverphone")+"");
+				
+				//状态被重新定义了，需要翻译
+				String state = "";
+				if((boolean) map.get("deleted")){
+					state = "-1";
+				}else{
+					//g7当前执行阶段  status   0:未开始 1:已开始 3:已完成
+					String currentstatus = map.get("status").toString();
+					//运单状态：-1删除 0初始 1下发 2在途运输 3签收
+					switch (currentstatus) {
+						case "0":
+							state = "1";
+							break;
+						case "1":
+							state = "2";
+							break;
+					}
+				}
+				waybill.setState(state);
+				
+				list.add(waybill);
+			}
+			
+		}
+		return list;
+	}
+	
 	@Test
 	public void test5() throws Exception {
 		Warehouse warehouse = new Warehouse();

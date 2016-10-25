@@ -245,7 +245,8 @@
 
 <div class="row">
 	<div class="col col-sm-6 col-xs-12">
-		<a href="#tms/order/order_list.html" class="btn btn-default" > &lt; <span langlanguage="back">返回</span></a>
+		<!-- <a href="#tms/order/order_list.html" class="btn btn-default" > &lt; <span langlanguage="back">返回</span></a> -->
+		<button type="button" class="btn btn-default" onclick="window.history.go(-1)">返回</button>
 	</div>
 </div>
 <div class="row"><br /></div>
@@ -272,15 +273,15 @@
                 <table class="table1 table-striped">
                     <tr>
                         <th width="10%">订单号</th>
-                        <td width="23%" id="orderno"></td>
+                        <td width="23%" id="code"></td>
                         <th width="10%">总件数</th>
-                        <td width="23%" id="number"></td>
+                        <td width="23%" id="amount"></td>
                         <th width="10%">要求发货时间</th>
-                        <td width="23%" id="sdatetime"></td>
+                        <td width="23%" id="requstarttime"></td>
                     </tr>
                     <tr>
                         <th>ERP/WMS单号</th>
-                        <td id="wmsno"></td>
+                        <td id="fromcode"></td>
                         <th>货品单位</th>
                         <td id="entity"></td>
                         <th>收货单位</th>
@@ -292,19 +293,19 @@
                         <th>货品总重(Kg)</th>
                         <td id="weight"></td>
                         <th>收货地址</th>
-                        <td id="rlocation"></td>
+                        <td id="shaddress"></td>
                     </tr>
                     <tr>
                         <th>所属机构</th>
-                        <td id="orgcodeName"></td>
+                        <td id="deptname"></td>
                         <th>货品总体积(m³)</th>
                         <td id="volume"></td>
                         <th>收货站点</th>
-                        <td id="rsitename"></td>
+                        <td id="shsitename"></td>
                     </tr>
                     <tr>
                         <th>来源机构</th>
-                        <td id="fromorgcodeName"></td>
+                        <td id="orderfrom"></td>
                         <th>发货单位</th>
                         <td id="scompany"></td>
                         <th>收货人</th>
@@ -312,9 +313,9 @@
                     </tr>
                     <tr>
                         <th>转包承运商</th>
-                        <td id="toorgcodeName"></td>
+                        <td id="subcontractor"></td>
                         <th>发货地址</th>
-                        <td id="slocation"></td>
+                        <td id="fhaddress"></td>
                         <th>收货人电话</th>
                         <td id="rphone"></td>
                     </tr>
@@ -322,9 +323,9 @@
                         <th>转包时间</th>
                         <td id="assigntime"></td>
                         <th>发货站点</th>
-                        <td id="ssitename"></td>
+                        <td id="fhsitename"></td>
                         <th>要求收货时间</th>
-                        <td id="rdatetime"></td>
+                        <td id="requendtime"></td>
                     </tr>
                     <tr>
                         <th>实施模式</th>
@@ -332,7 +333,7 @@
                         <th>发货人</th>
                         <td id="sname"></td>
                         <th>异常事件数</th>
-                        <td id="events"></td>
+                        <td id="exceptcount"></td>
                     </tr>
                     <tr>
                         <th>线路名称</th>

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,19 +27,22 @@ import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrderItemService;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.utils.MyBeanUtil;
+import com.chinaway.tms.utils.lang.StringUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
+import com.chinaway.tms.ws.service.PushService;
 
 @Controller
 @RequestMapping(value = "/orders")
-public class OrdersManagerController {
+public class OrdersManagerController extends BaseController {
 	
 	@Autowired
 	private OrdersService ordersService;
 	@Autowired
 	private OrderItemService orderItemService;
+	
 	@Autowired
-	private SysDeptService sysDeptService;
+	private PushService pushService;
 	
 	@Autowired
 	private CpmdService cpmdService;
@@ -169,19 +173,11 @@ public class OrdersManagerController {
 		PageBean<Orders> pageBean = null;
 		try {
 			Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
-			
-			SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-			String deptid = sysUser.getDeptid();
-			List<SysDept> deptList = sysDeptService.selectChildsByDeptid(deptid);
-			
-			Set<String> deptidSet = new HashSet<>();
-			deptidSet.add(deptid);//加上本身
-			for (SysDept sysDept : deptList) {
-				//子节点
-				deptidSet.add(sysDept.getDeptid());
+			if(StringUtils.isEmpty(argsMap.get("code").toString()) && StringUtils.isEmpty(argsMap.get("fromcode").toString())){
+				Set<String> deptidSet = super.getUserDepts(request);
+				//不同角色看到的订单不同，通过deptname来筛选
+				argsMap.put("deptids",deptidSet);
 			}
-			//不同角色看到的订单不同，通过deptname来筛选
-			argsMap.put("deptids",deptidSet);
 			
 			pageBean = ordersService.select2PageBean(argsMap);
 			code = 0;
@@ -192,7 +188,7 @@ public class OrdersManagerController {
 		}
 		return new Result(code, pageBean, msg);
 	}
-	
+
 	/**
 	 * 根据条件查询单个订单信息<br>
 	 * 返回用户的json串
@@ -269,6 +265,7 @@ public class OrdersManagerController {
 	
 	/**
 	 * 根据条件查询订单详情<br>
+	 * 此处不通过数据库查，而是通过查接口
 	 * 返回用户的json串
 	 * 
 	 * @param ordersInfo
@@ -284,14 +281,21 @@ public class OrdersManagerController {
 		String msg = "根据id查询订单详情!";
 
 		Orders orders = null;
+		Map<String, Object> returnMap = new HashMap<>();
 		try {
 			orders = ordersService.selectDetailById(id == "" ? 0 : Integer.parseInt(id));
 			
-//			for (String state : orders.getStateList()) {
-//				if (Integer.parseInt(state) > Integer.parseInt(orders.getState())) {
-//					orders.getStateList().remove(state);
-//				}
-//			}
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("orderno", orders.getCode());
+			Map<String, Object> resultMap = pushService.selectOrderDetail(paramMap);
+			Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
+			List<Map<String, Object>> departuresList = new ArrayList<>();
+			if(dataMap != null){
+				departuresList = (List<Map<String, Object>>) dataMap.get("departures");
+			}
+			
+			returnMap.put("baseInfo", orders);
+			returnMap.put("departures", departuresList);
 			
 			if (null != orders) {
 				code = 0;
@@ -303,7 +307,7 @@ public class OrdersManagerController {
 			msg = "根据id查询出现异常!";
 		}
 		
-		Result result = new Result(code, orders, msg);
+		Result result = new Result(code, returnMap, msg);
 		
 		return result;
 	}
@@ -459,7 +463,7 @@ public class OrdersManagerController {
 
 		int ret = 0;
 		try {
-			ret = ordersService.update(orders);
+			ret = ordersService.updateSelective(orders);
 
 			if (ret > 0) {
 				code = 0;
@@ -471,9 +475,136 @@ public class OrdersManagerController {
 
 		resultMap.put("code", code);
 		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		Result result = new Result(code, resultMap, msg);
 
-		return new Result(0, code);
+		return result;
 	}
 	
+	/**
+	 * 修改为了智能调度的暂停与开启
+	 * 返回用户的json串
+	 * 
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/update2AutoDep")
+	@ResponseBody
+	public Result update2AutoDep(HttpServletRequest request, Orders orders) {
+
+		Map<String, Object> resultMap = new HashMap<>();
+		int code = 1;
+		String msg = "修改订单失败!";
+		
+		int ret = 0;
+		try {
+			ret = ordersService.updateSelective(orders);
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "修改订单成功!";
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		
+		resultMap.put("code", code);
+		resultMap.put("msg", msg);
+		Result result = new Result(code, resultMap, msg);
+		
+		return result;
+	}
+	
+	/**
+	 * 智能调度
+	 */
+	@RequestMapping(value = "/autoGenerateWaybill")
+	@ResponseBody
+	public Result autoGenerateWaybill(HttpServletRequest request) {
+		
+		int code = 0;
+		String msg = "自动生成运单失败!";
+		Map<String, Object> resultMap = new HashMap<>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("status", "0");
+			map.put("state", "0");
+			//暂时未限制订单的deptname
+			Set<String> deptidSet = super.getUserDepts(request);
+			//不同角色看到的订单不同，通过deptname来筛选
+			map.put("deptids",deptidSet);
+			
+			//查询所有订单根据条件
+			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(map);
+			
+			
+			for (Orders orders : ordersList) {
+				Map<String, Object> argsMap = new HashMap<String, Object>();
+				argsMap.put("id", orders.getId());
+				//生成运单
+				List<String> waybills = ordersService.generateWaybill(orders);
+				if (null != waybills && waybills.size() > 0) {
+//					code = 0;
+					msg = "";
+				}else{
+					msg = "没有匹配的订单生成运单!";
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "出现异常";
+		}
+		
+		resultMap.put("code", code);
+		resultMap.put("message", msg);
+		
+		return new Result(code, resultMap, msg);
+	}
+	
+	/**
+	 * 检查订单
+	 */
+	@RequestMapping(value = "/checkOrders")
+	@ResponseBody
+	public Result checkOrders(HttpServletRequest request) {
+		
+		int code = 1;
+		String msg = "自动生成运单失败!";
+		Map<String, Object> resultMap = new HashMap<>();
+		try {
+//			Map<String, Object> map = new HashMap<String, Object>();
+			String ids = request.getParameter("ids");
+			String[] orderIds = ids.split(",");
+			List<String> orderCodeList = new ArrayList<>();
+			Set<String> typeSet = new HashSet<>();
+			for (int i = 0; i < orderIds.length; i++) {
+				int id = Integer.parseInt(orderIds[i]);
+				Orders orders = ordersService.selectById(id);
+				if (!"0".equals(orders.getState())) {
+					orderCodeList.add(orders.getCode());
+				}
+				typeSet.add(orders.getOrderfrom());
+			}
+			
+			if (orderCodeList.size() > 0) {
+				msg = orderCodeList.toString() + "不是初始化订单";
+			}else{
+				if (typeSet.size() > 1) {
+					msg = "选择的订单中含有sap、wms2种，请只选择一种";
+				}else{
+					code = 0;
+					msg = "";
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "出现异常";
+		}
+		
+		resultMap.put("code", 0);
+		resultMap.put("msg", msg);
+		
+		return new Result(code, resultMap, msg);//情况特殊 code返回都是0
+	}
 }

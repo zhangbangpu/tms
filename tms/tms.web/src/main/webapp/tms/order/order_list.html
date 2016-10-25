@@ -29,6 +29,12 @@
                                             <input type="text" class="input-sm" style="width:100%"  name="code" placeholder="订单号" value=""  id="code">
                                         </label>
                                     </section>
+                                    <section class="pull-left no-padding pull-width160" >
+                                        <label class="">订单来源编号</label>
+                                        <label class="input">
+                                            <input type="text" class="input-sm" style="width:100%"  name="fromcode" placeholder="订单来源编号" value=""  id="fromcode">
+                                        </label>
+                                    </section>
                                     <div class="global-search-btn" >
                                         <a class="btn btn-primary  btn-sm" type="button" id="s_btn1" langlanguage="query">
 												<i class="fa fa-search"></i> 查询
@@ -48,8 +54,14 @@
 		                        <a id="btn_depature_init" href="javascript:void(0);" class="btn btn-default btn-sm" type="button">生成车次</a>
                           	</div>
                           	<div class="btn-group">
-		                        <a id="deletebtn" href="javascript:void(0);" class="btn btn-default btn-sm btn-status" type="button">删除订单</a>
+		                        <a id="deletebtn" href="javascript:void(0);" class="btn btn-default btn-sm btn-must-one" type="button">删除订单</a>
                           	</div>
+                          	<div class="btn-group">
+		                        <a id="btn_auto_start" href="javascript:void(0);" class="btn btn-default btn-sm btn-status" type="button">智能调度</a>
+                          	</div>
+                          	<!-- <div class="btn-group">
+		                        <a id="btn_auto_end" href="javascript:void(0);" class="btn btn-default btn-sm btn-status" type="button">暂停自动调度</a>
+                          	</div> -->
 						</div>
 					</div>
 					<div style="height:100%;overflow:auto;">
@@ -87,16 +99,16 @@
                 <input type="hidden" name="orderid" id="orderid">
                 <div class="modal-body smart-form">             
                     <div class="row">
-                        <label for="wlcompany" class="label col col-3 text-align-right">承运商</label>
+                        <label class="label col col-3 text-align-right">承运商</label>
                         <section class="col col-6">
                             <label class="input">
-                                <input type="text" id="wlcompany" class="form-control" placeholder="输入承运商名称" name="wlcompany" required>
+                                <input type="text" id="r_wlcompany" class="form-control" placeholder="输入承运商名称" name="wlcompany" required>
                             </label>
                         </section>
                     </div>
 
                     <div class="row">
-                        <label for="vehiclemodel" class="label col col-3 text-align-right">车型</label>
+                        <label class="label col col-3 text-align-right">车型</label>
                         <section class="col col-6">
                             <label class="input">
                                 <input type="text" id="vehiclemodel" class="form-control" placeholder="请输入车型" name="vehiclemodel" required>

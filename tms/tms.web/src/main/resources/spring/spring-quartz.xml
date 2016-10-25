@@ -40,13 +40,12 @@
 		<property name="concurrent" value="false" />
 	</bean>
 	<!--定义触发时间-->
-	<bean id="myTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean ">
+	<bean id="ztTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean ">
 		<property name="jobDetail" ref="myDetail2"></property>
 		<!-- cron表达式-->
 		<property name="cronExpression">
-			<!-- <value>0 0 1 * * ?</value> --><!-- 每天凌晨1点执行一次 -->
-			<!-- <value>0 */1 * * * ?</value>  每分钟触发 -->
- 			<value>0/30 * * * * ?</value> <!--每5秒触发 -->
+			<value>0 0 1 * * ?</value><!-- 每天凌晨1点执行一次 -->
+			<!-- <value>0 */1 * * * ?</value> --><!-- 每分钟触发 -->
 		</property>
 	</bean>
 	
@@ -66,7 +65,7 @@
 		<property name="jobDetail" ref="ordersJobDetail"></property>
 		<!-- cron表达式-->
 		<property name="cronExpression">
-			<value>0 */20 * * * ?</value>  <!-- 每分钟触发 -->
+			<value>0 */2 * * * ?</value>  <!-- 每分钟触发 -->
  			<!--<value>0/5 * * * * ?</value> 每5秒触发 -->
 		</property>
 	</bean>
@@ -76,8 +75,8 @@
 	<bean id="myScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <ref bean="myTrigger"></ref>
-                <!-- <ref bean="myTrigger2"></ref> -->
+                <!-- <ref bean="myTrigger"></ref> --><!-- 暂时取消，变为按钮触发 -->
+                <ref bean="ztTrigger"></ref>
                 <ref bean="ordersJobTrigger"></ref>
             </list>
         </property>

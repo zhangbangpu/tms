@@ -31,6 +31,8 @@ import com.chinaway.tms.ws.service.PushService;
 @Service
 public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implements WaybillService {
 	
+	private String orgcode = "200UHN";
+	
 	@Autowired
 	private WaybillMapper waybillMapper;
 	@Autowired
@@ -97,7 +99,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		 for(Orders orders: ordersList){
 			 ordersService.insertWaybillOrders(orders, waybill.getId(), waybill.getWlcompany());
 		 }
-		 //推送订单、运单信息
+		 //推送订单、运单信息给g7
 		 pushOrderAndDep(waybill, "1");//表示手动
 		 
 		 return ret;
@@ -108,13 +110,28 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	public int updateWaybill(Waybill waybill) throws Exception {
 		int retCode = waybillMapper.updateSelective(waybill);
 		
+//		Map<String, Object> orderMap = new HashMap<String, Object>();
+//		orderMap.put("waybillid", waybill.getId());
+		
+		List<Orders> orderList = ordersService.selectByWayId(waybill.getId());
+		
 		//审核通过（推送订单、运单信息）
 		if("1".equals(waybill.getState())){
-//			Waybill wb = waybillService.selectById(waybill.getId());
+			//订单下发
+			for (Orders orders : orderList) {
+				orders.setState("1");
+				ordersService.updateSelective(orders);
+			}
+			
 			pushOrderAndDep(waybill, "0");//表示自动
 			
-		}else if("-1".equals(waybill.getState())){
-			//审核不通过
+		}else if("-1".equals(waybill.getState())){//审核不通过
+			//还原订单
+			for (Orders orders : orderList) {
+				orders.setState("0");
+				ordersService.updateSelective(orders);
+			}
+			//删除中间表
 			Map<String, Object> argsmap = new HashMap<String, Object>();
 			argsmap.put("waybillid", waybill.getId());
 			ordersWaybillService.deleteByCtn(argsmap);
@@ -186,19 +203,26 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		orderVo.setWmsno(orders.getFromcode());
 		orderVo.setSlocation(orders.getShaddress());
 		orderVo.setRlocation(orders.getFhaddress());
-		orderVo.setSsitename(orders.getShsitename());
-		orderVo.setRsitename(orders.getFhsitename());
+		orderVo.setSsitename(orders.getShaddress());
+		orderVo.setRsitename(orders.getFhaddress());
+		//站点现在是地址
+//		orderVo.setSsitename(orders.getShsitename());
+//		orderVo.setRsitename(orders.getFhsitename());
+		orderVo.setSdatetime(orders.getRequstarttime().toLocaleString());
+		orderVo.setRdatetime(orders.getRequendtime().toLocaleString());
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("orderid", orders.getId());//共用了外部的map
-		orderItemList = orderItemService.selectAll4Page(map);
+		orderItemList = orderItemService.selectAllOrderItemByCtn(map);
 		for (OrderItem orderItem : orderItemList) {
+			//订单明细表没有 商品的具体信息，只有商品编号,vo类 可存放
 			goodsVo = new GoodsVo();
 			goodsVo.setGoodsname(orderItem.getGoodsname());
 			goodsVo.setSku(orderItem.getGoodscode());
 			goodsVo.setNumber(orderItem.getNumber());
 			goodsVo.setVolume(orderItem.getVolume());
 			goodsVo.setWeight(orderItem.getWeight());
+			goodsVo.setUnit(orderItem.getUnit());
 			goods.add(goodsVo);
 		}
 //		cpmdList = cpmdService.selectCpmdByOrdersId(orderId);
@@ -217,7 +241,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	 */
 	private String getOrderParam(List<OrderVo> ordersList) {
 		Map<String,Object> orderParamMap = new HashMap<>();
-		orderParamMap.put("orgcode", "20016C");
+		orderParamMap.put("orgcode", orgcode);
 		orderParamMap.put("repeatway", 1); //0 重复报错,1覆盖,2 忽略按成功返回
 		orderParamMap.put("unification", 0);
 		orderParamMap.put("orders", ordersList);
@@ -268,7 +292,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	 */
 	private String getDepParam(Waybill waybill, List<String> orderCodeList) {
 		Map<String,Object> depParamMap = new HashMap<>();
-		depParamMap.put("orgcode", "20016C");
+		depParamMap.put("orgcode", orgcode);
 		depParamMap.put("orders", orderCodeList);
 		depParamMap.put("departureno", waybill.getCode());
 		//由于只匹配车型没匹配车辆，所以设定的一些时间都作用
@@ -280,6 +304,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		depParamMap.put("zptmode", "1");
 		depParamMap.put("issuetogether", "0"); // 0 有一个成功算成功 1，全部必须下发成功    
 		depParamMap.put("issued", "0");
+		
 		String depParam = JsonUtil.obj2JsonStr(depParamMap);
 		System.out.println("depParamMap:"+depParamMap);
 //		    	String depParam ="{\"orgcode\": \"20016C\","

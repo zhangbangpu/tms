@@ -189,12 +189,12 @@ function hideRow(type) {
 	});
 }
 // 打开方式补全
-$("#target").select2({
+/*$("#target").select2({
     placeholder: "请选择打开方式",
     selectOnBlur:true,
     allowClear: true,
 	data: [{id : '_self', text : '本页'},{'id' : '_blank', text : '新页面'}]
-})
+})*/
 
 //$("#subsystem").on("select2-selected",function () {
 //	renderParentSelect2($('#subsystem').select2('val'));

@@ -133,7 +133,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					<span></span>\
 				</label>';
 				}
-            /*},{
+            },{
                 sTitle: "操作",
                 sName: "id",
                 sWidth: "25px",
@@ -141,12 +141,18 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
                 bSortable: false,
                 mRender:function(data, type, full){
                 	return '<div class="btn-group">\
-					<button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">\
-						<i class="fa fa-pencil"></i>\
-						<i class="fa fa-caret-down"></i>\
-					</button>\
-	            </div>';
-				}*/
+						<button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">\
+							<i class="fa fa-pencil"></i>\
+							<i class="fa fa-caret-down"></i>\
+						</button>\
+		                <ul class="dropdown-menu">\
+		                   <li>\
+		                   		<a href="#tms/basic/tck_number_detail.html?id='+ data +'"  data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">运单详情</a>\
+		                   </li>\
+	                   		<li class="divider"></li>\
+		                </ul>\
+		            </div>';
+				}
             },
                 {sTitle: "车次编号", sName: "code"},
                 {sTitle: "创建时间", sName: "createtime"},
