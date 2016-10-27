@@ -45,14 +45,21 @@ $("#btn_auto_start").click(function(){
 function ordersDelete(id) {
     $ips.confirm("您确定要删除这条记录吗?",function(btn) {
         if (btn == "确定") {
-            $ips.load("orders", "deleteById", "ids=" + id, function(result){
-                if(result.code == 0) {
-            		 $ips.succeed("删除成功。");
-            		 $('#tblMain').grid("fnDraw");
+        	 //检查订单状态和类型
+            $ips.load("orders", "checkOrders", "ids=" + id, function(result){
+            	//{ids : ids} 参数异常
+                if(result.msg == '') {
+                	$ips.load("orders", "deleteById", "ids=" + id, function(result){
+                    	$ips.succeed("删除成功。");
+                    	$('#tblMain').grid("fnDraw");
+                    });
+                	
             	 } else {
-            		 $ips.error("删除失败！" + result);
+            		 $ips.error(result.msg);
+            		 return;
             	 }
             });
+            
 		}
     });
 }
@@ -129,7 +136,7 @@ $("#btn_depature_init").bind('click', function() {
         if(result.msg == '') {
         	$('#departureModal').modal('show');
     	 } else {
-    		 $ips.error(result);
+    		 $ips.error(result.msg);
     		 return;
     	 }
     });
@@ -277,7 +284,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
                 	+ '<button data-toggle="dropdown" class="btn ' + 'btn-default btn-xs dropdown-toggle">' + '<i class="fa fa-pencil"></i>' + '<i class="fa fa-caret-down"></i>' + '</button>'
                     + '<ul class="dropdown-menu">' +
                     '<li>' +
-                    '<a href="#tms/order/order_detail.html?id='+ data +'">订单详情</a>' +
+                    '<a href="#tms/order/order_detail.html?id='+ data +'" target="_blank" >订单详情</a>' +
                     '</li>' +
                     '<li class="divider"></li>' +
                     '<li>' + '<a href="javascript:void(0);" onclick="' + 'ordersDelete(\'' + data + '\')">' + '删除</a>'
@@ -359,54 +366,62 @@ $(function () {
     $('#btn_splitOrder').on('click', function () {
         CheckParentId = getRowIds();
         if (CheckParentId == false) {
-            return;
+            return false;
         }
+        //检查订单状态和类型
+        $ips.load("orders", "checkOrders", "ids=" + CheckParentId, function(result){
+        	//{ids : ids} 参数异常
+            if(result.msg == '') {
+            	
+        	 } else {
+        		 $ips.error(result.msg);
+        		 return false;
+        	 }
+        });
+        
         StepConfig = ['pickup', 'transitions', 'delivery'];
         GoodInfo = ['goodname', 'unit', 'number', 'weight', 'volume'];
-        GoodstepInfo = [];
+//        GoodstepInfo = [];
         $('#childOrderList,#goodsTable').html('');
         if (undefined != CheckParentId) {
             var result = $ips.load('orders', 'queryOrderAndItemById', {id: CheckParentId});
             console.log(result);
             if (result) {
 //                var user = $ips.getCurrentUser();
-//                //条件判断
-//                if (result.parent.parentid != null && result.parent.createuser == user.organ.orgcode) {
-//                    $ips.error('子单不可进行拆单操作');
-//                    return false;
-//                }
-//                if (stepCount == 3) {
-//                    $ips.error('主单已被全程转包或生成车次，无法拆单');
-//                    return false;
-//                }
-//
-//                //渲染货品
-//                if (result.parent.goods.length != 0) {
-//                    var rea = '',
-//                        totalNum = 0,
-//                        totalWeight = 0,
-//                        totalVolume = 0,
-//                        unit = '';
-//                    $.each(result.parent['goods'], function (key, value) {
-//                        rea += '<tr><td>' + value.goodname + '</td><td>' + value.unit + '</td><td>' + value.number + '</td><td>' + value.weight + '</td><td>' + value.volume + '</td></tr>';
-//                        unit = value.unit;
-//                        totalNum += value.number;
-//                        totalWeight += value.weight;
-//                        totalVolume += value.volume;
-//                    });
-//                    $('#unit').text(unit);
-//                    $('#goodsNum').text(totalNum);
-//                    $('#goodsWeight').text(totalWeight);
-//                    $('#goodsVolume').text(totalVolume);
-//                    var goodsDetail = '<table width="100%" >' +
-//                        '<thead><tr><th>货品名称</th><th>单位</th><th>货品数量</th><th>货品重量</th><th>货品体积</th></tr></thead>' +
-//                        '<tbody>' + rea + '</tbody>' +
-//                        '</table>';
-//                    $("#goodsTable").html(goodsDetail);
-//                }
-//                if (result.children.length != 0) {
-//                    renderChildList(result.children, stepInfo);
-//                }
+                //条件判断
+                if (result.pid != null ) {
+                    $ips.error('子单不可进行拆单操作');
+                    return false;
+                }
+
+                //渲染货品
+                if (result.goods.length != 0) {
+                    var rea = '',
+                        totalNum = 0,
+                        totalWeight = 0,
+                        totalVolume = 0,
+                        unit = '';
+                    $.each(result.goods, function (key, value) {
+                        rea += '<tr><td>' + value.goodsname + '</td><td>' + value.unit + '</td><td>' + value.number + '</td><td>' + value.weight + '</td><td>' + value.volume + '</td></tr>';
+                        unit = value.unit;
+                        totalNum += value.number;
+                        totalWeight += value.weight;
+                        totalVolume += value.volume;
+                    });
+                    $('#unit').text(unit);
+                    $('#goodsNum').text(totalNum);
+                    $('#goodsWeight').text(totalWeight);
+                    $('#goodsVolume').text(totalVolume);
+                    var goodsDetail = '<table width="100%" >' +
+                        '<thead><tr><th>货品名称</th><th>单位</th><th>货品数量</th><th>货品重量</th><th>货品体积</th></tr></thead>' +
+                        '<tbody>' + rea + '</tbody>' +
+                        '</table>';
+                    $("#goodsTable").html(goodsDetail);
+                }
+                if (result.children.length != 0) {
+                    renderChildList(result.children, null);
+                }
+                
                 $('#splitOrderModal').modal('show');
             } else {
                 $ips.error("获取货品信息失败")
@@ -415,30 +430,31 @@ $(function () {
     })
     //创建子单按钮
     $('#btnAaddChildOrder').on('click', function () {
-        var allowStep = [];
+//        var allowStep = [];
 //        for (var i = 0, maxLen = StepConfig.length; i < maxLen; i++) {
 //            if (forbiddenStep[StepConfig[i]])continue;
 //            allowStep.push(StepConfig[i]);
 //        }
-        var stepInfo = []
-        var result = $ips.load('order', 'createSuborder', {'parentOrderid': CheckParentId, 'step': allowStep[0]});
+//        var stepInfo = []
+        var result = $ips.load('orders', 'createSuborder', {'parentOrderid': CheckParentId});
         if (result) {
             $ips.succeed('子单创建成功');
-            stepInfo[result.id] = allowStep[0];
-            GoodstepInfo[result.id] = allowStep[0];
-            renderChildList([result], stepInfo);
+//            stepInfo[result.id] = allowStep[0];
+//            GoodstepInfo[result.id] = allowStep[0];
+            renderChildList([result], null);
         }
     })
     //删除子单按钮
     $('#btnDelChildOrder').on('click', function () {
-        var suborderids = getRowIds('childOrderList', 'childOrder');
+        var suborderids = getCheckRowIds('childOrderList', 'childOrder');
+        
         if (suborderids.length < 1) {
             $ips.error("请选择需要删除的子订单");
             return;
         }
-        $ips.load('order', 'deleteSuborder', {
+        $ips.load('orders', 'deleteSuborder', {
             'parentOrderid': CheckParentId,
-            'suborderids': suborderids
+            'suborderids': suborderids.join(",")
         }, function (result) {
             if (result.fail.length > 0) {
                 var rea = '';
@@ -477,10 +493,11 @@ $(function () {
             var orderItem = childOrders[i],
                 id = orderItem.id,
                 childOrderHtml = $('#childOrderTmp').html().replace(reg4Order, id);
+            console.log(orderItem);
             $('#childOrderList').append(childOrderHtml);
-            $('#splitType_' + id).val(stepInfo[id]);//子单的阶段
-            GoodstepInfo[id] = stepInfo[id];
-            $('#orderno_' + id).text(orderItem.orderno);
+//            $('#splitType_' + id).val(stepInfo[id]);//子单的阶段
+//            GoodstepInfo[id] = stepInfo[id];
+            $('#orderno_' + id).text(orderItem.code);
             var reg4Good = new RegExp('#gid#', 'g');
             addGoodItem(id, orderItem.goods);
 
@@ -492,7 +509,8 @@ $(function () {
             //删除货品条目按钮
             $('#btnDelGood_' + id).click(function () {
                 var currentid = $(this).attr('id').split('_')[1],
-                    goodids = getRowIds('goodsList_' + currentid, 'goodsList');
+                    goodids = getCheckRowIds('goodsList_' + currentid, 'goodsList');
+                console.log(goodids);
                 if (goodids.length < 1) {
                     $ips.error("请选择需要删除的货品");
                     return;
@@ -529,10 +547,10 @@ $(function () {
                     $ips.error('请选择该子单的阶段');
                     return false;
                 }
-                if (forbiddenStep[stepType]) {
-                    $ips.error('该阶段主单已被转包或生成车次，无法添加该阶段子单');
-                    return false;
-                }
+//                if (forbiddenStep[stepType]) {
+//                    $ips.error('该阶段主单已被转包或生成车次，无法添加该阶段子单');
+//                    return false;
+//                }
                 //if(goodsList.length==0)return;
                 $ips.load('order', 'editSuborder', {
                     'stepType': stepType,
@@ -541,7 +559,7 @@ $(function () {
                     'goodsList': goodsList
                 }, function (result) {
                     if (result == 'succeed') {
-                        GoodstepInfo[currentid] = stepType;
+//                        GoodstepInfo[currentid] = stepType;
                         $ips.succeed('货品更新成功')
                     } else {
                         $ips.error('货品更新失败')
@@ -556,7 +574,7 @@ $(function () {
                 $('#goodsList_' + currentid).find('[name="goodsItem"]').remove();
                 var goods = childOrderInfo ? childOrderInfo.goods : null;
                 addGoodItem(currentid, goods);
-                $('#splitType_' + currentid).val(GoodstepInfo[currentid]);
+//                $('#splitType_' + currentid).val(GoodstepInfo[currentid]);
             })
 
         }
@@ -588,5 +606,38 @@ $(function () {
     }
 });
 
+//生成uuid
+
+function uuid(len, radix) {
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    var uuid = [], i;
+    radix = radix || chars.length;
+    if (len) {
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+    } else {
+        var r;
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4';
+        for (i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                r = 0 | Math.random() * 16;
+                uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            }
+        }
+    }
+    return uuid.join('');
+}
+
+//获取选中的id
+function getCheckRowIds(objId, objName) {
+    var containId = objId == null|| objId == undefined ? (('dispatchview' == __gridView) ? 'hotMain' : 'tblMain') : objId,
+        containName = objName == null|| objName == undefined ? (('dispatchview' == __gridView) ? 'hot_checkbox-inline' : 'checkbox-inline') : objName;
+    var returnId = [];
+    $('#' + containId + ' input:checkbox[name=' + containName + ']:checked').each(function () {
+    	if ($.inArray($(this).val(), returnId) <0 )
+    		returnId.push($(this).val());
+    });
+    return returnId;
+}
 
 

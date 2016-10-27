@@ -37,9 +37,9 @@ public class SysMenuController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
+//		if (!LoginController.checkLogin(request)) {
+//			return new Result(2, "");
+//		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysMenu> pageBean = sysMenuService.select2PageBean(argsMap);

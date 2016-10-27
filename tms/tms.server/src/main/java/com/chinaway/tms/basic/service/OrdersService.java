@@ -7,6 +7,7 @@ import java.util.Map;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.VehicleModel;
 import com.chinaway.tms.basic.model.Waybill;
+import com.chinaway.tms.basic.vo.GoodsVo;
 import com.chinaway.tms.core.BaseService;
 
 public interface OrdersService extends BaseService<Orders, Integer> {
@@ -53,6 +54,12 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @throws Exception
 	 */
 	public Waybill setWaybill(Orders order, VehicleModel vehicleModel) throws Exception;
+	
+	/**
+	 * 根据订单补充商品
+	 * @param orders
+	 */
+	public void setGoodsByOrderId(Orders orders)  throws Exception;
 
 	/**
 	 * 根据id列表查询订单
@@ -79,12 +86,20 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	Orders selectDetailById(Integer i);
 
 	/**
-	 * 新增订单和明细
+	 * 新增订单和明细（用于接口）
 	 * @param order
 	 * @param goodsList
 	 * @return
 	 */
 	int insertOrder(Orders order, List<Map<String, Object>> goodsList);
+	
+	/**
+	 * 新增订单和明细
+	 * @param order
+	 * @param goodsList
+	 * @return
+	 */
+	int insertOrderAndItem(Orders order, List<GoodsVo> goodsList);
 
 	Date selectMaxUpdateTime();
 	

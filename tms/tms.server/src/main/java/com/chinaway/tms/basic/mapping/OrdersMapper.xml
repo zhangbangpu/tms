@@ -225,7 +225,7 @@
 			requstarttime,requendtime,state,exceptcount,status,updatetime,pid
 		from orders
 		<include refid="mf_Where_Clause"/>
-		order by state, requstarttime, status desc
+		order by state, code, requstarttime, status desc
 	</select>
 	
 	<!-- 条件查询所有-->
@@ -234,7 +234,7 @@
 		<include refid="Base_Column_List" />
 		from orders
 		<include refid="Example_Where_Clause"/>
-		order by state, requstarttime, shaddress
+		order by state, code, requstarttime, shaddress
 	</select>
    
 	<!-- 插入记录,返回的注解id，需要通过参数对象获取，如order。getId() -->

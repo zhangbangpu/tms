@@ -1,7 +1,7 @@
 //更多搜索条件按钮!
-var searchParams = '';//初始化数据
+//var searchParams = '';//初始化数据
 
-var parms = $ips.getUrlParams();
+//var parms = $ips.getUrlParams();
 //loadScript("js/plugin/jquery-form/jquery-form.min.js", importFile);
 
 
@@ -10,9 +10,15 @@ $("#s_btn1").click(function() {
 	$('#tblMain').grid("fnPageChange", "first");
 });
 
-function genSearchParams()
-{
-	searchParams = $("#frmSearch").serializeArray();
+//搜索条件 回车 触发
+$('input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
+
+function genSearchParams(){
+	var searchParams = $("#frmSearch").serializeArray();
 	return searchParams;
 }
 
@@ -107,7 +113,7 @@ function importFile() {
     pararm += "&privacy="+privacy;
 	$ips.load("site", "importSite", pararm, function(result){
 //		$ips.unLockPage();
-		console.log(result);
+//		console.log(result);
 		if(result) {
 			$ips.succeed("保存站点成功。");
 		}else {
@@ -194,15 +200,15 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 			]
 		,
 		"fnServerData" : function(sSource, aoData, fnCallback) {
-			 searchParams = genSearchParams();
+			var searchParams = genSearchParams();
+			console.log(searchParams);
 			$ips.gridLoadData(sSource, aoData, fnCallback, "site", "page", searchParams, function(data) {
-				console.log(typeof data);
-				console.log(data);
+				
 				var dataArray = new Array();
 				$.each(data.result, function(i, item) {
 					dataArray[item.id+""] = item;
 				});
-				parmData = dataArray;
+//				parmData = dataArray;
 			});
 		}
 	});

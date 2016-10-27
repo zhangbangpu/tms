@@ -54,9 +54,9 @@ public class SysUserController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
+//		if (!LoginController.checkLogin(request)) {
+//			return new Result(2, "");
+//		}
 
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysUser> pageBean = sysUserService.select2PageBean(argsMap);

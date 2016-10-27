@@ -196,6 +196,15 @@
 		<if test="subcontractor != null and subcontractor != '' ">
 		    and u.name like CONCAT('%',#{subcontractor},'%')
 		</if>
+		<if test="state != null and state != '' ">
+		    and w.state = #{state}
+		</if>
+		<if test="deptids != null">
+		    and w.deptname in 
+			<foreach item="idItem" index="index" collection="deptids" open="(" separator="," close=")">
+				#{idItem}
+			</foreach>
+		</if>
 		
 		order by createtime desc
 	</select>

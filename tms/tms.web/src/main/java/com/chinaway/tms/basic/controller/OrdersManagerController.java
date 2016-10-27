@@ -18,16 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.controller.LoginController;
-import com.chinaway.tms.admin.model.SysDept;
-import com.chinaway.tms.admin.model.SysUser;
-import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.basic.model.OrderItem;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrderItemService;
 import com.chinaway.tms.basic.service.OrdersService;
+import com.chinaway.tms.basic.vo.GoodsVo;
 import com.chinaway.tms.utils.MyBeanUtil;
-import com.chinaway.tms.utils.lang.StringUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 import com.chinaway.tms.ws.service.PushService;
@@ -237,21 +234,23 @@ public class OrdersManagerController extends BaseController {
 //		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		String id = String.valueOf(argsMap.get("id"));
 		String id = request.getParameter("id");
-		int code = 1;
+		int code = 0;
 		String msg = "根据id查询订单操作失败!";
 //
 		Orders orders = null;
 		try {
 			orders = ordersService.selectById(id == "" ? 0 : Integer.parseInt(id));
 			if("0".equals(orders.getState())){
-				List<OrderItem> orderItemList = orderItemService.selectByOrderId(orders.getId());
-				orders.setOrderItemList(orderItemList);
+//				List<OrderItem> orderItemList = orderItemService.selectByOrderId(orders.getId());
+//				orders.setOrderItemList(orderItemList);
+				ordersService.setGoodsByOrderId(orders);
+				
+				msg = "";
 			}
-			
-			if (null != orders) {
-				code = 0;
-				msg = "根据id查询订单操作成功!";
-			}
+			Map<String, Object> argsMap = new HashMap<String, Object>();
+			argsMap.put("pid", orders.getId());
+			List<Orders> list = ordersService.selectAll4Page(argsMap);
+			orders.setChildren(list);
 			
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -425,8 +424,21 @@ public class OrdersManagerController extends BaseController {
 		String msg = "删除操作失败!";
 
 		int ret = 0;
+//		Orders orders = null;
 		try {
 			ret = ordersService.deleteById(ids);
+//			String[] idsStr = ids.split(",");
+//			if (idsStr.length > 0) {
+//				for (String id : idsStr) {
+//					int orId = Integer.parseInt(id);
+//					orders = ordersService.selectById(orId);
+//					if(!"0".equals(orders.getState())){
+//						
+//					}
+//					ordersService.deleteById(orId);
+//				}
+//			} else {
+//			}
 
 			if (ret > 0) {
 				code = 0;
@@ -568,7 +580,7 @@ public class OrdersManagerController extends BaseController {
 	@ResponseBody
 	public Result checkOrders(HttpServletRequest request) {
 		
-		int code = 1;
+		int code = 0;
 		String msg = "自动生成运单失败!";
 		Map<String, Object> resultMap = new HashMap<>();
 		try {
@@ -607,4 +619,108 @@ public class OrdersManagerController extends BaseController {
 		
 		return new Result(code, resultMap, msg);//情况特殊 code返回都是0
 	}
+	
+	/**
+	 * 创建 子单
+	 */
+	@RequestMapping(value = "/createSuborder")
+	@ResponseBody
+	public Result createSuborder(HttpServletRequest request) {
+//		parentOrderid
+		String id = request.getParameter("parentOrderid");
+		String msg = "创建子单失败!";
+		List<Orders> list = null;
+		Orders orders = null;
+		try {
+			int orderid = Integer.parseInt(id);
+			orders = ordersService.selectById(orderid);
+			
+			Map<String, Object> argsMap = new HashMap<String, Object>();
+			argsMap.put("pid", orderid);
+			list = ordersService.selectAll4Page(argsMap);
+			for (Orders subOrders : list) {
+				ordersService.setGoodsByOrderId(subOrders);
+			}
+			
+			int num = list.size() + 1;
+			orders.setCode(orders.getCode() + "_" + num);
+			orders.setCreatetime(new Date());
+			orders.setPid(orders.getId());
+			ordersService.setGoodsByOrderId(orders);
+			ordersService.insert(orders);
+			
+			msg = "创建子单成功";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result(0, orders, msg);
+	}
+	
+	/**
+	 * 创建 子单
+	 */
+	@RequestMapping(value = "/deleteSuborder")
+	@ResponseBody
+	public Result deleteSuborder(HttpServletRequest request) {
+		String msg = "删除子单失败!";
+		Map<String, Object> returnMap = new HashMap<>();
+		List<Map<String, Object>> failList = new ArrayList<>();
+		List<Map<String, Object>> succeedList = new ArrayList<>();
+		Map<String, Object> orderMap = null;
+		try {
+			String subOrderid = request.getParameter("suborderids");
+			String[] idsStr = subOrderid.split(",");
+			//暂时没起作用
+//			String parentOrderid = request.getParameter("parentOrderid");
+//			orderid orderno errorMsg
+			if (idsStr.length > 0) {
+				for (String id : idsStr) {
+					int orId = Integer.parseInt(id);
+					Orders orders = ordersService.selectById(orId);
+					
+					orderMap = new HashMap<>();
+					orderMap.put("orderid", orders.getId());
+					orderMap.put("orderno", orders.getCode());
+					String state = orders.getState();
+					String errorMsg = "";
+					if("0".equals(state)){
+						ordersService.deleteById(orId);
+						succeedList.add(orderMap);
+					}else {
+						if("1".equals(state)){
+							errorMsg = "订单已下发";
+						}
+						if("2".equals(state)){
+							errorMsg = "订单在途运输";
+						}
+						if("3".equals(state)){
+							errorMsg = "订单已签收";
+						}
+						orderMap.put("errorMsg", errorMsg);
+						failList.add(orderMap);
+					}
+				}
+			}
+//			ordersService.deleteById(subOrderid);
+			returnMap.put("fail", failList);
+			returnMap.put("succeed", succeedList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new Result(0, returnMap, msg);
+	}
+	
+	/**
+	 * 编辑子单
+	 */
+	@RequestMapping(value = "/editSuborder")
+	@ResponseBody
+	public Result editSuborder(HttpServletRequest request) {
+		String msg = "编辑子单失败!";
+		
+		return new Result(0, msg);
+	}
+	
 }

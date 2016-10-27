@@ -29,27 +29,34 @@ public class Orders implements Serializable {
 	private java.util.Date gstarttime;//   发车时间
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private java.util.Date garrivetime;//   到达时间
+	private String updatetime;//  更新时间
+	private Integer pid;//    父id
+	
+	//可能对应多个
+//	private String cpmdCode;//    货品编号
+//	private String cpmdName;//    货品名称
+	private List<String> stateList = new ArrayList<String>();//    执行阶段列表
+	private OrderItem baseInfo;
+	private List<Map<String,Object>> dispatchInfos = new ArrayList<Map<String,Object>>();//  
+	private List<Map<String,Object>> steps = new ArrayList<Map<String,Object>>();
+	private List<OrderItem> orderItemList;
 	
 	//商品（查看详情使用）
 	private List<GoodsVo> goods = new ArrayList<>();
+	private List<Orders> children= new ArrayList<>();
 	
+	public List<Orders> getChildren() {
+		return children;
+	}
+	public void setChildren(List<Orders> children) {
+		this.children = children;
+	}
 	public List<GoodsVo> getGoods() {
 		return goods;
 	}
 	public void setGoods(List<GoodsVo> goods) {
 		this.goods = goods;
 	}
-
-	//可能对应多个
-//	private String cpmdCode;//    货品编号
-//	private String cpmdName;//    货品名称
-	private String updatetime;//  更新时间
-	private Integer pid;//    父id
-	private List<String> stateList = new ArrayList<String>();//    执行阶段列表
-	private OrderItem baseInfo;
-	private List<Map<String,Object>> dispatchInfos = new ArrayList<Map<String,Object>>();//  
-	private List<Map<String,Object>> steps = new ArrayList<Map<String,Object>>();
-	private List<OrderItem> orderItemList;
 	
 	public String getType() {
 		return type;
@@ -151,91 +158,91 @@ public class Orders implements Serializable {
 		this.dispatchInfos = dispatchInfos;
 	}
 	public List<Map<String, Object>> getSteps() {
-		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("gstarttime", "2016-08-30 15:31:10");
-		map.put("garrivetime", "2016-08-30 15:32:10");
-		map.put("pstarttime", "2016-08-30 15:33:10");
-		map.put("parrivetime", "2016-08-30 15:34:10");
-		map.put("status", "2016-08-30 15:35:10");
-		map.put("showTime", "2016-08-30 15:36:10");
-		map.put("carnum", "奥迪");
-		map.put("implementstep", "1");
-		map.put("drivername", "A6");
-		
-		List<Map<String, Object>> monitorList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> map6 = new HashMap<String, Object>();
-		map6.put("type", "zpt");
-		List<Map<String, Object>> detailList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> map7 = new HashMap<String, Object>();
-		map7.put("type", "statusLog");
-		map7.put("time", "2016-08-30 15:31:10");
-		map7.put("name", "2016-08-30 15:31:10");
-		map7.put("address", "1");
-		List<Map<String, Object>> photoList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> map10 = new HashMap<String, Object>();
-		map10.put("photoUrl", "/img/g7tms/logo.png");
-		photoList.add(map10);
-		map7.put("photo", photoList);
-		map7.put("itime", "2016-08-30 15:31:10");
-		map7.put("sitmane", "2016-08-30 15:31:10");
-		map7.put("otime", "2016-08-30 15:31:10");
-		Map<String, Object> map8 = new HashMap<String, Object>();
-		map8.put("type", "eventLog");
-		map8.put("time", "2016-08-30 15:31:10");
-		map8.put("name", "2016-08-30 15:31:10");
-		map8.put("address", "1");
-		map8.put("photo", photoList);
-		map8.put("itime", "2016-08-30 15:31:10");
-		map8.put("sitmane", "2016-08-30 15:31:10");
-		map8.put("otime", "2016-08-30 15:31:10");
-		Map<String, Object> map9 = new HashMap<String, Object>();
-		map9.put("type", "eventLog");
-		map9.put("time", "2016-08-30 15:31:10");
-		map9.put("name", "2016-08-30 15:31:10");
-		map9.put("address", "1");
-		map9.put("photo", photoList);
-		map9.put("itime", "2016-08-30 15:31:10");
-		map9.put("sitmane", "2016-08-30 15:31:10");
-		map9.put("otime", "2016-08-30 15:31:10");
-		detailList.add(map7);
-		detailList.add(map8);
-		detailList.add(map9);
-		
-		map6.put("type", "classline");
-		map6.put("detail", detailList);
-		monitorList.add(map6);
-		map.put("monitorList", monitorList);
-		
-		Map<String, Object> map1 = new HashMap<String, Object>();
-		map1.put("gstarttime", "2016-08-30 15:31:10");
-		map1.put("garrivetime", "2016-08-30 15:32:10");
-		map1.put("pstarttime", "2016-08-30 15:33:10");
-		map1.put("parrivetime", "2016-08-30 15:34:10");
-		map1.put("status", "2016-08-30 15:35:10");
-		map1.put("showTime", "2016-08-30 15:36:10");
-		map1.put("carnum", "奔驰");
-		map1.put("implementstep", "1");
-		map1.put("drivername", "Q5");
-		Map<String, Object> map2 = new HashMap<String, Object>();
-		map2.put("gstarttime", "2016-08-30 15:31:10");
-		map2.put("garrivetime", "2016-08-30 15:32:10");
-		map2.put("pstarttime", "2016-08-30 15:33:10");
-		map2.put("parrivetime", "2016-08-30 15:34:10");
-		map2.put("status", "2016-08-30 15:35:10");
-		map2.put("showTime", "2016-08-30 15:36:10");
-		map2.put("carnum", "宝马");
-		map2.put("implementstep", "1");
-		map2.put("drivername", "T3");
-		steps.add(map);
-		steps.add(map1);
-		steps.add(map2);
-		
-		Map<String, Object> map4 = new HashMap<String, Object>();
-		map4.put("aliasname", "1");
-		map4.put("departures", steps);
-		mapList.add(map4);
-		return mapList;
+//		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("gstarttime", "2016-08-30 15:31:10");
+//		map.put("garrivetime", "2016-08-30 15:32:10");
+//		map.put("pstarttime", "2016-08-30 15:33:10");
+//		map.put("parrivetime", "2016-08-30 15:34:10");
+//		map.put("status", "2016-08-30 15:35:10");
+//		map.put("showTime", "2016-08-30 15:36:10");
+//		map.put("carnum", "奥迪");
+//		map.put("implementstep", "1");
+//		map.put("drivername", "A6");
+//		
+//		List<Map<String, Object>> monitorList = new ArrayList<Map<String, Object>>();
+//		Map<String, Object> map6 = new HashMap<String, Object>();
+//		map6.put("type", "zpt");
+//		List<Map<String, Object>> detailList = new ArrayList<Map<String, Object>>();
+//		Map<String, Object> map7 = new HashMap<String, Object>();
+//		map7.put("type", "statusLog");
+//		map7.put("time", "2016-08-30 15:31:10");
+//		map7.put("name", "2016-08-30 15:31:10");
+//		map7.put("address", "1");
+//		List<Map<String, Object>> photoList = new ArrayList<Map<String, Object>>();
+//		Map<String, Object> map10 = new HashMap<String, Object>();
+//		map10.put("photoUrl", "/img/g7tms/logo.png");
+//		photoList.add(map10);
+//		map7.put("photo", photoList);
+//		map7.put("itime", "2016-08-30 15:31:10");
+//		map7.put("sitmane", "2016-08-30 15:31:10");
+//		map7.put("otime", "2016-08-30 15:31:10");
+//		Map<String, Object> map8 = new HashMap<String, Object>();
+//		map8.put("type", "eventLog");
+//		map8.put("time", "2016-08-30 15:31:10");
+//		map8.put("name", "2016-08-30 15:31:10");
+//		map8.put("address", "1");
+//		map8.put("photo", photoList);
+//		map8.put("itime", "2016-08-30 15:31:10");
+//		map8.put("sitmane", "2016-08-30 15:31:10");
+//		map8.put("otime", "2016-08-30 15:31:10");
+//		Map<String, Object> map9 = new HashMap<String, Object>();
+//		map9.put("type", "eventLog");
+//		map9.put("time", "2016-08-30 15:31:10");
+//		map9.put("name", "2016-08-30 15:31:10");
+//		map9.put("address", "1");
+//		map9.put("photo", photoList);
+//		map9.put("itime", "2016-08-30 15:31:10");
+//		map9.put("sitmane", "2016-08-30 15:31:10");
+//		map9.put("otime", "2016-08-30 15:31:10");
+//		detailList.add(map7);
+//		detailList.add(map8);
+//		detailList.add(map9);
+//		
+//		map6.put("type", "classline");
+//		map6.put("detail", detailList);
+//		monitorList.add(map6);
+//		map.put("monitorList", monitorList);
+//		
+//		Map<String, Object> map1 = new HashMap<String, Object>();
+//		map1.put("gstarttime", "2016-08-30 15:31:10");
+//		map1.put("garrivetime", "2016-08-30 15:32:10");
+//		map1.put("pstarttime", "2016-08-30 15:33:10");
+//		map1.put("parrivetime", "2016-08-30 15:34:10");
+//		map1.put("status", "2016-08-30 15:35:10");
+//		map1.put("showTime", "2016-08-30 15:36:10");
+//		map1.put("carnum", "奔驰");
+//		map1.put("implementstep", "1");
+//		map1.put("drivername", "Q5");
+//		Map<String, Object> map2 = new HashMap<String, Object>();
+//		map2.put("gstarttime", "2016-08-30 15:31:10");
+//		map2.put("garrivetime", "2016-08-30 15:32:10");
+//		map2.put("pstarttime", "2016-08-30 15:33:10");
+//		map2.put("parrivetime", "2016-08-30 15:34:10");
+//		map2.put("status", "2016-08-30 15:35:10");
+//		map2.put("showTime", "2016-08-30 15:36:10");
+//		map2.put("carnum", "宝马");
+//		map2.put("implementstep", "1");
+//		map2.put("drivername", "T3");
+//		steps.add(map);
+//		steps.add(map1);
+//		steps.add(map2);
+//		
+//		Map<String, Object> map4 = new HashMap<String, Object>();
+//		map4.put("aliasname", "1");
+//		map4.put("departures", steps);
+//		mapList.add(map4);
+		return steps;
 	}
 	
 	public void setSteps(List<Map<String, Object>> steps) {

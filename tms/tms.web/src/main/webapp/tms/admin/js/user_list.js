@@ -2,8 +2,14 @@
 $("#btnSearch").click(function() {
 	$('#tblMain').grid("fnPageChange", "first");
 });
-function genSearchParams()
-{
+//搜索条件 回车 触发
+$('#frmSearch input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
+
+function genSearchParams(){
 	var searchParams = $("#frmSearch").serializeArray();
 //	if(searchParams == ""){
 //		searchParams = "{sysUser:}"
@@ -83,6 +89,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		],
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			var searchParams = genSearchParams();
+			console.log(searchParams);
 			$ips.gridLoadData(sSource, aoData, fnCallback, "sysUser", "queUserByCtnPgBn", searchParams, function(data) {
 				console.log(data);
 				$.each(data.result, function(i, item) {

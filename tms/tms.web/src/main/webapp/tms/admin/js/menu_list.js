@@ -15,20 +15,24 @@
 
 // 搜索按钮
 $("#btnSearch").click(function() {
-	
 	$('#tblMain').grid("fnPageChange", "first");
 });
+//搜索条件 回车 触发
+$('#frmSearch input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
 
-function genSearchParams()
-{
+function genSearchParams(){
 	var searchParams = $("#frmSearch").serializeArray();
 	
-	var time = $("#createtime").val();
-	if (time) {
-		var times = time.split(" - ");
-		searchParams.push({name: "createtimeGe", value: times[0]}); 
-		searchParams.push({name: "createtimeLt", value: times[1]}); 
-	}
+//	var time = $("#createtime").val();
+//	if (time) {
+//		var times = time.split(" - ");
+//		searchParams.push({name: "createtimeGe", value: times[0]}); 
+//		searchParams.push({name: "createtimeLt", value: times[1]}); 
+//	}
 //	if ($('#subsystem').select2('val') != '') {
 //		searchParams.push({name: "subsystem", value: $('#subsystem').select2('val')}); 
 //	}
@@ -37,10 +41,10 @@ function genSearchParams()
 //		searchParams.push({name: "type", value: $('#type').select2('val')}); 
 //	}
 	
-	var name = $("#name").val();
-	if (name) {
-		searchParams.push({name: "name", value: name}); 
-	}
+//	var name = $("#name").val();
+//	if (name) {
+//		searchParams.push({name: "name", value: name}); 
+//	}
 	return searchParams;
 }
 
@@ -146,6 +150,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		],
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			var searchParams = genSearchParams();
+			console.log(searchParams);
 			$ips.gridLoadData(sSource, aoData, fnCallback, "sysMenu", "page", searchParams, function(data) {
 				$.each(data.result, function(i, item) {
 

@@ -6,9 +6,18 @@ $("#s_btn1").click(function() {
 	$('#tblMain').grid("fnPageChange", "first");
 });
 
-function genSearchParams()
-{
+//搜索条件 回车 触发
+$('#frmSearch input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
+
+function genSearchParams(){
 	searchParams = $("#frmSearch").serializeArray();
+	//初始状态(后端已加)
+//	searchParams.push({name: "state", value: "0"});
+	
 	return searchParams;
 }
 
@@ -147,7 +156,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 						</button>\
 		                <ul class="dropdown-menu">\
 		                   <li>\
-		                   		<a href="#tms/basic/tck_number_detail.html?id='+ data +'"  data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">运单详情</a>\
+		                   		<a href="#tms/basic/tck_number_detail.html?id='+ data +'" target="_blank" >运单详情</a>\
 		                   </li>\
 	                   		<li class="divider"></li>\
 		                </ul>\

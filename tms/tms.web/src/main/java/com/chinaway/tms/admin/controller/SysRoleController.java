@@ -45,9 +45,9 @@ public class SysRoleController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
+//		if (!LoginController.checkLogin(request)) {
+//			return new Result(2, "");
+//		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysRole> pageBean = sysRoleService.select2PageBean(argsMap);
@@ -66,9 +66,9 @@ public class SysRoleController {
 	@RequestMapping(value = "/queRoleByCtnPgBn")
 	@ResponseBody
 	public Result queRoleByCtnPgBn(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
+//		if (!LoginController.checkLogin(request)) {
+//			return new Result(2, "");
+//		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 //		SysRole role = (SysRole)JsonUtil.jsonStr2Obj(sysRole, SysRole.class);

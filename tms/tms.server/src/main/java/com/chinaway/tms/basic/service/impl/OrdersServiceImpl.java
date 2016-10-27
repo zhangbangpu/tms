@@ -84,13 +84,17 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		return orderMapper.selectAllOrdersByCtn(map);
 	}
 
+	/**
+	 * 比较特殊，只有初始状态的才能删除
+	 */
 	@Override
 	@Transactional
 	public int deleteById(String ids) {
 		String[] idsStr = ids.split(",");
 		if (idsStr.length > 0) {
 			for (String id : idsStr) {
-				orderMapper.deleteById(Integer.parseInt(id));
+				int orId = Integer.parseInt(id);
+				orderMapper.deleteById(orId);
 			}
 			return 1;
 		} else {
@@ -314,6 +318,15 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 		Orders orders = orderMapper.selectById(id);
 		List<Cpmd> cpmdList = cpmdService.selectCpmdByOrdersId(id);
 		
+		setGoodsByOrderId(orders);
+		//数据写死了
+//		orders.getDispatchInfos();
+//		orders.getSteps();
+		return orders;
+	}
+
+	@Override
+	public void setGoodsByOrderId(Orders orders) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("orderid", orders.getId());//共用了外部的map
 		List<OrderItem> orderItemList = orderItemMapper.selectAllOrderItemByCtn(map);
@@ -331,10 +344,6 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 			goods.add(goodsVo);
 		}
 		orders.setGoods(goods);
-		//数据写死了
-//		orders.getDispatchInfos();
-//		orders.getSteps();
-		return orders;
 	}
 
 	@Override
@@ -401,6 +410,28 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	public List<Orders> selectByWayId(int wayId) {
 		
 		return orderMapper.selectByWayId(wayId);
+	}
+
+	@Override
+	public int insertOrderAndItem(Orders order, List<GoodsVo> goodsList) {
+		OrderItem orderItem = null;
+		double totalVolume = 0;
+		double totalWeight = 0;
+		for (GoodsVo goodsVo : goodsList) {
+			orderItem = new OrderItem();
+			String goodsid = goodsVo.getGoodsid();
+//			String amount = goodsVo.getNumber();
+			String unit = goodsVo.getUnit();
+			
+			orderItem.setOrderid(order.getId());
+			orderItem.setGoodscode(goodsid);
+			orderItem.setNumber(goodsVo.getNumber());
+			orderItem.setUnit(unit);
+			
+			orderItemMapper.insert(orderItem);
+
+		}
+		return 0;
 	}
 	
 }

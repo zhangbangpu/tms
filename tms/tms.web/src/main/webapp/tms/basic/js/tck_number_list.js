@@ -113,7 +113,6 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
                 sClass: "center",
                 bSortable: false,
                 mRender:function(data, type, full){
-//                	console.log(data);
                 	return '<div class="btn-group">\
 					<button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">\
 						<i class="fa fa-pencil"></i>\
@@ -121,15 +120,15 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 					</button>\
 	                <ul class="dropdown-menu">\
 	                   <li>\
-	                   		<a href="#tms/basic/tck_number_detail.html?id='+ data +'"  data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">运单详情</a>\
+	                   		<a href="#tms/basic/tck_number_detail.html?id='+ data +'" target="_blank" >运单详情</a>\
 	                   </li>\
                    		<li class="divider"></li>\
-                   		<li>\
-	                   		<a href="javascript:void(0);" onclick="tckNumDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
-                   		</li>\
 	                </ul>\
 	            </div>';
-				}
+                	/*<li>\
+                	<a href="javascript:void(0);" onclick="tckNumDelete(\'' + data + '\')" data-button-resource="21E96E9F4B5C1F5522229FB71DBA9A68">删除</a>\
+                	</li>\*/
+                }
             },
             {sTitle: "车次编号", sName: "code"},
             {sTitle: "创建时间", sName: "createtime"},
@@ -143,8 +142,12 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
             			return "初始";
             		}else if(data == 1){
             			return "审核通过";
-            		}else{
+            		}else if(data == 2){
             			return "运单在途";
+            		}else if(data == 3){
+            			return "已结束";
+            		}else{
+            			return "已取消";
             		}
             	}
             },

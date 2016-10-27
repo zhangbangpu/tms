@@ -50,7 +50,7 @@
 				and createtime = #{createtime}
 			</if>
 			<if test="requesturl != null and requesturl != '' ">
-				and requesturl = #{requesturl}
+				and requesturl like CONCAT('%',#{requesturl},'%')
 			</if>
 			<if test="menutype != null and menutype != '' ">
 				and menutype = #{menutype}

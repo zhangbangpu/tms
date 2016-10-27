@@ -2,11 +2,16 @@ var userOrgid = null;
 
 // 搜索按钮
 $("#btnSearch").click(function() {
-	
 	$('#tblMain').grid("fnPageChange", "first");
 });
-function genSearchParams()
-{
+//搜索条件 回车 触发
+$('#frmSearch input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
+	
+function genSearchParams(){
 	var searchParams = $("#frmSearch").serializeArray();
 	return searchParams;
 }
@@ -63,6 +68,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 		],
 		"fnServerData" : function(sSource, aoData, fnCallback) {
 			var searchParams = genSearchParams();
+			console.log(searchParams);
 			$ips.gridLoadData(sSource, aoData, fnCallback, "sysDept", "page", searchParams, function(data) {
 				userOrgid = data.userOrgid;
 				$.each(data.result, function(i, item) {

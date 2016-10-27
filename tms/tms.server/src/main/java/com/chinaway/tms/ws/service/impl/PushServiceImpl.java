@@ -2,6 +2,7 @@ package com.chinaway.tms.ws.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.basic.service.OrdersService;
 import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.util.Http2G7Util;
+import com.chinaway.tms.utils.http.HttpClientUtils;
 import com.chinaway.tms.utils.io.ProperUtil;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.lang.DateUtil;
@@ -37,6 +39,8 @@ public class PushServiceImpl implements PushService{
 //	private String app_secret = "fce6dc5652df05b2a7ae287337702eb6";
 //	private String app_key = "wine1919";
 	private String url = ProperUtil.read("wsconfig.properties", "ws.g7");
+	private String wmsPath = ProperUtil.read("wsconfig.properties", "ws.wms");
+	
 	private String orgcode = "200UHN";
 	
 	@Override
@@ -231,8 +235,12 @@ public class PushServiceImpl implements PushService{
 				if(map.get("updatetime") != null){
 					waybill.setUpdatetime(DateUtil.strToDate(map.get("updatetime").toString()));
 				}
-				waybill.setRequstarttime(DateUtil.strToDate(map.get("starttime").toString()));
-				waybill.setRequendtime(DateUtil.strToDate(map.get("endtime").toString()));
+				if(map.get("starttime") != null){
+					waybill.setRequstarttime(DateUtil.strToDate(map.get("starttime").toString()));
+				}
+				if(map.get("endtime") != null){
+					waybill.setRequendtime(DateUtil.strToDate(map.get("endtime").toString()));
+				}
 				if(map.get("gstarttime") != null){
 					waybill.setGstarttime(DateUtil.strToDate(map.get("gstarttime").toString()));
 				}
@@ -288,6 +296,22 @@ public class PushServiceImpl implements PushService{
 		Map<String, Object> resultMap = Http2G7Util.post(param, app_secret, app_key, method, url);
 		
 		return resultMap;
+	}
+
+	@Override
+	public boolean dep2wmsWS(Waybill waybill) throws Exception {
+		String param = "{\"carrierCode\":\"anxun\",\"carrierName\":\"安迅\",\"stowageNumber\":\"tms201609131153011865\",\"wh\":\"51\","
+				+ "\"details\":[{\"obdNumber\":\"OBSO16082700131\"}]}";
+		Map<String, Object> orderMap =new HashMap<>();
+		orderMap.put("carrierCode", "");
+		
+		Map<String, Object> map =new HashMap<>();
+		map.put("orderInfo", JsonUtil.obj2JsonStr(orderMap));
+		LOGGER.info("调用wms平台接口, 参数：" + orderMap);
+		Map<String, Object> resultMap = HttpClientUtils.getResult(map, wmsPath, "", "post");
+		LOGGER.info("调用仓配平台接口, 返回结果：" + resultMap);
+		
+		return false;
 	}
 
 }

@@ -78,7 +78,7 @@
 			    and name like CONCAT('%',#{name},'%')
 			</if>
 			<if test="code != null and code != '' ">
-			    and code = #{code}
+			    and code =like CONCAT('%',#{code},'%')
 			</if>
 			<if test="area != null and area != '' ">
 			    and area = #{area}

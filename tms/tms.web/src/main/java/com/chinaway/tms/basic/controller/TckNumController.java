@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +33,7 @@ import com.chinaway.tms.vo.Result;
 
 @Controller
 @RequestMapping(value = "/tckNum")
-public class TckNumController {
+public class TckNumController extends BaseController {
 	
 	@Autowired
 	private WaybillService waybillService;
@@ -94,6 +95,11 @@ public class TckNumController {
 	public Result selectTckNum2PageBean(HttpServletRequest request) {
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		
+		Set<String> deptidSet = super.getUserDepts(request);
+		//不同角色看到的订单不同，通过deptname来筛选
+		argsMap.put("deptids",deptidSet);
+		
 		PageBean<Waybill> pageBean = waybillService.select2PageBean(argsMap);
 		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
 		//return JsonUtil.obj2JsonStr(resultJson);

@@ -37,9 +37,10 @@ public class SysDeptController {
 	@RequestMapping(value = "/page")
 	@ResponseBody
 	public Result selectUser2PageBean(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
+//		if (!LoginController.checkLogin(request)) {
+//			return new Result(2, "");
+//		}
+		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		PageBean<SysDept> pageBean = sysDeptService.select2PageBean(argsMap);
 		//String resultJson = JsonUtil.obj2JsonStr(new Result(0, pageBean));
@@ -57,9 +58,9 @@ public class SysDeptController {
 	@RequestMapping(value = "/queryDeptByCondition")
 	@ResponseBody
 	public Result queryDeptByCondition(HttpServletRequest request) {
-		if (!LoginController.checkLogin(request)) {
-			return new Result(2, "");
-		}
+//		if (!LoginController.checkLogin(request)) {
+//			return new Result(2, "");
+//		}
 		
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		

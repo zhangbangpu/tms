@@ -1,10 +1,15 @@
 // 搜索按钮
 $("#btnSearch").click(function() {
-	
 	$('#tblMain').grid("fnPageChange", "first");
 });
-function genSearchParams()
-{
+//搜索条件 回车 触发
+$('#frmSearch input').keydown(function(e){
+	if(e.keyCode==13){
+		$('#tblMain').grid("fnPageChange", "first");
+	}
+});
+	
+function genSearchParams(){
 	var searchParams = $("#frmSearch").serializeArray();
 	return searchParams;
 }
@@ -73,7 +78,7 @@ loadScript('js/hui/jquery.hui.grid.js', function () {
 			{sTitle: "更新时间", sName: "updatetime"}
 		],
 		"fnServerData" : function(sSource, aoData, fnCallback) {
-			var searchParams = genSearchParams();
+			searchParams = genSearchParams();
 			$ips.gridLoadData(sSource, aoData, fnCallback, "sysRole", "queRoleByCtnPgBn", searchParams, function(data) {
 				$.each(data.result, function(i, item) {
 					item.idCheckbox = '<label class="checkbox"><input id="' + item.id + '" type="checkbox" name="checkbox-inline" value="'+item.id+'" class="checkbox style-0"><span></span></label>';
