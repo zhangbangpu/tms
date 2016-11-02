@@ -93,6 +93,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	}
 
 	@Override
+	@Transactional
 	public Integer insertWaybill(Waybill waybill , List<Orders> ordersList) throws Exception {
 		 int ret = waybillMapper.insert(waybill);
 		 
@@ -101,6 +102,10 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		 }
 		 //推送订单、运单信息给g7
 		 pushOrderAndDep(waybill, "1");//表示手动
+		 //只推送来源于wms的订单
+//		 if("wms".equalsIgnoreCase(ordersList.get(0).getOrderfrom())){
+//			 pushService.dep2wmsWS(waybill, ordersList);
+//		 }
 		 
 		 return ret;
 	}
@@ -124,6 +129,7 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 			}
 			
 			pushOrderAndDep(waybill, "0");//表示自动
+//			pushService.dep2wmsWS(waybill, orderList);
 			
 		}else if("-1".equals(waybill.getState())){//审核不通过
 			//还原订单
@@ -192,28 +198,30 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	 * @return
 	 */
 	private OrderVo setOrderVo(Orders orders) {
-		OrderVo orderVo;
+//		OrderVo orderVo;
 		GoodsVo goodsVo;
 		List<OrderItem> orderItemList;
 		List<GoodsVo> goods = new ArrayList<>();
 
 		//将tms的订单复制给g7的订单（参数名不同）
-		orderVo = new OrderVo();
+		OrderVo orderVo = new OrderVo();
 		orderVo.setOrderno(orders.getCode());
 		orderVo.setWmsno(orders.getFromcode());
 		orderVo.setSlocation(orders.getShaddress());
 		orderVo.setRlocation(orders.getFhaddress());
-		orderVo.setSsitename(orders.getShaddress());
-		orderVo.setRsitename(orders.getFhaddress());
+//		orderVo.setSsitename(orders.getShaddress());
+//		orderVo.setRsitename(orders.getFhaddress());
 		//站点现在是地址
 //		orderVo.setSsitename(orders.getShsitename());
 //		orderVo.setRsitename(orders.getFhsitename());
 		orderVo.setSdatetime(orders.getRequstarttime().toLocaleString());
-		orderVo.setRdatetime(orders.getRequendtime().toLocaleString());
+		if(orders.getRequendtime() != null){
+			orderVo.setRdatetime(orders.getRequendtime().toLocaleString());
+		}
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("orderid", orders.getId());//共用了外部的map
-		orderItemList = orderItemService.selectAllOrderItemByCtn(map);
+		orderItemList = orderItemService.selectAll4Page(map);
 		for (OrderItem orderItem : orderItemList) {
 			//订单明细表没有 商品的具体信息，只有商品编号,vo类 可存放
 			goodsVo = new GoodsVo();

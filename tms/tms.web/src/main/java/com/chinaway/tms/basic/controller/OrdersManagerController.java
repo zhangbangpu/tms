@@ -250,6 +250,9 @@ public class OrdersManagerController extends BaseController {
 			Map<String, Object> argsMap = new HashMap<String, Object>();
 			argsMap.put("pid", orders.getId());
 			List<Orders> list = ordersService.selectAll4Page(argsMap);
+			for (Orders orders2 : list) {
+				ordersService.setGoodsByOrderId(orders2);
+			}
 			orders.setChildren(list);
 			
 		} catch (Exception e) {
@@ -547,20 +550,31 @@ public class OrdersManagerController extends BaseController {
 			
 			//查询所有订单根据条件
 			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(map);
+			Set<String> wlcompanyList = getWlcompanyByOrOrders(ordersList);
+			
+			/*
+			 * 1、获取满足状态和部门条件的所有订单
+			 * 2、根据订单的收货地址匹配 站点所在区域和承运商
+			 * 3、根据承运商 查询车型
+			 * 4.所有订单匹配最小车型，如果[0,50)就不在匹配，匹配最大车型,大于100,就进行站点分配
+			 * 5、一个区域内部根据站点分配订单
+			 * 	（1）单个站点。从小往大匹配车型，满足重量90%-100%，体积小于额定就生成
+			 * 	（2）多个站点。
+			 */
 			
 			
-			for (Orders orders : ordersList) {
-				Map<String, Object> argsMap = new HashMap<String, Object>();
-				argsMap.put("id", orders.getId());
-				//生成运单
-				List<String> waybills = ordersService.generateWaybill(orders);
-				if (null != waybills && waybills.size() > 0) {
-//					code = 0;
-					msg = "";
-				}else{
-					msg = "没有匹配的订单生成运单!";
-				}
-			}
+//			for (Orders orders : ordersList) {
+//				Map<String, Object> argsMap = new HashMap<String, Object>();
+//				argsMap.put("id", orders.getId());
+//				//生成运单
+//				List<String> waybills = ordersService.generateWaybill(orders);
+//				if (null != waybills && waybills.size() > 0) {
+////					code = 0;
+//					msg = "";
+//				}else{
+//					msg = "没有匹配的订单生成运单!";
+//				}
+//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -573,6 +587,23 @@ public class OrdersManagerController extends BaseController {
 		return new Result(code, resultMap, msg);
 	}
 	
+	/**
+	 * 
+	 * @param ordersList
+	 * @return
+	 */
+	private Set<String> getWlcompanyByOrOrders(List<Orders> ordersList) {
+		Set<String> wlcompanyList = new HashSet<>();
+		
+		for (Orders orders : ordersList) {
+			String site = orders.getShaddress();
+			
+//			wlcompanyList.add(e);
+		}
+		
+		return wlcompanyList;
+	}
+
 	/**
 	 * 检查订单
 	 */
@@ -638,15 +669,20 @@ public class OrdersManagerController extends BaseController {
 			Map<String, Object> argsMap = new HashMap<String, Object>();
 			argsMap.put("pid", orderid);
 			list = ordersService.selectAll4Page(argsMap);
-			for (Orders subOrders : list) {
-				ordersService.setGoodsByOrderId(subOrders);
-			}
+//			for (Orders subOrders : list) {
+//				ordersService.setGoodsByOrderId(subOrders);
+//			}
 			
 			int num = list.size() + 1;
 			orders.setCode(orders.getCode() + "_" + num);
 			orders.setCreatetime(new Date());
 			orders.setPid(orders.getId());
-			ordersService.setGoodsByOrderId(orders);
+			//清空数量
+			orders.setAmount(0.0);
+			orders.setWeight(0.0);
+			orders.setVolume(0.0);
+			
+//			ordersService.setGoodsByOrderId(orders);
 			ordersService.insert(orders);
 			
 			msg = "创建子单成功";
@@ -719,6 +755,18 @@ public class OrdersManagerController extends BaseController {
 	@ResponseBody
 	public Result editSuborder(HttpServletRequest request) {
 		String msg = "编辑子单失败!";
+		try {
+			String subOrderid = request.getParameter("subOrderid");
+			//json 数据
+			String goodsList = request.getParameter("goodsList");
+			int orId = Integer.parseInt(subOrderid);
+			Orders orders = ordersService.selectById(orId);
+			
+			msg = "";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return new Result(0, msg);
 	}

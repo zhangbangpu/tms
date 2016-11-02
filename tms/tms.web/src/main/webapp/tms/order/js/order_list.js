@@ -28,7 +28,7 @@ $("#btn_auto_start").click(function(){
             $ips.load("orders", "autoGenerateWaybill", {
             	//无参数
             }, function(result){
-            	console.log(result);
+//            	console.log(result);
             	var msg = result.message;
                 if(msg == '') {
             		 $ips.succeed("自动生成运单成功!");
@@ -146,7 +146,7 @@ $("#btn_depature_init").bind('click', function() {
         placeholder: '请选择承运商',
 //        minimumInputLength: 2,
         multiple: false,
-        allowClear: true,
+//        allowClear: true,
         //数据加载
         query: function (query) {
             $ips.load('sysUser', 'queryWL2combo', {
@@ -171,7 +171,7 @@ $("#btn_depature_init").bind('click', function() {
 //    	console.info(data);
 //    	console.info('-----');
     	var wlcompanyId = data.added.id
-    	console.info(wlcompanyId);
+//    	console.info(wlcompanyId);
     	
     	//加载 车型下拉框数据
     	$("#vehiclemodel").select2({
@@ -385,7 +385,7 @@ $(function () {
         $('#childOrderList,#goodsTable').html('');
         if (undefined != CheckParentId) {
             var result = $ips.load('orders', 'queryOrderAndItemById', {id: CheckParentId});
-            console.log(result);
+//            console.log(result);
             if (result) {
 //                var user = $ips.getCurrentUser();
                 //条件判断
@@ -510,7 +510,7 @@ $(function () {
             $('#btnDelGood_' + id).click(function () {
                 var currentid = $(this).attr('id').split('_')[1],
                     goodids = getCheckRowIds('goodsList_' + currentid, 'goodsList');
-                console.log(goodids);
+
                 if (goodids.length < 1) {
                     $ips.error("请选择需要删除的货品");
                     return;
@@ -552,11 +552,11 @@ $(function () {
 //                    return false;
 //                }
                 //if(goodsList.length==0)return;
-                $ips.load('order', 'editSuborder', {
+                $ips.load('orders', 'editSuborder', {
                     'stepType': stepType,
                     'subOrderid': currentid,
                     'parentid': CheckParentId,
-                    'goodsList': goodsList
+                    'goodsList': JSON.stringify(goodsList)
                 }, function (result) {
                     if (result == 'succeed') {
 //                        GoodstepInfo[currentid] = stepType;

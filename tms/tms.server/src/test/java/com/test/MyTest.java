@@ -29,7 +29,14 @@ public class MyTest {
 	WarehouseService warehouseService;
 
 	@Test
-    public void departure_select() throws Exception {
+	public void test6() throws Exception {
+		String pwd = "123456";
+		//e10adc3949ba59abbe56e057f20f883e
+		String md5 = DigestUtils.md5Hex(pwd);
+		System.out.println(md5);
+	}
+	@Test
+	public void departure_select() throws Exception {
     	//post请求的参数
     	Map<String, Object> map = new HashMap<>();
 //    	String param ="{\"orgcode\": \"200UHN\", \"pageNo\":\"1\",\"pageSize\":\"20\", "

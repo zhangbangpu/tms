@@ -1,12 +1,12 @@
 package com.chinaway.tms.basic.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -329,7 +329,7 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	public void setGoodsByOrderId(Orders orders) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("orderid", orders.getId());//共用了外部的map
-		List<OrderItem> orderItemList = orderItemMapper.selectAllOrderItemByCtn(map);
+		List<OrderItem> orderItemList = orderItemMapper.selectAll4Page(map);
 		List<GoodsVo> goods = new ArrayList<>();
 		GoodsVo goodsVo = null;
 		for (OrderItem orderItem : orderItemList) {
@@ -351,53 +351,73 @@ public class OrdersServiceImpl extends AbstractService<Orders, Integer>implement
 	public int insertOrder(Orders order, List<Map<String, Object>> goodsList) {
 		int count = orderMapper.insert(order);
 		
-		OrderItem orderItem = null;
-		double totalVolume = 0;
-		double totalWeight = 0;
+		BigDecimal totalVolume = new BigDecimal("0");
+		BigDecimal totalWeight = new BigDecimal("0");
 		if("wms".equalsIgnoreCase(order.getOrderfrom())){
 			for (Map<String, Object> map : goodsList) {
-				orderItem = new OrderItem();
 				String goodsid = map.get("goodsid").toString();
 				String amount = map.get("amount").toString();
 				String unit = map.get("unit").toString();
+				BigDecimal goodsVolume = new BigDecimal("0");
+				BigDecimal goodsWeight = new BigDecimal("0");
+				insertOrderItem(order.getId(), goodsid, amount, unit, goodsVolume, goodsWeight);
 				
-				orderItem.setOrderid(order.getId());
-				orderItem.setGoodscode(goodsid);
-				orderItem.setNumber(Double.parseDouble(amount));
-				orderItem.setUnit(unit);
-				
-				orderItemMapper.insert(orderItem);
-				//计算数量和体积
-				Map<String, Object> cpmdMap = new HashMap<>();
-				cpmdMap.put("matnr", goodsid);
-				List<Cpmd> cpmdList = cpmdService.selectAll4Page(cpmdMap);
-				Cpmd cpmd = cpmdList.get(0);
-				totalVolume = BigDecimalUtil.add(totalVolume+"", BigDecimalUtil.multiply(cpmd.getVolum(), amount).toString()).doubleValue();//体积
-				totalWeight = BigDecimalUtil.add(totalWeight+"", BigDecimalUtil.multiply(cpmd.getBrgew(), amount).toString()).doubleValue();//毛重（重量）
-				
+				totalVolume = totalVolume.add(goodsVolume);//更新总体积
+				totalWeight = totalWeight.add(goodsWeight);//更新总重量
 			}
 		}else{
 			for (Map<String, Object> map : goodsList) {
-				orderItem = new OrderItem();
 				String goodsid = map.get("GOODSID").toString();
 				String amount = map.get("AMOUNT").toString();
 				String unit = map.get("UNIT").toString();
+				BigDecimal goodsVolume = new BigDecimal("0");
+				BigDecimal goodsWeight = new BigDecimal("0");
+				insertOrderItem(order.getId(), goodsid, amount, unit, totalVolume, totalWeight);
 				
-				orderItem.setOrderid(order.getId());
-				orderItem.setGoodscode(goodsid);
-				orderItem.setNumber(Double.parseDouble(amount));
-				orderItem.setUnit(unit);
-				
-				orderItemMapper.insert(orderItem);
+				totalVolume = totalVolume.add(goodsVolume);//更新总体积
+				totalWeight = totalWeight.add(goodsWeight);//更新总重量
 			}
 		}
 		
-		order.setWeight(totalWeight);
-		order.setVolume(totalVolume);
+		order.setWeight(totalWeight.doubleValue());
+		order.setVolume(totalVolume.doubleValue());
 		//先保存一些信息，然后更新订单的重量和体积
 		orderMapper.updateSelective(order);
 		
 		return count;
+	}
+	
+	/**
+	 * 新增订单明细
+	 * @param orderid
+	 * @param goodsid
+	 * @param amount
+	 * @param unit
+	 * @param totalVolume
+	 * @param totalWeight
+	 */
+	private void insertOrderItem(int orderid, String goodsid, String amount, String unit, BigDecimal totalVolume, BigDecimal totalWeight) {
+		OrderItem orderItem = new OrderItem();
+		//计算数量和体积
+		Map<String, Object> cpmdMap = new HashMap<>();
+		cpmdMap.put("matnr", goodsid);
+		List<Cpmd> cpmdList = cpmdService.selectAll4Page(cpmdMap);
+		Cpmd cpmd = cpmdList.get(0);
+		
+		totalVolume = BigDecimalUtil.round(BigDecimalUtil.multiply(cpmd.getVolum(), amount).add(totalVolume),3);//体积
+		totalWeight = BigDecimalUtil.round(BigDecimalUtil.multiply(cpmd.getBrgew(), amount).add(totalWeight),3);//毛重（重量）
+//		totalVolume = BigDecimalUtil.add(totalVolume+"", BigDecimalUtil.multiply(cpmd.getVolum(), amount).toString()).doubleValue();//体积
+//		totalWeight = BigDecimalUtil.add(totalWeight+"", BigDecimalUtil.multiply(cpmd.getBrgew(), amount).toString()).doubleValue();//毛重（重量）
+		
+		orderItem.setOrderid(orderid);
+		orderItem.setGoodscode(goodsid);
+		orderItem.setGoodsname(cpmd.getMaktx());
+		orderItem.setNumber(Double.parseDouble(amount));
+		orderItem.setUnit(unit);
+		orderItem.setWeight(totalWeight.toString());
+		orderItem.setVolume(totalVolume.toString());
+		
+		orderItemMapper.insert(orderItem);
 	}
 
 	@Override

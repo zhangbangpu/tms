@@ -189,8 +189,14 @@
 	<!-- 根据id查询  -->
 	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />
-		from orders where id = #{id}
+			o.id, o.code, o.fromcode, o.orderfrom, o.createtime, o.amount, o.unit, o.weight, o.volume,
+		 	(select name from sys_dept where deptid = o.deptname) deptname,
+			(select name from sys_user where id = o.subcontractor) subcontractor,
+			(select name from site where code = o.fhaddress) fhaddress,
+			(select name from site where code = o.shaddress) shaddress,
+		 	o.requstarttime, o.requendtime, o.state, o.exceptcount, o.status, o.updatetime, o.pid
+		from orders o
+		where id = #{id}
 	</select>
 	
 	<!-- 根据ids查询订单列表  -->

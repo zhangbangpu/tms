@@ -35,7 +35,7 @@ public interface PushService {
 	 * 将运单信息推送给wms 接口
 	 * @throws Exception
 	 */
-	public boolean dep2wmsWS(Waybill waybill) throws Exception;
+	public void dep2wmsWS(Waybill waybill, List<Orders> ordersList) throws Exception;
 	
 	/**
 	 * 推送车次（运单）和订单信息给承运商

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -172,17 +173,17 @@ public class SysUserController {
 		List<SysUser> sysUserList = null;
 		try {
 			SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-			String deptid = sysUser.getDeptid();
-			List<SysDept> deptList = sysDeptService.selectChildsByDeptid(deptid);
-			
-			Set<String> deptidSet = new HashSet<>();
-			deptidSet.add(deptid);//加上本身
-			for (SysDept sysDept : deptList) {
-				//子节点
-				deptidSet.add(sysDept.getDeptid());
-			}
-			//不同角色看到的订单不同，通过deptname来筛选
-			argsMap.put("deptids",deptidSet);
+//			String deptid = sysUser.getDeptid();
+//			List<SysDept> deptList = sysDeptService.selectChildsByDeptid(deptid);
+//			
+//			Set<String> deptidSet = new HashSet<>();
+//			deptidSet.add(deptid);//加上本身
+//			for (SysDept sysDept : deptList) {
+//				//子节点
+//				deptidSet.add(sysDept.getDeptid());
+//			}
+//			//不同角色看到的订单不同，通过deptname来筛选
+//			argsMap.put("deptids",deptidSet);
 			argsMap.put("type", "2");
 			
 			sysUserList = sysUserService.queAllUserByCtn(argsMap);
@@ -275,6 +276,8 @@ public class SysUserController {
 		int ret = 0;
 		try {
 			sysUser.setCreatetime(new Date());
+			sysUser.setPassword(DigestUtils.md5Hex(sysUser.getPassword()));
+			
 			if (sysUser.getId() != null) {
 				ret = sysUserService.updateSelective(sysUser);
 				//更新时，先删除，然后新增

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chinaway.tms.admin.model.SysUser;
+import com.chinaway.tms.admin.service.SysUserService;
 import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.basic.service.OrdersService;
@@ -29,6 +31,8 @@ public class PushServiceImpl implements PushService{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PushServiceImpl.class);
 	
+	@Autowired
+	private SysUserService sysUserService;
 	@Autowired
 	private OrdersService ordersService;
 	@Autowired
@@ -299,11 +303,25 @@ public class PushServiceImpl implements PushService{
 	}
 
 	@Override
-	public boolean dep2wmsWS(Waybill waybill) throws Exception {
-		String param = "{\"carrierCode\":\"anxun\",\"carrierName\":\"安迅\",\"stowageNumber\":\"tms201609131153011865\",\"wh\":\"51\","
-				+ "\"details\":[{\"obdNumber\":\"OBSO16082700131\"}]}";
+	public void dep2wmsWS(Waybill waybill, List<Orders> ordersList) throws Exception {
+//		String param = "{\"carrierCode\":\"anxun\",\"carrierName\":\"安迅\",\"stowageNumber\":\"tms201609131153011865\",\"wh\":\"51\","
+//				+ "\"details\":[{\"obdNumber\":\"OBSO16082700131\"}]}";
+		
 		Map<String, Object> orderMap =new HashMap<>();
-		orderMap.put("carrierCode", "");
+		orderMap.put("carrierCode", waybill.getSubcontractor());
+		SysUser sysUser = sysUserService.selectById(Integer.parseInt(waybill.getSubcontractor()));
+		orderMap.put("carrierName", sysUser.getName());
+		orderMap.put("stowageNumber", waybill.getCode());
+		orderMap.put("wh", waybill.getDeptname());
+		
+		List<Map<String, Object>> detailList = new ArrayList<>();
+		Map<String, Object> detailMap = null;
+		for (Orders orders : ordersList) {
+			detailMap = new HashMap<>();
+			detailMap.put("obdNumber", orders.getFromcode());
+			detailList.add(detailMap);
+		}
+		orderMap.put("details", detailList);
 		
 		Map<String, Object> map =new HashMap<>();
 		map.put("orderInfo", JsonUtil.obj2JsonStr(orderMap));
@@ -311,7 +329,6 @@ public class PushServiceImpl implements PushService{
 		Map<String, Object> resultMap = HttpClientUtils.getResult(map, wmsPath, "", "post");
 		LOGGER.info("调用仓配平台接口, 返回结果：" + resultMap);
 		
-		return false;
 	}
 
 }

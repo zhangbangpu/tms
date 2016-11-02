@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ public class LoginController {
 		try {
 			argsMap.put("loginname", argsMap.get("username"));
 			argsMap.put("state","1");
-//			argsMap.put("password", password);
+			argsMap.put("password", DigestUtils.md5Hex(argsMap.get("password").toString()));
 			
 			SysUser sysUser = sysUserService.queOneUserByCtn(argsMap);
 			if(null != sysUser && null != sysUser.getId()){
