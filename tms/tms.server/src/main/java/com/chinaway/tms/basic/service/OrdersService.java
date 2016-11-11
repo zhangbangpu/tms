@@ -91,7 +91,7 @@ public interface OrdersService extends BaseService<Orders, Integer> {
 	 * @param goodsList
 	 * @return
 	 */
-	int insertOrder(Orders order, List<Map<String, Object>> goodsList);
+	int insertOrder(Orders order, List<Map<String, Object>> goodsList)  throws Exception ;
 	
 	/**
 	 * 新增订单和明细

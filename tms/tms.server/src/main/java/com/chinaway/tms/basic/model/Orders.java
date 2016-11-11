@@ -31,6 +31,7 @@ public class Orders implements Serializable {
 	private java.util.Date garrivetime;//   到达时间
 	private String updatetime;//  更新时间
 	private Integer pid;//    父id
+	private String areacode;//  区域编码
 	
 	//可能对应多个
 //	private String cpmdCode;//    货品编号
@@ -58,6 +59,12 @@ public class Orders implements Serializable {
 		this.goods = goods;
 	}
 	
+	public String getAreacode() {
+		return areacode;
+	}
+	public void setAreacode(String areacode) {
+		this.areacode = areacode;
+	}
 	public String getType() {
 		return type;
 	}

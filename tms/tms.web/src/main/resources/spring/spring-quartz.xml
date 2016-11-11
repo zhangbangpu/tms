@@ -77,7 +77,7 @@
             <list>
                 <!-- <ref bean="myTrigger"></ref> --><!-- 暂时取消，变为按钮触发 -->
                 <ref bean="ztTrigger"></ref>
-                <ref bean="ordersJobTrigger"></ref>
+                <!-- <ref bean="ordersJobTrigger"></ref> -->
             </list>
         </property>
         <property name="autoStartup" value="true"></property>

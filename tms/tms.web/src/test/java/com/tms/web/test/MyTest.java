@@ -14,6 +14,7 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
 import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.utils.GPSUtil;
 import com.chinaway.tms.utils.http.HttpClientUtils;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.lang.BigDecimalUtil;
@@ -25,6 +26,51 @@ import com.chinaway.tms.utils.lang.StringUtil;
 //	3、订单增量列表查询接口-order.order.getUpdateOrderList
 //	4、单个订单详情查询接口byNo-order.order.getOrderInfoByNo
 public class MyTest {
+	
+	private final static double EARTH_RADIUS = 6378.137;
+	private static double rad(double d){
+	   return d * Math.PI / 180.0;
+	}
+
+	/**
+	 * 返回2点距离，单位公里(km)
+	 * @param lat1
+	 * @param lng1
+	 * @param lat2
+	 * @param lng2
+	 * @return
+	 */
+	public static double GetDistance(double lat1, double lng1, double lat2, double lng2) {
+		double radLat1 = rad(lat1);
+		double radLat2 = rad(lat2);
+		double a = radLat1 - radLat2;
+		double b = rad(lng1) - rad(lng2);
+		double s = 2 * Math.asin(Math.sqrt(
+				Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+//		s = s * EARTH_RADIUS;
+		s = Math.round(s * EARTH_RADIUS * 10000) / 10000.0;
+		return s;
+	}
+	
+	@Test
+	public void test5() throws Exception {
+		//51	104.198984	30.537145
+		/* W001	104.062254	30.630957
+		 * W030	104.052506	30.708621
+		 * W031	30.572404	104.071839
+		 */
+		//W030
+		double distance2 = GetDistance(30.537145, 104.198984, 30.708621, 104.052506);
+		//W031
+		double distance = GPSUtil.getDistance(30.537145, 104.198984, 30.572404, 104.071839);
+		System.out.println(distance);
+		System.out.println(distance2);
+//		14.1861
+//		16.9583
+//		12.8048
+//		23.6911
+
+	}
 	
 	@Test
 	public void test3() throws Exception {

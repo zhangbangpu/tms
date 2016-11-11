@@ -1,10 +1,14 @@
 package com.test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -14,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.chinaway.tms.basic.model.Orders;
 import com.chinaway.tms.basic.model.Warehouse;
 import com.chinaway.tms.basic.model.Waybill;
 import com.chinaway.tms.basic.service.WarehouseService;
@@ -27,7 +32,75 @@ public class MyTest {
 	
 	@Autowired
 	WarehouseService warehouseService;
+	
+	@Test
+	public void test9() throws Exception {
+		BigDecimal totalWeight = BigDecimal.ZERO;
+		
+		List<Integer> wlcompanyList = new ArrayList<>();
+		wlcompanyList.add(1);
+		wlcompanyList.add(2);
+		wlcompanyList.add(3);
+		
+		for (Integer n : wlcompanyList) {
+			totalWeight = totalWeight.add(new BigDecimal( n+"" ));
+		}
+		System.out.println(totalWeight);
+		clean(totalWeight);
+		System.out.println(totalWeight);
+		totalWeight = BigDecimal.ZERO;
+		System.out.println(totalWeight);
+	}
+	
+	private void clean(BigDecimal totalWeight) {
+		totalWeight = totalWeight.multiply(BigDecimal.ZERO);
+		
+//		totalWeight = totalWeight.valueOf(0);
+	}
 
+	@Test
+	public void test8() throws Exception {
+//		Set<Integer> wlcompanyList = new HashSet<>();
+//		wlcompanyList.add(1);
+//		wlcompanyList.add(2);
+		List<Integer> wlcompanyList = new ArrayList<>();
+		wlcompanyList.add(1);
+		wlcompanyList.add(2);
+		wlcompanyList.add(3);
+		
+		Iterator<Integer> it = wlcompanyList.iterator();
+		while (it.hasNext()) {
+//			boolean hasSite = it.hasNext();
+//			if(!hasSite){
+//				break;
+//			}
+			
+			Integer siteCode = it.next();
+			System.out.println(siteCode);
+			//判断后面是否还有
+			if(it.hasNext()){
+				System.out.println(true);
+			}else{
+				System.out.println(false);
+			}
+		}
+		
+	}
+	
+	@Test
+	public void test7() throws Exception {
+//		Set<Integer> wlcompanyList = new HashSet<>();
+//		wlcompanyList.add(1);
+//		wlcompanyList.add(2);
+		List<Integer> wlcompanyList = new ArrayList<>();
+		wlcompanyList.add(1);
+		wlcompanyList.add(2);
+		wlcompanyList.add(3);
+		int max = wlcompanyList.size() - 1;
+		System.out.println(wlcompanyList.get(max));
+		
+	}
+	
 	@Test
 	public void test6() throws Exception {
 		String pwd = "123456";

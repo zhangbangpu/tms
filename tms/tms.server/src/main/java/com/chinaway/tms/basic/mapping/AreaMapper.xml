@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.AreaMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.Area" >
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="code" property="code"/>
+		<result column="wlcompany" property="wlcompany"/>
+		<result column="deptname" property="deptname"/>
+		<result column="updatetime" property="updatetime"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,name,code,wlcompany,deptname,updatetime
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="name != null and name != '' ">
+		    and name = #{name}
+		</if>
+		<if test="code != null and code != '' ">
+		    and code = #{code}
+		</if>
+		<if test="wlcompany != null and wlcompany != '' ">
+		    and wlcompany = #{wlcompany}
+		</if>
+		<if test="deptname != null and deptname != '' ">
+		    and deptname = #{deptname}
+		</if>
+		<if test="updatetime != null">
+		    and updatetime = #{updatetime}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectBySiteCode"  resultMap="BaseResultMap" parameterType="java.lang.String">
+		select  a.id, a.name, a.code, a.wlcompany
+		from area a
+		left join area_site s on a.code = s.areacode
+		where s.sitecode = #{sitecode}
+	</select>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 	from area where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			 id,name,code,updatetime,wlcompany,
+			(select name from sys_dept where deptid = deptname) deptname,
+			(select name from sys_user where id = wlcompany) wlcompanyname
+		from area
+		<include refid="Example_Where_Clause"/>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Area" >
+	  insert into area(id,name,code,wlcompany,deptname,updatetime)
+ 		values(#{id},#{name},#{code},#{wlcompany},#{deptname},#{updatetime})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.Area" >
+	  update area set name=#{name},code=#{code},wlcompany=#{wlcompany},deptname=#{deptname},updatetime=#{updatetime}
+	  where id=#{id}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.Area" >
+		update area set 
+		<trim  suffixOverrides="," >
+		<if test="name != null  and name != '' ">
+			name=#{name},
+		</if>
+		<if test="code != null  and code != '' ">
+			code=#{code},
+		</if>
+		<if test="wlcompany != null  ">
+			wlcompany=#{wlcompany},
+		</if>
+		<if test="deptname != null  ">
+			deptname=#{deptname},
+		</if>
+		<if test="updatetime != null  ">
+			updatetime=#{updatetime},
+		</if>
+		</trim> 
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.Area" >
+		delete 	from area where id = #{id}
+	</delete>
+  	
+</mapper>

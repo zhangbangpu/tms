@@ -32,6 +32,12 @@
 		<if test="wlcompany != null and wlcompany != '' ">
 		    and wlcompany = #{wlcompany}
 		</if>
+		<if test="wlcompanyList != null ">
+		    and wlcompany in 
+		    <foreach item="idItem" index="index" collection="wlcompanyList" open="(" separator="," close=")">
+				#{idItem}
+			</foreach>
+		</if>
 		<if test="keyword != null and keyword != '' ">
 		    and weight like CONCAT('%',#{keyword},'%') or volum like CONCAT('%',#{keyword},'%')
 		</if>
@@ -82,6 +88,7 @@
 		<include refid="Base_Column_List" />
 		from vehicle_model
 		<include refid="Example_Where_Clause"/>
+		order by weight, volum
 	</select>
    
 	<!-- 插入记录 -->

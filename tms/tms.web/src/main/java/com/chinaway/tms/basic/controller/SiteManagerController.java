@@ -37,31 +37,29 @@ public class SiteManagerController {
 	@RequestMapping(value = "/selectAllSiteByCtn")
 	@ResponseBody
 	public Result selectAllSiteByCtn(HttpServletRequest request) {
-//		Map<String, Object> resultMap = new HashMap<>();
-//		int code = 1;
-//		String msg = "查询所有站点操作失败!";
-		Map<String, Object> argsMap = new HashMap<String, Object>();
-//		int ret = 0;
-//		try {
-			List<Site> sitetList = siteService.selectAllSiteByCtn(argsMap);
-//			if(null != sitetList){
-//				ret = sitetList.size();
-//			}
-//			
-//			if (ret > 0) {
-//				code = 0;
-//				msg = "查询所有站点操作成功!";
-//			}
-//
-//		} catch (Exception e) {
-//			e.getStackTrace();
-//		}
-//
-//		resultMap.put("code", code);
-//		resultMap.put("msg", msg);
-//		Result result = new Result(code, resultMap, msg);
+		int code = 1;
+		String msg = "查询所有站点操作失败!";
+//		Map<String, Object> argsMap = new HashMap<String, Object>();
+		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
+		int ret = 0;
+		List<Site> sitetList = null;
+		try {
+			sitetList = siteService.selectAllSiteByCtn(argsMap);
+			if(null != sitetList){
+				ret = sitetList.size();
+			}
+			
+			if (ret > 0) {
+				code = 0;
+				msg = "查询所有站点操作成功!";
+			}
 
-		return new Result(0, sitetList);
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		Result result = new Result(code, sitetList, msg);
+
+		return result;
 	}
 	
 	/**

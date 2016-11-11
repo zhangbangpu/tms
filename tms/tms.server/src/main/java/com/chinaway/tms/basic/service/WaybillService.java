@@ -25,7 +25,7 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	List<Waybill> selectAllTckNumRvwedByCtn(Map<String, Object> argsMap);
 
 	/**
-	 * 添加运单
+	 * 添加运单（并推送）
 	 * @param waybill
 	 * @param ordersList 
 	 * @param orders 
@@ -54,5 +54,13 @@ public interface WaybillService extends BaseService<Waybill, Integer> {
 	List<Waybill> selectByIds(String ids);
 
 	Date selectMaxUpdateTime();
+
+	/**
+	 * 自动生成运单，并添加关联表
+	 * @param waybill
+	 * @param ordersList
+	 * @return
+	 */
+	int insert2Auto(Waybill waybill, List<Orders> ordersList);
 	
 }

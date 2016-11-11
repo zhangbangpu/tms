@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaway.tms.basic.dao.AreaSiteMapper" >
+  	<resultMap id="BaseResultMap" type="com.chinaway.tms.basic.model.AreaSite" >
+		<id column="id" property="id"/>
+		<result column="sitecode" property="sitecode"/>
+		<result column="areacode" property="areacode"/>
+	</resultMap>
+       
+	<sql id="Base_Column_List" >
+		 id,sitecode,areacode
+	</sql>
+   
+	<!-- 动态查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim suffixOverrides="," >
+		<if test="id != null and id != '' ">
+		    and id = #{id}
+		</if>
+		<if test="sitecode != null and sitecode != '' ">
+		    and sitecode = #{sitecode}
+		</if>
+		<if test="areacode != null and areacode != '' ">
+		    and areacode = #{areacode}
+		</if>
+	
+	</trim>
+	</sql>
+ 
+	<!-- 根据id查询  -->
+	<select id="selectById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> 
+	 from area_site where id = #{id}
+	</select>
+
+	<!-- 条件查询所有(分页拦截的也是这个语句) -->
+	<select id="selectAll4Page" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			ars.id,ars.sitecode,ars.areacode,s.name sitename
+		from area_site ars
+		left join site s on s.code = ars.sitecode
+		where 1=1
+		<if test="id != null and id != '' ">
+		    and ars.id = #{id}
+		</if>
+		<if test="sitecode != null and sitecode != '' ">
+		    and ars.sitecode = #{sitecode}
+		</if>
+		<if test="areacode != null and areacode != '' ">
+		    and ars.areacode = #{areacode}
+		</if>
+	</select>
+   
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="com.chinaway.tms.basic.model.AreaSite" >
+	  insert into area_site(sitecode,areacode)
+ values(#{sitecode},#{areacode})
+	</insert>
+
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="com.chinaway.tms.basic.model.AreaSite" >
+	  update area_site set sitecode=#{sitecode} where areacode=#{areacode}
+	 </update>
+ 
+	 <!-- 动态修改记录，只修改只不为空的字段 -->
+	<update id="updateSelective" parameterType="com.chinaway.tms.basic.model.AreaSite" >
+		update area_site set 
+	<trim  suffixOverrides="," >
+	<if test="sitecode != null  and sitecode != '' ">
+		sitecode=#{sitecode},
+	</if>
+	<if test="areacode != null  and areacode != '' ">
+		areacode=#{areacode},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="com.chinaway.tms.basic.model.AreaSite" >
+		delete from area_site where id = #{id}
+	</delete>
+	<!-- 删除记录 -->
+	<delete id="deleteByAreaCode" parameterType="com.chinaway.tms.basic.model.AreaSite" >
+		delete from area_site where areacode = #{areacode}
+	</delete>
+  	
+</mapper>

@@ -28,14 +28,47 @@ $("#btn_auto_start").click(function(){
             $ips.load("orders", "autoGenerateWaybill", {
             	//无参数
             }, function(result){
-//            	console.log(result);
             	var msg = result.message;
-                if(msg == '') {
-            		 $ips.succeed("自动生成运单成功!");
-            		 $('#tblMain').grid("fnDraw");
-            	 } else {
-            		 $ips.error(msg);
-            	 }
+            	//返回格式：fail;fail;success;success;exception;
+            	var msgArr = msg.split(';');
+            	var failCounts = 0;
+            	var successCounts = 0;
+            	var exceptionCounts = 0;
+            	for(var i =0 ; i< msgArr.length -1 ;i++){
+            		var eachMsg = msgArr[i];
+            		if(eachMsg == 'fail'){
+            			failCounts++;
+            		}
+            		if(eachMsg == 'success'){
+            			successCounts++;
+            		}
+            		if(eachMsg == 'exception'){
+            			exceptionCounts++;
+            		}
+            	}
+            	console.log(failCounts);
+            	console.log(successCounts);
+            	console.log(exceptionCounts);
+            	
+            	if(exceptionCounts > 0){
+            		$ips.error("出现异常，请刷新重试或者联系客服!");
+            	}else{
+            		if(successCounts > 0){
+                		$ips.succeed("成功生成"+ successCounts +"个运单!");
+                		$('#tblMain').grid("fnDraw");
+                	}else{
+                		$ips.succeed("没有匹配的订单生成运单!");
+                	}
+            	}
+            	
+//                if(msg == '') {
+//                	 $ips.succeed("成功生成xx个运单!");
+//            		 $ips.succeed("成功生成xx个运单，还剩部分未匹配成功!");
+//            		 $('#tblMain').grid("fnDraw");
+//            	 } else {
+//            		 $ips.error(msg);
+////            		 $ips.error("没有匹配的订单生成运单!");
+//            	 }
             });
 		}
     });

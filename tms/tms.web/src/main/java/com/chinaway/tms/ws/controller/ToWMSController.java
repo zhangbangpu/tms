@@ -72,7 +72,7 @@ public class ToWMSController {
 						
 					}catch(Exception e){
 						e.printStackTrace();
-						msg = "新增订单出异常";
+						msg = "新增订单出异常," + e.getMessage();
 					}
 					
 				}else{

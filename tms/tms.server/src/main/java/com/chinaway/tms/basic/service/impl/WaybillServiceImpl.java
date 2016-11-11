@@ -95,21 +95,29 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 	@Override
 	@Transactional
 	public Integer insertWaybill(Waybill waybill , List<Orders> ordersList) throws Exception {
-		 int ret = waybillMapper.insert(waybill);
+		int ret = insert2Auto(waybill, ordersList);
+		
+		//推送订单、运单信息给g7
+		pushOrderAndDep(waybill, "1");//表示手动
+		//只推送来源于wms的订单
+		if("wms".equalsIgnoreCase(ordersList.get(0).getOrderfrom())){
+			pushService.dep2wmsWS(waybill, ordersList);
+		}
 		 
-		 for(Orders orders: ordersList){
-			 ordersService.insertWaybillOrders(orders, waybill.getId(), waybill.getWlcompany());
-		 }
-		 //推送订单、运单信息给g7
-		 pushOrderAndDep(waybill, "1");//表示手动
-		 //只推送来源于wms的订单
-//		 if("wms".equalsIgnoreCase(ordersList.get(0).getOrderfrom())){
-//			 pushService.dep2wmsWS(waybill, ordersList);
-//		 }
-		 
-		 return ret;
+		return ret;
 	}
 
+	@Override
+	@Transactional
+	public int insert2Auto(Waybill waybill, List<Orders> ordersList) {
+		int ret = waybillMapper.insert(waybill);
+		 
+		for(Orders orders: ordersList){
+			ordersService.insertWaybillOrders(orders, waybill.getId(), waybill.getWlcompany());
+		}
+		return ret;
+	}
+	
 	@Override
 	@Transactional
 	public int updateWaybill(Waybill waybill) throws Exception {
@@ -120,12 +128,16 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		
 		List<Orders> orderList = ordersService.selectByWayId(waybill.getId());
 		
+		Orders updateOrder = null;
 		//审核通过（推送订单、运单信息）
 		if("1".equals(waybill.getState())){
 			//订单下发
 			for (Orders orders : orderList) {
-				orders.setState("1");
-				ordersService.updateSelective(orders);
+				updateOrder = new Orders();
+				updateOrder.setState("1");
+				updateOrder.setCode(orders.getCode());
+				updateOrder.setId(orders.getId());
+				ordersService.updateSelective(updateOrder);
 			}
 			
 			pushOrderAndDep(waybill, "0");//表示自动
@@ -134,8 +146,11 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		}else if("-1".equals(waybill.getState())){//审核不通过
 			//还原订单
 			for (Orders orders : orderList) {
-				orders.setState("0");
-				ordersService.updateSelective(orders);
+				updateOrder = new Orders();
+				updateOrder.setState("0");
+				updateOrder.setCode(orders.getCode());
+				updateOrder.setId(orders.getId());
+				ordersService.updateSelective(updateOrder);
 			}
 			//删除中间表
 			Map<String, Object> argsmap = new HashMap<String, Object>();
@@ -334,4 +349,5 @@ public class WaybillServiceImpl extends AbstractService<Waybill, Integer> implem
 		
 		return waybillMapper.selectMaxUpdateTime();
 	}
+
 }

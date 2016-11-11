@@ -22,10 +22,12 @@
 		<result column="status" property="status"/>
 		<result column="updatetime" property="updatetime"/>
 		<result column="pid" property="pid"/>
+		<result column="areacode" property="areacode"/>
 	</resultMap>
        
 	<sql id="Base_Column_List" >
-		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status,updatetime,pid
+		 id,code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status,
+		 updatetime,pid,areacode
 	</sql>
    
 	<!-- 动态查询条件 -->
@@ -91,6 +93,9 @@
 			</if>
 			<if test="pid != null and pid != '' ">
 			    and pid = #{pid}
+			</if>
+			<if test="areacode != null and areacode != '' ">
+			    and areacode = #{areacode}
 			</if>
 			<if test="deptids != null">
 			    and deptname in 
@@ -162,6 +167,9 @@
 			<if test="pid != null and pid != '' ">
 			    and pid = #{pid}
 			</if>
+			<if test="areacode != null and areacode != '' ">
+			    and areacode = #{areacode}
+			</if>
 			<if test="deptids != null">
 			    and deptname in 
 				<foreach item="idItem" index="index" collection="deptids" open="(" separator="," close=")">
@@ -179,7 +187,7 @@
 			(select name from sys_user where id = o.subcontractor) subcontractor,
 			(select name from site where code = o.fhaddress) fhaddress,
 			(select name from site where code = o.shaddress) shaddress,
-		 	o.requstarttime, o.requendtime, o.state, o.exceptcount, o.status, o.updatetime, o.pid
+		 	o.requstarttime, o.requendtime, o.state, o.exceptcount, o.status, o.updatetime, o.pid, o.areacode
 		from orders o
 		left join orders_waybill ow on ow.ordersId = o.id
 		left join waybill w on w.id = ow.waybillId
@@ -194,7 +202,7 @@
 			(select name from sys_user where id = o.subcontractor) subcontractor,
 			(select name from site where code = o.fhaddress) fhaddress,
 			(select name from site where code = o.shaddress) shaddress,
-		 	o.requstarttime, o.requendtime, o.state, o.exceptcount, o.status, o.updatetime, o.pid
+		 	o.requstarttime, o.requendtime, o.state, o.exceptcount, o.status, o.updatetime, o.pid, o.areacode
 		from orders o
 		where id = #{id}
 	</select>
@@ -228,7 +236,7 @@
 			(select name from sys_user where id = subcontractor) subcontractor,
 			(select name from site where code = fhaddress) fhaddress,
 			(select name from site where code = shaddress) shaddress,
-			requstarttime,requendtime,state,exceptcount,status,updatetime,pid
+			requstarttime,requendtime,state,exceptcount,status,updatetime,pid,areacode
 		from orders
 		<include refid="mf_Where_Clause"/>
 		order by state, code, requstarttime, status desc
@@ -245,13 +253,15 @@
    
 	<!-- 插入记录,返回的注解id，需要通过参数对象获取，如order。getId() -->
 	<insert id="insert" parameterType="com.chinaway.tms.basic.model.Orders" useGeneratedKeys="true" keyProperty="id">
-	    insert into orders(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status,updatetime,pid)
-        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{status},#{updatetime},#{pid})
+	    insert into orders(code,fromcode,orderfrom,createtime,deptname,subcontractor,amount,unit,weight,volume,fhaddress,shaddress,requstarttime,requendtime,state,exceptcount,status,updatetime,pid,areacode)
+        values(#{code},#{fromcode},#{orderfrom},#{createtime},#{deptname},#{subcontractor},#{amount},#{unit},#{weight},#{volume},#{fhaddress},#{shaddress},#{requstarttime},#{requendtime},#{state},#{exceptcount},#{status},#{updatetime},#{pid},#{areacode})
 	</insert>
 
 	<!-- 根据id，修改记录-->  
 	 <update id="update" parameterType="com.chinaway.tms.basic.model.Orders" >
-	 	update orders set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount},status=#{status},updatetime=#{updatetime},pid=#{pid} where id=#{id}
+	 	update orders set code=#{code},fromcode=#{fromcode},orderfrom=#{orderfrom},deptname=#{deptname},subcontractor=#{subcontractor},amount=#{amount},unit=#{unit},weight=#{weight},volume=#{volume},fhaddress=#{fhaddress},shaddress=#{shaddress},
+	 		requstarttime=#{requstarttime},requendtime=#{requendtime},state=#{state},exceptcount=#{exceptcount},status=#{status},updatetime=#{updatetime},pid=#{pid},areacode=#{areacode} 
+	 	where id=#{id}
 	 </update>
  
 	 <!-- 动态修改记录，只修改只不为空的字段 -->
@@ -314,6 +324,9 @@
 			</if>
 			<if test="pid != null">
 			    pid = #{pid},
+			</if>
+			<if test="areacode != null">
+			    areacode = #{areacode},
 			</if>
 		</trim> where code=#{code}
 	</update>

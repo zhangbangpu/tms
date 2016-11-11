@@ -1,9 +1,11 @@
 package com.chinaway.tms.basic.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,13 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.controller.LoginController;
-import com.chinaway.tms.basic.model.OrderItem;
+import com.chinaway.tms.basic.model.Area;
 import com.chinaway.tms.basic.model.Orders;
+import com.chinaway.tms.basic.model.VehicleModel;
+import com.chinaway.tms.basic.model.Waybill;
+import com.chinaway.tms.basic.service.AreaService;
 import com.chinaway.tms.basic.service.CpmdService;
 import com.chinaway.tms.basic.service.OrderItemService;
 import com.chinaway.tms.basic.service.OrdersService;
-import com.chinaway.tms.basic.vo.GoodsVo;
+import com.chinaway.tms.basic.service.VehicleModelService;
+import com.chinaway.tms.basic.service.WaybillService;
 import com.chinaway.tms.utils.MyBeanUtil;
+import com.chinaway.tms.utils.lang.MathUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
 import com.chinaway.tms.ws.service.PushService;
@@ -38,6 +45,12 @@ public class OrdersManagerController extends BaseController {
 	@Autowired
 	private OrderItemService orderItemService;
 	
+	@Autowired
+	private AreaService areaService;
+	@Autowired
+	private VehicleModelService vehicleModelService;
+	@Autowired
+	private WaybillService waybillService;
 	@Autowired
 	private PushService pushService;
 	
@@ -537,48 +550,86 @@ public class OrdersManagerController extends BaseController {
 	public Result autoGenerateWaybill(HttpServletRequest request) {
 		
 		int code = 0;
-		String msg = "自动生成运单失败!";
+		String msg = "";
 		Map<String, Object> resultMap = new HashMap<>();
 		try {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("status", "0");
-			map.put("state", "0");
-			//暂时未限制订单的deptname
+			Map<String, Object> ordMap = new HashMap<String, Object>();
+			ordMap.put("status", "0");
+			ordMap.put("state", "0");
+			
 			Set<String> deptidSet = super.getUserDepts(request);
 			//不同角色看到的订单不同，通过deptname来筛选
-			map.put("deptids",deptidSet);
+			ordMap.put("deptids",deptidSet);
 			
 			//查询所有订单根据条件
-			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(map);
-			Set<String> wlcompanyList = getWlcompanyByOrOrders(ordersList);
-			
-			/*
-			 * 1、获取满足状态和部门条件的所有订单
-			 * 2、根据订单的收货地址匹配 站点所在区域和承运商
-			 * 3、根据承运商 查询车型
-			 * 4.所有订单匹配最小车型，如果[0,50)就不在匹配，匹配最大车型,大于100,就进行站点分配
-			 * 5、一个区域内部根据站点分配订单
-			 * 	（1）单个站点。从小往大匹配车型，满足重量90%-100%，体积小于额定就生成
-			 * 	（2）多个站点。
-			 */
-			
-			
+			List<Orders> ordersList = ordersService.selectAllOrdersByCtn(ordMap);
+			//之前简单实现，换成下面的实现
 //			for (Orders orders : ordersList) {
 //				Map<String, Object> argsMap = new HashMap<String, Object>();
 //				argsMap.put("id", orders.getId());
 //				//生成运单
 //				List<String> waybills = ordersService.generateWaybill(orders);
 //				if (null != waybills && waybills.size() > 0) {
-////					code = 0;
 //					msg = "";
 //				}else{
 //					msg = "没有匹配的订单生成运单!";
 //				}
 //			}
 			
+			/*
+			 * 1、获取满足状态和部门条件的所有订单
+			 * 2、根据订单的收货地址匹配 站点所在区域和承运商
+			 * 3、根据承运商 查询车型
+			 * 4.一个承运商 每个区域内部所有订单匹配最小车型，如果[0,50)就不在匹配，匹配最大车型,大于100,就进行站点分配
+			 * 5、一个区域内部根据站点分配订单
+			 * 	（1）单个站点。从小往大匹配车型，满足重量90%-100%，体积小于额定就生成
+			 * 	（2）多个站点。
+			 */
+			Set<Area> areaList = new HashSet<>();
+			Set<Integer> wlcompanyList = new HashSet<>();
+			Set<String> areaCodeList = new HashSet<>();
+			Area area = new Area();
+			for (Orders orders : ordersList) {
+				String siteCode = orders.getShaddress();
+				area = areaService.selectBySiteCode(siteCode);
+				if(area != null){
+					orders.setSubcontractor(area.getWlcompany()+"");
+					orders.setAreacode(area.getCode());
+					ordersService.updateSelective(orders);
+					
+					areaList.add(area);
+					wlcompanyList.add(area.getWlcompany());
+					areaCodeList.add(area.getCode());
+				}
+			}
+
+			Map<String, Object> vehMap = new HashMap<String, Object>();
+			List<VehicleModel> vehicleModelList = null;
+			//多个区域,分成每个区域进行
+			if (areaList.size() > 1) {
+				ordMap.remove("deptids");
+				for (Area eachArea : areaList) {
+					ordMap.put("subcontractor", eachArea.getWlcompany());
+					ordMap.put("areacode", eachArea.getCode());
+					//每个区域订单
+					List<Orders> eachOrdersList = ordersService.selectAllOrdersByCtn(ordMap);
+					System.out.println(eachArea.getCode() + "区域, 共有" + eachOrdersList.size() +"订单");
+					vehMap.put("wlcompany", eachArea.getWlcompany());
+					vehicleModelList = vehicleModelService.selectAllVehicleModelByCtn(vehMap);
+					
+					msg = AreaOrderMatchVehicle(vehicleModelList, eachOrdersList, 50);
+				}
+			}else if (areaList.size() == 1){
+				//一个承运商所有车型
+				vehMap.put("wlcompanyList", wlcompanyList);
+				vehicleModelList = vehicleModelService.selectAllVehicleModelByCtn(vehMap);
+				
+				msg = AreaOrderMatchVehicle(vehicleModelList, ordersList, 50);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			msg = "出现异常";
+			msg = "exception;";
 		}
 		
 		resultMap.put("code", code);
@@ -586,24 +637,282 @@ public class OrdersManagerController extends BaseController {
 		
 		return new Result(code, resultMap, msg);
 	}
-	
+
 	/**
-	 * 
-	 * @param ordersList
+	 * 每个区域内部所有订单匹配最小车型，如果[0,50)就不在匹配，[50,100]满足，(100,无限大)匹配最大车型,大于100,就进行站点分配
+	 * @param msg
+	 * @param vehicleModelList
+	 * @param ordersList 每个区域内部所有订单
 	 * @return
 	 */
-	private Set<String> getWlcompanyByOrOrders(List<Orders> ordersList) {
-		Set<String> wlcompanyList = new HashSet<>();
+	private String AreaOrderMatchVehicle(List<VehicleModel> vehicleModelList, List<Orders> ordersList, int percent) {
+		String msg = "fail;";
+		BigDecimal totalWeight = BigDecimal.ZERO;
+		BigDecimal totalVolume = BigDecimal.ZERO;
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		String deptname = "";
+//		String fhaddress = "";
+//		String shaddress = "";
+		Set<String> siteCodeList = new HashSet<>();//站点
 		
 		for (Orders orders : ordersList) {
-			String site = orders.getShaddress();
-			
-//			wlcompanyList.add(e);
+			totalWeight = totalWeight.add(new BigDecimal(orders.getWeight()+""));
+			totalVolume = totalVolume.add(new BigDecimal(orders.getVolume()+""));
+			totalAmount = totalAmount.add(new BigDecimal(orders.getAmount()+""));
+			deptname = orders.getDeptname();
+//			fhaddress = orders.getFhaddress();
+//			shaddress = orders.getShaddress();
+			siteCodeList.add(orders.getShaddress());
 		}
 		
-		return wlcompanyList;
+		VehicleModel vehicleModel = vehicleModelList.get(0);
+		System.out.println("订单总重量(kg)：" + totalWeight + "订单总体积：" + totalVolume);
+		int num = matching(totalWeight.doubleValue(), vehicleModel.getWeight());
+		if( num < percent){
+			//不满足最小车型
+			System.out.println("不满足最小车型");
+		}else if(num <= 100){
+			//匹配一车(体积能装下)
+			msg = msg + autoWayBill(ordersList, totalWeight, totalVolume, totalAmount, deptname, vehicleModel);
+			System.out.println(percent+","+100+ "之间匹配成功");
+		}else{
+			//超过最小车型，匹配最大车型
+			int max = vehicleModelList.size() - 1;
+			vehicleModel = vehicleModelList.get(max);
+			int num2 = matching(totalWeight.doubleValue(), vehicleModel.getWeight());
+			if( num2 < 95){
+				//车型大了（去掉首尾）匹配其他车型
+				int counts = 0;
+				for (int i = 1; i < (max-1); i++) {
+					vehicleModel = vehicleModelList.get(i);
+					int num3 = matching(totalWeight.doubleValue(), vehicleModel.getWeight());
+					if (percent <= num3 && num3 <= 100) {
+						msg = msg + autoWayBill(ordersList, totalWeight, totalVolume, totalAmount, deptname,
+								vehicleModel);
+						System.out.println(percent+","+100+ "之间匹配成功");
+						counts ++;
+						break;
+					}
+				}
+				
+				if(counts == 0){//没匹配上最合适的车型
+					msg = msg + autoWayBill(ordersList, totalWeight, totalVolume, totalAmount, deptname,
+							vehicleModel);
+					System.out.println(percent+","+100+ "之间匹配成功");
+				}
+				
+			}else if(num2 <= 100){
+				msg = msg + autoWayBill(ordersList, totalWeight, totalVolume, totalAmount, deptname, vehicleModel);
+				System.out.println(percent+","+100+ "之间匹配成功");
+			}else{
+				//一车装不完
+				msg = msg + siteOrder2WayBill(vehicleModelList, ordersList, percent, siteCodeList, msg);
+			}
+		}
+		return msg;
 	}
 
+	/**
+	 * 5、一个区域内部根据站点分配订单
+	 * 	（1）单个站点。从小往大匹配车型，满足重量90%-100%，体积小于额定就生成
+	 * 	（2）多个站点。
+	 */
+	private String siteOrder2WayBill(List<VehicleModel> vehicleModelList, List<Orders> ordersList, int percent, Set<String> siteCodeList, String msg){
+		String deptname = "";
+		
+		Map<String, Object> ordMap = null;
+		List<Orders> newSiteOrdersList = new ArrayList<>();//实际各站点订单
+		BigDecimal totalWeight2 = BigDecimal.ZERO;
+		BigDecimal totalVolume2 = BigDecimal.ZERO;
+		BigDecimal totalAmount2 = BigDecimal.ZERO;
+		
+		int max = vehicleModelList.size() - 1;
+		VehicleModel vehicleModel = vehicleModelList.get(max);
+		
+//		for (String siteCode : siteCodeList) {
+		Iterator<String> it = siteCodeList.iterator();
+		while (it.hasNext()) {
+			String siteCode = it.next();
+			
+			ordMap = new HashMap<String, Object>();
+			ordMap.put("status", "0");
+			ordMap.put("state", "0");
+			ordMap.put("shaddress", siteCode);
+			List<Orders> siteOrdersList = ordersService.selectAllOrdersByCtn(ordMap);
+			
+//			for (Orders siteOrder : siteOrdersList) {
+			Iterator<Orders> orderIter = siteOrdersList.iterator();
+			while (orderIter.hasNext()) {
+				Orders siteOrder = orderIter.next();
+				
+				totalWeight2 = totalWeight2.add(new BigDecimal(siteOrder.getWeight()+""));
+				totalVolume2 = totalVolume2.add(new BigDecimal(siteOrder.getVolume()+""));
+				totalAmount2 = totalAmount2.add(new BigDecimal(siteOrder.getAmount()+""));
+				deptname = siteOrder.getDeptname();
+				newSiteOrdersList.add(siteOrder);
+				
+				int siteNum = matching(totalWeight2.doubleValue(), vehicleModel.getWeight());
+				//单个站点匹配最大车型
+				if(siteNum < 50){
+					//添加其他站点的订单
+					continue;
+				}else if(siteNum < 95){
+					/*
+					 * 1.如果后面还有订单继续装
+					 * 2.如果后面没有了
+					 * 		匹配小点的车型，如果有合适就生成车次，没有就根据最大车型生成车次
+					 */
+					if(orderIter.hasNext() || it.hasNext()){
+						continue;
+					}else{
+						int counts = 0;
+						for (int i = 0; i < (max-1); i++) {
+							vehicleModel = vehicleModelList.get(i);
+							int eachNum = matching(totalWeight2.doubleValue(), vehicleModel.getWeight());
+							if (80 <= eachNum && eachNum <= 100) {
+								counts ++;
+								msg = msg + autoWayBill(newSiteOrdersList, totalWeight2, totalVolume2, totalAmount2, deptname, vehicleModel);
+								System.out.println(percent+","+100+ "之间匹配成功");
+								//封装的清空，BigDecimal有点问题
+//								clearData(newSiteOrdersList, totalWeight2, totalVolume2, totalAmount2);
+								//清空之前是计数变量
+								ordersList.clear();
+								totalWeight2 = BigDecimal.ZERO;
+								totalVolume2 = BigDecimal.ZERO;
+								totalAmount2 = BigDecimal.ZERO;
+								break;
+							}
+						}
+						
+						if(counts == 0){//没匹配上最合适的车型
+							msg = msg + autoWayBill(newSiteOrdersList, totalWeight2, totalVolume2, totalAmount2, deptname, vehicleModel);
+							System.out.println(percent+","+100+ "之间匹配成功");
+							//封装的清空，BigDecimal有点问题
+//							clearData(newSiteOrdersList, totalWeight2, totalVolume2, totalAmount2);
+							//清空之前是计数变量
+							ordersList.clear();
+							totalWeight2 = BigDecimal.ZERO;
+							totalVolume2 = BigDecimal.ZERO;
+							totalAmount2 = BigDecimal.ZERO;
+						}
+					}
+				}else if(siteNum <= 100){
+					//满足
+					msg = msg + autoWayBill(newSiteOrdersList, totalWeight2, totalVolume2, totalAmount2, deptname, vehicleModel);
+					System.out.println(percent+","+100+ "之间匹配成功");
+					//封装的清空，BigDecimal有点问题
+//					clearData(newSiteOrdersList, totalWeight2, totalVolume2, totalAmount2);
+					//清空之前是计数变量
+					ordersList.clear();
+					totalWeight2 = BigDecimal.ZERO;
+					totalVolume2 = BigDecimal.ZERO;
+					totalAmount2 = BigDecimal.ZERO;
+					
+				}else{
+					//情况太特殊没法解决，如85后还有订单刚好加入超过了100
+				}
+			}
+			
+		}
+		
+		return msg;
+	}
+	
+	/**
+	 * 清空之前是计数变量
+	 * @param ordersList
+	 * @param totalWeight
+	 * @param totalVolume
+	 * @param totalAmount
+	 */
+	private void clearData(List<Orders> ordersList, BigDecimal totalWeight, BigDecimal totalVolume,
+			BigDecimal totalAmount) {
+		ordersList.clear();
+		totalWeight = BigDecimal.ZERO;
+		totalVolume = BigDecimal.ZERO;
+		totalAmount = BigDecimal.ZERO;
+//		totalWeight = new BigDecimal("0");
+//		totalVolume = new BigDecimal("0");
+//		totalAmount = new BigDecimal("0");
+	}
+	
+	/**
+	 * 生成运单
+	 * @param ordersList
+	 * @param totalWeight
+	 * @param totalVolume
+	 * @param totalAmount
+	 * @param deptname
+	 * @param vehicleModel
+	 * @return
+	 */
+	private String autoWayBill(List<Orders> ordersList, BigDecimal totalWeight, BigDecimal totalVolume,
+			BigDecimal totalAmount, String deptname, VehicleModel vehicleModel) {
+		String msg = "fail;";
+		if(totalVolume.doubleValue() <= vehicleModel.getVolum()){
+//			Waybill waybill = newWayBill(totalWeight, totalVolume, totalAmount, deptname, vehicleModel);
+			Waybill waybill = new Waybill();
+			waybill.setC_volume(vehicleModel.getVolum());
+			waybill.setC_weight(vehicleModel.getWeight());
+			waybill.setSubcontractor(vehicleModel.getWlcompany());
+			waybill.setDeptname(deptname);
+//				waybill.setFhaddress(fhaddress);
+//				waybill.setShaddress(shaddress);
+			waybill.setCode("TCK" + MathUtil.random());
+			waybill.setState("0");// 阶段初始为 0
+			waybill.setCreatetime(new Date());
+			waybill.setAmount(totalAmount.doubleValue());
+			waybill.setVolume(totalVolume.doubleValue());
+			waybill.setWeight(totalWeight.doubleValue());
+			
+			waybillService.insert2Auto(waybill, ordersList);
+			msg = "success;";
+		}
+		return msg;
+	}
+
+//	/**
+//	 * 创建车次
+//	 * @param ordersList
+//	 * @param totalWeight
+//	 * @param totalVolume
+//	 * @param totalAmount
+//	 * @param deptname
+//	 * @param waybill
+//	 * @param vehicleModel
+//	 */
+//	private Waybill newWayBill(BigDecimal totalWeight, BigDecimal totalVolume,
+//			BigDecimal totalAmount, String deptname, VehicleModel vehicleModel) {
+//		Waybill waybill = new Waybill();
+//		waybill.setC_volume(vehicleModel.getVolum());
+//		waybill.setC_weight(vehicleModel.getWeight());
+//		waybill.setSubcontractor(vehicleModel.getWlcompany());
+//		waybill.setDeptname(deptname);
+////			waybill.setFhaddress(fhaddress);
+////			waybill.setShaddress(shaddress);
+//		waybill.setCode("TCK" + MathUtil.random());
+//		waybill.setState("0");// 阶段初始为 0
+//		waybill.setCreatetime(new Date());
+//		waybill.setAmount(totalAmount.doubleValue());
+//		waybill.setVolume(totalVolume.doubleValue());
+//		waybill.setWeight(totalWeight.doubleValue());
+//		
+//		return waybill;
+//	}
+
+	/**
+	 * 匹配车型的重量 与订单的重量，在[50,100]返回true，否则
+	 * @param orderParam
+	 * @param vehModParam
+	 * @return
+	 */
+	private int matching(double orderParam, double vehModParam) {
+		String mach = String.valueOf((orderParam / vehModParam) * 100);
+		mach = mach.substring(0, mach.indexOf("."));
+		int num = Integer.parseInt(mach);
+		return num;
+	}
+	
 	/**
 	 * 检查订单
 	 */

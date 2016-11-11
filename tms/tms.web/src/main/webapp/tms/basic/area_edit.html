@@ -1,0 +1,84 @@
+<div class="row">
+	<div class="col col-sm-6 col-xs-12">
+		<a href="#tms/basic/area_list.html" class="btn btn-default" > &lt; <span langlanguage="back">返回</span></a>
+	</div>
+</div>
+<div class="row"><br /></div>
+<div class="well well-light no-padding">
+	<form action="" class="smart-form" novalidate="novalidate" id="editfrom" method="post" >
+		<input type="hidden" name="id"  id="id">
+<!-- 		<input type="hidden" name="lat" id = "lat">
+		<input type="hidden" name="lng" id = "lng">
+		<input type="hidden" name="lnglats" id = "lnglats">
+		<input type="hidden" name="radius" id = "radius">
+		<input type="hidden" name="address" id = "address"> -->
+		<fieldset>
+			<header>基本信息( <span class="txt-color-red font-xs"> 红色为必填项 </span> )</header>
+			<div class="col col-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right  txt-color-red">名称</label>
+					<section class="col col-8 no-padding">
+						<label class="input"> 
+							<input type="text" id="name" name="name" placeholder="" class="input-sm">
+						</label>
+					</section>
+				</div>
+            </div>
+            <div class="col col-6">
+                <div class="row">
+                    <label class="label col col-4 text-align-right">编码：</label>
+                    <section class="col col-8 no-padding">
+                        <label class="input">
+                            <input type="text" name="code" id='code' placeholder="" class="input-sm">
+                        </label>
+                    </section>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            
+            <div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right">机构：</label>
+					<section class="col col-8 no-padding">
+						<label class="input">
+							<input type="text" id="orgname" class="form-control" placeholder="输入机构名称" name="deptname" required>
+						</label> 
+					</section>
+				</div>
+			</div>
+            <div class="col col-6">
+				<div class="row">
+					<label class="label col col-4 text-align-right">承运商：</label>
+					<section class="col col-8 no-padding">
+						<label class="input">
+							<!-- <input type="text" id="orgname" class="input-sm" placeholder="输入承运商名称" name="deptname" required> -->
+							<input type="text" id="wlcompany" class="form-control" placeholder="输入承运商名称" name="wlcompany" required>
+						</label> 
+					</section>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+
+			 <div class="col col-10">
+				<div class="row">
+					<label class="label col col-2 text-align-right">站点：</label>
+					<section class="col col-10 no-padding">
+						<label class="input">
+							<input type="text" id="sitecodes" class="form-control" placeholder="输入承运商名称" name="sitecodes" required>
+						</label> 
+					</section>
+				</div>
+			</div>
+		</fieldset>
+		<footer>
+    		<button type="button" class="btn btn-default" onclick="window.history.go(-1)">取消</button>
+    		<button id="btnSubmitNew" type="button" class="btn btn-default"><span></span>保存并新建</button>
+    		<button id="btnSubmit" type="button" class="btn btn-primary">
+    			<span><i class="fa fa-fw fa-save"></i></span>保存
+    		</button>
+		</footer>
+	</form> 
+
+</div>
+
+<script src="tms/basic/js/area_edit.js"></script>

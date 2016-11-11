@@ -112,10 +112,10 @@ $("#auditDismissedbtn").click(function(){
 			$ips.load("tckNumRvwed", "updateTckNumRvwed", {id : parseInt(ids),state : -1}, function(result){
 				console.log(result.code == 0);
 				if(result.code == 0) {
-					$ips.succeed("审核成功。");
+					$ips.succeed("操作成功。");
 					$('#tblMain').grid("fnDraw");
 				} else {
-					$ips.error("审核失败！" + result);
+					$ips.error("操作失败！" + result);
 				}
 			});
 		}

@@ -1,0 +1,96 @@
+<section id="widget-grid" class="">
+	<!-- row -->
+	<div class="row">
+		<!-- NEW WIDGET START -->
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<!-- Widget ID (each widget will need unique ID)-->
+			<div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-0" data-widget-sortable="true" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+				<header>
+					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+					<h2> 区域站点管理 </h2>
+				</header>
+				<!-- widget div-->
+				<div>
+					<!-- widget edit box -->
+					<div class="jarviswidget-editbox">
+						<!-- This area used as dropdown edit box -->
+					</div>
+					<!-- end widget edit box -->
+	
+					<!-- widget content -->
+					<div class="widget-body no-padding">
+						<!-- 自定义搜索区 -->
+                        <div class="widget-body-toolbar" style="height:70px;overflow:hidden;">
+                            <form role="form" class="smart-form" id='frmSearch'>
+                                <div class="global-search-box">
+                                    <section class="pull-left no-padding pull-width160" >
+                                        <label class="">区域站点编号</label>
+                                        <label class="input">
+                                            <input type="text" class="input-sm" style="width:100%"  name="code" placeholder="站点编号" id="code">
+                                        </label>
+                                    </section>
+                                    <section class="pull-left no-padding pull-width160" >
+                                        <label class="">区域站点名称</label>
+                                        <label class="input">
+                                            <input type="text" class="input-sm" style="width:100%"  name="name" placeholder="站点名称" id="name">
+                                        </label>
+                                    </section>
+                                    <div class="global-search-btn" >
+                                        <a class="btn btn-primary  btn-sm" type="button" id="s_btn1" langlanguage="query">
+												<i class="fa fa-search"></i> 查询
+										</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+						
+					  <div class="row margin-top-10 margin-bottom-10" style="margin:0">
+					  	  <!-- 左侧按钮 -->
+                          <div class="col-xs-8 col-sm-8">
+                              <div class="btn-group">
+                                  <a href="#tms/basic/area_edit.html" class="btn btn-default" data-button-resource="27ABFE6C332DD1DB13EE504E151C007A">新增</a>
+                              </div>
+                              <!-- <div class="btn-group">
+                                  <a href="#tms/basic/site_edit.html" data-button-resource="A772D941076309D2CA2143A67D9262B1" class="btn btn-default">编辑</a>
+                              </div> -->
+						      <!-- <div class="btn-group">
+							      <form  id='frmImport' enctype="multipart/form-data">
+										<input type="file" name="sitefile" />
+										<a id="importbtn" data-button-resource="A772D941076309D2CA2143A67D9262B1" class="btn btn-default">导入</a>
+							      </form>
+							  </div> -->
+							  <!-- <div class="btn-group">
+                                  <a id="exportbtn" data-button-resource="C772D851076309D2CA2143A67D9262E1" class="btn btn-default">导出</a>
+                              </div> -->
+                              <div class="btn-group">
+                                  <a class="btn btn-default btn-must-one" id='deletebtn' data-button-resource="048625502851586667FA938190987180">删除</a>
+                              </div>
+	                          <!-- <div class="btn-group" >
+		                         <a class="btn btn-primary  btn-sm" type="button" id='btnSearch'><i class="fa fa-search"></i>刷新</a>
+		                     </div> -->
+                          </div>
+						</div>
+						<div style="height:100%;overflow:auto;">
+							<table id="tblMain" class="table table-striped table-bordered table-hover">
+							</table>
+						</div>
+	
+					</div>
+					<!-- end widget content -->
+	
+				</div>
+				<!-- end widget div -->
+	
+			</div>
+			<!-- end widget -->
+	
+		</article>
+		<!-- WIDGET END -->
+	
+	</div>
+	<!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+<script src="tms/basic/js/area_list.js"></script>
