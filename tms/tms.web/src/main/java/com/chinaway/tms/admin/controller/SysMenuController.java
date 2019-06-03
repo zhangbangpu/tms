@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysMenu;
 import com.chinaway.tms.admin.service.SysMenuService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.utils.page.PageBean;
@@ -226,7 +227,7 @@ public class SysMenuController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加菜单操作失败!";
+		String msg = Constants.ADD_MENU_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -242,7 +243,7 @@ public class SysMenuController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "添加菜单操作成功!";
+				msg = Constants.ADD_MENU_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -274,7 +275,7 @@ public class SysMenuController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "批量删除操作失败!";
+		String msg = Constants.BATH_DELETE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -282,7 +283,7 @@ public class SysMenuController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "批量删除操作成功!";
+				msg = Constants.BATH_DELETE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -314,7 +315,7 @@ public class SysMenuController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = Constants.DELETE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -322,7 +323,7 @@ public class SysMenuController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg =  Constants.DELETE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -371,7 +372,7 @@ public class SysMenuController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改菜单操作失败!";
+		String msg = Constants.UPDATE_MENU_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -379,7 +380,7 @@ public class SysMenuController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改菜单操作成功!";
+				msg = Constants.UPDATE_MENU_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();

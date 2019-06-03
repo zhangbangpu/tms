@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysDictionary;
 import com.chinaway.tms.admin.service.SysDictionaryService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
@@ -32,14 +33,14 @@ public class SysDictionaryController {
 	public String addDictionary(SysDictionary sysDictionary) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加操作失败!";
+		String msg = Constants.ADD_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
 			sysDictionaryService.insert(sysDictionary);
 			if (ret > 0) {
 				code = 0;
-				msg = "添加操作成功!";
+				msg = Constants.ADD_OPRATION_SUCCESS;
 			}
 
 		} catch (Exception e) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysUserRole;
 import com.chinaway.tms.admin.service.SysUserRoleService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
@@ -34,14 +35,14 @@ public class SysUserRoleController {
 		SysUserRole userRole = (SysUserRole)JsonUtil.jsonStr2Obj(sysUserRole, SysUserRole.class);
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加用户角色操作失败!";
+		String msg = Constants.ADD_USER_ROLE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
 			ret = sysUserRoleService.insert(userRole);
 			if (ret > 0) {
 				code = 0;
-				msg = "添加用户角色操作成功!";
+				msg = Constants.ADD_USER_ROLE_OPRATION_SUCCESS;
 			}
 
 		} catch (Exception e) {
@@ -67,7 +68,7 @@ public class SysUserRoleController {
 	public Result delUserRole(@RequestParam(value="id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除用户角色操作失败!";
+		String msg = Constants.DELETE_USER_ROLE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -75,7 +76,7 @@ public class SysUserRoleController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除用户角色操作成功!";
+				msg = Constants.DELETE_USER_ROLE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

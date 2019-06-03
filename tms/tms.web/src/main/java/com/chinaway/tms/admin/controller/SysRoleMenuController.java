@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysRoleMenu;
 import com.chinaway.tms.admin.service.SysRoleMenuService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
 
@@ -34,14 +35,14 @@ public class SysRoleMenuController {
 		SysRoleMenu roleMenu = (SysRoleMenu)JsonUtil.jsonStr2Obj(sysRoleMenu, SysRoleMenu.class);
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加角色菜单操作失败!";
+		String msg = Constants.ADD_ROLE_MENU_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
 			ret = sysRoleMenuService.insert(roleMenu);
 			if (ret > 0) {
 				code = 0;
-				msg = "添加角色菜单操作成功!";
+				msg = Constants.ADD_ROLE_MENU_OPRATION_SUCCESS;
 			}
 
 		} catch (Exception e) {
@@ -67,7 +68,7 @@ public class SysRoleMenuController {
 	public Result delRoleMenu(@RequestParam(value="id")String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除角色菜单操作失败!";
+		String msg = Constants.DELETE_ROLE_MENU_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -75,7 +76,7 @@ public class SysRoleMenuController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除角色菜单操作成功!";
+				msg = Constants.DELETE_ROLE_MENU_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

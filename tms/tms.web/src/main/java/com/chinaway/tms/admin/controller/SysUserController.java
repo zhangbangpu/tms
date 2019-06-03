@@ -25,6 +25,7 @@ import com.chinaway.tms.admin.service.SysDeptService;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.admin.service.SysUserRoleService;
 import com.chinaway.tms.admin.service.SysUserService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
@@ -136,19 +137,19 @@ public class SysUserController {
 		}
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		int code = 1;
-		String msg = "查询所有用户操作失败!";
+		String msg = Constants.QUERY_ALL_USER_OPRATION_FAILED;
 		List<SysUser> sysUserList = null;
 		try {
 			sysUserList = sysUserService.queAllUserByCtn(argsMap);
 
 			if (sysUserList.size() > 0) {
 				code = 0;
-				msg = "查询所有用户操作成功!";
+				msg = Constants.QUERY_ALL_USER_OPRATION_SUCCESS;
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			msg = "查询所有用户操作出现异常!";
+			msg = Constants.QUERY_ALL_USER_OPRATION_EXCEPTION;
 		}
 
 		Result result = new Result(code, sysUserList, msg);
@@ -169,7 +170,7 @@ public class SysUserController {
 
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		int code = 1;
-		String msg = "查询所有用户操作失败!";
+		String msg = Constants.QUERY_ALL_USER_OPRATION_FAILED;
 		List<SysUser> sysUserList = null;
 		try {
 			SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -190,12 +191,12 @@ public class SysUserController {
 			
 			if (sysUserList.size() > 0) {
 				code = 0;
-				msg = "查询所有用户操作成功!";
+				msg = Constants.QUERY_ALL_USER_OPRATION_SUCCESS;
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			msg = "查询所有用户操作出现异常!";
+			msg = Constants.QUERY_ALL_USER_OPRATION_EXCEPTION;
 		}
 		
 		Result result = new Result(code, sysUserList, msg);
@@ -221,7 +222,7 @@ public class SysUserController {
 		String id = request.getParameter("id");
 		
 		int code = 1;
-		String msg = "根据id查询用戶操作失败!";
+		String msg = Constants.BY_ID_QUERY_USER_OPRATION_FAILED;
 		SysUser sysUser = new SysUser();
 		try {
 			if (StringUtils.isEmpty(id)) {
@@ -237,7 +238,7 @@ public class SysUserController {
 					sysUser.setDeptname(sysDeptList.get(0).getName());
 				}
 				code = 0;
-				msg = "根据id查询用戶操作成功!";
+				msg = Constants.BY_ID_QUERY_USER_OPRATION_SUCCESS;
 			}
 			SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
 //			List<SysRole> sysRoleList = sysRoleService.queAllRoleByCtn(null);
@@ -271,12 +272,11 @@ public class SysUserController {
 		String roleids = request.getParameter("roleids");
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加操作失败!";
+		String msg = Constants.ADD_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
 			sysUser.setCreatetime(new Date());
-			sysUser.setPassword(DigestUtils.md5Hex(sysUser.getPassword()));
 			
 			if (sysUser.getId() != null) {
 				ret = sysUserService.updateSelective(sysUser);
@@ -285,10 +285,11 @@ public class SysUserController {
 				int retUr = this.insertUserRole(roleids, sysUser);
 				if (ret > 0 && retUr > 0) {
 					code = 0;
-					msg = "修改操作成功!";
+					msg = Constants.UPDATE_OPRATION_SUCCESS;
 				}
 
 			} else {
+				sysUser.setPassword(DigestUtils.md5Hex(sysUser.getPassword()));
 				sysUser.setCreatetime(new Date());
 //				resultMap.put("name", sysUser.getName());
 //				SysUser sysUserNew = sysUserService.queOneUserByCtn(resultMap);
@@ -300,7 +301,7 @@ public class SysUserController {
 				int retUr = this.insertUserRole(roleids, sysUser);
 				if (ret > 0 && retUr > 0) {
 					code = 0;
-					msg = "添加操作成功!";
+					msg = Constants.ADD_OPRATION_SUCCESS;
 				}
 			}
 
@@ -352,7 +353,7 @@ public class SysUserController {
 
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = Constants.DELETE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -360,7 +361,7 @@ public class SysUserController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = Constants.DELETE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -391,7 +392,7 @@ public class SysUserController {
 
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = Constants.DELETE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -399,7 +400,7 @@ public class SysUserController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = Constants.DELETE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -464,7 +465,7 @@ public class SysUserController {
 			user.setName(String.valueOf(argsMap.get("name")));
 		}
 		if (null != argsMap.get("password")) {
-			user.setPassword(String.valueOf(argsMap.get("password")));
+			user.setPassword(DigestUtils.md5Hex(String.valueOf(argsMap.get("password"))));
 		}
 		if (null != argsMap.get("phone")) {
 			user.setPhone(String.valueOf(argsMap.get("phone")));
@@ -485,7 +486,7 @@ public class SysUserController {
 
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改用户操作失败!";
+		String msg = Constants.UPDATE_USER_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -493,7 +494,7 @@ public class SysUserController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改用户操作成功!";
+				msg = Constants.UPDATE_USER_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

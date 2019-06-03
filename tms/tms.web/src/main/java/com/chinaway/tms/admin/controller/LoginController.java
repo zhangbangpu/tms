@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +18,7 @@ import com.chinaway.tms.admin.model.SysUser;
 import com.chinaway.tms.admin.service.SysMenuService;
 import com.chinaway.tms.admin.service.SysRoleService;
 import com.chinaway.tms.admin.service.SysUserService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.json.JsonUtil;
 import com.chinaway.tms.vo.Result;
@@ -50,16 +50,19 @@ public class LoginController {
 	public Result login(HttpServletRequest request) {
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		LOGGER.info("username=" + argsMap.get("username") + "password=" + argsMap.get("password"));
-
+		//静态变量初始化
+		Constants.getConstantn();
 		int code = 1;
-		String msg = "登录异常!";
+		String msg = Constants.LOGIN_EXCEPTION;
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			argsMap.put("loginname", argsMap.get("username"));
 			argsMap.put("state","1");
 			argsMap.put("password", DigestUtils.md5Hex(argsMap.get("password").toString()));
+			LOGGER.info("loginname:" + argsMap.get("loginname") + "password:" + argsMap.get("password"));
 			
 			SysUser sysUser = sysUserService.queOneUserByCtn(argsMap);
+			LOGGER.info("loginname=" + sysUser.getLoginname() + "password=" + sysUser.getPassword());
 			if(null != sysUser && null != sysUser.getId()){
 				request.getSession().setAttribute("sysUser", sysUser);
 				request.getSession().setAttribute("username", sysUser.getLoginname());
@@ -77,10 +80,10 @@ public class LoginController {
 				request.getSession().setAttribute("sysMenu", sysMenuMap);
 //				//连表查询角色信息
 				code = 0;
-				msg = "登录成功!";
+				msg = Constants.LOGIN_SUCCESS;
 			}else{
 				code = 2;
-				msg = "用户名或密码不正确!";
+				msg = Constants.USER_OR_PASSWORD_ERROR;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -113,7 +116,7 @@ public class LoginController {
 //		argsMap.put("id", sysUser.getId());
 
 		int code = 1;
-		String msg = "获取菜单异常!";
+		String msg = Constants.GET_MENU_EXCEPTION ;
 		List<Map<String, Object>> sysMenuMap = new ArrayList<Map<String, Object>>();
 		try {
 //			SysRole sysRole = sysRoleService.queryRoleByUserId(sysUser.getId());
@@ -122,10 +125,10 @@ public class LoginController {
 			sysMenuMap = (List<Map<String, Object>>) request.getSession().getAttribute("sysMenu");
 			if (null != sysMenuMap) {
 				code = 0;
-				msg = "获取菜单成功!";
+				msg = Constants.GET_MENU_SUCCESS;
 			} else {
 				code = 1;
-				msg = "获取菜单不正确!";
+				msg = Constants.GET_MENU_ERROR;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,7 +156,7 @@ public class LoginController {
 		LOGGER.info("username=" + argsMap.get("username") + "password=" + argsMap.get("password"));
 
 		int code = 1;
-		String msg = "注销异常!";
+		String msg = Constants.LOGOUT_EXCEPTION;
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			argsMap.put("loginname", argsMap.get("username"));
@@ -165,10 +168,10 @@ public class LoginController {
 				argsMap.put("status", "true");
 				argsMap.put("msg", "logout success!");
 				code = 0;
-				msg = "注销成功!";
+				msg = Constants.LOGOUT_SUCCESS;
 			}else{
 				code = 1;
-				msg = "用户注销不正确!";
+				msg = Constants.LOGOUT_ERROR;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,10 +199,10 @@ public class LoginController {
 	@ResponseBody
 	public Result isLogin(HttpServletRequest request) {
 		int code = 1;
-		String msg = "登录校验异常!";
+		String msg = Constants.IS_LOGIN_EXCEPTION;
 		if (checkLogin(request)) {
 			code = 0;
-			msg = "用户未登录!";
+			msg = Constants.USER_NOT_LOGIN;
 		}
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("code", code);

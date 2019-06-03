@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinaway.tms.admin.model.SysDept;
 import com.chinaway.tms.admin.service.SysDeptService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
@@ -66,14 +67,14 @@ public class SysDeptController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "根据条件查询部门操作失败!";
+		String msg = Constants.BY_CTN_QUERY_DEPT_FAILED;
 		List<SysDept> sysDeptList = null;
 		try {
 			sysDeptList = sysDeptService.selectDeptByCtn(argsMap);
 
 			if (sysDeptList.size() > 0) {
 				code = 0;
-				msg = "根据条件查询部门操作成功!";
+				msg = Constants.BY_CTN_QUERY_DEPT_SUCCESS;
 			}
 
 		} catch (Exception e) {
@@ -124,7 +125,7 @@ public class SysDeptController {
 		Map<String, Object> argsMap = MyBeanUtil.getParameterMap(request);
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "查询所有部门操作失败!";
+		String msg = Constants.QUERY_ALL_DEPT_FAILED;
 //		Map<String, Object> argsMap = new HashMap<String, Object>();
 		int ret = 0;
 		try {
@@ -135,7 +136,7 @@ public class SysDeptController {
 			
 			if (ret > 0) {
 				code = 0;
-				msg = "查询所有部门操作成功!";
+				msg = Constants.QUERY_ALL_DEPT_SUCCESS;
 				resultMap.put("sysDeptList", sysDeptList);
 			}
 
@@ -258,7 +259,7 @@ public class SysDeptController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加操作失败!";
+		String msg = Constants.ADD_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -266,12 +267,12 @@ public class SysDeptController {
 				ret = sysDeptService.updateSelective(dept);
 			} else {
 				int maxId = sysDeptService.selectMaxId();
-				dept.setDeptid("dept" + maxId );
+				dept.setDeptid(String.valueOf(maxId));
 				ret = sysDeptService.insert(dept);
 			}
 			if (ret > 0) {
 				code = 0;
-				msg = "操作成功!";
+				msg = Constants.OPRATION_SUCCESS;
 			}
 
 		} catch (Exception e) {
@@ -304,7 +305,7 @@ public class SysDeptController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "批量删除操作失败!";
+		String msg = Constants.BATH_DELETE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -312,7 +313,7 @@ public class SysDeptController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "批量删除操作成功!";
+				msg = Constants.BATH_DELETE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -344,7 +345,7 @@ public class SysDeptController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除部门操作失败!";
+		String msg = Constants.DELETE_DEPT_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -352,7 +353,7 @@ public class SysDeptController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除部门操作成功!";
+				msg = Constants.DELETE_DEPT_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -401,7 +402,7 @@ public class SysDeptController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改部门操作失败!";
+		String msg = Constants.UPDATE_DEPT_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -409,7 +410,7 @@ public class SysDeptController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改部门操作成功!";
+				msg = Constants.UPDATE_DEPT_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();

@@ -18,6 +18,7 @@ import com.chinaway.tms.admin.model.SysRoleMenu;
 import com.chinaway.tms.admin.service.SysMenuService;
 import com.chinaway.tms.admin.service.SysRoleMenuService;
 import com.chinaway.tms.admin.service.SysRoleService;
+import com.chinaway.tms.util.Constants;
 import com.chinaway.tms.utils.MyBeanUtil;
 import com.chinaway.tms.utils.page.PageBean;
 import com.chinaway.tms.vo.Result;
@@ -196,7 +197,7 @@ public class SysRoleController {
 //		id = String.valueOf(argsMap.get("id"));
 		
 		int code = 1;
-		String msg = "根据id查询角色操作失败!";
+		String msg = Constants.BY_ID_QUERY_ROLE_OPRATION_FAILED;
 
 		SysRole sysRole = new SysRole();
 		try {
@@ -216,7 +217,7 @@ public class SysRoleController {
 			
 			if (null != sysRole) {
 				code = 0;
-				msg = "根据id查询部门操作成功!";
+				msg = Constants.BY_ID_QUERY_ROLE_OPRATION_SUCCESS;
 			}
 //
 		} catch (Exception e) {
@@ -266,7 +267,7 @@ public class SysRoleController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "添加操作失败!";
+		String msg = Constants.ADD_OPRATION_FAILED;
 
 		int ret = 0;
 		int insertRet = 0;
@@ -288,7 +289,7 @@ public class SysRoleController {
 			
 			if (ret > 0 && insertRet > 0) {
 				code = 0;
-				msg = "添加操作成功!";
+				msg = Constants.ADD_OPRATION_SUCCESS;
 			}
 
 		} catch (Exception e) {
@@ -322,7 +323,7 @@ public class SysRoleController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = Constants.DELETE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -330,7 +331,7 @@ public class SysRoleController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = Constants.DELETE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -363,7 +364,7 @@ public class SysRoleController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "删除操作失败!";
+		String msg = Constants.DELETE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -371,7 +372,7 @@ public class SysRoleController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "删除操作成功!";
+				msg = Constants.DELETE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -412,7 +413,7 @@ public class SysRoleController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		int code = 1;
-		String msg = "修改角色操作失败!";
+		String msg = Constants.UPDATE_ROLE_OPRATION_FAILED;
 
 		int ret = 0;
 		try {
@@ -420,7 +421,7 @@ public class SysRoleController {
 
 			if (ret > 0) {
 				code = 0;
-				msg = "修改角色操作成功!";
+				msg = Constants.UPDATE_ROLE_OPRATION_SUCCESS;
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
