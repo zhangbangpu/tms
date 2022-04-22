@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tms.version>0.0.1-SNAPSHOT</tms.version>
-		<spring.version>4.1.7.RELEASE</spring.version>
+		<spring.version>5.3.19</spring.version>
 		<!-- <mybatis.version>3.3.1</mybatis.version> -->
 		<mybatis.version>3.2.8</mybatis.version>
 		<mysql.version>5.1.38</mysql.version>
